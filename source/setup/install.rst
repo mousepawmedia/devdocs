@@ -1,0 +1,363 @@
+Installing Ubuntu Linux
+##############################
+
+Making Some Decisions
+==============================
+
+..  NOTE:: You should read the "About Linux" section before continuing.
+
+Single Boot or Dual Boot?
+-------------------------------
+
+If you have a PC, your first decision is whether you want to keep
+Microsoft Windows™. Millions of people work exclusively on Linux,
+including a few people at MousePaw Games. However, if you rely on
+Windows-only software, such as Microsoft Office™ or software from
+Adobe or Autodesk, you may want to keep Microsoft Windows™ installed.
+
+..  NOTE:: You should consider whether you are actually dependent on the
+    Windows-only software you use, or if a Linux alternative will do just
+    as well. See :doc:`about`
+
+..  WARNING:: Use of Microsoft Windows™ 7 or later for company work is
+    **strictly prohibited**. This means **you may not install and use
+    your work copy of Linux as a virtual machine on Windows.**
+
+If you want Ubuntu Linux to be your only operating system on the computer,
+the installation process is a *lot* easier.
+
+Otherwise, if you want to have both Windows and Ubuntu Linux on your machine,
+you can install them side-by-side. To do this, you must have at least
+200 GB of free space on your hard drive.
+
+..  WARNING:: Whether you're single-booting or dual-booting, backup all of your
+    files to external removable media**, such as an external hard drive or a
+    flash drive! If something goes wrong (which it can), you'll need that backup.
+
+..  NOTE:: If you're a little intimidated by all of this, consider seeking out
+    a tech-savvy friend, coworker, or relation to help you, *especially*
+    if you're dual-booting.
+
+If you're on a Mac, your best option is to install Ubuntu Linux on Parallels.
+
+Choosing a Distribution
+--------------------------------
+
+Below are links to several great Ubuntu-based operating systems, including
+Ubuntu itself. They all run the same software and work the same at their
+heart, so just pick one you like.
+
+If you have aboslutely no idea what to go for, just go with Ubuntu itself.
+I'm writing these instructions on Ubuntu anyway!
+
+- `Ubuntu <https://www.ubuntu.com/desktop>`_
+- `Linux Mint <https://linuxmint.com/>`_ ← (There are actually three versions
+  of Linux Mint. Cinnamon is the one that looks most like Windows.)
+- `elementaryOS <https://elementary.io/>`_
+- `Ubuntu MATE <https://ubuntu-mate.org/>`_
+- `Kubuntu <http://www.kubuntu.org/>`_
+- `Lubuntu <http://lubuntu.net/>`_
+- `Xubuntu <http://xubuntu.org/>`_
+- `Ubuntu Studio <http://ubuntustudio.org/>`_
+
+Choosing a Version
+----------------------------------
+
+A new version of Ubuntu releases every six months. While it is always free
+to upgrade, it isn't always easy, and sometimes you have to reinstall the
+entire operating system in the process.
+
+Every two years, Ubuntu releases a **Long-Term Support [LTS] version**,
+which is supported with updates for five years. The most recent LTS was
+**Ubuntu 16.04 "Xenial Xerus"**. If you'd prefer stability over cutting-edge
+new features, I'd recommend this option.
+
+However, if you're tech-savvy and love experimenting with the latest features,
+you might want to use the newest release.
+
+..  IMPORTANT:: Our instructions and build environment are all based on the
+    LTS release. If you use a newer version, you will be responsible for
+    adjusting instructions for your release yourself.
+
+The LTS versions of each of the above distros is as follows:
+
+- Ubuntu 16.04 "Xenial Xerus" (same for all distros with "ubuntu" in the name)
+- Linux Mint 18 "Sarah"
+- elementaryOS 0.4 "Loki"
+
+32-bit or 64-bit?
+----------------------------------
+
+You should know whether your computer is a 32-bit or a 64-bit system. In any
+version of Windows, go to Control Panel → System. On Windows 7/8, you may
+need to use the search box in the Control Panel to find this. Look for
+“32-bit” or “64-bit”.
+
+If you're on a modern Mac, it's 64-bit.
+
+Preparing for Installation
+==============================
+
+Downloading and Creating Installation Media
+------------------------------------------------
+
+Once you've selected your distro, go to the official download page on their
+website. While you can usually download the ISO (disk image) file directly,
+you should seriously consider using the Torrent. This option reduces the load
+on the server, and it can be stopped and resumed whenever!
+
+You can download torrents on Windows using
+`µTorrent <http://www.utorrent.com/intl/en/downloads/win>`_, or on Mac/Linux
+using `Transmission <https://transmissionbt.com>`_.
+
+Once you've downloaded the ISO, burn it onto a blank DVD (if your computer
+has a DVD drive), or make a bootable Flash drive following
+`these instructions <https://www.ubuntu.com/download/desktop/create-a-usb-stick-on-windows>`_.
+
+Preparing For Disaster
+---------------------------
+
+We'd all like to believe that this process is flawless, but nothing with
+computers is. You should have a backup plan in case something goes haywire.
+
+1) **Make sure you have a backup of all your files!** Put this backup on a
+removable device, such as an external hard drive or a flash drive (or set of
+flash drives).
+
+..  NOTE:: If you're ditching Windows forever, congrats! You can skip
+    steps 2-3.
+
+2) **Find your Microsoft Windows™ recovery disk or flash drive.** If you want
+to dual-boot, you'll want to have this handy in case something goes wrong
+and Windows gets nuked.
+
+3) **Write down your Microsoft Windows™ license key.** You can recover this
+key using `Magical Jellybean KeyFinder <http://www.magicaljellybean.com/keyfinder/>`_.
+
+4) **Write down a list of all your Windows software.** Make sure you have
+install disks, registration info and/or keys, etc. You should probably do
+this, even if you *are* ditching Windows. You may want to set up a VirtualBox
+later!
+
+Preparing for Dual-Boot
+-----------------------------
+
+..  NOTE:: If you're not dual-booting with Windows, you can skip this step.
+
+In Windows, open up "Disk Management". On the table, find the disk and
+partition (disk section) that has at least 200GB of free space. It is
+probably marked `Active (System, Healthy, Primary Partition)`, although
+you can certainly install Linux on a different hard drive or partition from
+Windows.
+
+Right-click that partition on the chart and click `Shrink Volume...`.
+Under `Enter the amount of space to shrink in MB:`, enter the amount of
+space (in MB) you want to set aside for Linux. There are 1024 MB in 1 GB, so
+(200 GB = 204800 MB) and (250 GB = 256000 MB).
+
+Installing Linux
+=============================
+
+Turn Off Secure Boot
+------------------------------
+
+If you have a PC running Windows 8 or later, you must turn off Secure Boot
+before you can install Linux.
+
+..  NOTE:: It is not possible to install Linux on Microsoft-branded computers.
+
+To do this, go to the Power menu (where you shut down from), hold down SHIFT,
+and click `Restart`. After a few moments, a menu screen will appear. Select
+`Troubleshooting` → `Advanced Options` → `UEFI Firmware Settings`.
+
+This will bring up the UEFI Settings control panel, which is independent of
+the operating system. Every brand of computer has its own such control panel,
+and they all tend to look a little different.
+
+..  WARNING:: Be very careful in here.
+
+Search through the options for "Secure Boot" and disable it.
+**If you're dual-booting, do NOT turn off UEFI altogether!** Also, search
+for "Fast Boot" (if the option is present) and disable that.
+
+Change Boot Order
+-----------------------------
+
+..  NOTE:: If you are on a PC running Windows 7 or earlier, you probably have
+    BIOS instead of UEFI. To get to that, restart your computer. As the
+    computer brand flashes on your screen at the beginning of startup, look
+    for the key to press for "Setup". If you miss the chance to press it, just
+    turn off the computer by the power button and try again.
+
+Either on your UEFI or BIOS control panel, look for the option to set "boot
+order," which denotes the order of devices to boot from. Set your Ubuntu
+installation media (the DVD drive or bootable flash drive) as the first device
+in that list.
+
+Now press the key listed as "Save Changes and Exit". Your computer should
+boot to the installation medium.
+
+Testing Linux
+-------------------------------
+
+You will be given the option to "Try" the Linux operating system you selected.
+This is called the "Live" version. **You should always run this first,** to
+make sure it will work on your computer.
+
+..  NOTE:: Give it some time - it is actually loading the entire operating
+    system from the DVD or flash drive into RAM, so it will be very slow.
+    The final installed operating system will be much faster.
+
+When the "Live" version of the operating system has booted, feel free to test
+it out. At minimum, make sure you have a working internet connection, as you'll
+need that for the installation to finish. If you can't get the internet working,
+this may suggest that your computer's internet hardware is not compatible
+with Linux.
+
+When you're happy, start the "Install" program.
+
+Installing Linux
+--------------------------
+
+The first screen will ensure you are connected to the internet and have enough
+hard drive space for the installation. Check `Download updates while installing`
+and `Install this third-party software`. Click `Continue`.
+
+..  WARNING:: Be **very** careful what you select on the next screen!
+
+For Single-Boot
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+If you want to **permanently remove Windows** and install Linux, select
+"Erase disk and install Ubuntu".
+
+Alternatively, you can click `Something else` and set up the partitions
+yourself. In addition to the necessary partitions (swap, boot sectors, etc.),
+I personally recommend having a 50 GB `/` partition, and using the rest as a
+separate `/home` partition. You can find more information about setting up
+partitions on `this page <https://help.ubuntu.com/community/DiskSpace>`_.
+
+For Dual-Boot
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+..  NOTE:: For some reason, they chose to use the conversion (1 GB = 1000 MB)
+    on the partition editor. Bear that in mind when viewing. We'll still work
+    with the proper (1 GB = 1024 MB) for our math, but the results will appear
+    to be off.
+
+If you're dual-booting, be very careful. Look for the section marked
+`free space`, and click the `+` button to create a new partition.
+
+We'll first set aside 50 GB for our system, so set the partition size to
+`51200` MB, `Primary` and `Beginning of this space`. Set `Use as` to `ext4`,
+and `Mount point` to `/`. Confirm.
+
+Next, we'll create the swap space, which is used as a sort of extension to
+our RAM memory. Click `free space` again and click `+`. Set the partition
+size equivalent to the amount of RAM you have (remember, 1 GB = 1024 MB).
+Select `End of this space` and set `Use as` to `swap area`. Confirm.
+
+Finally, we'll use te rest of the free space for our `/home` partition. Select
+`free space` again and click `+`. Leave the size at the default, and leave
+`Primary` and `Beginning of this space` selected. Set `Use as` to `ext4` and
+`Mount point` to `/home`. Confirm.
+
+..  IMPORTANT:: On the table, ensure that the checkmark under the `Format`
+    column is only checked on those three partitions you just made! **DO NOT
+    FORMAT ANY OTHER PARTITIONS!**
+
+Click `Install Now`, and then read and confirm the dialog boxes.
+
+During the Install
+-------------------------
+
+Your installation has started! While we wait, let's set a few options.
+
+If you have an internet connection (you should), you can enter your city
+in the box below the map. Then, click the option in the popup list. (If you
+have too much trouble with this, just click your time zone on the map and
+call it good.)
+
+Next, select your language and keyboard layout. Chances are, you can leave the
+defaults.
+
+Finally, create your login credentials. Enter your full name in the top box.
+Then, take this opportunity to think of a good name for your computer - you'll
+see that name every time you open the Terminal. This is also the name that
+will appear on local networks when you connect, so it's helpful to have a
+unique and identifiable name.
+
+Some computer names I've seen include `tardis`, `bagofholding`, `ratbox`
+(that one's mine), `cortex`, and `sunshine`. Just pick something that makes
+you happy.
+
+Third, pick a username. This is usually your first name, but it can be anything,
+so long as it is composed only of lowercase letters and numbers, and the first
+character is a lowercase letter.
+
+Finally, choose a password. If you ever lost this password, you could reset
+it with a little effort, but you really should pick one that is easy to
+remember. At the same time, you should choose a password that is hard to guess.
+(See "A Word About Passwords" below.)
+
+Once that's done, just wait for the install to finish. There are some
+interesting slides that will tell you more about Ubuntu Linux while you wait,
+but don't plan on staring at the screen the whole time. The install can take
+anywhere from 1-6 hours, depending on your internet connection speed.
+
+A Word About Passwords
+---------------------------------
+
+Passwords don't have to be hard to remember. First, here are a few rules:
+
+- **NEVER** use your name, or the name of a relative, friend, or pet.
+- Don't use any form of the phrases "password", "secret", "letmein", or
+  "iforgot" in the password. These are surprisingly common, and as such,
+  they're the first thing a cracker tries.
+- Use a mix of upper and lowercase letters, at least one number or symbol
+  (ideally at least one of each). This doesn't mean things have to be in
+  crazy or illogical positions. That said...
+- Length is the *real* key to a good password!
+- Real words *are* allowed! Passwords are cracked one character at a time,
+  so the dictionary and the rules of grammar actually don't help the bad guys.
+
+There are two easy (and fun) ways to make a good password that follows these
+rules:
+
+1) Think of your favorite song lyric, movie line, or poem. That whole thing
+without spaces is your password! Seriously.
+`Leanonmewhenyou'renotstrongI'llbeafriendI'llhelpyoucarryon!` is actually a
+solid password. It's long, and has a mix of uppercase and lowercase letters and
+symbols. Yet, it's easy to remember. You won't ever forget it!
+
+2) Pick 3-4 random words out of the dictionary, preferably ones of moderate
+length. You can choose ones that make you laugh, as they'll be easier to
+remember. Then, mix in the month and year you created this password, and at
+least one symbol. `01/17:ZealousJellyfishWrangler!` is a **very** strong
+password, and after you've typed it a couple of times, it's hard to forget.
+
+You can use `GRC Haystack <https://www.grc.com/haystack.htm>`_ and
+`How Secure Is My Password? <https://howsecureismypassword.net/>`_ to test out
+your password. Those sites are safe to enter your password on - they won't
+store anything.
+
+After The Install
+-----------------------------
+
+Once the installation is finished, it will prompt you to restart your computer.
+Click the `Restart Now` button. When prompted, remove your installation media
+(the DVD or USB) and press ENTER.
+
+Your computer will now restart. If it hangs in the process, go ahead and turn
+it off via the power button.
+
+When you start the computer up, you may need to tap a key to view the Boot Menu
+and select an operating system to boot to. This key is usually F11 or F12, but
+you can find it when you first turn on the computer and see the manufacturer
+logo.
+
+If there is only the option to boot to the hard drive or an external device,
+boot to the hard drive. You should be presented with an option to start
+your Linux operating system or Windows (usually "Windows Boot Manager").
+
+Once you've booted into Linux, continue to the next section of this tutorial.
