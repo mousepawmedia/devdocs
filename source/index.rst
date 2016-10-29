@@ -53,7 +53,7 @@ Indices and tables
 
 Feedback
 ===========================
-These standards are written and maintained by the
+This documentation is written and maintained by the
 MousePaw Games Standards Board. Feedback is welcome
 via email (developers@mousepawgames.com).
 
