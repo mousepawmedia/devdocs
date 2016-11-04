@@ -17,33 +17,14 @@ Our Development Documentation is not a replacement for any official
 documentation. Our focus here is to describe our particular instances
 and usages of our stack's technologies.
 
-Staff Network
-=======================
-
-..  toctree::
-    :maxdepth: 2
-
-Programming
-=======================
-
-..  toctree::
-    :maxdepth: 2
-
-Content Development
-=======================
-
-..  toctree::
-    :maxdepth: 2
-
-Linux Setup
-=======================
-
 ..  toctree::
     :maxdepth: 2
 
     setup/about
     setup/install
     setup/first_steps
+
+    serverconfig/config
 
 Indices and tables
 ==================
