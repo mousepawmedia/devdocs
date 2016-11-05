@@ -40,14 +40,51 @@ add it to FSTAB. In our case, the partition is `/dev/sda5`, although it is
 liable to change later when we've finished our setup, ensured everything is
 moved over, and could reformat to use the *entire* disk.
 
+We're also going to mount our backup drive.
+
+First, we get the info about the attached drives.
+
 ..  code-block:: bash
 
-    $ sudo mkdir /media/stash
+    # NOTE: The argument is lowercase "L", NOT the numeral one.
+    $ sudo fdisk -l
+
+This will show us the names, sizes, and types for the drives. The `Linux`
+type is generally `ext4`. We'll substitute the appropriate values in the
+commands below.
+
+..  code-block:: bash
+
+    $ sudo mkdir /mnt/stash
+    $ sudo mkdir /mnt/backup
+    $ sudo mount -t ext4 /dev/sda5 /mnt/stash
+    $ sudo mount -t ext4 /dev/sdc1 /mnt/backup
+
+Now navigate to `/mnt/stash` and `/mnt/backup`, confirming that each
+mounted correctly. If so, we can unmount and edit `fstab` so that the
+mounts will be performed at startup.
+
+..  code-block:: bash
+
+    $ sudo umount /mnt/stash
+    $ sudo umount /mnt/backup
     $ sudo vim /etc/fstab
 
-Add the following lines.::
+Add the following lines, substituting the values from the earlier `mount`
+commands as appropirate...::
 
-    /dev/sda5 /media/stash ext4 defaults 0 2
+    /dev/sda5 /mnt/stash ext4 defaults 0 2
+    /dev/sdc1 /mnt/backup ext4 defaults 0 2
+
+Save and close. Finally, run the following to remount using fstab. This
+command will automatically skip over any drives already mounted, such as
+your base file system, so it's safe to run.
+
+..  code-block:: bash
+
+    $ sudo mount -a
+
+Double check `/mnt/stash` and `/mnt/media` to ensure they mounted correctly.
 
 Logs and Scripts
 ===================================================
@@ -701,6 +738,7 @@ Now we'll get our certificates.
 
     $ sudo /opt/certbot/certbot-auto certonly -a webroot --webroot-path /var/www/html -d hawksnest.ddns.net
     $ sudo /opt/certbot/certbot-auto certonly -a webroot --webroot-path /var/www/html -d hawksnest.serveftp.com
+    $ sudo /opt/certbot/certbot-auto certonly -a webroot --webroot-path /var/www/html -d mousepawmedia.net -d nextcloud.mousepawmedia.net -d phabricator.mousepawmedia.net -d ehour.mousepawmedia.net -d jenkins.mousepawmedia.net -d secure.mousepawmedia.net -d files.mousepawmedia.net
 
 Of course, we would change the `hawksnest.ddns.net` part to match the domain
 name we're getting the certificate for.
@@ -713,8 +751,9 @@ the domain, of course).
 Next, we need to create symbolic links to the certificates so Apache can see
 them. We'll be `sudo`ing up to root after creating the directory.
 
-Note we're only doing this for the file serving certificates. We'll need to
-do something else for the main certificates (see `Post-Renew Script`).
+Note we're only doing this for the fallback DNs. We'll need to
+do something else for the main `mousepawmedia.net` certificate
+(see `Post-Renew Script`).
 
 ..  code-block:: bash
 
@@ -722,6 +761,10 @@ do something else for the main certificates (see `Post-Renew Script`).
     $ sudo su
     $ cd /etc/apache2/ssl
     $ mkdir /etc/apache2/ssl/filecert
+    $ ln -s /etc/letsencrypt/live/hawksnest.ddns.net/cert.pem hawksnest/cert.pem
+    $ ln -s /etc/letsencrypt/live/hawksnest.ddns.net/chain.pem hawksnest/chain.pem
+    $ ln -s /etc/letsencrypt/live/hawksnest.ddns.net/fullchain.pem hawksnest/fullchain.pem
+    $ ln -s /etc/letsencrypt/live/hawksnest.ddns.net/privkey.pem hawksnest/privkey.pem
     $ ln -s /etc/letsencrypt/live/hawksnest.serveftp.com/cert.pem filecert/cert.pem
     $ ln -s /etc/letsencrypt/live/hawksnest.serveftp.com/chain.pem filecert/chain.pem
     $ ln -s /etc/letsencrypt/live/hawksnest.serveftp.com/fullchain.pem filecert/fullchain.pem
@@ -749,27 +792,47 @@ Now we'll create a directory for the copied certs, and make the script file.
 
 ..  code-block:: bash
 
-    cd /etc/apache2/ssl
-    sudo mkdir hawksnest
-    cd hawksnest
-    sudo vim renewcert_post
+    $ cd /etc/apache2/ssl
+    $ sudo mkdir mousepawmedia.net
+    $ cd mousepawmedia.net
+    $ sudo vim renewcert_pre
 
-Put the following contents into that file.
+Put the following contents into that file. Comment out the lines regarding
+the sites you do not have. Be sure to uncomment them later!
+
+..  code-block:: bash
+
+    #!/bin/bash
+
+    a2dissite 000-redirect
+    a2dissite ehour
+    a2dissite jenkins
+    a2ensite 000-default
+    systemctl restart apache2
+
+Save and close. Now, let's create the post script.
+
+..  code-block:: bash
+
+    $ sudo vim renewcert_post
+
+Put the following contents into that file. Comment out the lines regarding
+the sites you do not have. Be sure to uncomment them later!
 
 ..  code-block:: bash
 
     #!/bin/bash
 
     # Work out of the Hawksnest SSL working directory.
-    cd /etc/apache2/ssl/hawksnest
+    cd /etc/apache2/ssl/mousepawmedia.net
 
     # Copy the certificates over and update their permissions.
-    cp /etc/letsencrypt/live/hawksnest.ddns.net/*.pem ./
+    cp /etc/letsencrypt/live/mousepawmedia.net/*.pem ./
     chgrp certs ./*.pem
     chmod u=rw,g=r,o= ./*.pem
 
     # Make sure this matches the password specified in JENKINS_ARG for HTTPS at /etc/default/jenkins
-    PASS=a674dRnZ15A6a4ByQ
+    PASS=thepassword
 
     # We must first remove the old keystore.
     rm ./*.pkcs12
@@ -783,18 +846,28 @@ Put the following contents into that file.
     chgrp certs ./*.pkcs12
     chgrp certs ./*.jks
 
+    # Restart critical services which use this.
+    a2dissite 000-default
+    a2ensite 000-redirect
+    a2ensite ehour
+    a2ensite jenkins
+    systemctl restart apache2
+    #systemctl restart jenkins
+    #systemctl restart tomcat
+
 Save and close. Change the script permissions so it can only be read, accessed,
 and run by its owner and group (both root).
 
 ..  code-block:: bash
 
+    sudo chmod u=rwx,g=rwx,o= renewcert_pre
     sudo chmod u=rwx,g=rwx,o= renewcert_post
 
 Finally, we'll test the configuration.
 
 ..  code-block:: bash
 
-    sudo /opt/certbot/certbot-auto renew --dry-run --post-hook "/etc/apache2/ssl/hawksnest/renewcert_post"
+    sudo /opt/certbot/certbot-auto renew --dry-run --pre-hook "/etc/apache2/ssl/mousepawmedia.net/renewcert_pre" --post-hook "/etc/apache2/ssl/mousepawmedia.net/renewcert_post"
 
 Scheduling Auto-Renewal
 ------------------------------------------
@@ -807,7 +880,7 @@ Now we need to schedule the autorenewal task.
 
 Add the following line to the end.::
 
-    42 11 * * * /opt/certbot/certbot-auto renew --post-hook "/etc/apache2/ssl/hawksnest/renewcert_post"
+    57 6 * * * /opt/certbot/certbot-auto renew --pre-hook "/etc/apache2/ssl/mousepawmedia.net/renewcert_pre" --post-hook "/etc/apache2/ssl/mousepawmedia.net/renewcert_post"
 
 This will run the renewal script once a day at 11:42am. (Let's Encrypt asks
 that a random time be used by each user, to spread out server load.)
@@ -986,7 +1059,7 @@ Find the connector for port="8080", and replace it with...::
            protocol="org.apache.coyote.http11.Http11NioProtocol"
            port="8441" maxThreads="200"
            scheme="https" secure="true" SSLEnabled="true"
-           keystoreFile="/etc/apache2/ssl/hawksnest/keys.jks" keystorePass="thepassword"
+           keystoreFile="/etc/apache2/ssl/mousepawmedia.net/keys.jks" keystorePass="thepassword"
            clientAuth="false" sslProtocol="TLS"/>
 
 Make sure the password matches the one specified in the `renewcert_post` script
@@ -1047,39 +1120,8 @@ want running. Also, we want to replace the landing page.
     mv webapps/docs webapps-disabled/
     mv webapps/examples webapps-disabled/
     mv webapps/ROOT webapps-disabled
-    mkdir webapps/ROOT
-    cd webapps/ROOT
-    cp -r /opt/tomcat/webapps-disabled/ROOT/WEB-INF ./
-    cp /opt/tomcat/webapps/ehour/favicon.ico ./
-    vim index.html
 
-In the file that opens up, insert the following code.
-
-..  code-block:: html
-
-    <?xml version="1.0" encoding="ISO-8859-1"?>
-    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-    <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-    <head>
-    <title>Apache Tomcat</title>
-    <link rel="shortcut icon" href="http://example.com/myicon.ico" />
-    </head>
-
-    <body>
-    <h1>These are not the droids you're looking for.</h1>
-    </body>
-    </html>
-
-Save and close.
-
-..  code-block:: bash
-
-    exit
-
-Navigate to `https:<serveraddress>:8441`. You'll see the message
-"These are not the droids you're looking for." This will be Tomcat's default
-message.
+We'll be putting eHour in place of the Tomcat root.
 
 Installing eHour
 ------------------------------------
@@ -1161,11 +1203,76 @@ web address is prettier.
 
 ..  code-block:: bash
 
-    sudo cp /home/hawksnest/IMPORTED/ehour-1.4.3.war /opt/tomcat/webapps/ehour.war
+    sudo cp /home/hawksnest/IMPORTED/ehour-1.4.3.war /opt/tomcat/webapps/ROOT.war
 
-Navigate to `http://<serveraddress>:8441/ehour` to test the installation.
+Navigate to `http://<serveraddress>:8441/` to test the installation.
 
-TODO
+Apache2 Proxy
+---------------------------------------
+
+Let's set up a nice little proxy, so we can access port 8441 via port 443 or
+port 80 on the eHour subdomain.
+
+..  code-block:: bash
+
+    sudo vim /etc/apache2/sites-available/ehour.conf
+
+Set the contents of that file to...
+
+..  code-block:: apache
+
+    <IfModule mod_ssl.c>
+        <VirtualHost *:443>
+            ServerName ehour.mousepawmedia.net
+            ServerAdmin hawksnest@mousepawgames.com
+
+            SSLProxyEngine on
+            ProxyPreserveHost On
+            ProxyPass         /  https://ehour.mousepawmedia.net:8441/
+            ProxyPassReverse  /  https://ehour.mousepawmedia.net:8441/
+            ProxyRequests     Off
+            AllowEncodedSlashes NoDecode
+
+            SSLEngine on
+            SSLCertificateFile  /etc/apache2/ssl/mousepawmedia.net/fullchain.pem
+            SSLCertificateKeyFile /etc/apache2/ssl/mousepawmedia.net/privkey.pem
+        </VirtualHost>
+
+        <VirtualHost *:80>
+            Servername ehour.mousepawmedia.net
+            ServerAdmin hawksnest@mousepawgames.com
+
+            ErrorLog ${APACHE_LOG_DIR}/error.log
+            CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+            RewriteEngine On
+            RewriteCond %{HTTPS} off
+            RewriteRule ^/(.*)$ https://ehour.mousepawmedia.net/$1
+        </VirtualHost>
+
+        <VirtualHost *:8441>
+            ServerName hawksnest.ddns.net
+            RedirectMatch ^/(.*)$ https://ehour.mousepawmedia.net/$1
+
+            SSLEngine on
+            SSLCertificateFile /etc/apache2/ssl/hawksnest/fullchain.pem
+            SSLCertificateKeyFile /etc/apache2/ssl/hawksnest/privkey.pem
+        </VirtualHost>
+    </IfModule>
+
+Save and close. Then, enable the needed mods and the site, and restart Apache2.
+
+..  code-block:: bash
+
+    $ sudo a2enmod proxy
+    $ sudo a2enmod proxy_http
+    $ sudo a2enmod ehour
+    $ sudo systemctl apache2 restart
+
+Test to ensure `http://ehour.<serveraddress>/` and
+`https://ehour.<serveraddress>/` work.
+
+..  IMPORTANT::
 
 Phabricator
 ===========================================
@@ -1294,9 +1401,9 @@ Copy and paste the following into that file.
 ..  code-block:: apache
 
     <IfModule mod_ssl.c>
-        <VirtualHost _default_:8446>
+        <VirtualHost *:443>
+                ServerName phabricator.mousepawmedia.net
                 ServerAdmin hawksnest@mousepawgames.com
-                ServerName hawksnest.ddns.net:8446
 
                 DocumentRoot /opt/phab/phabricator/webroot
 
@@ -1309,10 +1416,8 @@ Copy and paste the following into that file.
                 CustomLog ${APACHE_LOG_DIR}/access.log combined
 
                 SSLEngine on
-                #SSLCertificateFile     /etc/apache2/ssl/hawksnest/fullchain.pem
-                SSLCertificateFile      /etc/apache2/ssl/hawksnest/cert.pem
-                SSLCertificateKeyFile /etc/apache2/ssl/hawksnest/privkey.pem
-                SSLCertificateChainFile /etc/apache2/ssl/hawksnest/chain.pem
+                SSLCertificateFile     /etc/apache2/ssl/mousepawmedia.net/fullchain.pem
+                SSLCertificateKeyFile /etc/apache2/ssl/mousepawmedia.net/privkey.pem
 
                 <FilesMatch "\.(cgi|shtml|phtml|php)$">
                                 SSLOptions +StdEnvVars
@@ -1326,7 +1431,15 @@ Copy and paste the following into that file.
                                 downgrade-1.0 force-response-1.0
                 # MSIE 7 and newer should be able to use keepalive
                 BrowserMatch "MSIE [17-9]" ssl-unclean-shutdown
+        </VirtualHost>
 
+        <VirtualHost *:8446>
+            ServerName hawksnest.ddns.net
+            RedirectMatch ^/(.*)$ https://phabricator.mousepawmedia.net/$1
+
+            SSLEngine on
+            SSLCertificateFile /etc/apache2/ssl/hawksnest/fullchain.pem
+            SSLCertificateKeyFile /etc/apache2/ssl/hawksnest/privkey.pem
         </VirtualHost>
     </IfModule>
 
@@ -1440,14 +1553,48 @@ We can copy and tweak the configuration file we used for Phabricator in Apache2.
 
     $ cd /etc/apache2/sites-available
     $ sudo cp phab.conf phabfiles.conf
-    $ sudo vim phabfiles.conf
+    $ sudo vim phabfile.conf
 
-Change the following lines on the file...::
+Set the contents to the following...
 
-    ServerName hawksnest.serveftp.com:8446
-    SSLCertificateFile      /etc/apache2/ssl/filecert/cert.pem
-    SSLCertificateKeyFile /etc/apache2/ssl/filecert/privkey.pem
-    SSLCertificateChainFile /etc/apache2/ssl/filecert/chain.pem
+..  code-block:: apache
+
+    <IfModule mod_ssl.c>
+        <VirtualHost *:443>
+            ServerName files.mousepawmedia.net
+            ServerAdmin hawksnest@mousepawgames.com
+            #ServerName hawksnest.serveftp.com:8446
+
+            DocumentRoot /opt/phab/phabricator/webroot
+
+            RewriteEngine on
+            RewriteRule ^/rsrc/(.*)     -                       [L,QSA]
+            RewriteRule ^/favicon.ico   -                       [L,QSA]
+            RewriteRule ^(.*)$          /index.php?__path__=$1  [B,L,QSA]
+
+            ErrorLog ${APACHE_LOG_DIR}/error.log
+            CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+            SSLEngine on
+            SSLCertificateFile  /etc/apache2/ssl/mousepawmedia.net/fullchain.pem
+            SSLCertificateKeyFile /etc/apache2/ssl/mousepawmedia.net/privkey.pem
+
+            <FilesMatch "\.(cgi|shtml|phtml|php)$">
+                    SSLOptions +StdEnvVars
+            </FilesMatch>
+            <Directory /usr/lib/cgi-bin>
+                    SSLOptions +StdEnvVars
+            </Directory>
+
+            BrowserMatch "MSIE [2-6]" \
+                    nokeepalive ssl-unclean-shutdown \
+                    downgrade-1.0 force-response-1.0
+            # MSIE 7 and newer should be able to use keepalive
+            BrowserMatch "MSIE [17-9]" ssl-unclean-shutdown
+
+        </VirtualHost>
+    </IfModule>
+
 
 Save and close. Then, run...
 
@@ -1465,7 +1612,7 @@ Next, we'll configure Phabricator to use this domain name for file serving.
 ..  code-block:: bash
 
     $ cd /opt/phab/phabricator
-    $ ./bin/config set security.alternate-file-domain https://hawksnest.serveftp.com:8446/
+    $ ./bin/config set security.alternate-file-domain https://files.mousepawmedia.net/
 
 Set Up Phabricator Daemons
 -------------------------------------------------
@@ -1568,8 +1715,8 @@ The file should look like this...::
           "type": "client",
           "port": 22280,
           "listen": "0.0.0.0",
-          "ssl.key": "/etc/apache2/ssl/hawksnest/privkey.pem",
-          "ssl.cert": "/etc/apache2/ssl/hawksnest/fullchain.pem",
+          "ssl.key": "/etc/apache2/ssl/mousepawmedia.net/privkey.pem",
+          "ssl.cert": "/etc/apache2/ssl/mousepawmedia.net/fullchain.pem",
           "ssl.chain": null
         },
         {
@@ -1607,7 +1754,7 @@ Config→All Settings (`https://<serveraddress>:8446/config/all`). Look for
     [
       {
         "type": "client",
-        "host": "hawksnest.ddns.net",
+        "host": "phabricator.mousepawmedia.net",
         "port": 22280,
         "protocol": "https"
       },
@@ -1620,7 +1767,7 @@ Config→All Settings (`https://<serveraddress>:8446/config/all`). Look for
     ]
 
 Navigate to the Notification Servers section of Config
-(`https://<serveraddress>:8446/config/cluster/notifications/`) to ensure
+(`https://<serveraddress>/config/cluster/notifications/`) to ensure
 the system is running correctly.
 
 If all's well, let's add the Aphlict startup to our PHD start script.
@@ -1792,6 +1939,24 @@ On that file, add the line...::
 
 Save and close.
 
+Migrating Domain Names
+-----------------------------------------------
+
+..  WARNING:: I did this after the initial setup of Phabricator using the old
+    domain names. If you're recreating again, DO NOT USE THIS unless you're
+    actually changing domain names, and consider setting up with the old
+    domain names first before following this.
+
+..  code-block:: bash
+
+    $ cd /opt/phab/phabricator/bin
+    $ ./config set phabricator.allowed-uris '["https://hawksnest.ddns.net:8446/"]'
+    $ ./config set phabricator.base-uri https://phabricator.mousepawmedia.net/
+
+Then, revisit the other steps to ensure everything's working on the correct
+domain names.
+
+
 Jenkins
 =================================================
 
@@ -1835,7 +2000,7 @@ We copied the old `$JENKINS_HOME` folder to the new server, via...
 ..  code-block::
 
     $ sudo mv /var/lib/jenkins /var/lib/jenkins_new
-    $ sudo rsync -av /media/stash/var/lib/jenkins/ /var/lib/jenkins
+    $ sudo rsync -av /mnt/stash/var/lib/jenkins/ /var/lib/jenkins
     $ sudo chown -R jenkins /var/lib/jenkins
     $ sudo chgrp -R jenkins /var/lib/jenkins
 
@@ -1848,11 +2013,11 @@ We'll put the VirtualBox in `/opt`.
 
     $ sudo mkdir /opt/virtualbox
     $ cd /opt/virtualbox
-    $ sudo cp -r /media/stash/home/hawksnest/VirtualBox\ VMs/LittleXenial ./LittleXenial
+    $ sudo cp -r /mnt/stash/home/hawksnest/VirtualBox\ VMs/LittleXenial ./LittleXenial
     $ sudo chown hawksnest LittleXenial
     $ sudo chgrp hawksnest LittleXenial
     $ cd LittleXenial
-    $ cp /media/stash/home/hawksnest/LittleXenial/LittleXenial.vdi ./
+    $ cp /mnt/stash/home/hawksnest/LittleXenial/LittleXenial.vdi ./
 
 That last copy will take a while, so sit back and relax.
 
@@ -1910,9 +2075,9 @@ at the bottom of the file, replacing the last line.::
     # Old HTTP mode (turned off)
     #JENKINS_ARGS="--webroot=/var/cache/$NAME/war --httpPort=$HTTP_PORT"
 
-    # HTTPS mode. Make sure the password matches the PASS arg defined in /etc/apache2/ssl/hawksnest/renewcert_post
+    # HTTPS mode. Make sure the password matches the PASS arg defined in /etc/apache2/ssl/mousepawmedia.net/renewcert_post
     # We also open port 8459 for HTTP, to allow Phabricator in. Have everyone use 8449 instead.
-    JENKINS_ARGS="--webroot=/var/cache/$NAME/war --httpsPort=$HTTP_PORT --httpPort=8459 --httpsKeyStore=/etc/apache2/ssl/hawksnest/keys.jks --httpsKeyStorePassword=a674dRnZ15A6a4ByQ"
+    JENKINS_ARGS="--webroot=/var/cache/$NAME/war --httpsPort=$HTTP_PORT --httpPort=8459 --httpsKeyStore=/etc/apache2/ssl/mousepawmedia.net/keys.jks --httpsKeyStorePassword=a674dRnZ15A6a4ByQ"
 
 ..  NOTE:: The password specified on the last line, by the
     `--httpsKeyStorePassword=`, must MATCH the password supplied when we
@@ -1928,6 +2093,68 @@ Finally, open the port for Jenkins...
 Navigate to the Jenkins HTTPS URL on the server (`https://<serveraddress>:8449/`)
 to test it out. Also, check the HTTP version that Phabricator uses
 (`http://<serveraddress>:8459/`).
+
+Apache2 Proxy
+---------------------------------------------------
+
+While we won't make any sort of effort to prevent access of Jenkins through
+the usual ports (8449 and 8459), it would be helpful to redirect requests sent
+to 80 and 443 for the Jenkins subdomain via a proxy. Let's set this up.
+
+..  code-block:: bash
+
+    $ sudo vim /etc/apache2/sites-available/jenkins.conf
+
+Set the contents of that file to...
+
+..  code-block:: apache
+
+    <IfModule mod_ssl.c>
+        <VirtualHost *:443>
+            ServerName jenkins.mousepawmedia.net
+            ServerAdmin hawksnest@mousepawgames.com
+
+            SSLProxyEngine on
+            ProxyPreserveHost On
+            ProxyPass         /  https://jenkins.mousepawmedia.net:8449/
+            ProxyPassReverse  /  https://jenkins.mousepawmedia.net:8449/
+            ProxyRequests     Off
+            AllowEncodedSlashes NoDecode
+
+            SSLEngine on
+            SSLCertificateFile  /etc/apache2/ssl/mousepawmedia.net/fullchain.pem
+            SSLCertificateKeyFile /etc/apache2/ssl/mousepawmedia.net/privkey.pem
+        </VirtualHost>
+
+        <VirtualHost *:80>
+            Servername jenkins.mousepawmedia.net
+            ServerAdmin hawksnest@mousepawgames.com
+
+            ErrorLog ${APACHE_LOG_DIR}/error.log
+            CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+            RewriteEngine On
+            RewriteCond %{HTTPS} off
+            RewriteRule ^/(.*)$ https://jenkins.mousepawmedia.net/$1
+        </VirtualHost>
+    </IfModule>
+
+Save and close. Make sure the needed modules are enabled, enable the site,
+and restart Apache2.
+
+..  code-block:: bash
+
+    $ sudo a2enmod proxy
+    $ sudo a2enmod proxy_http
+    $ sudo a2enmod jenkins
+    $ sudo systemctl apache2 restart
+
+Navigate to `http://jenkins.<serveraddress>/` and
+`https://jenkins.<serveraddress>/`. It should quietly proxy over to the HTTPS
+version of Jenkins (proxy 8449).
+
+Test to ensure `http://jenkins.<serveraddress>:8459/` still works over HTTP,
+without redirecting.
 
 HTML Landing Page
 ===================================================
@@ -1947,10 +2174,10 @@ from the old server, we'll do that here.
 
 ..  code-block:: bash
 
-    $ cp -r /media/stash/home/hawksnest/HTML/common/ ./
-    $ cp -r /media/stash/home/hawksnest/HTML/docs/ ./
-    $ cp -r /media/stash/home/hawksnest/HTML/landing/ ./
-    $ cp -r /media/stash/home/hawksnest/HTML/protected/ ./
+    $ cp -r /mnt/stash/home/hawksnest/HTML/common/ ./
+    $ cp -r /mnt/stash/home/hawksnest/HTML/docs/ ./
+    $ cp -r /mnt/stash/home/hawksnest/HTML/landing/ ./
+    $ cp -r /mnt/stash/home/hawksnest/HTML/protected/ ./
     $ sudo chown -R hawksnest /opt/html
     $ sudo chgrp -R www-data /opt/html
     $ sudo chmod -R u=rwx,g=rwx,o=rx /opt/html
@@ -2005,39 +2232,44 @@ Now we need to create two new sites in Apache2.
 
 ..  code-block:: bash
 
-    $ sudo vim /etc/apache2/sites-available/landing.conf
+    $ sudo vim /etc/apache2/sites-available/000-landing.conf
 
 This file should look like this...::
 
     <IfModule mod_ssl.c>
-    <VirtualHost _default_:443>
-        #ServerName hawksnest.ddns.net:443
+        <VirtualHost *:443>
+            ServerName mousepawmedia.net
 
-        ServerAdmin hawksnest@mousepawgames.com
-        DocumentRoot /opt/html/landing
+            ServerAdmin hawksnest@mousepawgames.com
+            DocumentRoot /opt/html/landing
 
-        ErrorLog ${APACHE_LOG_DIR}/error.log
-        CustomLog ${APACHE_LOG_DIR}/access.log combined
+            ErrorLog ${APACHE_LOG_DIR}/error.log
+            CustomLog ${APACHE_LOG_DIR}/access.log combined
 
-        SSLEngine on
-        #SSLCertificateFile     /etc/apache2/ssl/hawksnest/fullchain.pem
-        SSLCertificateFile      /etc/apache2/ssl/hawksnest/cert.pem
-        SSLCertificateKeyFile /etc/apache2/ssl/hawksnest/privkey.pem
-        SSLCertificateChainFile /etc/apache2/ssl/hawksnest/chain.pem
+            SSLEngine on
+            SSLCertificateFile     /etc/apache2/ssl/mousepawmedia.net/fullchain.pem
+            SSLCertificateKeyFile /etc/apache2/ssl/mousepawmedia.net/privkey.pem
 
-        <FilesMatch "\.(cgi|shtml|phtml|php)$">
-            SSLOptions +StdEnvVars
-        </FilesMatch>
-        <Directory /usr/lib/cgi-bin>
-            SSLOptions +StdEnvVars
-        </Directory>
+            <FilesMatch "\.(cgi|shtml|phtml|php)$">
+                SSLOptions +StdEnvVars
+            </FilesMatch>
+            <Directory /usr/lib/cgi-bin>
+                SSLOptions +StdEnvVars
+            </Directory>
 
-        BrowserMatch "MSIE [2-6]" \
-            nokeepalive ssl-unclean-shutdown \
-            downgrade-1.0 force-response-1.0
-        # MSIE 7 and newer should be able to use keepalive
-        BrowserMatch "MSIE [17-9]" ssl-unclean-shutdown
-    </VirtualHost>
+            BrowserMatch "MSIE [2-6]" \
+                nokeepalive ssl-unclean-shutdown \
+                downgrade-1.0 force-response-1.0
+            # MSIE 7 and newer should be able to use keepalive
+            BrowserMatch "MSIE [17-9]" ssl-unclean-shutdown
+        </VirtualHost>
+
+        <VirtualHost *:443>
+            ServerName hawksnest.ddns.net
+            RedirectMatch ^/(.*)$ https://mousepawmedia.net/$1
+        </VirtualHost>
+    </IfModule>
+
 
 Save and close. Open up the next.
 
@@ -2048,37 +2280,47 @@ Save and close. Open up the next.
 This file should look like this...::
 
     <IfModule mod_ssl.c>
-        <VirtualHost _default_:8442>
-                ServerAdmin hawksnest@mousepawgames.com
-                ServerName hawksnest.ddns.net:8442
+        <VirtualHost *:443>
+            ServerName secure.mousepawmedia.net
+            ServerAdmin hawksnest@mousepawgames.com
 
-                DocumentRoot /opt/html/protected
+            DocumentRoot /opt/html/protected
 
-        # We validate against our LDAP server.
-        <Location "/">
+            # We validate against our LDAP server.
+            <Location "/">
                 AllowOverride AuthConfig
                 AuthType Basic
                 AuthBasicProvider ldap
                 AuthName "Restricted Resource"
                 AuthLDAPURL "ldap://localhost:389/ou=Users, dc=ldap, dc=mousepawmedia, dc=net"
                 Require valid-user
-        </Location>
+            </Location>
 
-                ErrorLog ${APACHE_LOG_DIR}/error.log
-                CustomLog ${APACHE_LOG_DIR}/access.log combined
+            ErrorLog ${APACHE_LOG_DIR}/error.log
+            CustomLog ${APACHE_LOG_DIR}/access.log combined
 
-                SSLEngine on
+            SSLEngine on
 
-                #SSLCertificateFile     /etc/apache2/ssl/hawksnest/cert.pem
-                SSLCertificateFile      /etc/apache2/ssl/hawksnest/fullchain.pem
-                SSLCertificateKeyFile /etc/apache2/ssl/hawksnest/privkey.pem
-                #SSLCertificateChainFile /etc/apache2/ssl/hawksnest/chain.pem
+            #SSLCertificateFile     /etc/apache2/ssl/hawksnest/cert.pem
+            SSLCertificateFile      /etc/apache2/ssl/hawksnest/fullchain.pem
+            SSLCertificateKeyFile /etc/apache2/ssl/hawksnest/privkey.pem
+            #SSLCertificateChainFile /etc/apache2/ssl/hawksnest/chain.pem
 
-                BrowserMatch "MSIE [2-6]" \
-                                nokeepalive ssl-unclean-shutdown \
-                                downgrade-1.0 force-response-1.0
-                # MSIE 7 and newer should be able to use keepalive
-                BrowserMatch "MSIE [17-9]" ssl-unclean-shutdown
+            BrowserMatch "MSIE [2-6]" \
+                            nokeepalive ssl-unclean-shutdown \
+                            downgrade-1.0 force-response-1.0
+            # MSIE 7 and newer should be able to use keepalive
+            BrowserMatch "MSIE [17-9]" ssl-unclean-shutdown
+        </VirtualHost>
+
+        <VirtualHost *:8442>
+            ServerName hawksnest.ddns.net
+
+            SSLEngine on
+            SSLCertificateFile /etc/apache2/ssl/hawksnest/fullchain.pem
+            SSLCertificateKeyFile /etc/apache2/ssl/hawksnest/privkey.pem
+
+            RedirectMatch ^/(.*)$ https://secure.mousepawmedia.net/$1
         </VirtualHost>
     </IfModule>
 
@@ -2088,8 +2330,8 @@ Now we enable both sites, disable the defaults, and restart Apache2.
 
 ..  code-block:: bash
 
-    $ sudo a2dissite 000-default.conf
-    $ sudo a2dissite default-ssl.conf
+    $ sudo a2dissite 000-default
+    $ sudo a2dissite default-ssl
     $ sudo a2ensite landing
     $ sudo a2ensite protected
     $ sudo a2enmod ldap
@@ -2097,7 +2339,7 @@ Now we enable both sites, disable the defaults, and restart Apache2.
     $ sudo ufw allow 8442
     $ sudo systemctl restart apache2
 
-Navigate to `http://<serveraddress>` and `https://<serveraddress>:8442` to test
+Navigate to `http://<serveraddress>` and `https://secure.<serveraddress>` to test
 the `landing` and `protected` sites respectively.
 
 Port Forward 80 to 443
@@ -2107,13 +2349,13 @@ With that set up, we want to redirect port 80 to port 443.
 
 ..  code-block:: bash
 
-    $ sudo vim /etc/apache2/sites-available/redirect80.conf
+    $ sudo vim /etc/apache2/sites-available/000-redirect.conf
 
 Set the contents of that file to...
 
 ..  code-block:: apache
 
-    <VirtualHost _default_:80>
+    <VirtualHost *:80>
         RewriteEngine On
         RewriteCond %{HTTPS} off
         RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI}
@@ -2124,7 +2366,7 @@ restart Apache2.
 
 ..  code-block:: bash
 
-    $ sudo a2ensite redirect80.conf
+    $ sudo a2ensite 000-redirect
     $ sudo a2enmod rewrite
     $ sudo systemctl restart apache2
 
@@ -2132,11 +2374,16 @@ Navigating to `http://<serveraddress>` should now redirect properly to
 Navigate to `https://<serveraddress>`. The same will apply for any subdirectory
 thereof, such as `http://<serveraddress>/docs`.
 
-ownCloud
-=================================
+..  NOTE:: Apache2 sites are loaded in alphabetical order. Addresses and ports
+    are first come, first served, so the first site that defines on a port
+    gets all addresses on that port, unless something else snatches away
+    a specific address.
+
+NextCloud
+===========================
 
 Installation
-------------------------------------
+----------------------------
 
 Let's install the other PHP packages we need for this. Most of these are
 probably already installed, but we're putting them here to be certain.
@@ -2145,161 +2392,184 @@ probably already installed, but we're putting them here to be certain.
 
     $ sudo apt install php5.6-bz2 php5.6-intl php5.6-xml php5.6-zip php5.6-curl php5.6-gd php-imagick php5.6-mbstring php5.6-ldap
 
-Now we can install ownCloud itself.
+Now we can install NextCloud itself.
 
 ..  code-block:: bash
 
     $ cd /tmp
-    $ sudo curl https://download.owncloud.org/download/repositories/stable/Ubuntu_16.04/Release.key | sudo apt-key add -
-    $ echo 'deb https://download.owncloud.org/download/repositories/stable/Ubuntu_16.04/ /' | sudo tee /etc/apt/sources.list.d/owncloud.list
-    $ sudo apt update
-    $ sudo apt install owncloud
+    $ curl -LO https://download.nextcloud.com/server/releases/nextcloud-10.0.1.tar.bz2
+    $ curl -LO https://download.nextcloud.com/server/releases/nextcloud-10.0.1.tar.bz2.sha256
+    $ shasum -a 256 -c nextcloud-10.0.1.tar.bz2.sha256 < nextcloud-10.0.1.tar.bz2
 
-Database Setup
--------------------------------------
-
-We need to create an `owncloud` database and an `owncloud` user in MySQL.
-This can be done through PHPmyadmin.
-
-Data Folder Setup
---------------------------------------
-
-We'll use `/opt/owncloud/data` for the data folder, for consistency with
-the rest of our install.
+Ensure that last command says "OK" before continuing, as that confirms the
+tarball hasn't been tampered with or spoofed.
 
 ..  code-block:: bash
 
-    $ sudo mkdir /opt/owncloud
-    $ sudo mkdir /opt/owncloud/data
-    $ sudo chown -R hawksnest /opt/owncloud
-    $ sudo chgrp -R www-data /opt/owncloud
-    $ sudo chmod -R u=rwx,g=rwx,o= /opt/owncloud
+    $ rm nextcloud-10.0.1.tar.bz2.sha256
+    $ sudo tar -C /opt -xvjf /tmp/nextcloud-10.0.1.tar.bz2
+    $ vim /tmp/nextcloud.sh
 
-Apache Configuration
---------------------------------------
-
-We'll also move this from the default port 80 to its own HTTPS port.
+Set the contents of that file to...
 
 ..  code-block:: bash
 
-    $ sudo vim /etc/apache2/conf-available/owncloud.conf
+    ocpath='/opt/nextcloud'
+    htuser='www-data'
+    htgroup='www-data'
+    rootuser='root'
 
-Change the file to the following...
+    printf "Creating possible missing Directories\n"
+    mkdir -p $ocpath/data
+    mkdir -p $ocpath/assets
+    mkdir -p $ocpath/updater
+
+    printf "chmod Files and Directories\n"
+    find ${ocpath}/ -type f -print0 | xargs -0 chmod 0640
+    find ${ocpath}/ -type d -print0 | xargs -0 chmod 0750
+    chmod 755 ${ocpath}
+
+    printf "chown Directories\n"
+    chown -R ${rootuser}:${htgroup} ${ocpath}/
+    chown -R ${htuser}:${htgroup} ${ocpath}/apps/
+    chown -R ${htuser}:${htgroup} ${ocpath}/assets/
+    chown -R ${htuser}:${htgroup} ${ocpath}/config/
+    chown -R ${htuser}:${htgroup} ${ocpath}/data/
+    chown -R ${htuser}:${htgroup} ${ocpath}/themes/
+    chown -R ${htuser}:${htgroup} ${ocpath}/updater/
+
+    chmod +x ${ocpath}/occ
+
+    printf "chmod/chown .htaccess\n"
+    if [ -f ${ocpath}/.htaccess ]
+    then
+    chmod 0644 ${ocpath}/.htaccess
+    chown ${rootuser}:${htgroup} ${ocpath}/.htaccess
+    fi
+    if [ -f ${ocpath}/data/.htaccess ]
+    then
+    chmod 0644 ${ocpath}/data/.htaccess
+    chown ${rootuser}:${htgroup} ${ocpath}/data/.htaccess
+    fi
+
+Save and close, and then run the file.
+
+..  code-block:: bash
+
+    $ sudo bash /tmp/nextcloud.sh
+
+After that finishes, we can start configuring Apache2.
+
+Apache2 Configuration
+----------------------------
+
+Let's create an Apache2 site configuration for Nextcloud.
+
+..  code-block:: bash
+
+    $ sudo vim /etc/apache2/sites-available/nextcloud.conf
+
+Set the contents to...
 
 ..  code-block:: apache
 
     <IfModule mod_ssl.c>
-        <VirtualHost _default_:8443>
-        DocumentRoot /var/www/owncloud
+        <VirtualHost *:443>
+            ServerName nextcloud.mousepawmedia.net
+            DocumentRoot /opt/nextcloud
 
-        SSLEngine on
-        #SSLCertificateFile     /etc/apache2/ssl/hawksnest/fullchain.pem
-        SSLCertificateFile      /etc/apache2/ssl/hawksnest/cert.pem
-        SSLCertificateKeyFile /etc/apache2/ssl/hawksnest/privkey.pem
-        SSLCertificateChainFile /etc/apache2/ssl/hawksnest/chain.pem
+            SSLEngine on
+            SSLCertificateFile     /etc/apache2/ssl/mousepawmedia.net/fullchain.pem
+            SSLCertificateKeyFile /etc/apache2/ssl/mousepawmedia.net/privkey.pem
 
-        ErrorLog ${APACHE_LOG_DIR}/error.log
-        CustomLog ${APACHE_LOG_DIR}/access.log combined
+            ErrorLog ${APACHE_LOG_DIR}/error.log
+            CustomLog ${APACHE_LOG_DIR}/access.log combined
 
-        <Directory> "/var/www/owncloud">
-            Options +FollowSymLinks
-            AllowOverride All
+            <Directory "/opt/nextcloud">
+                Options +FollowSymLinks
+                AllowOverride All
 
-            <IfModule mod_dave.c>
-                Dav off
-            </IfModule>
+                <IfModule mod_dave.c>
+                      Dav off
+                </IfModule>
 
-            SetEnv HOME /var/www/owncloud
-            SetEnv HTTP_HOME /var/www/owncloud
-        </Directory>
+                SetEnv HOME /opt/nextcloud
+                SetEnv HTTP_HOME /opt/nextcloud
+            </Directory>
 
-        <Directory "/opt/owncloud/data">
-            # just in case if .htaccess gets disabled
-            Require all denied
-        </Directory>
-
-        BrowserMatch "MSIE [2-6]" \
-          nokeepalive ssl-unclean-shutdown \
-          downgrade-1.0 force-response-1.0
-        # MSIE 7 and newer should be able to use keepalive
-        BrowserMatch "MSIE [17-9]" ssl-unclean-shutdown
+            BrowserMatch "MSIE [2-6]" \
+              nokeepalive ssl-unclean-shutdown \
+              downgrade-1.0 force-response-1.0
+            # MSIE 7 and newer should be able to use keepalive
+            BrowserMatch "MSIE [17-9]" ssl-unclean-shutdown
         </VirtualHost>
     </IfModule>
 
-Save and close.
-
-We also need to open up the needed port.
-
-..  code-block:: bash
-
-    $ sudo vim /etc/apache2/ports.conf
-
-Edit the file to add `8443` to the lists.
+Save and close. Now, we need to also allow access to the Nextcloud directory
+in Apache2's core directory.
 
 ..  code-block:: bash
 
-    Listen 80
+    $ sudo vim /etc/apache2/apache2.conf
 
-    <IfModule ssl_module>
-        Listen 443
-        Listen 8442
-        Listen 8443
-        Listen 8446
-    </IfModule>
+Add the following below the other `<Directory>` entries...
 
-    <IfModule mod_gnutls.c>
-        Listen 443
-        Listen 8442
-        Listen 8443
-        Listen 8446
-    </IfModule>
+..  code-block:: apache
 
-Save and close. Last, we'll open the port in the firewall, enable a needed
-module, and restart Apache2.
+    <Directory "/opt/nextcloud">
+        Options Indexes FollowSymLinks
+        Require all granted
+    </Directory>
+
+Then, enable the site and restart Apache2.
 
 ..  code-block:: bash
 
-    $ sudo ufw allow 8443
+    $ sudo a2ensite nextcloud
     $ sudo systemctl restart apache2
-
-Go to `https://<serveraddress>:8443/` to ensure this works.
 
 ..  WARNING: We are intentionally ignoring the recommendation to enable
     the Headers mod. At this time, doing so forces use of Jenkins over HTTPS,
     which prevents Phabricator from interfacing with it.
 
-Configuring Memory Caching
------------------------------
+Database Setup
+-------------------------------------
 
-To improve performance, we'll enable memory caching. We are using APCu (since
-we're using PHP 5.6), so we simply need to enable this for ownCloud.
+We need to create a `nextcloud` database and a `nextcloud` user in MySQL.
+This can be done through PHPmyadmin.
 
-..  code-block:: bash
-
-    $ sudo vim /var/www/owncloud/config/config.php
-
-Add the following line before the end...::
-
-    'memcache.local' => '\OC\Memcache\APCu',
-
-Save and close, and then restart Apache2.
-
-ownCloud Configuration
+nextCloud Configuration
 ------------------------------
 
-On the owncloud page, specify an admin account.
+On the nextcloud page, specify an admin account.
 
-Click `Storage and Database`, set the Data folder to `/opt/owncloud/data`.
+Click `Storage and Database`, set the Data folder to `/opt/nextcloud/data`.
 Select `MySQL` for the database, and provide the database user, password,
 and database name. The fourth field should be `localhost`.
 
 Click `Finish setup`.
 
 ..  NOTE:: If you have problems logging into the database on this screen,
-    check PHPmyadmin → `owncloud` (database) → Privileges. The `owncloud`
+    check PHPmyadmin → `nextcloud` (database) → Privileges. The `nextcloud`
     user should be listed, with `Grant Yes`.
 
-`SOURCE <https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-owncloud-on-ubuntu-16-04>`_
+`SOURCE <https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-nextcloud-on-ubuntu-16-04>`_
+
+Configuring Memory Caching
+-----------------------------
+
+To improve performance, we'll enable memory caching. We are using APCu (since
+we're using PHP 5.6), so we simply need to enable this for NextCloud.
+
+..  code-block:: bash
+
+    $ sudo vim /opt/nextcloud/config/config.php
+
+Add the following line before the end...::
+
+    'memcache.local' => '\OC\Memcache\APCu',
+
+Save and close, and then restart Apache2.
 
 Set Up Cronjob
 ----------------------------
@@ -2312,18 +2582,18 @@ It is recommended to use Cron for background tasks. We will set this up now.
 
 Add the following line...::
 
-    */15  *  *  *  * php -f /var/www/owncloud/cron.php
+    */15  *  *  *  * php -f /opt/nextcloud/cron.php
 
 Save and close.
 
-Finally, in the ownCloud Admin pane, go to `Cron` and select the `Cron` option.
+Finally, in the NextCloud Admin pane, go to `Cron` and select the `Cron` option.
 
-`SOURCE <https://doc.owncloud.org/server/9.1/admin_manual/configuration_server/background_jobs_configuration.html>`_
+`SOURCE <https://docs.nextcloud.com/server/10/admin_manual/configuration_server/background_jobs_configuration.html>`_
 
 LDAP Authentication
 --------------------------------
 
-In OwnCloud, go to `Apps` and enable LDAP. Then, go to `Admin` and `LDAP`.
+In NextCloud, go to `Apps` and enable LDAP. Then, go to `Admin` and `LDAP`.
 
 Set the following options:
 
@@ -2355,4 +2625,113 @@ The settings are automatically saved. Log in as an LDAP user to test.
 
 ..  TODO:: Set up LDAP Avatar Integration.
 
-`SOURCE <https://doc.owncloud.org/server/9.1/admin_manual/configuration_user/user_auth_ldap.html>`_
+`SOURCE <https://docs.nextcloud.com/server/9/admin_manual/configuration_user/user_auth_ldap.html>`_
+
+Backups
+======================================
+
+With everything set up, we now need to configure regular backups to our
+external drive `/mnt/backup`.
+
+..  NOTE:: The way we have configured everything, if this drive is absent
+    for any reason, the system will refuse to boot until it is either attached
+    or removed from fstab.
+
+First, we'll install the programs we'll be using.
+
+..  code-block:: bash
+
+    $ sudo apt install duplicity automysqlbackup
+
+Configuring MySQL Backups
+---------------------------------------
+
+First, we need a place for our MySQL backups.
+
+..  code-block:: bash
+
+    $ cd /mnt/backup
+    $ sudo mkdir sqlbackup
+    $ sudo chown root sqlbackup
+    $ sudo chgrp root sqlbackup
+    $ sudo chmod 0600 sqlbackup
+
+Now we need to adjust the settings for `automysqlbackup`.
+
+..  code-block:: bash
+
+    $ sudo vim /etc/default/automysqlbackup
+
+Change the following values...::
+
+    BACKUPDIR="/mnt/backup/sqlbackup"
+    DOWEEKLY=4
+    PREBACKUP="/opt/scripts/root-scripts/takedown"
+    POSTBACKUP="/opt/scripts/root-scripts/startup"
+
+This will store our backups on the external drive, and perform weekly backups
+on THURSDAY (4). Save and close.
+
+Obviously, those scripts don't yet exist. We'll create them now.
+
+..  code-block:: bash
+
+    $ sudo vim /opt/scripts/root_scripts/takedown
+
+This script will shut off everything.
+
+..  code-block:: bash
+
+    #!/bin/bash
+    /opt/phab/phabricator/bin/phd stop --force
+    /opt/phab/phabricator/bin/aphlict stop
+    systemctl stop jenkins
+    systemctl stop apache2
+
+Save and close, and then craete the next file.
+
+..  code-block:: bash
+
+    $ sudo vim /opt/scripts/root_scripts/startup
+
+This script will start up everything that `takedown` shut off.
+
+..  code-block:: bash
+
+    #!/bin/bash
+    systemctl apache2 start
+    systemctl jenkins start
+    /opt/scripts/phab/phd_start
+
+Save and close. Now, modify permissions on those scripts.
+
+..  code-block:: bash
+
+    $ sudo chmod u=rwx,g=rx,o=r takedown
+    $ sudo chmod u=rwx,g=rx,o=r startup
+
+Finally, we'll add the backup process to our cronjob.
+
+..  code-block:: bash
+
+    $ sudo crontab -e
+
+We'll add the following line...::
+
+    45 6 * * * /usr/sbin/automysqlbackup
+
+This will run the backup every 6:35am. Save and close.
+
+..  NOTE:: Make sure the server is set to auto-boot at 6:30am.
+
+We can now test the configuration. Note that this may take a few minutes.
+
+..  code-block:: bash
+
+    $ sudo automysqlbackup
+
+As `root`, navigate to `/mnt/backup/sqlbackup` to verify that the backup
+completed (it's probably in `daily`).
+
+Configuring Duplicity
+--------------------------------
