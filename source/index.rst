@@ -17,14 +17,27 @@ Our Development Documentation is not a replacement for any official
 documentation. Our focus here is to describe our particular instances
 and usages of our stack's technologies.
 
+Development Tools
+---------------------------
+
+..  toctree::
+    :maxdepth: 2
+
+    tools/irc
+    tools/gitarc
+    tools/cpp
+    tools/python
+    tools/sphinx
+
+Ubuntu
+--------------------------
+
 ..  toctree::
     :maxdepth: 2
 
     setup/about
     setup/install
     setup/first_steps
-
-    serverconfig/config
 
 Indices and tables
 ==================

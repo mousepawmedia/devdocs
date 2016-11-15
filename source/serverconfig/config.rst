@@ -106,6 +106,47 @@ Let's also define a folder for root scripts.
     $ sudo chgrp root /opt/scripts
     $ sudo chmod u=rwx,g=rwx,o=rx /opt/scripts
 
+Automatic Updates
+===============================
+
+We need to install a couple of packages for managing updates automatically.
+
+..  code-block:: bash
+
+    $ sudo apt install unattended-upgrades apticron
+    $ sudo vim /etc/apt/apt.conf.d/50unattended-upgrades
+
+By default, only the system and security updates will be automatically
+installed. We can uncomment additional changes here as well.
+
+..  IMPORTANT:: Those are variables in the file. Don't hard-code the
+    distro_id and distro_codename.
+
+Once you're happy with that file, save and close. Next, we'll configure
+the schedule.
+
+..  code-block:: bash
+
+    $ sudo vim /etc/apt/apt.conf.d/10periodic
+
+Set the contents of that file...::
+
+    APT::Periodic::Update-Package-Lists "1";
+    APT::Periodic::Download-Upgradeable-Packages "1";
+    APT::Periodic::AutocleanInterval "7";
+    APT::Periodic::Unattended-Upgrade "1";
+
+Save and close. Now our system will automatically update and install the
+types of packages designated in the other file.
+
+Finally, let's configure apticon to notify us if something goes wrong.
+
+..  code-block:: bash
+
+    $ sudo vim /etc/apticron/apticron.conf
+
+Set `EMAIL` to `"hawksnest@localhost"`. Save and close.
+
 LAMP Server
 ===================================================
 
@@ -193,7 +234,7 @@ We're going to need Java for a few things, so let's install that now.
 
 ..  code-block:: bash
 
-    sudo apt install default-jdk
+    $ sudo apt install default-jdk
 
 Server Hardening
 ===========================================
@@ -242,9 +283,9 @@ We'll limit `sudo` privileges to only users in the `admin` group.
 
 ..  code-block:: bash
 
-    sudo groupadd admin
-    sudo usermod -a -G admin <YOUR ADMIN USERNAME>
-    sudo dpkg-statoverride --update --add root admin 4750 /bin/su
+    $ sudo groupadd admin
+    $ sudo usermod -a -G admin <YOUR ADMIN USERNAME>
+    $ sudo dpkg-statoverride --update --add root admin 4750 /bin/su
 
 Harden Network with `sysctl` Settings
 ------------------------------------------------------
@@ -295,7 +336,7 @@ Finally, reload `sysctl`. If there are any errors, fix the associated lines.
 
 ..  code-block:: bash
 
-    sudo sysctl -p
+    $ sudo sysctl -p
 
 Prevent IP Spoofing
 -------------------------------------------
@@ -304,7 +345,7 @@ To prevent IP spoofing, we edit `/etc/hosts`.
 
 ..  code-block:: bash
 
-    sudo vim /etc/host.conf
+    $ sudo vim /etc/host.conf
 
 Add or edit the following lines.
 
@@ -318,7 +359,7 @@ Harden PHP
 
 ..  code-block:: bash
 
-    sudo vim /etc/php/5.6/apache2/php.ini
+    $ sudo vim /etc/php/5.6/apache2/php.ini
 
 Add or edit the following lines and save.::
 
@@ -345,7 +386,7 @@ Edit the Apache2 security configuration file...
 
 ..  code-block:: bash
 
-    sudo vim /etc/apache2/conf-available/security.conf
+    $ sudo vim /etc/apache2/conf-available/security.conf
 
 Change or add the following lines...::
 
@@ -369,16 +410,16 @@ the package itself.
 
 ..  code-block:: bash
 
-    sudo apt install libxml2 libxml2-dev libxml2-utils libaprutil1 libaprutil1-dev
-    sudo ln -s /usr/lib/x86_64-linux-gnu/libxml2.so.2 /usr/lib/libxml2.so.2
-    sudo apt install libapache2-mod-security2
+    $ sudo apt install libxml2 libxml2-dev libxml2-utils libaprutil1 libaprutil1-dev
+    $ sudo ln -s /usr/lib/x86_64-linux-gnu/libxml2.so.2 /usr/lib/libxml2.so.2
+    $ sudo apt install libapache2-mod-security2
 
 Now we'll copy the default configuration and edit it.
 
 ..  code-block:: bash
 
-    sudo mv /etc/modsecurity/modsecurity.conf-recommended /etc/modsecurity/modsecurity.conf
-    sudo vim /etc/modsecurity/modsecurity.conf
+    $ sudo mv /etc/modsecurity/modsecurity.conf-recommended /etc/modsecurity/modsecurity.conf
+    $ sudo vim /etc/modsecurity/modsecurity.conf
 
 Add and edit the lines...::
 
@@ -478,7 +519,7 @@ if it's fixed, but the workaround doesn't hurt anything anyway.
 
 ..  code-block:: bash
 
-    sudo ln -s /etc/alternatives/mail /bin/mail/
+    $ sudo ln -s /etc/alternatives/mail /bin/mail/
 
 Enable the modules and restart Apache2, ensuring that it still works.
 
@@ -502,16 +543,11 @@ DenyHosts blocks SSH attacks and tracks suspicious IPs.
     $ sudo apt install denyhosts
     $ sudo vim /etc/denyhosts.conf
 
-Edit the following lines. I have this using the `hawksnest@mousepawgames.com`
-account for both sending and receiving (because, why be redundant?)::
+Edit the following lines.::
 
-    ADMIN_EMAIL = hawksnest@mousepawgames.com
-    SMTP_HOST = gator3102.hostgator.com
-    SMTP_PORT = 587
-    SMTP_USERNAME=hawksnest@mousepawgames.com
-    SMTP_PASSWORD=(You Would Like To Know, Wouldn't You?)
-    SMTP_FROM = DenyHosts <hawksnest@mousepawgames.com>
-    #SYSLOG_REPORT=YES
+    ADMIN_EMAIL = hawksnest@localhost
+    SMTP_FROM = DenyHosts
+    SYSLOG_REPORT = YES
 
 Setup Fail2Ban
 -----------------------------------------------
@@ -540,7 +576,19 @@ of jails we enabled:
 - apache-modsecurity
 - apache-shellshock
 
-Restart the fail2ban process.
+We also need to modify a file for `apache-fakegooglebot` to work around a bug.
+If you run `python -V` and it reports a version of Python2 (which it almost
+certainly will), run...
+
+..  code-block:: bash
+
+    $ sudo vim /etc/fail2ban/filter.d/ignorecommands/apache-fakegooglebot
+
+Change the first line to `#!/usr/bin/python3`, and then save and close.
+
+`(SOURCE) <https://www.shellandco.net/fail2ban-fakegooglebot-jail-bug/>`_
+
+Finally, restart the fail2ban process.
 
 ..  code-block:: bash
 
@@ -571,6 +619,51 @@ Change "EMAIL_ADDRESS" to `hawksnest@localhost` and "HOSTNAME" to
 When you run that last command, it may whine about not finding a pidfile.
 It appears we can ignore that error.
 
+We also need to tweak Fail2Ban so that it doesn't start up before `psad` does.
+Otherwise, `psad` won't be able to log correctly.
+
+..  code-block:: bash
+
+    $ sudo vim /lib/systemd/system/fail2ban.service
+
+In that file, add `ufw.service` and `psad.service` to the `After=` directive,
+so it looks something like this...::
+
+    After=network.target iptables.service firewalld.service ufw.service psad.service
+
+Save and close, and then reload the daemons for systemctl and restart fail2ban.
+
+..  code-block:: bash
+
+    $ sudo systemctl daemon-reload
+    $ sudo systemctl restart fail2ban
+
+Now we need to adjust the UFW settings.
+
+..  code-block:: bash
+
+    $ sudo ufw logging high
+    $ sudo vim /etc/ufw/before.rules
+
+Add the following lines before the final commit message.::
+
+    -A INPUT -j LOG
+    -A FORWARD -j LOG
+
+Save and close. Repeat this with `before6.rules`. Then, restart ufw and
+reload PSAD.
+
+`(SOURCE) <https://ubuntuforums.org/showthread.php?t=2047977>`_
+
+..  code-block:: bash
+
+    $ sudo systemctl restart ufw
+    $ sudo psad --fw-analyze
+
+Restart the computer, and ensure PSAD isn't sending any system emails
+complaining about the firewall configuration. (Check system email by
+running `$ mail`).
+
 Rootkit Checks
 --------------------------------------------
 
@@ -598,23 +691,23 @@ These are a few other useful programs.
 
 ..  code-block:: bash
 
-    sudo apt install nmap logwatch libdate-manip-perl apparmor apparmor-profiles tiger clamav
+    $ sudo apt install nmap logwatch libdate-manip-perl apparmor apparmor-profiles tiger clamav
 
     # Ensure apparmor is working.
-    sudo apparmor_status
+    $ sudo apparmor_status
 
 To use logwatch, run...
 
 ..  code-block:: bash
 
-    sudo logwatch | less
+    $ sudo logwatch | less
 
 To scan for vulnerabilites with Tiger, run...
 
 ..  code-block:: bash
 
-    sudo tiger
-    sudo less /var/log/tiger/security.report.*
+    $ sudo tiger
+    $ sudo less /var/log/tiger/security.report.*
 
 Server Controls
 ============================================
@@ -692,7 +785,7 @@ In the DDClient configuration file we just opened, set the following lines.::
     protocol=noip
     ssl=yes
     login='theemailaddressfornoip@example.com'
-    password='youknowwhatgoeswherewiseguy'
+    password='youknowwhatgoesherewiseguy'
 
 Also, at the end of the file, add...::
 
@@ -759,17 +852,17 @@ do something else for the main `mousepawmedia.net` certificate
 
     $ sudo mkdir /etc/apache2/ssl
     $ sudo su
-    $ cd /etc/apache2/ssl
-    $ mkdir /etc/apache2/ssl/filecert
-    $ ln -s /etc/letsencrypt/live/hawksnest.ddns.net/cert.pem hawksnest/cert.pem
-    $ ln -s /etc/letsencrypt/live/hawksnest.ddns.net/chain.pem hawksnest/chain.pem
-    $ ln -s /etc/letsencrypt/live/hawksnest.ddns.net/fullchain.pem hawksnest/fullchain.pem
-    $ ln -s /etc/letsencrypt/live/hawksnest.ddns.net/privkey.pem hawksnest/privkey.pem
-    $ ln -s /etc/letsencrypt/live/hawksnest.serveftp.com/cert.pem filecert/cert.pem
-    $ ln -s /etc/letsencrypt/live/hawksnest.serveftp.com/chain.pem filecert/chain.pem
-    $ ln -s /etc/letsencrypt/live/hawksnest.serveftp.com/fullchain.pem filecert/fullchain.pem
-    $ ln -s /etc/letsencrypt/live/hawksnest.serveftp.com/privkey.pem filecert/privkey.pem
-    $ exit
+    # cd /etc/apache2/ssl
+    # mkdir /etc/apache2/ssl/filecert
+    # ln -s /etc/letsencrypt/live/hawksnest.ddns.net/cert.pem hawksnest/cert.pem
+    # ln -s /etc/letsencrypt/live/hawksnest.ddns.net/chain.pem hawksnest/chain.pem
+    # ln -s /etc/letsencrypt/live/hawksnest.ddns.net/fullchain.pem hawksnest/fullchain.pem
+    # ln -s /etc/letsencrypt/live/hawksnest.ddns.net/privkey.pem hawksnest/privkey.pem
+    # ln -s /etc/letsencrypt/live/hawksnest.serveftp.com/cert.pem filecert/cert.pem
+    # ln -s /etc/letsencrypt/live/hawksnest.serveftp.com/chain.pem filecert/chain.pem
+    # ln -s /etc/letsencrypt/live/hawksnest.serveftp.com/fullchain.pem filecert/fullchain.pem
+    # ln -s /etc/letsencrypt/live/hawksnest.serveftp.com/privkey.pem filecert/privkey.pem
+    # exit
 
 The links I just created do indeed work for Apache, even though we cannot
 view them without being root.
@@ -786,7 +879,7 @@ We'll start by creating a special group for accessing certificates.
 
 ..  code-block:: bash
 
-    sudo groupadd certs
+    $ sudo groupadd certs
 
 Now we'll create a directory for the copied certs, and make the script file.
 
@@ -860,14 +953,14 @@ and run by its owner and group (both root).
 
 ..  code-block:: bash
 
-    sudo chmod u=rwx,g=rwx,o= renewcert_pre
-    sudo chmod u=rwx,g=rwx,o= renewcert_post
+    $ sudo chmod u=rwx,g=rwx,o= renewcert_pre
+    $ sudo chmod u=rwx,g=rwx,o= renewcert_post
 
 Finally, we'll test the configuration.
 
 ..  code-block:: bash
 
-    sudo /opt/certbot/certbot-auto renew --dry-run --pre-hook "/etc/apache2/ssl/mousepawmedia.net/renewcert_pre" --post-hook "/etc/apache2/ssl/mousepawmedia.net/renewcert_post"
+    $ sudo /opt/certbot/certbot-auto renew --dry-run --pre-hook "/etc/apache2/ssl/mousepawmedia.net/renewcert_pre" --post-hook "/etc/apache2/ssl/mousepawmedia.net/renewcert_post"
 
 Scheduling Auto-Renewal
 ------------------------------------------
@@ -876,7 +969,7 @@ Now we need to schedule the autorenewal task.
 
 ..  code-block:: bash
 
-    sudo crontab -e
+    $ sudo crontab -e
 
 Add the following line to the end.::
 
@@ -1114,12 +1207,13 @@ want running. Also, we want to replace the landing page.
 
 ..  code-block:: bash
 
-    cd /opt/tomcat
-    sudo su
-    mkdir webapps-disabled
-    mv webapps/docs webapps-disabled/
-    mv webapps/examples webapps-disabled/
-    mv webapps/ROOT webapps-disabled
+    $ cd /opt/tomcat
+    $ sudo su
+    # mkdir webapps-disabled
+    # mv webapps/docs webapps-disabled/
+    # mv webapps/examples webapps-disabled/
+    # mv webapps/ROOT webapps-disabled
+    # exit
 
 We'll be putting eHour in place of the Tomcat root.
 
@@ -1163,9 +1257,9 @@ Now we'll configure Apache Tomcat to work with eHour.
 
 ..  code-block:: bash
 
-    sudo su
-    cd /opt/tomcat/bin
-    vim setenv.sh
+    $ sudo su
+    # cd /opt/tomcat/bin
+    # vim setenv.sh
 
 Add the contents...::
 
@@ -1175,8 +1269,8 @@ Save and close. Then we'll make that file executable.
 
 ..  code-block:: bash
 
-    chmod +x setenv.sh
-    exit
+    # chmod +x setenv.sh
+    # exit
 
 Next, we create a new user account for `ehour` on PHPMyAdmin. Give this
 user privileges on the `ehour` database.
@@ -1185,7 +1279,7 @@ Next, we modify the configuration file for eHour.
 
 ..  code-block:: bash
 
-    sudo vim ~/ehour-dist/conf/ehour.properties
+    $ sudo vim ~/ehour-dist/conf/ehour.properties
 
 Uncomment and modify the following lines as necessary...::
 
@@ -1203,7 +1297,7 @@ web address is prettier.
 
 ..  code-block:: bash
 
-    sudo cp /home/hawksnest/IMPORTED/ehour-1.4.3.war /opt/tomcat/webapps/ROOT.war
+    $ sudo cp /home/hawksnest/IMPORTED/ehour-1.4.3.war /opt/tomcat/webapps/ROOT.war
 
 Navigate to `http://<serveraddress>:8441/` to test the installation.
 
@@ -1215,7 +1309,7 @@ port 80 on the eHour subdomain.
 
 ..  code-block:: bash
 
-    sudo vim /etc/apache2/sites-available/ehour.conf
+    $ sudo vim /etc/apache2/sites-available/ehour.conf
 
 Set the contents of that file to...
 
@@ -1228,8 +1322,8 @@ Set the contents of that file to...
 
             SSLProxyEngine on
             ProxyPreserveHost On
-            ProxyPass         /  https://ehour.mousepawmedia.net:8441/
-            ProxyPassReverse  /  https://ehour.mousepawmedia.net:8441/
+            ProxyPass         /  https://ehour.<serveraddress>:8441/
+            ProxyPassReverse  /  https://ehour.<serveraddress>:8441/
             ProxyRequests     Off
             AllowEncodedSlashes NoDecode
 
@@ -1247,12 +1341,12 @@ Set the contents of that file to...
 
             RewriteEngine On
             RewriteCond %{HTTPS} off
-            RewriteRule ^/(.*)$ https://ehour.mousepawmedia.net/$1
+            RewriteRule ^/(.*)$ https://ehour.<serveraddress>/$1
         </VirtualHost>
 
         <VirtualHost *:8441>
             ServerName hawksnest.ddns.net
-            RedirectMatch ^/(.*)$ https://ehour.mousepawmedia.net/$1
+            RedirectMatch ^/(.*)$ https://ehour.<serveraddress>/$1
 
             SSLEngine on
             SSLCertificateFile /etc/apache2/ssl/hawksnest/fullchain.pem
@@ -1293,16 +1387,16 @@ user called `phabdaemon` for Phabricator-based daemons.
 
 Now we need to modify the `phabdaemon` user.
 
-..  code-block::
+..  code-block:: bash
 
-    sudo vim /etc/passwd
+    $ sudo vim /etc/passwd
 
 Look for the `phabdaemon` entry and set the last field to `/usr/sbin/nologin`.
 Save and close. Then...
 
-..  code-block::
+..  code-block:: bash
 
-    sudo vim /etc/shadow
+    $ sudo vim /etc/shadow
 
 Look for the `phabdaemon` entry again, and set the second field to `*`. Save
 and close.
@@ -1435,7 +1529,7 @@ Copy and paste the following into that file.
 
         <VirtualHost *:8446>
             ServerName hawksnest.ddns.net
-            RedirectMatch ^/(.*)$ https://phabricator.mousepawmedia.net/$1
+            RedirectMatch ^/(.*)$ https://phabricator.<serveraddress>/$1
 
             SSLEngine on
             SSLCertificateFile /etc/apache2/ssl/hawksnest/fullchain.pem
@@ -1612,7 +1706,7 @@ Next, we'll configure Phabricator to use this domain name for file serving.
 ..  code-block:: bash
 
     $ cd /opt/phab/phabricator
-    $ ./bin/config set security.alternate-file-domain https://files.mousepawmedia.net/
+    $ ./bin/config set security.alternate-file-domain https://files.<serveraddress>/
 
 Set Up Phabricator Daemons
 -------------------------------------------------
@@ -1803,7 +1897,13 @@ Add these lines to that file...::
 
     # Configuration for Phabricator VCS
     www-data ALL=(phabdaemon) SETENV: NOPASSWD: /usr/bin/git, /usr/lib/git-core/git-http-backend
-    git ALL=(phabdaemon) SETENV: NOPASSWD: /usr/bin/git, /usr/lib/git-core/git-upload-pack, /usr/lib/git-core/git-receive
+    git ALL=(phabdaemon) SETENV: NOPASSWD: /usr/bin/git, /usr/bin/git-upload-pack, /usr/bin/git-receive-pack
+
+..  NOTE:: We had to comment out the recommended version for `git` and put in
+    the second version, in order for SSH to work with our repositories. We need
+    to find out what all binaries `git` is needing to use, and add them to the
+    first path. When this is acheved, be sure to swap the comments...do NOT
+    leave them both uncommented!
 
 Also ensure that if there is the line `Defaults    requiretty`, it is commented
 out. If it's not there, we're good.
@@ -1854,7 +1954,7 @@ need to create a special subdirectory that is owned by root and has permissions
     $ cd root_scripts
     $ sudo cp /opt/phab/phabricator/resources/sshd/phabricator-ssh-hook.sh ./phabricator-ssh-hook
     $ sudo chmod 755 ./phabricator-ssh-hook
-    $ sudo vim ./phabricator-ssh-hook
+    $ sudo vim /opt/scripts/root_scripts/phabricator-ssh-hook
 
 Edit that file so it matches the following...
 
@@ -1876,6 +1976,8 @@ Edit that file so it matches the following...
     exec "$ROOT/bin/ssh-auth" $@
 
 Save and close. Now we need to set up SSHD's configuration.
+
+..  code-block:: bash
 
     $ sudo cp /opt/phab/phabricator/resources/sshd/sshd_config.phabricator.example /etc/ssh/sshd_config.phabricator
     $ sudo vim /etc/ssh/sshd_config.phabricator
@@ -1904,7 +2006,7 @@ on the guest computer you use for SSH, run...
 
 ..  code-block:: bash
 
-    echo {} | ssh git@hawksnest.ddns.net -p 2222 conduit conduit.ping
+    echo {} | ssh git@phabricator.mousepawmedia.net -p 2222 conduit conduit.ping
 
 After all is said and done, it should print out something like
 `{"result":"hawksnest-server","error_code":null,"error_info":null}`.
@@ -1918,20 +2020,20 @@ Once you're assured of this working, run...
 
 ..  code-block:: bash
 
-    sudo /usr/sbin/sshd -f /etc/ssh/sshd_config.phabricator
+    $ sudo /usr/sbin/sshd -f /etc/ssh/sshd_config.phabricator
 
 Double-check functionality by re-running the earlier command on the
 computer you SSH from. Run this two or three times to be certain.
 
 ..  code-block:: bash
 
-    echo {} | ssh git@hawksnest.ddns.net -p 2222 conduit conduit.ping
+    echo {} | ssh git@phabricator.mousepawmedia.net -p 2222 conduit conduit.ping
 
 If it works, then all's well! Add the sshd start command to the system cron.
 
 ..  code-block:: bash
 
-    sudo crontab -e
+    $ sudo crontab -e
 
 On that file, add the line...::
 
@@ -1950,8 +2052,8 @@ Migrating Domain Names
 ..  code-block:: bash
 
     $ cd /opt/phab/phabricator/bin
-    $ ./config set phabricator.allowed-uris '["https://hawksnest.ddns.net:8446/"]'
-    $ ./config set phabricator.base-uri https://phabricator.mousepawmedia.net/
+    $ ./config set phabricator.allowed-uris '["https://<oldserveraddress>:8446/"]'
+    $ ./config set phabricator.base-uri https://phabricator.<serveraddress>/
 
 Then, revisit the other steps to ensure everything's working on the correct
 domain names.
@@ -1966,21 +2068,21 @@ Installation
 We first need to install Jenkins and VirtualBox, both of which must be
 ready to go before we can migrate the old Jenkins installation over.
 
-..  code-block::
+..  code-block:: bash
 
     $ sudo su
-    $ wget -q -O - http://pkg.jenkins-ci.org/debian/jenkins-ci.org.key | apt-key add -
-    $ echo deb http://pkg.jenkins-ci.org/debian binary/ > /etc/apt/sources.list.d/jenkins.list
-    $ wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add -
-    $ echo deb http://download.virtualbox.org/virtualbox/debian xenial contrib > /etc/apt/sources.list.d/virtualbox.list
-    $ exit
+    # wget -q -O - http://pkg.jenkins-ci.org/debian/jenkins-ci.org.key | apt-key add -
+    # echo deb http://pkg.jenkins-ci.org/debian binary/ > /etc/apt/sources.list.d/jenkins.list
+    # wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add -
+    # echo deb http://download.virtualbox.org/virtualbox/debian xenial contrib > /etc/apt/sources.list.d/virtualbox.list
+    # exit
     $ sudo apt update
     $ sudo apt install jenkins virtualbox-5.1
 
 Wait for the installation to complete. Next, we need to download the Extension
 Pack. Find the latest download link from `their download page <https://www.virtualbox.org/wiki/Downloads>`_.
 
-..  code-block::
+..  code-block:: bash
 
     $ cd /tmp
     $ sudo wget http://download.virtualbox.org/virtualbox/5.1.8/Oracle_VM_VirtualBox_Extension_Pack-5.1.8-111374.vbox-extpack
@@ -1997,19 +2099,24 @@ Migration
 
 We copied the old `$JENKINS_HOME` folder to the new server, via...
 
-..  code-block::
+..  code-block:: bash
 
     $ sudo mv /var/lib/jenkins /var/lib/jenkins_new
-    $ sudo rsync -av /mnt/stash/var/lib/jenkins/ /var/lib/jenkins
-    $ sudo chown -R jenkins /var/lib/jenkins
-    $ sudo chgrp -R jenkins /var/lib/jenkins
+    $ sudo rsync -av /mnt/stash/var/lib/jenkins/ /opt/jenkins
+    $ sudo chown -R jenkins /opt/jenkins
+    $ sudo chgrp -R jenkins /opt/jenkins
+    $ sudo ln -s /opt/jenkins /var/libjenkins
 
 ..  NOTE:: I originally couldn't start Jenkins, until I realized that
     I hadn't updated the owner and group.
 
-We'll put the VirtualBox in `/opt`.
+This means that Jenkins' HOME folder is actually in /opt/jenkins, but we have a
+symbolic link to it in /var/lib/jenkins, where Jenkins will be looking for it.
+This makes life easier when we do backups.
 
-..  code-block::
+Next, we'll put the VirtualBox in `/opt`.
+
+..  code-block:: bash
 
     $ sudo mkdir /opt/virtualbox
     $ cd /opt/virtualbox
@@ -2065,9 +2172,9 @@ Configuration
 
 Next, we need to modify Jenkins' configuration.
 
-..  code-block::
+..  code-block:: bash
 
-    sudo vim /etc/default/jenkins
+    $ sudo vim /etc/default/jenkins
 
 Change `HTTP_PORT=8080` to `HTTP_PORT=8449`. Then, place the following
 at the bottom of the file, replacing the last line.::
@@ -2116,8 +2223,8 @@ Set the contents of that file to...
 
             SSLProxyEngine on
             ProxyPreserveHost On
-            ProxyPass         /  https://jenkins.mousepawmedia.net:8449/
-            ProxyPassReverse  /  https://jenkins.mousepawmedia.net:8449/
+            ProxyPass         /  https://jenkins.<serveraddress>:8449/
+            ProxyPassReverse  /  https://jenkins.<serveraddress>:8449/
             ProxyRequests     Off
             AllowEncodedSlashes NoDecode
 
@@ -2135,7 +2242,7 @@ Set the contents of that file to...
 
             RewriteEngine On
             RewriteCond %{HTTPS} off
-            RewriteRule ^/(.*)$ https://jenkins.mousepawmedia.net/$1
+            RewriteRule ^/(.*)$ https://jenkins.<serveraddress>/$1
         </VirtualHost>
     </IfModule>
 
@@ -2266,7 +2373,7 @@ This file should look like this...::
 
         <VirtualHost *:443>
             ServerName hawksnest.ddns.net
-            RedirectMatch ^/(.*)$ https://mousepawmedia.net/$1
+            RedirectMatch ^/(.*)$ https://<serveraddress>/$1
         </VirtualHost>
     </IfModule>
 
@@ -2301,10 +2408,8 @@ This file should look like this...::
 
             SSLEngine on
 
-            #SSLCertificateFile     /etc/apache2/ssl/hawksnest/cert.pem
-            SSLCertificateFile      /etc/apache2/ssl/hawksnest/fullchain.pem
-            SSLCertificateKeyFile /etc/apache2/ssl/hawksnest/privkey.pem
-            #SSLCertificateChainFile /etc/apache2/ssl/hawksnest/chain.pem
+            SSLCertificateFile      /etc/apache2/ssl/mousepawmedia.net/fullchain.pem
+            SSLCertificateKeyFile /etc/apache2/ssl/mousepawmedia.net/privkey.pem
 
             BrowserMatch "MSIE [2-6]" \
                             nokeepalive ssl-unclean-shutdown \
@@ -2320,7 +2425,7 @@ This file should look like this...::
             SSLCertificateFile /etc/apache2/ssl/hawksnest/fullchain.pem
             SSLCertificateKeyFile /etc/apache2/ssl/hawksnest/privkey.pem
 
-            RedirectMatch ^/(.*)$ https://secure.mousepawmedia.net/$1
+            RedirectMatch ^/(.*)$ https://secure.<serveraddress>/$1
         </VirtualHost>
     </IfModule>
 
@@ -2735,3 +2840,138 @@ completed (it's probably in `daily`).
 
 Configuring Duplicity
 --------------------------------
+
+If we're setting up a new backup, we must first create the keys we'll use.
+Otherwise, restore the GPG keys from backup.
+
+..  code-block:: bash
+
+    $ sudo su
+    # gpg --gen-key
+
+Use the default values. Make sure you specify and save your password.
+
+..  code-block:: bash
+
+    # cp -r /root/.gnupg /mnt/backup/.gnupg
+    # gpg --list-keys
+
+Make sure you note the public key. Then, we need to start a new backup. Because
+of how we set up our system, we can just backup `/opt`. In the following
+command, replace PUBLICKEY with the public key, and specify the correct
+passphrase.
+
+..  code-block:: bash
+
+    # PASSPHRASE='thepasswordforgpg' duplicity --encrypt-key PUBLICKEY /opt file:///mnt/backup/xenial_backup/
+
+Give that command some time to run. It's creating a full backup for the first
+time.
+
+Finally, let's set up a cron job to run daily backups. Note, we are still
+running as root.
+
+..  code-block:: bash
+
+    # cd /root
+    # vim .passphrase
+
+In that file, put the passphrase we use for Duplicity, using the same format
+as in the command. This enables us to avoid putting the password directly
+in our cron.::
+
+    PASSPHRASE='thepasswordforgpg'
+
+Save and close. Make it only readable by root, and then create the daily
+incremental backup cron script.
+
+..  code-block:: bash
+
+    # chmod 700 /root/.passphrase
+    # cd /etc/cron.daily
+    # vim duplicity.inc
+
+Set the contents of that file to...
+
+..  code-block:: bash
+
+    #!/bin/sh
+
+    test -x $(which duplicity) || exit 0
+    . /root/.passphrase
+
+    export PASSPHRASE
+    $(which duplicity) --encrypt-key PUBLICKEY /opt file:///mnt/backup/xenial_backup/
+
+Save and close, and then make the script executable. After that, we'll create
+a cron script to run a weekly full backup.
+
+..  code-block:: bash
+
+    # chmod 755 duplicity.inc
+    # cd /etc/cron.weekly/
+    # vim duplicity.full
+
+Set the contents of the weekly file to...
+
+..  code-block:: bash
+
+    #!/bin/sh
+
+    test -x $(which duplicity) || exit 0
+    . /root/.passphrase
+
+    export PASSPHRASE
+    $(which duplicity) full --encrypt-key PUBLICKEY /opt file:///mnt/backup/xenial_backup/
+
+    #Clear old backups.
+    $(which duplicity) remove-all-but-n-full 3 file:///mnt/backup/xenial_backup/
+
+Save and close, and fix that file's permissions.
+
+..  code-block:: bash
+
+    # chmod 755 duplicity.full
+
+You will want to test both by running...
+
+..  code-block:: bash
+
+    # /etc/cron.daily/duplicity.inc
+    # /etc/cron.weekly/duplicity.full
+
+`SOURCE <https://www.digitalocean.com/community/tutorials/how-to-use-duplicity-with-gpg-to-securely-automate-backups-on-ubuntu>`_
+
+Finally, let's create a script for verifying our backups, which we should do
+fairly frequently.
+
+..  code-block:: bash
+
+    # cp /opt/scripts/root_scripts
+    # vim verify_backup
+
+To ensure verification works, this will first perform an incremental backup,
+and then use the verify command to ensure the source and backup match.
+
+Set the contents of that file to...
+
+..  code-block:: bash
+
+    #!/bin/bash
+
+    test -x $(which duplicity) || exit 0
+    . /root/.passphrase
+
+    export PASSPHRASE
+    $(which duplicity) --encrypt-key PUBLICKEY /opt file:///mnt/backup/xenial_backup/
+
+    export PASSPHRASE
+    $(which duplicity) verify --encrypt-key PUBLICKEY file:///mnt/backup/xenial_backup/ /opt
+
+Save and close. Make it executable, and then run it.
+
+..  code-block:: bash
+
+    # chmod 755 verify_backup
+    # exit
+    $ sudo ./verify_backup
