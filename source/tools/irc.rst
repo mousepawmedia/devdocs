@@ -19,6 +19,8 @@ forth. Of course, `#python` lives on that network too.
 Getting On
 ================================
 
+.. _irc_setup_installing_hexchat:
+
 Installing HexChat
 --------------------------------
 
@@ -39,6 +41,8 @@ To install Hexchat on any Ubuntu-based distribution, run...
 
     $ sudo apt update
     $ sudo apt install hexchat
+
+.. _irc_setup_choosing_network:
 
 Choosing Your Network
 --------------------------------
@@ -70,6 +74,8 @@ When you first start HexChat, it will bring up the Network List.
     click :guilabel:`Connect` again. Instead, if you're already connected to
     Freenode, just click :guilabel:`Close`.
 
+.. _irc_setup_register_nick:
+
 Registering Your Nick
 -----------------------------
 
@@ -83,7 +89,7 @@ where you'll type the following commands as needed.
 If you see a message that says "This nickname is registered. Please choose a
 different nickname...", your chosen nickname is not available. To try another
 nickname, type the following, where `NewNick` is the new nick you want to
-try...::
+try::
 
     /nick NewNickname
 
@@ -93,7 +99,7 @@ Once you find one that works, make sure you change it on
 
 Once you have found a nickname that works, enter the following command.
 Replace `me@example.com` with your email address, and `password` with your
-IRC password (from the previous step)...::
+IRC password (from the previous step)::
 
     /msg nickserv register password me@example.com
 
@@ -105,12 +111,14 @@ Assuming everything worked correctly, we can test it out. Go ahead and quit
 Hexchat, and then start it again. It should log you in automatically.
 
 To check if you ARE logged in, type the following, where `YourNick` is your
-current nickname...::
+current nickname::
 
     /whois YourNick
 
 If you're logged in, the second to last line should say "[YourNick] is
 logged in as YourNick", where `YourNick` is your nickname.
+
+.. _irc_setup_adding_nick:
 
 Adding Other Nicks
 ---------------------------
@@ -118,14 +126,15 @@ Adding Other Nicks
 You may want to register multiple nicknames with the same account. This is
 very easy to do.
 
-First, make sure you're logged in as your main nickname (see previous section).
-Then, switch to another nickname you want to register by entering the following
-command, where `OtherNickname` is the new nickname...::
+First, make sure you're logged in as your main nickname
+(see :ref:`irc_setup_register_nick`). Then, switch to another nickname you want
+to register by entering the following command, where `OtherNickname` is the new
+nickname::
 
     /nick OtherNickname
 
 Ensure that the nick is not already taken (you'll see a warning if it is). If
-the nick is free, add it to your account via...::
+the nick is free, add it to your account via::
 
     /msg nickserv group
 
@@ -142,6 +151,8 @@ done.
     "MyNick | Away". The nick changes sometimes spam channels you're in and
     drive the other participants crazy, so much so that a few channels have
     actually banned them. See the `Away Status` section below.
+
+.. _irc_setup_preferences:
 
 Preferences
 -----------------------------
@@ -162,6 +173,8 @@ these brief and appropriate, but have fun with them!
 Using IRC
 ================================
 
+.. _irc_using_networks:
+
 Networks
 --------------------------------
 
@@ -171,6 +184,8 @@ each on the `Network List` window of HexChat.
 
 ..  IMPORTANT:: You will need to register your nicks on each network you use.
 
+.. _irc_using_channels:
+
 Channels
 --------------------------------
 
@@ -178,7 +193,7 @@ Conversatins on IRC are primarily separated into Channels. There are hundreds
 of channels on Freenode alone. Each channel name starts with at least one
 `#` symbol.
 
-To join our progrmaming channel, for example, type...::
+To join our progrmaming channel, for example, type::
 
     /join #mousepawgames
 
@@ -195,12 +210,12 @@ Many channels also have **bots**, which are special computer programs that
 perform automated tasks for the channel. For example, `Hawksnest` is the
 official bot in `#mousepawgames` and `##mousepawgames`.
 
-You can leave a channel by typing...::
+You can leave a channel by typing::
 
     /part #mousepawgames
 
 ...and then right-clicking the channel name in HexChat and clicking
-:guilabel:`Close`. (You can also just close the channel without `/part`,
+:guilabel:`Close`. (You can also just close the channel without :code:`/part`,
 but it's a little more abrupt.)
 
 ..  NOTE:: You can auto-join favorite channels in HexChat by right-clicking
@@ -210,6 +225,8 @@ but it's a little more abrupt.)
     parting,, right-click the channel name and check
     :menuselection:`Settings --> Hide Join/Part Messages`.
 
+.. _irc_using_logging_in:
+
 Logging In
 ------------------------------
 
@@ -217,10 +234,12 @@ You have already configured HexChat to log you in immediately. However, if you
 happen to use another computer or a client that you cannot configure, don't
 panic. You can log into Freenode IRC from anywhere in the world via the
 following commands, where `YourNick` is your nickname, and `password` is your
-IRC password...::
+IRC password::
 
     /nick YourNick
     /msg nickserv identify password
+
+.. _irc_using_ghosting:
 
 Ghosting
 -------------------------------
@@ -230,9 +249,11 @@ nick to remain logged in. This can be a royal pain if you're trying to log
 back in, as you'll be assigned your secondary nick.
 
 If this happens, make sure you're logged in to IRC, and then run the following,
-where `YourNick` is the nickname you want to reclaim...::
+where `YourNick` is the nickname you want to reclaim::
 
     /msg nickserv ghost YourNick
+
+.. _irc_using_general_chatting:
 
 General Chatting
 -------------------------------
@@ -240,42 +261,48 @@ General Chatting
 Most of the time, you just type something and hit "enter" to talk in a channel.
 
 If you want to get someone's attention in particular, you can **ping** them
-(see `Netiquette, Pinging`) just type their name, and HexChat will alert them
-that they were mentioned. In HexChat, you have tab-completion on usernames.
-In `#mousepawgames`, if Jason McDonald is online and you type "Co" and
-hit tab, it'll likely autocomplete to "CodeMouse92".
+(see :ref:`irc_netiquette_pinging`) just type their name, and HexChat will
+alert them that they were mentioned. In HexChat, you have tab-completion on
+usernames. In `#mousepawgames`, if Jason McDonald is online and you type "Co"
+and hit tab, it'll likely autocomplete to "CodeMouse92".
 
-`/me` allows you to look like you're taking an action. For example, if you
-type `/me waves`, that shows up as "*YourNick waves."
+:code:`/me` allows you to look like you're taking an action. For example, if
+you type :code:`/me waves`, that shows up as "\*YourNick waves."
+
+.. _irc_using_private_messaging:
 
 Private Messaging
 -------------------------------
 
-`/notice` allows you to whisper to someone else in the channel, so only they
-see the message. For example, `/msg CodeMouse92 Hi!` would whisper "Hi" to that
-user, but only that user would be able to see it.
+:code:`/notice` allows you to whisper to someone else in the channel, so only
+they see the message. For example, :code:`/msg CodeMouse92 Hi!` would whisper
+"Hi" to that user, but only that user would be able to see it.
 
-Using `/query` opens a private chatroom (i.e. `/query CodeMouse92`. In
-HexChat, you can also right-click a username and click "Open Dialog" to
-open a private chatroom with that person.
+Using :code:`/query` opens a private chatroom (i.e. :code:`/query CodeMouse92`.
+In HexChat, you can also right-click a username and click "Open Dialog" to open
+a private chatroom with that person.
+
+.. _irc_using_away:
 
 Away Status
 ------------------------------
 
-`/away` marks you as away, and grays out your name on the user list. You can
-optionally provide an away message. If you just type `/away`, HexChat will use
-the default message you set in Preferences.
+:code:`/away` marks you as away, and grays out your name on the user list. You
+can optionally provide an away message. If you just type :code:`/away`, HexChat
+will use the default message you set in Preferences.
 
-`/back` marks you as available, as in "no longer away."
+:code:`/back` marks you as available, as in "no longer away."
 
 Generally, it's a good idea to leave your HexChat window up throughout the day,
-and just use `/away` and `/back` to show availability. This is called "lurking",
-and it increases the chances you have of seeing things you'd be interested in.
-(It also keeps logging stuff that happens in the channel while you're not
-looking. You must be connected to IRC for logging to work.)
+and just use :code:`/away` and :code:`/back` to show availability. This is
+called "lurking", and it increases the chances you have of seeing things you'd
+be interested in. (It also keeps logging stuff that happens in the channel while
+you're not looking. You must be connected to IRC for logging to work.)
+
+.. _irc_using_law_enforcement:
 
 Law Enforcement
-=============================
+-------------------------
 
 If you are an op in a room, you have the ability to perform various moderation
 tasks. Most importantly, an op can kick people from a room, and can also
@@ -286,14 +313,15 @@ as you follow the rules, and a chatroom is relatively sane, this should be easy
 to avoid.
 
 In the `#mousepawgames` channel, some staff members have be given op status.
-If you're an op, you can "take op" by typing...::
+If you're an op, you can "take op" by typing::
 
     /msg chanserv op #mousepawgames
 
-Then, you can kick and ban using the `/kick nickname` and `/ban nickname`
-commands, respectively. Please use these powers wisely and judiciously.
+Then, you can kick and ban using the :code:`/kick nickname` and :code:`/ban
+nickname` commands, respectively. Please use these powers wisely and
+judiciously.
 
-Once you're done with your op work, you can de-op via...::
+Once you're done with your op work, you can de-op via::
 
     /msg chanserv op #mousepawgames -nick_name
 
@@ -301,6 +329,8 @@ Once you're done with your op work, you can de-op via...::
 
 Netiquette
 ==============================
+
+.. _irc_netiquette_cultural_sensitivity:
 
 Cultural Sensitivity
 -------------------------------
@@ -329,6 +359,8 @@ more about the person.
 
 Above all, **show everyone the respect you want others to treat you with.**
 
+.. _irc_netiquette_asking_questions:
+
 Asking Questions
 ----------------------------------
 
@@ -337,7 +369,7 @@ One of the main uses of IRC is for answering questions. These are some
 
 * When asking your question, include all relevant software version/system
   information, code, and error messages. Use a paste tool for lots of text.
-  (See `Flooding and Spamming`)
+  (see :ref:`irc_netiquette_flooding_spamming`)
 
 * Post your question and *wait*. Getting help on IRC is a crapshoot - a person
   with the knowledge to answer your question has to be present and active.
@@ -363,6 +395,8 @@ One of the main uses of IRC is for answering questions. These are some
   posting it again on another room. If you wait a long time in a quiet room,
   it is generally okay to repost the question in a second room, but be sure to
   update the first room with the answer once you have it!
+
+.. _irc_netiquette_debate:
 
 Debate and "Room Temperature"
 ----------------------------------
@@ -406,6 +440,8 @@ conversations without causing problems. Here are a few rules:
   has ended, and then rejoin. If you have to use this tactic, *never* resume
   the debate!
 
+.. _irc_netiquette_pinging:
+
 Pinging
 -------------------------
 
@@ -424,6 +460,8 @@ feature, but you should be careful not to abuse it.
 
 * If someone asks you not to ping them, *don't ping them*.
 
+.. _irc_netiquette_private_messaging:
+
 Private Messaging
 -------------------------
 
@@ -437,6 +475,8 @@ conversations.
 
 Of course, you have the same rights as anyone else in this matter. Be
 polite but clear regarding your own private messaging boundaries.
+
+.. _irc_netiquette_flooding_spamming:
 
 Flooding and Spamming
 ----------------------------------
@@ -453,7 +493,9 @@ requested.
 
 Additionally, you should not post the same message over and over. This is
 considered **spamming**, and it will usually get you warned and/or banned
-from a room. (See `Asking Questions`).
+from a room. (see :ref:`irc_netiquette_asking_questions`).
+
+.. _irc_netiquette_trolling_flaming:
 
 Trolling and Flaming
 ----------------------------------
@@ -471,6 +513,8 @@ descriptive words - liguistically, the f-bomb is just meaningless filler.)
 Excessive use of offensive or hurtful language, especially directed at a
 person, is known as **flaming**. This is not okay. Ever. Period.
 
+.. _irc_netiquette_bots:
+
 Bots
 --------------------------------
 
@@ -482,6 +526,8 @@ There are also rogue chatbots, which are designed to automatically troll
 channels. Since no one has ever beaten the Turing test, we can usually spot
 these pretty quick. If, for some reason, someone begins questioning if you're a
 bot, mix up your sentence structure - bots cannot do that very well.
+
+.. _irc_netiquette_snark:
 
 Sarcasm, Snark, and Pedantia
 --------------------------------------
@@ -495,26 +541,21 @@ true and/or a compliment is the best way to respond. Those who insult
 intentionally can't really work with that sort of response anyway.
 
 Here's an example from my own chat logs. The other person actually didn't mind
-my being there at all...::
+my being there at all::
 
     *CodeMouse92 joins.
-    
-    User1: Oh great... it's CodeMouse92
+    [User1] Oh great... it's CodeMouse92
 
 Beware double meanings and connotations! Computer programmers and ITs
 especially like word play, so you're likely to have such a message
 intentionally misinterpreted as a joke. Play along, or politely clarify
-if necessary.::
+if necessary. For example::
 
-    phunyguy: well, my state is actually pretty up in the air right now so I said why not
-
-    phunyguy: ldunn, don't say it
-
+    [phunyguy] well, my state is actually pretty up in the air right now so I said why not
+    [phunyguy] ldunn, don't say it
     *CodeMouse92 notices that phunyguy did not ask HIM to not snark that statement
-
-    CodeMouse92: phunyguy, Your state is up in the air? I hope you're in a small one, otherwise you're going to have a hard time finding an airfield big enough.
-
-    phunyguy: CodeMouse92, oh so it was YOU that said it. I thought ldunn and Flannel would be the ones.
+    [CodeMouse92] phunyguy, Your state is up in the air? I hope you're in a small one, otherwise you're going to have a hard time finding an airfield big enough.
+    [phunyguy] CodeMouse92, oh so it was YOU that said it. I thought ldunn and Flannel would be the ones.
 
 While it may be tempting to join in on this sort of conversation right away,
 **do not try this at home**...at least, not until you have had enough

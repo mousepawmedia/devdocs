@@ -39,6 +39,14 @@ Ubuntu
     setup/install
     setup/first_steps
 
+Other
+--------------------------
+
+..  toctree::
+    :maxdepth: 2
+
+    serverconfig/config
+
 Indices and tables
 ==================
 

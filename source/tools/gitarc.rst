@@ -56,7 +56,7 @@ Ubuntu username.::
     :/home/USERNAME/.arcanist/arcanist/bin/
 
 Note the colon at the beginning, which separates each entry. Your new path will
-probably look something like this...::
+probably look something like this::
 
     PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/home/USERNAME/.arcanist/arcanist/bin/"
 

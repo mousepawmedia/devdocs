@@ -43,7 +43,7 @@ the interface called "Unity". Using it is very simple:
   **Power Menu**. You can access System Settings and power functions here.\
 - Hold down the Super Key to see all of the default keyboard shortcuts in Unity.
 
-Updating
+Updating System
 ================================================
 
 Before we tackle anything else, let's install any waiting updates. This can
@@ -204,8 +204,8 @@ or Opera, you can install those easily.
     Linux systems. If you're looking for a different browser that supports
     Chrome Extensions, try Opera. (It's also faster!)
 
-You can download Google Chrome `here <https://www.google.com/chrome/browser/desktop/>`_,
-and Opera `here <http://www.opera.com/>`_. For either, save the `*.deb` file
+You can download `Google Chrome here <https://www.google.com/chrome/browser/desktop/>`_,
+and `Opera here <http://www.opera.com/>`_. For either, save the `*.deb` file
 to your computer, browse to it in your File Browser, right-click, and open it
 with "GDebi Package Installer."
 

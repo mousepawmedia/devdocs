@@ -7,19 +7,32 @@ Initial Installation
 ================================================
 
 Installed Ubuntu 16.04 LTS x64 Server from DVD.
-- Hostname: `hawksnest-server`
-- Full name for user: `Hawksnest`
-- Username: `hawksnest`
-- Do **NOT** encrypt home folder.
-- Set time zone to Pacific time.
-- Partition Disks: **Guided - use entire disk** (not using LVM)
-- No HTTP proxy.
-- Selected `Install secure updates automatically`.
-- Selected the following default packages:
--- `OpenSSH Server`
--- `LAMP server`
--- `Manual package selection`
-- Install GRUB bootloader? `Yes`
+
+* Hostname: `hawksnest-server`
+
+* Full name for user: `Hawksnest`
+
+* Username: `hawksnest`
+
+* Do **NOT** encrypt home folder.
+
+* Set time zone to Pacific time.
+
+* Partition Disks: **Guided - use entire disk** (not using LVM)
+
+* No HTTP proxy.
+
+* Selected `Install secure updates automatically`.
+
+* Selected the following default packages:
+
+    * `OpenSSH Server`
+
+    * `LAMP server`
+
+    * `Manual package selection`
+
+* Install GRUB bootloader? `Yes`
 
 ..  NOTE:: Set passwords for both the `hawksnest` user and the MySQL root user.
 
@@ -71,7 +84,7 @@ mounts will be performed at startup.
     $ sudo vim /etc/fstab
 
 Add the following lines, substituting the values from the earlier `mount`
-commands as appropirate...::
+commands as appropirate::
 
     /dev/sda5 /mnt/stash ext4 defaults 0 2
     /dev/sdc1 /mnt/backup ext4 defaults 0 2
@@ -129,7 +142,7 @@ the schedule.
 
     $ sudo vim /etc/apt/apt.conf.d/10periodic
 
-Set the contents of that file...::
+Set the contents of that file::
 
     APT::Periodic::Update-Package-Lists "1";
     APT::Periodic::Download-Upgradeable-Packages "1";
@@ -180,7 +193,7 @@ We are using the `ondrej` PPA.
     $ sudo update-alternatives --config php
     # Select the option for php5.6
 
-`SOURCE <http://askubuntu.com/a/109544/23786>`_
+`SOURCE: How Do I Install Different PHP Version? (Ask Ubuntu) <http://askubuntu.com/a/109544/23786>`_
 
 ..  NOTE:: We are not installing APC because it is not supported on PHP5.6
     or above. `php5-opcache` handles that now.
@@ -225,7 +238,7 @@ On the **remote machine** (the computer you're connecting *from*), run...
 
 You can now connect to the server via SSH.
 
-`SOURCE <https://www.digitalocean.com/community/tutorials/how-to-use-ssh-to-connect-to-a-remote-server-in-ubuntu>`_
+`SOURCE: How to Use SSH To Connect To A Remote Server (Digital Ocean) <https://www.digitalocean.com/community/tutorials/how-to-use-ssh-to-connect-to-a-remote-server-in-ubuntu>`_
 
 Java
 -----------------------------------------
@@ -241,7 +254,7 @@ Server Hardening
 
 Let's improve our system security before continuing.
 
-`SOURCE <https://www.thefanclub.co.za/how-to/how-secure-ubuntu-1604-lts-server-part-1-basics>`_
+`SOURCE: How To Secure Ubuntu 16.04 LTS Server (The Fan Club) <https://www.thefanclub.co.za/how-to/how-secure-ubuntu-1604-lts-server-part-1-basics>`_
 
 Firewall
 --------------------------------------------
@@ -269,7 +282,7 @@ Secure Shared Memory
 
     $ sudo vim /etc/fstab
 
-At the bottom of the file, add the lines...::
+At the bottom of the file, add the lines::
 
     # Secure shared memory
     tmpfs /run/shm tmpfs defaults,noexec,nosuid 0 0
@@ -388,7 +401,7 @@ Edit the Apache2 security configuration file...
 
     $ sudo vim /etc/apache2/conf-available/security.conf
 
-Change or add the following lines...::
+Change or add the following lines::
 
     ServerTokens Prod
     ServerSignature Off
@@ -421,7 +434,7 @@ Now we'll copy the default configuration and edit it.
     $ sudo mv /etc/modsecurity/modsecurity.conf-recommended /etc/modsecurity/modsecurity.conf
     $ sudo vim /etc/modsecurity/modsecurity.conf
 
-Add and edit the lines...::
+Add and edit the lines::
 
     SecRuleEngine On
     SecServerSignature FreeOSHTTP
@@ -586,7 +599,7 @@ certainly will), run...
 
 Change the first line to `#!/usr/bin/python3`, and then save and close.
 
-`(SOURCE) <https://www.shellandco.net/fail2ban-fakegooglebot-jail-bug/>`_
+`SOURCE: Fail2Ban fakegooglebot Jail Bug (Shell and Co) <https://www.shellandco.net/fail2ban-fakegooglebot-jail-bug/>`_
 
 Finally, restart the fail2ban process.
 
@@ -627,7 +640,7 @@ Otherwise, `psad` won't be able to log correctly.
     $ sudo vim /lib/systemd/system/fail2ban.service
 
 In that file, add `ufw.service` and `psad.service` to the `After=` directive,
-so it looks something like this...::
+so it looks something like this::
 
     After=network.target iptables.service firewalld.service ufw.service psad.service
 
@@ -653,7 +666,7 @@ Add the following lines before the final commit message.::
 Save and close. Repeat this with `before6.rules`. Then, restart ufw and
 reload PSAD.
 
-`(SOURCE) <https://ubuntuforums.org/showthread.php?t=2047977>`_
+`SOURCE: PSAD Is Giving a Firewall Setup Warning (Ubuntu Forums) <https://ubuntuforums.org/showthread.php?t=2047977>`_
 
 ..  code-block:: bash
 
@@ -787,9 +800,9 @@ In the DDClient configuration file we just opened, set the following lines.::
     login='theemailaddressfornoip@example.com'
     password='youknowwhatgoesherewiseguy'
 
-Also, at the end of the file, add...::
+Also, at the end of the file, add::
 
-    hawksnest.ddns.net,hawksnest.serveftp.com,sparrowsgate.serveminecraft.net
+    mousepawmedia.net,hawksnest.ddns.net,hawksnest.serveftp.com,sparrowsgate.serveminecraft.net
 
 Save and close. Next, we need to change how `ddclient` runs.
 
@@ -797,7 +810,7 @@ Save and close. Next, we need to change how `ddclient` runs.
 
     $ sudo vim /etc/default/ddclient
 
-Change the following settings to match the following...::
+Change the following settings to match the following::
 
     run_dhclient="true"
     run_ipup="true"
@@ -838,11 +851,11 @@ name we're getting the certificate for.
 
 Follow the instructions on the screen to complete the process of getting the
 certificates. If successful, they can be found (visible only as root) in
-/etc/letsencrypt/live/hawksnest.ddns.net (change the folder name to match
-the domain, of course).
+:file:`/etc/letsencrypt/live/hawksnest.ddns.net` (change the folder name to
+match the domain, of course).
 
 Next, we need to create symbolic links to the certificates so Apache can see
-them. We'll be `sudo`ing up to root after creating the directory.
+them. We'll be sudoing up to root after creating the directory.
 
 Note we're only doing this for the fallback DNs. We'll need to
 do something else for the main `mousepawmedia.net` certificate
@@ -1047,7 +1060,7 @@ this.
 Restart Apache (you geniuses should know how to do that by now) and check
 `http://<serveraddress>/phpldapadmin`.
 
-`SOURCE <https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-a-basic-ldap-server-on-an-ubuntu-12-04-vps>`_
+`SOURCE: How To Install and Configure A Basic LDAP Server (DigitalOcean) <https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-a-basic-ldap-server-on-an-ubuntu-12-04-vps>`_
 
 Configuring LDAP Schema
 --------------------------------
@@ -1140,7 +1153,7 @@ We don't want to run Tomcat on 8080, but rather 8441. To change this...
 
     $ sudo vim /opt/tomcat/conf/server.xml
 
-Find the connector for port="8080", and replace it with...::
+Find the connector for port="8080", and replace it with::
 
     <!--
     <Connector port="8080" protocol="HTTP/1.1"
@@ -1190,7 +1203,7 @@ below...
     $ sudo vim /opt/tomcat/webapps/manager/META-INF/context.xml
     $ sudo vim /opt/tomcat/webapps/host-manager/META-INF/context.xml
 
-The change should be...::
+The change should be::
 
     <Context antiResourceLocking="false" privileged="true" >
       <!--<Valve className="org.apache.catalina.valves.RemoteAddrValve"
@@ -1202,7 +1215,7 @@ This locks the control panel to only be accessible from the local network.
 Shutting Off Excess Stuff
 ------------------------------------------
 
-There are a number of default Tomcat applications (`.war`s) that we don't
+There are a number of default Tomcat applications (\*.war files) that we don't
 want running. Also, we want to replace the landing page.
 
 ..  code-block:: bash
@@ -1261,7 +1274,7 @@ Now we'll configure Apache Tomcat to work with eHour.
     # cd /opt/tomcat/bin
     # vim setenv.sh
 
-Add the contents...::
+Add the contents::
 
     export EHOUR_HOME="/opt/ehour"
 
@@ -1281,7 +1294,7 @@ Next, we modify the configuration file for eHour.
 
     $ sudo vim ~/ehour-dist/conf/ehour.properties
 
-Uncomment and modify the following lines as necessary...::
+Uncomment and modify the following lines as necessary::
 
     # for mysql uncomment the following lines (and make sure postgresql lines below are commented out)
     ehour.database.driver=com.mysql.jdbc.Driver
@@ -1365,8 +1378,6 @@ Save and close. Then, enable the needed mods and the site, and restart Apache2.
 
 Test to ensure `http://ehour.<serveraddress>/` and
 `https://ehour.<serveraddress>/` work.
-
-..  IMPORTANT::
 
 Phabricator
 ===========================================
@@ -1745,7 +1756,7 @@ Now, add this script to the crontab.
 
     $ sudo crontab -e
 
-At the bottom, add the line...::
+At the bottom, add the line::
 
     @reboot sleep 60; /opt/scripts/phab/phd_start
 
@@ -1801,7 +1812,7 @@ Now we need to adjust the Aphlict configuration, or it won't start.
     $ cp aphlict.default.json aphlict.custom.json
     $ vim aphlict.custom.json
 
-The file should look like this...::
+The file should look like this::
 
     {
       "servers": [
@@ -1843,7 +1854,7 @@ steps.
 
 Finally, we need to tell Phabricator to use Aphlict. In Phabricator, go to
 Config→All Settings (`https://<serveraddress>:8446/config/all`). Look for
-`notification.servers`. Enter the following in the field...::
+`notification.servers`. Enter the following in the field::
 
     [
       {
@@ -1878,7 +1889,7 @@ Add the line...
 
 Save and close.
 
-`SOURCE <https://secure.phabricator.com/book/phabricator/article/notifications/>`_
+`SOURCE: Notifications Setup and Configuration (Phabricator) <https://secure.phabricator.com/book/phabricator/article/notifications/>`_
 
 Phabricator Git SSH
 ---------------------------------------------
@@ -1893,7 +1904,7 @@ user, and then give these users appropriate sudo permissions.
     $ /opt/phab/phabricator/bin/config set diffusion.ssh-user git
     $ sudo visudo
 
-Add these lines to that file...::
+Add these lines to that file::
 
     # Configuration for Phabricator VCS
     www-data ALL=(phabdaemon) SETENV: NOPASSWD: /usr/bin/git, /usr/lib/git-core/git-http-backend
@@ -1982,7 +1993,7 @@ Save and close. Now we need to set up SSHD's configuration.
     $ sudo cp /opt/phab/phabricator/resources/sshd/sshd_config.phabricator.example /etc/ssh/sshd_config.phabricator
     $ sudo vim /etc/ssh/sshd_config.phabricator
 
-In that file, set the following lines...::
+In that file, set the following lines::
 
     AuthorizedKeysCommand /opt/scripts/root_scripts/phabricator-ssh-hook
     AuthorizedKeysCommandUser git
@@ -2035,7 +2046,7 @@ If it works, then all's well! Add the sshd start command to the system cron.
 
     $ sudo crontab -e
 
-On that file, add the line...::
+On that file, add the line::
 
     @reboot /usr/sbin/sshd -f /etc/ssh/sshd_config.phabricator
 
@@ -2163,7 +2174,7 @@ We need to add that command to our Hawksnest user crontab (NOT the root crontab!
 
     crontab -e
 
-Add the following line...::
+Add the following line::
 
     @reboot VBoxManage startvm LittleXenial --type headless > /opt/log/vm.log
 
@@ -2341,7 +2352,7 @@ Now we need to create two new sites in Apache2.
 
     $ sudo vim /etc/apache2/sites-available/000-landing.conf
 
-This file should look like this...::
+This file should look like this::
 
     <IfModule mod_ssl.c>
         <VirtualHost *:443>
@@ -2384,7 +2395,7 @@ Save and close. Open up the next.
 
     $ sudo vim /etc/apache2/sites-available/protected.conf
 
-This file should look like this...::
+This file should look like this::
 
     <IfModule mod_ssl.c>
         <VirtualHost *:443>
@@ -2658,7 +2669,7 @@ Click `Finish setup`.
     check PHPmyadmin → `nextcloud` (database) → Privileges. The `nextcloud`
     user should be listed, with `Grant Yes`.
 
-`SOURCE <https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-nextcloud-on-ubuntu-16-04>`_
+`SOURCE How To Install and Configure NextCloud on Ubuntu 16.04 (DigitalOcean) <https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-nextcloud-on-ubuntu-16-04>`_
 
 Configuring Memory Caching
 -----------------------------
@@ -2670,7 +2681,7 @@ we're using PHP 5.6), so we simply need to enable this for NextCloud.
 
     $ sudo vim /opt/nextcloud/config/config.php
 
-Add the following line before the end...::
+Add the following line before the end::
 
     'memcache.local' => '\OC\Memcache\APCu',
 
@@ -2685,7 +2696,7 @@ It is recommended to use Cron for background tasks. We will set this up now.
 
     $ sudo crontab -u www-data -e
 
-Add the following line...::
+Add the following line::
 
     */15  *  *  *  * php -f /opt/nextcloud/cron.php
 
@@ -2693,7 +2704,7 @@ Save and close.
 
 Finally, in the NextCloud Admin pane, go to `Cron` and select the `Cron` option.
 
-`SOURCE <https://docs.nextcloud.com/server/10/admin_manual/configuration_server/background_jobs_configuration.html>`_
+`SOURCE: Background Jobs Configuration (NextCloud) <https://docs.nextcloud.com/server/10/admin_manual/configuration_server/background_jobs_configuration.html>`_
 
 LDAP Authentication
 --------------------------------
@@ -2703,9 +2714,12 @@ In NextCloud, go to `Apps` and enable LDAP. Then, go to `Admin` and `LDAP`.
 Set the following options:
 
 * Server
-** Host: `localhost`
-** Port: `389`
-** Base DN: `ou=Users, dc=ldap, dc=mousepawmedia, dc=net`
+
+    * Host: `localhost`
+
+    * Port: `389`
+
+    * Base DN: `ou=Users, dc=ldap, dc=mousepawmedia, dc=net`
 
 Click `Test Base DN`, and then `Continue`.
 
@@ -2716,13 +2730,20 @@ Check `LDAP/AD Username` and `LDAP/AD Email Address`, and then click
 `Advanced.` Set...
 
 * Directory Settings
-** User Display Name Field: `cn`
-** 2nd User Display Name Field: `sn`
-** Base User Tree: `ou=Users, dc=ldap, dc=mousepawmedia, dc=net`
-** Group Display Name Field: `cn`
-** Base Group Tree: `ou=Groups, dc=ldap, dc=mousepawmedia, dc=net`
+
+    * User Display Name Field: `cn`
+
+    * 2nd User Display Name Field: `sn`
+
+    * Base User Tree: `ou=Users, dc=ldap, dc=mousepawmedia, dc=net`
+
+    * Group Display Name Field: `cn`
+
+    * Base Group Tree: `ou=Groups, dc=ldap, dc=mousepawmedia, dc=net`
+
 * Special Attributes
-** Email field: `mail`
+
+    * Email field: `mail`
 
 Click `Test Configuration`.
 
@@ -2730,7 +2751,7 @@ The settings are automatically saved. Log in as an LDAP user to test.
 
 ..  TODO:: Set up LDAP Avatar Integration.
 
-`SOURCE <https://docs.nextcloud.com/server/9/admin_manual/configuration_user/user_auth_ldap.html>`_
+`SOURCE User Auth with LDAP (NextCloud) <https://docs.nextcloud.com/server/9/admin_manual/configuration_user/user_auth_ldap.html>`_
 
 Backups
 ======================================
@@ -2767,7 +2788,7 @@ Now we need to adjust the settings for `automysqlbackup`.
 
     $ sudo vim /etc/default/automysqlbackup
 
-Change the following values...::
+Change the following values::
 
     BACKUPDIR="/mnt/backup/sqlbackup"
     DOWEEKLY=4
@@ -2821,7 +2842,7 @@ Finally, we'll add the backup process to our cronjob.
 
     $ sudo crontab -e
 
-We'll add the following line...::
+We'll add the following line::
 
     45 6 * * * /usr/sbin/automysqlbackup
 
@@ -2940,7 +2961,7 @@ You will want to test both by running...
     # /etc/cron.daily/duplicity.inc
     # /etc/cron.weekly/duplicity.full
 
-`SOURCE <https://www.digitalocean.com/community/tutorials/how-to-use-duplicity-with-gpg-to-securely-automate-backups-on-ubuntu>`_
+`SOURCE: How To Use Duplicity With GPG (DigitalOcean) <https://www.digitalocean.com/community/tutorials/how-to-use-duplicity-with-gpg-to-securely-automate-backups-on-ubuntu>`_
 
 Finally, let's create a script for verifying our backups, which we should do
 fairly frequently.
