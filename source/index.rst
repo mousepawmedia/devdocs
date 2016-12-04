@@ -17,6 +17,16 @@ Our Development Documentation is not a replacement for any official
 documentation. Our focus here is to describe our particular instances
 and usages of our stack's technologies.
 
+Network
+---------------------------
+
+..  toctree::
+    :maxdepth: 2
+
+    network/ircbot
+    network/phabricator
+    network/programmingworkflow
+
 Development Tools
 ---------------------------
 

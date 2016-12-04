@@ -844,10 +844,13 @@ Now we'll get our certificates.
 
     $ sudo /opt/certbot/certbot-auto certonly -a webroot --webroot-path /var/www/html -d hawksnest.ddns.net
     $ sudo /opt/certbot/certbot-auto certonly -a webroot --webroot-path /var/www/html -d hawksnest.serveftp.com
-    $ sudo /opt/certbot/certbot-auto certonly -a webroot --webroot-path /var/www/html -d mousepawmedia.net -d nextcloud.mousepawmedia.net -d phabricator.mousepawmedia.net -d ehour.mousepawmedia.net -d jenkins.mousepawmedia.net -d secure.mousepawmedia.net -d files.mousepawmedia.net
+    $ sudo /opt/certbot/certbot-auto certonly -a webroot --webroot-path /var/www/html -d mousepawmedia.net -d nextcloud.mousepawmedia.net -d phabricator.mousepawmedia.net -d ehour.mousepawmedia.net -d jenkins.mousepawmedia.net -d secure.mousepawmedia.net -d files.mousepawmedia.net -d office.mousepawmedia.net
 
 Of course, we would change the `hawksnest.ddns.net` part to match the domain
 name we're getting the certificate for.
+
+..  NOTE:: If you're needing to add a subdomain from a certificate,
+    use the appropriate command above, and include the :code:`--expand ` flag.
 
 Follow the instructions on the screen to complete the process of getting the
 certificates. If successful, they can be found (visible only as root) in
@@ -2751,7 +2754,140 @@ The settings are automatically saved. Log in as an LDAP user to test.
 
 ..  TODO:: Set up LDAP Avatar Integration.
 
-`SOURCE User Auth with LDAP (NextCloud) <https://docs.nextcloud.com/server/9/admin_manual/configuration_user/user_auth_ldap.html>`_
+`SOURCE: User Auth with LDAP (NextCloud) <https://docs.nextcloud.com/server/9/admin_manual/configuration_user/user_auth_ldap.html>`_
+
+Collabora Office Online
+--------------------------------
+
+First, we install the necessary packages.
+
+..  code-block:: bash
+
+    sudo apt install docker.io
+
+Next, we'll pull in the Docker container for Collabora Office online.
+
+..  code-block:: bash
+
+    $ sudo mkdir /opt/collabora
+    $ cd /opt/collabora
+    $ sudo docker pull collabora/code
+
+This download will take a while, so sit back and wait.
+
+Next, we'll deploy the docker image.
+
+..  code-block:: bash
+
+    $ sudo docker run -t -d -p 127.0.0.1:9980:9980 -e 'domain=nextcloud\\.mousepawmedia\\.net' --restart always --cap-add MKNOD collabora/code
+
+Next, we will set up Apache to proxy to Collabora Office.
+
+..  code-block:: bash
+
+    $ sudo a2enmod proxy proxy_wstunnel proxy_http ssl
+    $ sudo systemctl restart apache2
+    $ sudo vim /etc/apache2/sites-available/office.conf
+
+Set the contents of that file to the following...
+
+..  code-block:: apache
+
+    <VirtualHost *:443>
+        ServerName office.mousepawmedia.net:443
+
+        SSLEngine on
+        SSLCertificateFile /etc/apache2/ssl/mousepawmedia.net/fullchain.pem
+        SSLCertificateKeyFile /etc/apache2/ssl/mousepawmedia.net/privkey.pem
+        #SSLProtocol             all -SSLv2 -SSLv3
+        #SSLCipherSuite ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS
+        #SSLHonorCipherOrder     on
+
+        # Encoded slashes need to be allowed
+        AllowEncodedSlashes On
+
+        # Container uses a unique non-signed certificate
+        SSLProxyEngine On
+        SSLProxyVerify None
+        SSLProxyCheckPeerCN Off
+        SSLProxyCheckPeerName Off
+
+        # keep the host
+        ProxyPreserveHost On
+
+        # static html, js, images, etc. served from loolwsd
+        # loleaflet is the client part of LibreOffice Online
+        ProxyPass           /loleaflet https://127.0.0.1:9980/loleaflet retry=0
+        ProxyPassReverse    /loleaflet https://127.0.0.1:9980/loleaflet
+
+        # WOPI discovery URL
+        ProxyPass           /hosting/discovery https://127.0.0.1:9980/hosting/discovery retry=0
+        ProxyPassReverse    /hosting/discovery https://127.0.0.1:9980/hosting/discovery
+
+        # Main websocket
+        ProxyPassMatch "/lool/(.*)/ws$" wss://127.0.0.1:9980/lool/$1/ws
+
+        # Admin Console websocket
+        ProxyPass   /lool/adminws wss://127.0.0.1:9980/lool/adminws
+
+        # Download as, Fullscreen presentation and Image upload operations
+        ProxyPass           /lool https://127.0.0.1:9980/lool
+        ProxyPassReverse    /lool https://127.0.0.1:9980/lool
+    </VirtualHost>
+
+Save and close. Then, enable the site and restart Apache2.
+
+..  code-block:: bash
+
+    $ sudo a2ensite office
+    $ sudo systemctl restart apache2
+
+Next, go to NextCloud. Click the menu, and go to
+:menuselection:`Apps --> Productivity`. Install the "Collabora Online connector".
+Then, go to :menuselection:`Admin --> Additional settings --> Collabora Online`.
+
+Set :guilabel:`Collabora Online server` to :code:`https://office.mousepawmedia.net/`
+and click :guilabel:`Apply`.
+
+Now you can go to the Office app in NextCloud to access Collabora Office!
+
+`SOURCE: Getting started in 3 steps (NextCloud) <https://nextcloud.com/collaboraonline/>`_
+
+Last, we need to modify fail2ban so it won't lock users out when using
+CollaboraOffice.
+
+..  code-block:: bash
+
+    $ sudo nano /etc/fail2ban/filter.d/nextcloud.conf
+
+Set the contents of that file to::
+
+    [Definition]
+    failregex={"reqId":".*","remoteAddr":".*","app":"core","message":"Login failed: '.*' \(Remote IP: '<host>'\)","level":2,"time":".*"}
+    ignoreregex =
+
+Save and close. Then, run...
+
+..  code-block:: bash
+
+    $ sudo vim /etc/fail2ban/jail.local
+
+Set the contents of that file to::
+
+    [nextcloud]
+    enabled = true # set to false to disable
+    filter  = nextcloud
+    port    =  http,https # Change this to https if you aren't using http
+    logpath = /opt/nextcloud/data/nextcloud.log # Make sure this is the right path.
+    ignoreip = 10.0.2.1/24 # Change/Delete this if you want to Ignore one or more IP's
+
+Save and close. Then, restart fail2ban.
+
+..  code-block:: bash
+
+    $ sudo systemctl restart fail2ban
+
+`SOURCE: Setup Fail2Ban with Owncloud (TechKnight) <https://techknight.eu/2015/07/25/setup-fail2ban-with-owncloud-8-1-0/>`
 
 Backups
 ======================================
