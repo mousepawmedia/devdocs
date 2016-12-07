@@ -1,14 +1,15 @@
+.. _sphinx:
+
 Sphinx Development Environment
 ###################################
 
 We use a Python library called Sphinx to generate documentation from
 :abbr:`ReST (Restructured Text)` files.
 
-Installing
-=========================
+.. _sphinx_install:
 
 Installing Sphinx
----------------------------
+=========================
 
 In Ubuntu, Sphinx is very easy to install. You can install it for either
 Python 2 or Python 3. Since we use the latter, we'll install that.
@@ -20,8 +21,10 @@ Python 2 or Python 3. Since we use the latter, we'll install that.
     $ sudo apt update
     $ sudo apt install python3-sphinx pandoc
 
+.. _sphinx_install_atom:
+
 Installing Atom
----------------------------
+=========================
 
 ReST files are just plain text files written in the ReStructuredText markup
 language. Thus, you can edit them in any text editor. However, I've found that
@@ -54,6 +57,8 @@ the left hand menu. You'll want to install the following packages:
 
 * :code:`language-restructuredText`
 * :code:`rst-preview-pandoc`
+
+.. _sphinx_setup_docs:
 
 Setting Up Documentation
 =====================================
@@ -123,6 +128,8 @@ and then look for :code:`html_theme`. Change this from :code:`alabaster` to
 :code:`sphinx_rtd_theme`. The new line should look like this::
 
     html_theme = 'sphinx_rtd_theme'
+
+.. _sphinx_edit_docs:
 
 Writing and Editing Documentation
 =========================================

@@ -1,5 +1,5 @@
 Phabricator
-###############################
+#################################
 
 Registration and Login
 =================================
@@ -425,30 +425,33 @@ Then click :guilabel:`Save Changes`.
 
 Later, you can click :guilabel:`Edit Recurrence` to change these settings.
 
-.. _phab_slowvote:
-
-Slowvote
-==================================
-
-.. _phab_paste:
-
-Paste
-==================================
-
 .. _phab_phriction:
 
 Phriction
 ==================================
 
-.. _phab_phurl:
+.. _phab_phriction_vs_docs:
 
-Phurl
-==================================
+Phriction vs. Docs
+----------------------------------
+
+It can be hard to know what belongs in documentation, and what belongs in
+Phriction. Here's the basic principle:
+
+* Anything that the end-user needs to see goes in documentation. This generally
+  includes usage instructions.
+
+* Everything else belongs on Phriction. This includes internal (developer)
+  docs, specs, planning notes, and design work.
 
 .. _phab_ponder:
 
 Ponder
 ==================================
+
+**Ponder** is our own personal "StackOverflow". It's a great place to ask
+questions and share knowledge regarding our libraries, as well as usage of
+our development tools.
 
 .. _phab_audit:
 
@@ -468,4 +471,19 @@ Diffusion
 .. _phab_pholio:
 
 Pholio
+==================================
+
+.. _phab_slowvote:
+
+Slowvote
+==================================
+
+.. _phab_paste:
+
+Paste
+==================================
+
+.. _phab_phurl:
+
+Phurl
 ==================================

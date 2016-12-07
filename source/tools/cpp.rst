@@ -1,9 +1,13 @@
+..  _cpp:
+
 C++ and C Development Environment
 ###################################
 
 We use C++ and C for most of our projects at MousePaw Games. This tutorial
 will help you set up the development environment for working with those
 languages on Linux.
+
+..  _cpp_install_compiler:
 
 Install the Compiler
 ============================
@@ -70,7 +74,9 @@ select `gcc-5` manually.
 | Objective C | `gobjc`    |
 +-------------+------------+
 
-`SOURCE <http://askubuntu.com/questions/466651/how-do-i-use-the-latest-gcc-4-9-on-ubuntu-14-04>`_
+`SOURCE: How Do I Use the Latest GCC (AskUbuntu) <http://askubuntu.com/questions/466651/how-do-i-use-the-latest-gcc-4-9-on-ubuntu-14-04>`_
+
+..  _cpp_install_devtools:
 
 Install Development Tools
 ==================================
@@ -81,6 +87,8 @@ quickly install the whole batch (except the IDE) by running the following...
 ..  code-block:: bash
 
     $ sudo apt install build-essential cmake valgrind kcachegrind vim cccc
+
+..  _cpp_install_codeblocks:
 
 Code::Blocks 16.01
 ==================================

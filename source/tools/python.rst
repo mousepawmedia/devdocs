@@ -1,3 +1,5 @@
+.. _python:
+
 Python3 Development Environment
 ######################################
 
@@ -6,6 +8,8 @@ and GUI development. Kivy is our GUI toolkit.
 
 We recommend either NINJA-IDE or Atom as our main Python IDE, although you can
 use whatever you're most comfortable with.
+
+.. _python_installing:
 
 Installing Packages
 ===========================
@@ -24,6 +28,8 @@ We'll also install the libraries and development tools we use for Python3.
 
 ..  WARNING:: Do not **ever** use :code:`sudo pip`. If you want to install
     packages via pip, use a virtual environment.
+
+.. _python_configure_ide:
 
 Configuring the IDE
 =========================
@@ -86,7 +92,7 @@ Finally, click :guilabel:`Save`.
 Atom
 ---------------------------
 
-If you're looking to install Atom, see the :doc:`sphinx` tutorial.
+If you're looking to install Atom, see :ref:`sphinx_install_atom`.
 
 In Atom, you will need to install the following packages. To install packages,
 go to :menuselection:`Edit --> Preferences --> Install`. Search for each

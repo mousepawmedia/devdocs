@@ -1,3 +1,5 @@
+.. _irc:
+
 Freenode IRC
 ################################
 
@@ -15,6 +17,8 @@ an IRC channel, including `#ubuntu`, `#synfig`, `#opus`, `#blender`, and so
 forth. Of course, `#python` lives on that network too.
 
 ..  WARNING:: The `##c++` channel is infamously unfriendly. Avoid it.
+
+.. _irc_setup:
 
 Getting On
 ================================
@@ -169,6 +173,8 @@ your chats on your computer. On Linux, these are stored under
 Under :menuselection:`Chatting --> General`, you may want to set default
 message for when you quit, leave a channel, or mark yourself as away. Keep
 these brief and appropriate, but have fun with them!
+
+.. _irc_using:
 
 Using IRC
 ================================
@@ -326,6 +332,8 @@ Once you're done with your op work, you can de-op via::
     /msg chanserv op #mousepawgames -nick_name
 
 ...where nick_name is your nickname. (Note the - in front.)
+
+.. _irc_netiquette:
 
 Netiquette
 ==============================

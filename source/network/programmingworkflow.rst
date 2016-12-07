@@ -1,3 +1,5 @@
+..  _p_workflow:
+
 Programming Workflow
 #################################
 
@@ -20,6 +22,7 @@ There are three major stages in our programming workflow:
 
 3) Landing
 
+..  _p_workflow_planning:
 
 Step One: Planning
 ==========================
@@ -58,6 +61,33 @@ Steps in Planning
     * Brainstorming feature details and implementation over time.
 
     * Discussing and tracking changes in project design.
+
+..  _p_workflow_planning_territory:
+
+Code Territory
+---------------------------------
+
+Whenever working on a section of code, you should be aware of what
+**code territory** you're in. Different teams are in charge of different
+sections of the code, based on their skills and experience.
+
+When making a revision to a sector of code, you should have the code reviewed
+by an active member of the team whose code territory you're working in.
+If you aren't sure who to ask for a review, set the Team Lead as the reviewer.
+They will reassign as necessary.
+
+You can find both the current Team Lead and the Code Territory lists on the
+each team page.
+
+`A-Team <https://phabricator.mousepawmedia.net/project/view/35/>`_: Integration
+
+`Black Sheep Squadron <https://phabricator.mousepawmedia.net/project/view/25/>`_: Data
+
+`Impossible Missions Force <https://phabricator.mousepawmedia.net/project/view/24/>`_: Multimedia
+
+See :ref:`phab_projects_types`.
+
+..  _p_workflow_building:
 
 Step Two: Building
 ==========================
@@ -217,8 +247,12 @@ Steps in Building
 
 8)  Link your Maniphest tasks to your Differential.
 
+..  _p_workflow_landing:
+
 Step Three: Landing
 ==========================
+
+..  _p_workflow_landing_checklist:
 
 Differential Checklist
 --------------------------

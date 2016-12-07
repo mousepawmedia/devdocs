@@ -1,3 +1,5 @@
+..  _gitarc:
+
 Git and Arcanist
 ###############################
 
@@ -14,6 +16,8 @@ on the code and merge all of our changes together cleanly.
 Phabricator manages all our Git repositories, and that gives us a lot of
 additional features - Differential being key among those. In order to upload
 directly to Phabricator, we use a program called Arcanist.
+
+.. _gitarc_install:
 
 Installing Git and Arcanist
 =============================
@@ -71,6 +75,8 @@ Save and close gedit. Then, restart your computer. To test it out, run...
 
 Arcanist may ask you to install additional PHP packages via apt. If you set
 everything up right, you'll see arc's help list.
+
+.. _gitarc_importrepos:
 
 Import Repositories
 ===============================
@@ -205,6 +211,8 @@ the method you want to move. (Again, you can find those URLs on the Phabricator
 Diffusion page for the repository in question.)
 
 After switching out the URLs, save and close the file. That's it!
+
+.. _gitarc_signin:
 
 Sign In With Arcanist
 =================================
