@@ -24,6 +24,7 @@ Quick Start
     :maxdepth: 1
 
     quickstart/contrib
+    quickstart/staff
 
 Network
 ---------------------------

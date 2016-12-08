@@ -4,7 +4,7 @@ Installing Ubuntu Linux
 Making Some Decisions
 ==============================
 
-..  NOTE:: You should read the "About Linux" section before continuing.
+..  NOTE:: You should read the :doc:`setup/about` section before continuing.
 
 Single Boot or Dual Boot?
 -------------------------------
