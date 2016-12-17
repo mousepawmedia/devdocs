@@ -130,9 +130,13 @@ Phabricator
 ..  NOTE:: Phabricator is on our development server, meaning it is subject to
     the Hawksnest server hours.
 
-Phabricator is where most of our development work takes place.
+Phabricator is where most of our development work takes place. It hosts our
+repositorise
 
-In order to get the most out of Phabricator, you should adjust some settings
+Adjusting Settings
+------------------------------
+
+To get the most out of Phabricator, you should adjust some settings
 and fill out your profile. Follow these instructions...
 
 1.  Log into Phabricator using your company (LDAP) credentials.
@@ -183,7 +187,7 @@ Regular Phabricator Tasks
 Phabricator is MASSIVE, so which apps you use depend heavily on what you're
 doing. There are five major apps you should be making daily use of.
 
-* Calendar
+* Calendar (see :ref:`phab_calendar`)
 
   * RSVP for all events you're invited to.
 
@@ -194,23 +198,23 @@ doing. There are five major apps you should be making daily use of.
     If it will only take five minutes and you're doing it now, don't create
     a task. Otherwise, **MAKE A TASK.**
 
-* Maniphest
+* Maniphest (see :ref:`phab_maniphest`)
 
   * Create and manage tasks for everything you're working on.
 
-* Phriction
+* Phriction (see :ref:`phab_phriction`)
 
   * Monitor pages for projects you're involved in.
 
   * Maintain any specs and design notes you're responsible for.
 
-* Differential
+* Differential (see :ref:`phab_differential`)
 
   * Submit and maintain Differentials for your code revisions.
 
   * Review Differentials you've been marked as a reviewer on.
 
-* Pholio
+* Pholio (see :ref:`phab_pholio`)
 
   * Submit and maintain Mocks for your graphical work.
 
@@ -220,7 +224,43 @@ Most of these apps are on the left side of the main page of Phabricator.
 If you don't see, click :guilabel:`Applications` on the bottom of the left
 menu on the main page. It'll be on there.
 
-NextCloud
+Nextcloud
 ===========================
 
-NextCloud allows us to share and collaboratively edit documents.
+Nextcloud allows us to share and collaboratively edit documents.
+
+First Steps
+--------------------------
+
+1.  When you first log into Nextcloud, click your username in the upper-right
+    corner and select :guilabel:`Personal`. This will take you to your profile
+    and settings screen.
+
+2.  If you scroll down a little, you will see buttons for downloading the Nextcloud
+    client for various platforms. Now would be a good time to set up one or more
+    up. To install the client for Linux, see :ref:`nextcloud_client`.
+
+..  IMPORTANT:: Remember, Windows is banned from the company for all
+    staff-related tasks. This includes accessing Nextcloud, even through
+    the Windows client.
+
+3.  The Activity section allows you to customize notifications. You should leave
+    most Stream options checked, so you'll know when things happen on Nextcloud.
+    However, you may want to uncheck some Mail options, to keep email to a
+    minimum.
+
+4.  Uncheck the boxes labeled :guilabel:`List your own file actions in the stream`
+    and :guilabel:`Notify about your own actions via email`, so you don't
+    recieve notifications about your *own* actions.
+
+Regular Nextcloud Tasks
+-------------------------------
+
+If you work in the Content Development department, you'll be spending a lot
+of time on Nextcloud.
+
+* Upload files.
+
+* Review and proofread files.
+
+* Collaborate on documents.

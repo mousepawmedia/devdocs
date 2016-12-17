@@ -120,6 +120,8 @@ installing OpenSSH Client, so we can log into other systems with SSH.
 Next, we generate a new keypair. Be sure to enter your GitHub or company
 email address in place of `me@example.com`.
 
+..  code-block:: bash
+
     $ ssh-keygen -t rsa -b 4096 -C "me@example.com"
 
 You'll see a message that the key pair is being generated. When prompted, press
@@ -138,7 +140,7 @@ Open your public key in a plain text editor like Gedit.
 
 ..  code-block:: bash
 
-    $ gedit `~/.ssh/id_rsa.pub
+    $ gedit ~/.ssh/id_rsa.pub
 
 Copy the entire contents of the file. Be sure to **close without modifying
 the file!**

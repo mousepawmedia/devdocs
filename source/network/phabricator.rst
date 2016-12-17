@@ -348,6 +348,12 @@ To put that all another way, here's a brief rule of thumb:
 | Project/Subproject version.               | Milestone      | "PawLIB 1.0" #pawlib1.0          |
 +-------------------------------------------+----------------+----------------------------------+
 
+Creating a Bug Report/Feature Request
+-------------------------------------------
+
+Creating a Task
+-----------------------------------
+
 .. _phab_calendar:
 
 Calendar
@@ -451,7 +457,13 @@ Ponder
 
 **Ponder** is our own personal "StackOverflow". It's a great place to ask
 questions and share knowledge regarding our libraries, as well as usage of
-our development tools.webs
+our development tools.
+
+Ask a Question
+----------------------------------
+
+Answer a Question
+----------------------------------
 
 .. _phab_audit:
 
