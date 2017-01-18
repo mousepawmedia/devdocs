@@ -8,7 +8,7 @@ First Time Setup
 =========================
 
 The first time you contribute code, you'll want to set up your development
-environment. At miminum, you will need to set up :ref:`gitarc`. You may also
+environment. At minimum, you will need to set up :ref:`gitarc`. You may also
 need to set up the tools for :ref:`C and C++ <cpp>`, :ref:`Python <python>`,
 and/or :ref:`Sphinx <sphinx>`.
 

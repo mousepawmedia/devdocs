@@ -122,7 +122,7 @@ email address in place of `me@example.com`.
 
 ..  code-block:: bash
 
-    $ ssh-keygen -t rsa -b 4096 -C "me@example.com"
+    $ ssh-keygen -t rsa -b 4096 -C 'me@example.com'
 
 You'll see a message that the key pair is being generated. When prompted, press
 :kbd:`Enter` to use the default path for the key.
@@ -227,9 +227,11 @@ the following...
 
     $ arc install-certificate
 
-Go to `this link <https://hawksnest.ddns.net:8446/conduit/login/>` and sign
+Go to `this link <https://phabricator.mousepawmedia.net/conduit/login/>` and sign
 in if necessary. You'll receive a validation code. Copy and paste
 (:kbd:`Ctrl+Shift+V`) the validation code into the terminal when prompted.
+
+If you did all this correctly, you will see the message "API Token installed".
 
 ------------------------
 

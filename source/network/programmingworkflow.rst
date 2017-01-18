@@ -272,7 +272,7 @@ Before landing, each Differential should...
 3)  Have binaries and unnecessary crust untracked and removed. (Keep an eye on
     .gitignore!)
 
-4)  Compile and run properly - this should be confimed via Harbormaster/Jenkins
+4)  Compile and run properly - this should be confirmed via Harbormaster/Jenkins
     (if available).
 
 5)  Be free of compiler errors and warnings. Must compile with

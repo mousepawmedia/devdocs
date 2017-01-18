@@ -9,14 +9,15 @@ itself to "lurking": passively being in the room, occasionally glancing over to
 see what's going on, and sometimes speaking up when the inclination strikes you.
 You'd be amazed how much you can absorb from just from lurking in various
 rooms (such as `#python`), not only about the language or technology in
-question, but about programing in general!
+question, but about programming in general!
 
 IRC is one of the oldest and most widely used means of synchronous
 communication among programmers. Most open-source organizations maintain
 an IRC channel, including `#ubuntu`, `#synfig`, `#opus`, `#blender`, and so
 forth. Of course, `#python` lives on that network too.
 
-..  WARNING:: The `##c++` channel is infamously unfriendly. Avoid it.
+..  WARNING:: The `##c++` channel is infamously unfriendly. Avoid it. We're trying
+    to start the ##c++-friendly room, so please consider lurking there.
 
 .. _irc_setup:
 
@@ -195,11 +196,11 @@ each on the `Network List` window of HexChat.
 Channels
 --------------------------------
 
-Conversatins on IRC are primarily separated into Channels. There are hundreds
+Conversations on IRC are primarily separated into Channels. There are hundreds
 of channels on Freenode alone. Each channel name starts with at least one
 `#` symbol.
 
-To join our progrmaming channel, for example, type::
+To join our programming channel, for example, type::
 
     /join #mousepawgames
 
@@ -209,7 +210,7 @@ you receive.
 
 Most channels have one or more **channel operators**, also knows as "mods" or
 "ops". When someone is opped, HexChat will display a red dot next to their
-name in the list. However, most ops (including our own) fly under the rader,
+name in the list. However, most ops (including our own) fly under the radar,
 and don't "take op" until they need it.
 
 Many channels also have **bots**, which are special computer programs that
@@ -318,7 +319,7 @@ To be kickbanned means you're thrown out, and never allowed to return. As long
 as you follow the rules, and a chatroom is relatively sane, this should be easy
 to avoid.
 
-In the `#mousepawgames` channel, some staff members have be given op status.
+In the `#mousepawgames` channel, some staff members have been given op status.
 If you're an op, you can "take op" by typing::
 
     /msg chanserv op #mousepawgames
@@ -420,7 +421,7 @@ people *still* find things to fight about. We refer to the level of conflict
 in a room as its **temperature**.
 
 Controversial topics aren't necessarily *bad* within the appropriate time and
-place; you can learn a lot by discussiperiodicallyng culture and current events
+place; you can learn a lot by discussing culture and current events
 with people around the world. In fact, it is possible to have these
 conversations without causing problems. Here are a few rules:
 
@@ -510,13 +511,13 @@ Trolling and Flaming
 
 Under no circumstances should you *ever* go into a room with the express
 purpose of starting a debate or stirring up trouble, no matter how funny
-you think it is. This is called **trolling**, and it is one the most grevious
+you think it is. This is called **trolling**, and it is one the most grievous
 crimes you can commit on IRC.
 
 In general, you should also avoid using profanity and other offensive language.
 Different rooms have different policies on this, but there's never harm in
 keeping your language clean. (It also promotes use of more creative,
-descriptive words - liguistically, the f-bomb is just meaningless filler.)
+descriptive words - linguistically, the f-bomb is just meaningless filler.)
 
 Excessive use of offensive or hurtful language, especially directed at a
 person, is known as **flaming**. This is not okay. Ever. Period.

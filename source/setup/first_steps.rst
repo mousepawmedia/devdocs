@@ -32,7 +32,7 @@ the interface called "Unity". Using it is very simple:
   open applications and files from here. You can also bring this up by tapping
   your **Super key** (or "Windows key").
 - The second button on the Launcher is your **File Browser**. The package that
-  Ubuntu Unity uses for this is technically called `nautilus`.
+  Ubuntu Unity uses for this is technically called ``nautilus``.
 - The toolbar at the top of the screen is called the **Menu Bar**. When you
   hover your mouse over it, the menus ("File", "Edit", etc.) for the program
   you're using appear.
@@ -59,23 +59,23 @@ use the Terminal.
     $ sudo apt autoremove
     $ sudo apt autoclean
 
-Let's break this down quickly. `apt` is a command-line program that installs
-and manages packages on your system. The `update` command fetches the
-latest list of packages available for installation. `dist-upgrade`
+Let's break this down quickly. ``apt`` is a command-line program that installs
+and manages packages on your system. The ``update`` command fetches the
+latest list of packages available for installation. ``dist-upgrade``
 installs all available upgrades, including new versions of software.
 
 ..  NOTE:: There is a minor debate about whether one should update via
-    `apt upgrade` or `apt dist-upgrade`. The former doesn't upgrade to a new
+    ``apt upgrade`` or ``apt dist-upgrade``. The former doesn't upgrade to a new
     major version of software, meaning things are less likely to break.
     However, many bugfixes and security fixes are addressed in new versions
     of software. Personally, in the years I've been using Linux, I've never
-    regretted running `apt dist-upgrade`.
+    regretted running ``apt dist-upgrade``.
 
-Next, we run `autoremove` to have apt get rid of any unnecessary packages,
-and `autoclean` to remove old installation data and other cruft. You should
-run these regularly.
+Next, we run ``autoremove`` to have apt get rid of any unnecessary packages,
+and ``autoclean`` to remove old installation data and other cruft (garbage).
+You should run these regularly.
 
-..  NOTE:: The Software Updater program doesn't run `autoremove` and `autoclean`
+..  NOTE:: The Software Updater program doesn't run ``autoremove`` and ``autoclean``
     automatically - you'll need to do that yourself.
 
 Installing Essential Packages
@@ -93,13 +93,13 @@ Ubuntu system. We'll install those now:
 
 While those install, here's a quick breakdown of what those packages are for...
 
-- `gdebi` makes it easier to install packages from downloaded installers.
-- `synaptic` enables easier package selection and installation.
-- `apt-xapian-index` is needed by Synaptic.
-- `gufw` is for managing your firewall.
-- `ubuntu-restricted-extras` installs extra media codecs and tools that,
+- ``gdebi`` makes it easier to install packages from downloaded installers.
+- ``synaptic`` enables easier package selection and installation.
+- ``apt-xapian-index`` is needed by Synaptic.
+- ``gufw`` is for managing your firewall.
+- ``ubuntu-restricted-extras`` installs extra media codecs and tools that,
   while free, are not FOSS.
-- `unity-tweak-tool` and `compizconfig-settings-manager` make it easier to
+- ``unity-tweak-tool`` and ``compizconfig-settings-manager`` make it easier to
   change some of Ubuntu's hidden settings.
 
 Before we can use synaptic, we need to run...
@@ -120,14 +120,14 @@ Security Stuff
 Firewall Settings
 ------------------------
 
-In the previous section, we installed `gufw` for controlling our firewall.
+In the previous section, we installed ``gufw`` for controlling our firewall.
 You can now launch the "Firewall Configuration" application. It may also appear
 in your System Settings.
 
 Once you bring up Firewall Configuration, set the :guilabel:`Status` switch
 to "On". You can open and close extra ports as needed on this window as well.
 
-..  NOTE:: Unfortuantely, the firewall does not change profiles automatically
+..  NOTE:: Unfortunately, the firewall does not change profiles automatically
     based on what network you connect to. Bear that in mind.
 
 Virus Scanning
@@ -153,7 +153,7 @@ Updating LibreOffice
 
 The version of LibreOffice that ships with Ubuntu is slightly older than the
 latest stable version. To get that stable version, you'll need to add the
-**PPA**, or "personal package archive," for LibreOffice "Fresh", so `apt`
+**PPA**, or "personal package archive," for LibreOffice "Fresh", so ``apt``
 can download the newer version.
 
 Once you've added the new PPA, update the apt package lists and install all
@@ -176,7 +176,7 @@ Calligra
 
 One is `Calligra <https://duckduckgo.com/?q=calligra&t=opera&ia=web>`_,
 which sports a rather usual interface. Some people love it, and some people
-hate it. If you'd like to try it out, just install the `calligra` package.
+hate it. If you'd like to try it out, just install the ``calligra`` package.
 
 WPS Office
 ^^^^^^^^^^^^^^^^^
@@ -188,7 +188,7 @@ replacements for Word, Excel, and PowerPoint. Unfortunately, WPS Office cannot
 work with the OpenDocument formats (`*.odt`, `*.ods`, etc.).
 
 You can download WPS Office from `their website <https://www.wps.com/>`_. Save
-the `*.deb` file to your computer, and then browse to it in your File Browser.
+the ``*.deb`` file to your computer, and then browse to it in your File Browser.
 Right-click it and open with "GDebi Package Installer", then click Install.
 
 Web Browser
@@ -205,7 +205,7 @@ or Opera, you can install those easily.
     Chrome Extensions, try Opera. (It's also faster!)
 
 You can download `Google Chrome here <https://www.google.com/chrome/browser/desktop/>`_,
-and `Opera here <http://www.opera.com/>`_. For either, save the `*.deb` file
+and `Opera here <http://www.opera.com/>`_. For either, save the ``*.deb`` file
 to your computer, browse to it in your File Browser, right-click, and open it
 with "GDebi Package Installer."
 
@@ -219,7 +219,7 @@ Chrome, and Opera.
 To install, you first must enable the Canonical Partners package repository. You
 can do so by going to Power Menu → :guilabel:`System Settings` →
 :guilabel:`Software and Updates`. Go to the :guilabel:`Other Software` tab and
-check the box next to `Canonical Partners`. (NOT next to "Canonical Partners
+check the box next to ``Canonical Partners``. (NOT next to "Canonical Partners
 (Source code).") Click :guilabel:`Close`. When prompted, allow the repository
 to update.
 
@@ -234,7 +234,7 @@ to test the installation.
 
 ..  IMPORTANT:: Adobe Flash will now manage its own updates. You should never
     have to download any update of Flash through the web browser. On Linux,
-    Flash can only be installed and updated through `apt`.
+    Flash can only be installed and updated through ``apt``.
 
 A Note On Web Search Engines
 --------------------------------------
@@ -294,6 +294,14 @@ in the list and click :guilabel:`Make default`.
 DVD Playback
 ====================================
 
+..  WARNING:: Under the DMCA, it is technically *illegal* to play any disc with
+    copy protection on Linux (unless you use the non-free Fluendo DVD Player
+    application). DVDs with copy protection have a label indicating it on the
+    case, usually on the bottom of the back of the case. To date, there has
+    never been legal action taken against a user for playing copy-protected
+    DVDs on Linux, and the viability of the law is under heavy debate. Just
+    be aware of the law and decide for yourself.
+
 Want to play DVDs? Yes, Ubuntu can do that, but you have to set it up first.
 
 ..  code-block:: bash
@@ -302,7 +310,7 @@ Want to play DVDs? Yes, Ubuntu can do that, but you have to set it up first.
 
 After installation, follow the instructions on the screen.
 
-While the default movie player works fine in Ubuntu, consider installing `vlc`
+While the default movie player works fine in Ubuntu, consider installing ``vlc``
 if you want additional features for video and DVD playback.
 
 Customizing Ubuntu
@@ -315,7 +323,7 @@ There are some amazing themes and icons available from
 `Noobslab <http://www.noobslab.com/p/themes-icons.html>`_. However, I
 believe the best themes and icons are the ones from the Ravefinity project
 (and a few others). Having tried a number of themes, I find that these provide
-the cleanest and most consistant results. Plus, they come in a wide varity of
+the cleanest and most consistent results. Plus, they come in a wide variety of
 colors!
 
 Installing Themes and Icons
@@ -329,7 +337,7 @@ don't apply to you.
 ..  code-block:: bash
 
     sudo add-apt-repository ppa:noobslab/themes
-    sudo add-apt-repository ppa:ravefinity-project/themes
+    sudo add-apt-repository ppa:ravefinity-project/ppa
 
     # Install icon sets...
     sudo apt install vivacious-colors vibrancy-colors
@@ -385,7 +393,7 @@ However, these screensavers are not present by default. Let's install them:
     sudo apt install xscreensaver xscreensaver-data xscreensaver-data-extra xscreensaver-gl xscreensaver-gl-extra  xscreensaver-screensaver-bsod
     sudo apt purge gnome-screensaver
 
-Note, we had to completely remove `gnome-screensaver` from the system, to
+Note, we had to completely remove ``gnome-screensaver`` from the system, to
 prevent a conflict between the two screensaver programs.
 
 If you're on Linux Mint, that's all you have to do! You can now go to
@@ -423,17 +431,22 @@ The first is to duplicate Windows' Ctrl+Alt+Del functionality, which is
 sadly missing by default on Linux. Thankfully, you can set up custom
 keyboard shortcuts for anything you like, so adding that in is easy!
 
-Go to your System Settings and Keyboard. Select :guilabel:`Shortcuts` if
-necessary, and then go to :guilabel:`System`. Tap the row for "Log out"
-and press :kbd:`Ctrl+Alt+Backspace`. This will be the keyboard shortcut if
-you want to quickly log out of your computer.
+First, we need to free up the keyboard shortcut for our use.
+Go to Power Menu → :guilabel:`System Settings` → :guilabel:`Keyboard`.
+Select :guilabel:`Shortcuts` if necessary, and then go to :guilabel:`System`.
+Double-click the ``Ctrl-Alt-Delete`` entry in the row for "Log out" and
+press :kbd:`Ctrl+Alt+Backspace`. This will be the keyboard shortcut if you
+want to quickly log off your computer.
 
 Now, go to :guilabel:`Custom Shortcuts`. Click :guilabel:`+`. Set the name
 to "System Monitor" and the command to "gnome-system-monitor". Press
 :guilabel:`Apply`.
 
-Finally, tap the "System Monitor" row in the list and press
+Finally, double-click ``Disabled`` on the "System Monitor" row in the list and press
 :kbd:`Ctrl+Alt+Delete`.
+
+..  NOTE:: If you're on Linux Mint, :kbd:`Ctrl+Alt+Delete` is already used for
+    restarting the system. You can probably shut this off in Startup Applications.
 
 Compose Key
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -450,7 +463,7 @@ Unity Tweaks
 As you may have noticed, the Unity Tweak Tool on Ubuntu Unity offers a lot of
 hidden options. Here are a few to consider:
 
-- You can change a lot about the panel, including display your name or the date,
+- You can change a lot about the panel, including displaying your name or the date,
   setting the clock to 12 or 24-hour time, and showing the volume and power
   icons.
 - You can set Window Snapping to place a window in a given corner if you

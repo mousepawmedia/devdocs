@@ -153,7 +153,7 @@ If you want to browse through all of our available Macros, see the
 Subscribing
 ---------------------------------
 
-When you **Subscribe** to an object, you will receieve email notifications for
+When you **Subscribe** to an object, you will recieve email notifications for
 any updates to that object. You are automatically subscribed to any object
 you create.
 
@@ -218,7 +218,7 @@ object type, instead of the kind of project object.
   giant bins for organizing what we're working on - :code:`PawLIB`,
   :code:`Redstring`, :code:`Knitpicker`, and :code:`Anari`, to name a few.
 
-* For our purposes, a **Subproject** refers to a
+* For our purposes, a **Subproject** refers to a subset of features within a Project.
 
 * A **Group** designates permissions. We have several...
 
@@ -646,7 +646,7 @@ You can create a new event by clicking on a day and a timeslot, or by clicking
 * Write up a description. This is a good place for meeting agendas, or for
   event location and details.
 
-* Consider changing the Icon. We typically use "Meeting" for large eetings,
+* Consider changing the Icon. We typically use "Meeting" for large meetings,
   "Coffee Meeting" for small meetings (especially 1-on-1), "Official Business"
   for out-of-office business events, and "Holiday" for vacations and breaks.
 

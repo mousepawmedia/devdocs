@@ -21,7 +21,7 @@ Linux devices.
 What Is Debian?
 -----------------------------
 
-In reality, "Linux" only refers to the **kernal**, the heart of the operating
+In reality, "Linux" only refers to the **kernel**, the heart of the operating
 system ["OS"]. The rest of the OS is composed of hundreds of other pieces of
 software. There are actually over a thousand different "distributions" (or
 "distros") of Linux, most specially designed for a particular use or purpose.
@@ -37,7 +37,7 @@ What Distro Should I Choose?
 
 The best way to think of Linux is as a box of LEGOs - you decide what you want,
 and snap the pieces together. Some computer nerds like to start with just the
-Linux kernal itself and add each piece manually, but the rest of us like to
+Linux kernel itself and add each piece manually, but the rest of us like to
 have a starting place. That's one of the reasons we use Ubuntu-based distros.
 
 The most common distro at MousePaw Games is **Ubuntu** itself. It's unique,
@@ -74,7 +74,7 @@ distribute the source code.
 
 By contrast, the philosophy of **Free Software** ("free" as in "free speech",
 not necessarily as in "free beer") emphasizes software freedom to an extreme.
-Free Software posists that non-free ("proprietary") software, being any
+Free Software posits that non-free ("proprietary") software, being any
 software which does not adhere to the standards of software freedom, is
 inherently morally wrong and should not be used. To this end, their main
 license, the GNU Public License [GPL], requires that any source code that

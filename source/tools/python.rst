@@ -19,10 +19,16 @@ default. It is included in the installation command below anyway, just
 in case you've removed it, or are on a system where it isn't installed
 by default.
 
-We'll also install the libraries and development tools we use for Python3.
+..  IMPORTANT:: If you type in the following commands, make sure you scroll and
+    get the entire command. If you prefer to copy and paste, triple-click the third
+    command so you get the whole thing.
+
+We'll also install the libraries and development tools we use for Python3. We'll be getting
+the latest stable version of Kivy from a third-party repository.
 
 ..  code-block:: bash
 
+    $ sudo add-apt-repository ppa:kivy-team/kivy
     $ sudo apt update
     $ sudo apt install python3 python3-kivy python3-lxml python3-pip python3-virtualenv pylint3 ninja-ide
 

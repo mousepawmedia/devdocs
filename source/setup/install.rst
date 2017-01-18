@@ -47,7 +47,7 @@ Below are links to several great Ubuntu-based operating systems, including
 Ubuntu itself. They all run the same software and work the same at their
 heart, so just pick one you like.
 
-If you have aboslutely no idea what to go for, just go with Ubuntu itself.
+If you have absolutely no idea what to go for, just go with Ubuntu itself.
 I'm writing these instructions on Ubuntu anyway!
 
 - `Ubuntu <https://www.ubuntu.com/desktop>`_
@@ -229,7 +229,8 @@ For Single-Boot
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 If you want to **permanently remove Windows** and install Linux, select
-"Erase disk and install Ubuntu".
+"Erase disk and install Ubuntu". This is usually the best option for a
+completely new install.
 
 Alternatively, you can click `Something else` and set up the partitions
 yourself. In addition to the necessary partitions (swap, boot sectors, etc.),
@@ -257,7 +258,7 @@ our RAM memory. Click `free space` again and click `+`. Set the partition
 size equivalent to the amount of RAM you have (remember, 1 GB = 1024 MB).
 Select `End of this space` and set `Use as` to `swap area`. Confirm.
 
-Finally, we'll use te rest of the free space for our `/home` partition. Select
+Finally, we'll use the rest of the free space for our `/home` partition. Select
 `free space` again and click `+`. Leave the size at the default, and leave
 `Primary` and `Beginning of this space` selected. Set `Use as` to `ext4` and
 `Mount point` to `/home`. Confirm.

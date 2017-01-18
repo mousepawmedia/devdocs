@@ -12,20 +12,28 @@ languages on Linux.
 Install the Compiler
 ============================
 
-We use the GCC5 compiler. If you're not on a Debian-based Linux system,
-you'll need to find out how to install this yourself.
+We use the Clang compiler primarily, and GCC5 secondarily. If you're not on a
+Debian-based Linux system, you'll need to find out how to install these yourself.
 
 We don't directly support Windows as a development environment. If you're
-using Windows, you'll need to use MinGW or another GCC5-compatible C++ compiler.
+using Windows, you'll need to use Clang or a GCC5-compatible C++ compiler
+(such as MinGW).
 **We have no plans to support MSVC.**
 
 If you're on a Mac, you should install the Command Line Tools for Xcode,
-which has GCC onboard.
+which has Clang onboard.
 
 ..  WARNING:: If you're using an operating system based on a version of
-    Ubuntu before 16.04, you may not be able to compile our code. There
-    was a major bug in the last version of GCC5 for Ubuntu 14.04 which
+    Ubuntu before 16.04, you may not be able to compile our code with GCC.
+    There was a major bug in the last version of GCC5 for Ubuntu 14.04 which
     prevented our code from compiling.
+
+We'll start by installing Clang. This is in the core repositories. We require
+Clang 3.4 or later, but you should use the latest version available to you.
+
+..  code-block:: bash
+
+    $ sudo apt install clang clang-format clang-tidy
 
 Although GCC is available through the core repositories, we like using
 the latest stable compiler builds. You can install those via...
@@ -43,16 +51,31 @@ If you're on a 64-bit system, you'll need some additional packages...
     $ sudo apt-get install gcc-5-multilib g++-5-multilib libc6-dev-i386
 
 Once you have everything installed, configure Ubuntu to allow you to switch
-between versions of GCC and G++, in case you have multiple versions on your
-system (like GCC 6).
+between GCC and Clang.
+
+..  code-block:: bash
+
+    $ sudo update-alternatives --install /usr/bin/cc cc /usr/bin/clang 60
+    $ sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++ 60
+
+You can also switch between versions of GCC and G++, in case you have multiple versions on
+your system (like GCC 6).
 
 ..  code-block:: bash
 
     $ sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-5 60 --slave /usr/bin/g++ g++ /usr/bin/g++-5
-    $ sudo update-alternatives --config gcc
 
-If the `auto mode` option has selected `gcc-5`, go with that option. Otherwise,
-select `gcc-5` manually.
+Once you've set all that up, you can easily switch between options using the following command,
+substituting ``c++`` for whatever you're switching (``cc``, ``c++``, ``gcc``).
+
+..  code-block:: bash
+
+    $ sudo update-alternatives --config c++
+
+You can generally just leave each on auto.
+
+Our build systems all use the ``cc`` and ``c++`` commands for compiling, so whatever you select
+for the compiler will be used.
 
 ..  NOTE:: Did you know that GCC also has compilers for Java, Objective C, D,
     Fortran, and Ada? You can install and upgrade these as well, using the
@@ -243,12 +266,16 @@ files, but this one change should be global.
 
 Go to :menuselection:`Settings --> Compiler...`. Make sure you're in
 :menuselection:`Global compiler settings --> Compiler settings --> Compiler Flags`.
-Look for the option :guilabel:`Have g++ follow the C++11 ISO...`, which should
-be under :guilabel:`General`. If you upgraded from an earlier version of
-Code::Blocks, it may be under :guilabel:`Warnings`. Right-click that option,
-and click :guilabel:`New Flag...`.
+Look for the option :guilabel:`Have g++ follow the C++14 ISO...`. If it is already
+in your list, then right-click on it, click 'Modify flag' and verify that the
+information matches the information in this list.
 
-Fill out the options as follows:
+If the C++14 ISO standard is not in oyur list, look for the option
+:guilabel:`Have g++ follow the C++14 ISO...`, which should be under :guilabel:`General`.
+If you upgraded from an earlier version of Code::Blocks, it may be under
+:guilabel:`Warnings`. Right-click that option, and click :guilabel:`New Flag...`.
+
+Fill out (or verify) the options as follows:
 
 * Name: `Have g++ follow the C++14 ISO C++ Language standard`
 
@@ -302,9 +329,9 @@ by tab, setting by setting.
 
 * Indent classes: YES
 
-* Indent modifiers: no
-
 * Indent labels: YES
+
+* Indent modifiers: no
 
 * Indent namespaces: YES
 
@@ -314,7 +341,7 @@ by tab, setting by setting.
 
 * Indent multi-line preprocessor definitions ending with a backslash: no
 
-* Indent preprocessor conditions: YES
+* Indent preprocessor conditionals: YES
 
 * Indent C++ comments beginning in column one: no
 
@@ -394,7 +421,8 @@ First, close out of Code::Blocks. Download and save
 `color_themes.conf <https://mousepawmedia.net/downloads/color_themes.conf>`_
 to your computer.
 
-In your terminal, run...
+In your terminal, run the following to backup your existing themes file and
+start the config editor.
 
 ..  code-block:: bash
 
