@@ -28,12 +28,18 @@ which has Clang onboard.
     There was a major bug in the last version of GCC5 for Ubuntu 14.04 which
     prevented our code from compiling.
 
-We'll start by installing Clang. This is in the core repositories. We require
-Clang 3.4 or later, but you should use the latest version available to you.
+We'll start by installing Clang and LLVM. This is in the core repositories.
+We require Clang 3.4 or later, but you should use the latest version available
+to you.
 
 ..  code-block:: bash
 
-    $ sudo apt install clang clang-format clang-tidy
+    $ sudo apt install llvm lldb clang clang-format clang-tidy
+
+..  NOTE:: AddressSanitizer requires ``llvm-symbolizer`` to exist in the environment path,
+    but only ``llvm-symbolizer-3.8`` existed in :file:`/usr/bin` for me, thus AddressSanitizer
+    could not see it. I was able to quickly fix this by running
+    :code:`$ sudo ln -s /usr/bin/llvm-symbolizer-3.8 /usr/bin/llvm-symbolizer`.
 
 Although GCC is available through the core repositories, we like using
 the latest stable compiler builds. You can install those via...
