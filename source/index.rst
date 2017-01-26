@@ -37,6 +37,7 @@ Network
     network/nextcloud
     network/phabricator
     network/programmingworkflow
+    network/harbormaster_jenkins
 
 Development Tools
 ---------------------------
