@@ -145,8 +145,8 @@ Open your public key in a plain text editor like Gedit.
 Copy the entire contents of the file. Be sure to **close without modifying
 the file!**
 
-On Phabricator, click the Wrench icon in the upper right corner, and click
-:guilabel:`Personal Account Settings`. From the menu pane on the left,
+On Phabricator, click your profile picture towards the right of the top menubar,
+and click :guilabel:`Settings`. From the menu pane on the left,
 select :guilabel:`SSH Public Keys`.
 
 Next, click :guilabel:`SSH Key Actions` (upper-right) and
@@ -165,8 +165,8 @@ This method is a bit easier to set up, but considerably more annoying to use.
 During a typical `git pull` or `git push`, you may have to enter the VCS
 password as many as *three times*!
 
-On Phabricator, click the Wrench icon in the upper right corner, and click
-:guilabel:`Personal Account Settings`. From the menu pane on the left,
+On Phabricator, click your profile picture towards the right of the top menubar,
+and click :guilabel:`Settings`. From the menu pane on the left,
 select :guilabel:`VCS Password`.
 
 Enter a new VCS password under :guilabel:`New VCS Password` and confirm it

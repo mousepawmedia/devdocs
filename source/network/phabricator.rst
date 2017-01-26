@@ -708,8 +708,64 @@ our development tools.
 Ask a Question
 ----------------------------------
 
+To ask a new question, click :guilabel:`Ask Question` in the upper-right corner, and fill
+out the form.
+
+* The Question name should describe the problem in 3-15 words. The title is vital to others
+  finding the question. Avoid being too vague ("Error with PawLIB"), but don't ask the whole
+  question in the title either ("If I'm outputting a pointer memory dump, how do I format it
+  with spaces between every fourth byte?") A good title would be something like "Custom Spacing
+  on IOChannel Pointer Memory Dump".
+
+* Question Details is where you go into detail. Describe the exact nature of your problem.
+  If there is code involved, you should include an :abbr:`MCVE (Minimum, Complete, and
+  Verfiable Example)` (taking cue from `StackOverflow <https://stackoverflow.com/help/mcve>`_).
+
+* Answer Summary is only needed once the problem is solved. You may fill this in now if you're
+  sharing knowledge in a Q&A format (which is great to do!), or wait and fill it in later to
+  summarize the solution if multiple answers contributed.
+
+* Visible To should almost always be set to Global and All Users.
+
+* Include Tags for the department (i.e. Programming) and project(s) involved. We also have
+  special labels for different technologies we use.
+
+Finally, click :guilabel:`Submit` to post your question.
+
+Managing a Question
+----------------------------------
+
+After you post a question, you'll want to watch it for comments and answers. Once the question
+has been answered, you will want to mark the question as Closed by clicking
+:guilabel:`Close Question`.
+
+If there have been multiple helpful answers, you may also choose to add an Answer Summary by
+clicking :guilabel:`Edit Question` and editing that field. This is helpful for ensuring
+the exact solution to the problem is evident.
+
+If you want to reopen a closed question to request more answers, click :guilabel:`Reopen Question`.
+
+Commenting vs. Answering
+-----------------------------------
+
+If you need to ask for more information, or otherwise want to discuss the question or an answer
+that has been posted, leave a comment. Answers should only be used to share a possible solution.
+
+To add a comment, click :guilabel:`Add a Comment` below the question, or below an answer.
+
 Answer a Question
 ----------------------------------
+
+If you think you can answer a question, scroll to the bottom of the page and fill in the
+:guilabel:`Answer` field. A few things to keep in mind:
+
+* Be polite. Even if the answer is obvious, be respectful and professional.
+
+* Posting links is fine, but you should also summarize the important stuff directly in your answer.
+
+* Posting code is fine, but you should never post *only* code. Explain your solution: why and
+  how does your code solve the problem? In programming questions, your goal should be to help
+  the asker write the code him/herself.
 
 .. _phab_audit:
 

@@ -16,7 +16,7 @@ Technical Requirements
 =======================================
 
 You **must** have Debian Linux, ideally an Ubuntu-based distro (version 16.04
-or later), installed directly on your computer. See :doc:`setup/install`.
+or later), installed directly on your computer. See :doc:`/setup_linux/install`.
 If you need help, contact Jason C. McDonald.
 
 Staff Network
@@ -152,9 +152,8 @@ and fill out your profile. Follow these instructions...
 
 5.  Click :guilabel:`Save Profile` at the bottom.
 
-6.  Click :guilabel:`Edit Settings` at right. Alternatively, click the Wrench
-    icon at the upper-right corner of the page, and select
-    :guilabel:`Personal Account Settings`.
+6.  Click :guilabel:`Edit Settings` at right. Alternatively, click your icon picture
+    at the top of the page and select :guilabel:`Settings`.
 
 7.  Click :guilabel:`Conpherence Preferences` at left, and set it to
     "Send Notifications". (Otherwise, you may get spammed.)
@@ -171,7 +170,7 @@ and fill out your profile. Follow these instructions...
     account, so you can get public credit for your contributions to our
     repositories.
 
-10.  Click :guilabel:`Email Delivery` at left. DISABLE :guilabel:`Self Actions`,
+10. Click :guilabel:`Email Delivery` at left. DISABLE :guilabel:`Self Actions`,
     but leave :guilabel:`Email Notifications` ENABLED.
     Click :guilabel:`Save Changes`.
 

@@ -161,7 +161,7 @@ You can upload nearly any kind of file to Nextcloud.
 * Many video files can be viewed directly via the built-in Video player.
 
 ..  IMPORTANT:: You should keep an eye on your file space quota.
-    See :ref:`nextcloud_quotas`.
+    See :ref:`nextcloud_quota`.
 
 ..  _nextcloud_files_managing:
 

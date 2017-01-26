@@ -24,6 +24,7 @@ Quick Start
     :maxdepth: 1
 
     quickstart/contrib
+    quickstart/building
     quickstart/staff
 
 Network
@@ -33,6 +34,7 @@ Network
     :maxdepth: 2
 
     network/ircbot
+    network/nextcloud
     network/phabricator
     network/programmingworkflow
 
@@ -54,9 +56,9 @@ Ubuntu
 ..  toctree::
     :maxdepth: 2
 
-    setup/about
-    setup/install
-    setup/first_steps
+    setup_linux/about
+    setup_linux/install
+    setup_linux/first_steps
 
 Other
 --------------------------

@@ -850,7 +850,7 @@ Of course, we would change the `hawksnest.ddns.net` part to match the domain
 name we're getting the certificate for.
 
 ..  NOTE:: If you're needing to add a subdomain from a certificate,
-    use the appropriate command above, and include the :code:`--expand ` flag.
+    use the appropriate command above, and include the :code:`--expand` flag.
 
 Follow the instructions on the screen to complete the process of getting the
 certificates. If successful, they can be found (visible only as root) in
