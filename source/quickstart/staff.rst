@@ -194,8 +194,7 @@ doing. There are five major apps you should be making daily use of.
 
 ..  sidebar:: Rule of Task Creation
 
-    If it will only take five minutes and you're doing it now, don't create
-    a task. Otherwise, **MAKE A TASK.**
+    Unless the goal will be completed in the next five miuntes, **MAKE A TASK.**
 
 * Maniphest (see :ref:`phab_maniphest`)
 

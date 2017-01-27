@@ -767,14 +767,14 @@ If you think you can answer a question, scroll to the bottom of the page and fil
   how does your code solve the problem? In programming questions, your goal should be to help
   the asker write the code him/herself.
 
-.. _phab_audit:
-
-Audit
-==================================
-
 .. _phab_differential:
 
 Differential
+==================================
+
+.. _phab_audit:
+
+Audit
 ==================================
 
 .. _phab_diffusion:
