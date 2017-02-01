@@ -8,11 +8,11 @@ Initial Installation
 
 Installed Ubuntu 16.04 LTS x64 Server from DVD.
 
-* Hostname: `hawksnest-server`
+* Hostname: ``hawksnest-server``
 
-* Full name for user: `Hawksnest`
+* Full name for user: ``Hawksnest``
 
-* Username: `hawksnest`
+* Username: ``hawksnest``
 
 * Do **NOT** encrypt home folder.
 
@@ -22,19 +22,19 @@ Installed Ubuntu 16.04 LTS x64 Server from DVD.
 
 * No HTTP proxy.
 
-* Selected `Install secure updates automatically`.
+* Selected ``Install secure updates automatically``.
 
 * Selected the following default packages:
 
-    * `OpenSSH Server`
+    * ``OpenSSH Server``
 
-    * `LAMP server`
+    * ``LAMP server``
 
-    * `Manual package selection`
+    * ``Manual package selection``
 
-* Install GRUB bootloader? `Yes`
+* Install GRUB bootloader? ``Yes``
 
-..  NOTE:: Set passwords for both the `hawksnest` user and the MySQL root user.
+..  NOTE:: Set passwords for both the ``hawksnest`` user and the MySQL root user.
 
 Updates
 ===================================================
@@ -49,7 +49,7 @@ FSTAB
 ====================================================
 
 Because we have another hard drive for overflow and file storage, we need to
-add it to FSTAB. In our case, the partition is `/dev/sda5`, although it is
+add it to FSTAB. In our case, the partition is ``/dev/sda5``, although it is
 liable to change later when we've finished our setup, ensured everything is
 moved over, and could reformat to use the *entire* disk.
 
@@ -62,8 +62,8 @@ First, we get the info about the attached drives.
     # NOTE: The argument is lowercase "L", NOT the numeral one.
     $ sudo fdisk -l
 
-This will show us the names, sizes, and types for the drives. The `Linux`
-type is generally `ext4`. We'll substitute the appropriate values in the
+This will show us the names, sizes, and types for the drives. The ``Linux``
+type is generally ``ext4``. We'll substitute the appropriate values in the
 commands below.
 
 ..  code-block:: bash
@@ -73,8 +73,8 @@ commands below.
     $ sudo mount -t ext4 /dev/sda5 /mnt/stash
     $ sudo mount -t ext4 /dev/sdc1 /mnt/backup
 
-Now navigate to `/mnt/stash` and `/mnt/backup`, confirming that each
-mounted correctly. If so, we can unmount and edit `fstab` so that the
+Now navigate to ``/mnt/stash`` and ``/mnt/backup``, confirming that each
+mounted correctly. If so, we can unmount and edit ``fstab`` so that the
 mounts will be performed at startup.
 
 ..  code-block:: bash
@@ -83,7 +83,7 @@ mounts will be performed at startup.
     $ sudo umount /mnt/backup
     $ sudo vim /etc/fstab
 
-Add the following lines, substituting the values from the earlier `mount`
+Add the following lines, substituting the values from the earlier ``mount``
 commands as appropirate::
 
     /dev/sda5 /mnt/stash ext4 defaults 0 2
@@ -97,12 +97,12 @@ your base file system, so it's safe to run.
 
     $ sudo mount -a
 
-Double check `/mnt/stash` and `/mnt/media` to ensure they mounted correctly.
+Double check ``/mnt/stash`` and ``/mnt/media`` to ensure they mounted correctly.
 
 Logs and Scripts
 ===================================================
 
-Let's define a folder in `/opt` for our own logs.
+Let's define a folder in ``/opt`` for our own logs.
 
 ..  code-block:: bash
 
@@ -158,7 +158,7 @@ Finally, let's configure apticon to notify us if something goes wrong.
 
     $ sudo vim /etc/apticron/apticron.conf
 
-Set `EMAIL` to `"hawksnest@localhost"`. Save and close.
+Set ``EMAIL`` to ``"hawksnest@localhost"``. Save and close.
 
 LAMP Server
 ===================================================
@@ -167,7 +167,7 @@ PHP5
 ----------------------------------------------------
 
 Because Phabricator cannot work with PHP7.0, we have to downgrade.
-We are using the `ondrej` PPA.
+We are using the ``ondrej`` PPA.
 
 ..  code-block:: bash
 
@@ -196,13 +196,13 @@ We are using the `ondrej` PPA.
 `SOURCE: How Do I Install Different PHP Version? (Ask Ubuntu) <http://askubuntu.com/a/109544/23786>`_
 
 ..  NOTE:: We are not installing APC because it is not supported on PHP5.6
-    or above. `php5-opcache` handles that now.
+    or above. ``php5-opcache`` handles that now.
 
 SSH
 ------------------------------------------
 
 ..  NOTE:: For security reasons, the SSH port we changed to has been
-    scrubbed to `123`.
+    scrubbed to ``123``.
 
 The necessary packages for SSH were installed on installation. We need to
 change a few settings and start the service.
@@ -218,8 +218,8 @@ change a few settings and start the service.
     # Edit the SSH configuration.
     $ sudo vim /etc/ssh/sshd_config
 
-Change `Port 22` to `Port 123` and `PermitRootLogin prohibit-password` to
-`PermitRootLogin no`. Also add the line `DebianBanner no` (you can put it under
+Change ``Port 22`` to ``Port 123`` and ``PermitRootLogin prohibit-password`` to
+``PermitRootLogin no``. Also add the line ``DebianBanner no`` (you can put it under
 "PermitRootLogin"). The rest of the default settings should be fine.
 Save and close the file.
 
@@ -289,10 +289,10 @@ At the bottom of the file, add the lines::
 
 Save and close the file, and then restart the computer.
 
-Lock Down `sudo` Privilege
+Lock Down ``sudo`` Privilege
 --------------------------------------------------
 
-We'll limit `sudo` privileges to only users in the `admin` group.
+We'll limit ``sudo`` privileges to only users in the ``admin`` group.
 
 ..  code-block:: bash
 
@@ -300,7 +300,7 @@ We'll limit `sudo` privileges to only users in the `admin` group.
     $ sudo usermod -a -G admin <YOUR ADMIN USERNAME>
     $ sudo dpkg-statoverride --update --add root admin 4750 /bin/su
 
-Harden Network with `sysctl` Settings
+Harden Network with ``sysctl`` Settings
 ------------------------------------------------------
 
 ..  code-block:: bash
@@ -345,7 +345,7 @@ Edit the file, uncommenting or adding the following lines.::
     # Ignore Directed pings
     net.ipv4.icmp_echo_ignore_all = 1
 
-Finally, reload `sysctl`. If there are any errors, fix the associated lines.
+Finally, reload ``sysctl``. If there are any errors, fix the associated lines.
 
 ..  code-block:: bash
 
@@ -354,7 +354,7 @@ Finally, reload `sysctl`. If there are any errors, fix the associated lines.
 Prevent IP Spoofing
 -------------------------------------------
 
-To prevent IP spoofing, we edit `/etc/hosts`.
+To prevent IP spoofing, we edit ``/etc/hosts``.
 
 ..  code-block:: bash
 
@@ -469,7 +469,7 @@ Edit the configuration for the ModSecurity Apache module...
 
     $ sudo vim /etc/apache2/mods-available/security2.conf
 
-Add the following line just below the other `IncludeOptional` directive.
+Add the following line just below the other ``IncludeOptional`` directive.
 
 ..  code-block:: apache
 
@@ -492,8 +492,8 @@ To harden against DDoS attacks, we'll install ModEvasive.
 
     $ sudo apt install libapache2-mod-evasive
 
-For the `Postfix Configuration`, select `Local Only` and use the default
-FQDN (`hawksnest-server.netgear.com`).
+For the ``Postfix Configuration``, select ``Local Only`` and use the default
+FQDN (``hawksnest-server.netgear.com``).
 
 Now we'll create the log directory for ModEvasive and set its permissions
 accordingly.
@@ -573,8 +573,8 @@ Apache, FTP, and other things.
     $ sudo apt install fail2ban
     $ sudo vim /etc/fail2ban/jail.conf
 
-To turn on various "jails", scroll down to the `# JAILS` section. Place
-`enabled = true` under each jail name you want turned on. This is the list
+To turn on various "jails", scroll down to the ``# JAILS`` section. Place
+``enabled = true`` under each jail name you want turned on. This is the list
 of jails we enabled:
 
 - sshd
@@ -589,15 +589,15 @@ of jails we enabled:
 - apache-modsecurity
 - apache-shellshock
 
-We also need to modify a file for `apache-fakegooglebot` to work around a bug.
-If you run `python -V` and it reports a version of Python2 (which it almost
+We also need to modify a file for ``apache-fakegooglebot`` to work around a bug.
+If you run ``python -V`` and it reports a version of Python2 (which it almost
 certainly will), run...
 
 ..  code-block:: bash
 
     $ sudo vim /etc/fail2ban/filter.d/ignorecommands/apache-fakegooglebot
 
-Change the first line to `#!/usr/bin/python3`, and then save and close.
+Change the first line to ``#!/usr/bin/python3``, and then save and close.
 
 `SOURCE: Fail2Ban fakegooglebot Jail Bug (Shell and Co) <https://www.shellandco.net/fail2ban-fakegooglebot-jail-bug/>`_
 
@@ -615,8 +615,8 @@ Setup PSAD
     $ sudo apt install psad
     $ sudo vim /etc/psad/psad.conf
 
-Change "EMAIL_ADDRESS" to `hawksnest@localhost` and "HOSTNAME" to
-`hawksnest-server`.
+Change "EMAIL_ADDRESS" to ``hawksnest@localhost`` and "HOSTNAME" to
+``hawksnest-server``.
 
 ..  code-block:: bash
 
@@ -632,14 +632,14 @@ Change "EMAIL_ADDRESS" to `hawksnest@localhost` and "HOSTNAME" to
 When you run that last command, it may whine about not finding a pidfile.
 It appears we can ignore that error.
 
-We also need to tweak Fail2Ban so that it doesn't start up before `psad` does.
-Otherwise, `psad` won't be able to log correctly.
+We also need to tweak Fail2Ban so that it doesn't start up before ``psad`` does.
+Otherwise, ``psad`` won't be able to log correctly.
 
 ..  code-block:: bash
 
     $ sudo vim /lib/systemd/system/fail2ban.service
 
-In that file, add `ufw.service` and `psad.service` to the `After=` directive,
+In that file, add ``ufw.service`` and ``psad.service`` to the ``After=`` directive,
 so it looks something like this::
 
     After=network.target iptables.service firewalld.service ufw.service psad.service
@@ -663,7 +663,7 @@ Add the following lines before the final commit message.::
     -A INPUT -j LOG
     -A FORWARD -j LOG
 
-Save and close. Repeat this with `before6.rules`. Then, restart ufw and
+Save and close. Repeat this with ``before6.rules``. Then, restart ufw and
 reload PSAD.
 
 `SOURCE: PSAD Is Giving a Firewall Setup Warning (Ubuntu Forums) <https://ubuntuforums.org/showthread.php?t=2047977>`_
@@ -675,7 +675,7 @@ reload PSAD.
 
 Restart the computer, and ensure PSAD isn't sending any system emails
 complaining about the firewall configuration. (Check system email by
-running `$ mail`).
+running ``$ mail``).
 
 Rootkit Checks
 --------------------------------------------
@@ -733,7 +733,7 @@ PHPMyAdmin
     $ sudo apt-get update
     $ sudo apt-get install phpmyadmin
 
-On the configuration dialog, select `apache2` by selecting it and tapping
+On the configuration dialog, select ``apache2`` by selecting it and tapping
 :kbd:`Space`. Enter an application password (different from the MySQL root
 password) and confirm it.
 
@@ -755,7 +755,7 @@ configuration for PHPMyAdmin.
 
     $ sudo vim /etc/apache2/conf-available/phpmyadmin.conf
 
-Adjust the `<Directory /usr/share/phpmyadmin>` section to look like this.
+Adjust the ``<Directory /usr/share/phpmyadmin>`` section to look like this.
 
 ..  code-block:: apache
 
@@ -774,17 +774,17 @@ Restart the Apache2 server...
 
     $ sudo systemctl restart apache2
 
-And then validate that you can `http://<serveraddress>/phpmyadmin`.
+And then validate that you can ``http://<serveraddress>/phpmyadmin``.
 
-..  WARNING:: You may need to disable the Apache2 module `security2`
+..  WARNING:: You may need to disable the Apache2 module ``security2``
     before you can access PHPMyAdmin. Otherwise, it throws an internal 404.
-    We're not sure why. To fix the problem, run `sudo a2dismod security2` and
+    We're not sure why. To fix the problem, run ``sudo a2dismod security2`` and
     restart the Apache2 service.
 
 DDClient
 ---------------------------------------
 
-In addition to installing `ddclient`, we'll install a couple more tools we'll
+In addition to installing ``ddclient``, we'll install a couple more tools we'll
 be using later.
 
 ..  code-block:: bash
@@ -804,7 +804,7 @@ Also, at the end of the file, add::
 
     mousepawmedia.net,hawksnest.ddns.net,hawksnest.serveftp.com,sparrowsgate.serveminecraft.net
 
-Save and close. Next, we need to change how `ddclient` runs.
+Save and close. Next, we need to change how ``ddclient`` runs.
 
 ..  code-block:: bash
 
@@ -817,7 +817,7 @@ Change the following settings to match the following::
     run_daemon="true"
     daemon_interval="300"
 
-Save and quit. Finally, we restart `ddclient`.
+Save and quit. Finally, we restart ``ddclient``.
 
 ..  code-block:: bash
 
@@ -827,8 +827,8 @@ Let's Encrypt Certificates
 ============================================
 
 We'll install the Let's Encrypt Certbot, and then create our server
-certificates. While we can *technically* install the `letsencrypt` package,
-it's out of date compared to `certbot-auto`.
+certificates. While we can *technically* install the ``letsencrypt`` package,
+it's out of date compared to ``certbot-auto``.
 
 ..  code-block:: bash
 
@@ -844,9 +844,9 @@ Now we'll get our certificates.
 
     $ sudo /opt/certbot/certbot-auto certonly -a webroot --webroot-path /var/www/html -d hawksnest.ddns.net
     $ sudo /opt/certbot/certbot-auto certonly -a webroot --webroot-path /var/www/html -d hawksnest.serveftp.com
-    $ sudo /opt/certbot/certbot-auto certonly -a webroot --webroot-path /var/www/html -d mousepawmedia.net -d nextcloud.mousepawmedia.net -d phabricator.mousepawmedia.net -d ehour.mousepawmedia.net -d jenkins.mousepawmedia.net -d secure.mousepawmedia.net -d files.mousepawmedia.net -d office.mousepawmedia.net
+    $ sudo /opt/certbot/certbot-auto certonly -a webroot --webroot-path /var/www/html -d mousepawmedia.net -d nextcloud.mousepawmedia.net -d phabricator.mousepawmedia.net -d ehour.mousepawmedia.net -d jenkins.mousepawmedia.net -d secure.mousepawmedia.net -d files.mousepawmedia.net -d office.mousepawmedia.net -d quiz.mousepawmedia.net
 
-Of course, we would change the `hawksnest.ddns.net` part to match the domain
+Of course, we would change the ``hawksnest.ddns.net`` part to match the domain
 name we're getting the certificate for.
 
 ..  NOTE:: If you're needing to add a subdomain from a certificate,
@@ -861,8 +861,8 @@ Next, we need to create symbolic links to the certificates so Apache can see
 them. We'll be sudoing up to root after creating the directory.
 
 Note we're only doing this for the fallback DNs. We'll need to
-do something else for the main `mousepawmedia.net` certificate
-(see `Post-Renew Script`).
+do something else for the main ``mousepawmedia.net`` certificate
+(see ```Post-Renew Script``).
 
 ..  code-block:: bash
 
@@ -1046,7 +1046,7 @@ Now, open up the Apache configuration for PHPldapadmin...
 
     $ sudo vim /etc/apache2/conf-available/phpldapadmin.conf
 
-Adjust the `<Directory /usr/share/phpldapadmin/htdocs/>` section to look like
+Adjust the ``<Directory /usr/share/phpldapadmin/htdocs/>`` section to look like
 this.
 
 ..  code-block:: apache
@@ -1061,18 +1061,18 @@ this.
     Allow from 192.168.254.0/24 # Allow from local network
 
 Restart Apache (you geniuses should know how to do that by now) and check
-`http://<serveraddress>/phpldapadmin`.
+``http://<serveraddress>/phpldapadmin``.
 
 `SOURCE: How To Install and Configure A Basic LDAP Server (DigitalOcean) <https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-a-basic-ldap-server-on-an-ubuntu-12-04-vps>`_
 
 Configuring LDAP Schema
 --------------------------------
 
-We will create two Organisational Units: `Groups` and `Users`. Under `Groups`,
-add a `staff` and an `admin` Posix Group.
+We will create two Organisational Units: ``Groups`` and ``Users``. Under ``Groups``,
+add a ``staff`` and an ``admin`` Posix Group.
 
-Next, add each staff member under `Users`. Remember to include the `Email`
-field, and use `cn` for their MousePaw Games username.
+Next, add each staff member under ``Users``. Remember to include the ``Email``
+field, and use ``cn`` for their MousePaw Games username.
 
 
 eHour
@@ -1097,7 +1097,7 @@ Installing Tomcat
     $ sudo update-java-alternatives -l
 
 ..  NOTE:: For those of you following along at home, the JAVA_HOME is
-    `/usr/lib/jvm/java-1.8.0-openjdk-amd64/jre`!
+    ``/usr/lib/jvm/java-1.8.0-openjdk-amd64/jre``!
 
 Configuring Tomcat
 ------------------------------------------------------
@@ -1171,7 +1171,7 @@ Find the connector for port="8080", and replace it with::
            keystoreFile="/etc/apache2/ssl/mousepawmedia.net/keys.jks" keystorePass="thepassword"
            clientAuth="false" sslProtocol="TLS"/>
 
-Make sure the password matches the one specified in the `renewcert_post` script
+Make sure the password matches the one specified in the ``renewcert_post`` script
 we defined earlier.
 
 Save and close. Restart Tomcat, and open the appropriate port in the firewall!
@@ -1181,7 +1181,7 @@ Save and close. Restart Tomcat, and open the appropriate port in the firewall!
     $ sudo ufw allow 8441
     $ sudo systemctl restart tomcat
 
-Test Tomcat by going to `http://<serveraddress>:8441`.
+Test Tomcat by going to ``http://<serveraddress>:8441``.
 
 Add Control Panel Users
 --------------------------------------
@@ -1236,12 +1236,12 @@ We'll be putting eHour in place of the Tomcat root.
 Installing eHour
 ------------------------------------
 
-If you're performing a fresh installation of eHour, download the `.war` from
+If you're performing a fresh installation of eHour, download the ``.war`` from
 their website. However, since we're coming from a previous installation on
-another machine, we'll just copy over the `.war` file and `$EHOUR_HOME`
+another machine, we'll just copy over the ``.war`` file and ``$EHOUR_HOME``
 directory.
 
-In our case, the `$EHOUR_HOME` directory is `/opt/ehour-dist`.
+In our case, the ``$EHOUR_HOME`` directory is ``/opt/ehour-dist``.
 
 Next, we need to create the database.
 
@@ -1252,8 +1252,8 @@ Next, we need to create the database.
 Enter the password for the MySQL root.
 
 Next, we can either create a new, fresh eHour database, or import our old one
-(which was exported to `ehour.sql` file on the old server and saved to the
-`IMPORTED` folder on the new server's home directory.).
+(which was exported to ``ehour.sql`` file on the old server and saved to the
+``IMPORTED`` folder on the new server's home directory.).
 
 Both steps are shown below. Choose the one you want.
 
@@ -1269,7 +1269,7 @@ Both steps are shown below. Choose the one you want.
 
 Now we'll configure Apache Tomcat to work with eHour.
 
-..  NOTE:: On this server, the Tomcat `bin` directory is at `/opt/tomcat/bin`.
+..  NOTE:: On this server, the Tomcat ``bin`` directory is at ``/opt/tomcat/bin``.
 
 ..  code-block:: bash
 
@@ -1288,8 +1288,8 @@ Save and close. Then we'll make that file executable.
     # chmod +x setenv.sh
     # exit
 
-Next, we create a new user account for `ehour` on PHPMyAdmin. Give this
-user privileges on the `ehour` database.
+Next, we create a new user account for ``ehour`` on PHPMyAdmin. Give this
+user privileges on the ``ehour`` database.
 
 Next, we modify the configuration file for eHour.
 
@@ -1307,15 +1307,15 @@ Uncomment and modify the following lines as necessary::
 
 Save and close.
 
-Finally, copy the `.war` file from `/home/hawksnest/IMPORTED` where we first
-put it, to `/opt/tomcat/webapps`, changing the file name to `ehour.war` so our
+Finally, copy the ``.war`` file from ``/home/hawksnest/IMPORTED`` where we first
+put it, to ``/opt/tomcat/webapps``, changing the file name to ``ehour.war`` so our
 web address is prettier.
 
 ..  code-block:: bash
 
     $ sudo cp /home/hawksnest/IMPORTED/ehour-1.4.3.war /opt/tomcat/webapps/ROOT.war
 
-Navigate to `http://<serveraddress>:8441/` to test the installation.
+Navigate to ``http://<serveraddress>:8441/`` to test the installation.
 
 Apache2 Proxy
 ---------------------------------------
@@ -1379,8 +1379,8 @@ Save and close. Then, enable the needed mods and the site, and restart Apache2.
     $ sudo a2enmod ehour
     $ sudo systemctl apache2 restart
 
-Test to ensure `http://ehour.<serveraddress>/` and
-`https://ehour.<serveraddress>/` work.
+Test to ensure ``http://ehour.<serveraddress>/`` and
+``https://ehour.<serveraddress>/`` work.
 
 Phabricator
 ===========================================
@@ -1390,7 +1390,7 @@ Setting Up System Group and Users
 
 We'll add a group to control who can access Phabricator's stuff. For ease of
 use, we'll add our login user to this group. We will also create a new
-user called `phabdaemon` for Phabricator-based daemons.
+user called ``phabdaemon`` for Phabricator-based daemons.
 
 ..  code-block:: bash
 
@@ -1399,27 +1399,27 @@ user called `phabdaemon` for Phabricator-based daemons.
     $ sudo usermod -a -G phab hawksnest
     $ sudo usermod -a -G phab www-data
 
-Now we need to modify the `phabdaemon` user.
+Now we need to modify the ``phabdaemon`` user.
 
 ..  code-block:: bash
 
     $ sudo vim /etc/passwd
 
-Look for the `phabdaemon` entry and set the last field to `/usr/sbin/nologin`.
+Look for the ``phabdaemon`` entry and set the last field to ``/usr/sbin/nologin``.
 Save and close. Then...
 
 ..  code-block:: bash
 
     $ sudo vim /etc/shadow
 
-Look for the `phabdaemon` entry again, and set the second field to `*`. Save
+Look for the ``phabdaemon`` entry again, and set the second field to ``*``. Save
 and close.
 
 Migrating
 --------------------------------------------
 
-We already had the `phab`, `phabfiles` and `phabrepo` folders on the old
-installation, so we can move those over to `/opt`. (See Phabricator's official
+We already had the ``phab``, ``phabfiles`` and ``phabrepo`` folders on the old
+installation, so we can move those over to ``/opt``. (See Phabricator's official
 installation instructions if you're doing a fresh install.)
 
 Once you've moved the folders over, change their permissions as follows...
@@ -1447,7 +1447,7 @@ We also exported the Phabricator database on the *old* server using...
     $ cd /home/hawksnest/phab/phabricator
     $ ./bin/storage dump | gzip > /home/hawksnest/backup.sql.gz
 
-On the *new* server, we copy that backup to our `IMPORTED` directory, and then
+On the *new* server, we copy that backup to our ``IMPORTED`` directory, and then
 run the following to move it into the new copy of MySQL.
 
 ..  code-block:: bash
@@ -1461,13 +1461,13 @@ starting a game.
 Configuring Apache
 --------------------------------------------
 
-We need to modify a few files to get this working. First, modify `apache2.conf`.
+We need to modify a few files to get this working. First, modify ``apache2.conf``.
 
 ..  code-block:: bash
 
     $ sudo vim /etc/apache2/apache2.conf
 
-Near the other `Directory` sections, add the section...
+Near the other ``Directory`` sections, add the section...
 
 ..  code-block:: apache
 
@@ -1475,13 +1475,13 @@ Near the other `Directory` sections, add the section...
             Require all granted
     </Directory>
 
-Next, modify `ports.conf`...
+Next, modify ``ports.conf``...
 
 ..  code-block:: bash
 
     $ sudo vim /etc/apache2/ports.conf
 
-Modify the file so it looks something like this (we only added the `Port 8446`
+Modify the file so it looks something like this (we only added the ``Port 8446``
 lines. Leave the rest alone)...
 
 ..  code-block:: apache
@@ -1498,7 +1498,7 @@ lines. Leave the rest alone)...
         Listen 8446
     </IfModule>
 
-Finally, add a new site under `sites-available`.
+Finally, add a new site under ``sites-available``.
 
 ..  code-block:: bash
 
@@ -1562,12 +1562,12 @@ Save and close the file. Finally, load them up.
     $ sudo ufw allow 8446
     $ sudo systemctl restart apache2
 
-Now see if `https://<siteaddress>:8446/` works.
+Now see if ``https://<siteaddress>:8446/`` works.
 
 Getting Phabricator Running
 -----------------------------------------------------
 
-Next, we need to make some modifications to `php.ini` for Phabricator to work.
+Next, we need to make some modifications to ``php.ini`` for Phabricator to work.
 
 ..  code-block:: bash
 
@@ -1575,7 +1575,7 @@ Next, we need to make some modifications to `php.ini` for Phabricator to work.
 
 Make these changes...
 
-- Comment out `disable_functions`.
+- Comment out ``disable_functions``.
 
 Next, we'll add a new user to MySQL using PHPMyAdmin, and give it
 all privileges for the Phabricator databases.
@@ -1593,11 +1593,11 @@ Set Log Locations
 ---------------------------------------------------
 
 We need to set up the location for logging. We'll create a special folder
-in `/opt` for this purpose, set its permissions, and tell Phabricator where
+in ``/opt`` for this purpose, set its permissions, and tell Phabricator where
 to find it.
 
 ..  WARNING:: This is critical! If you forget this, you'll have a plethora of
-    `500 Internal Server Error` messages, an unhandled exception at the bottom
+    ``500 Internal Server Error`` messages, an unhandled exception at the bottom
     of all pages, and some missing stuff.
 
 ..  code-block:: bash
@@ -1615,29 +1615,29 @@ Addressing Setup Issues
 -------------------------------------------------
 
 Various issues may crop up on the install. Once you can access Phabricator,
-you can see these at `https://<serveraddress>:8446/config/issues`.
+you can see these at ``https://<serveraddress>:8446/config/issues``.
 
 View each and fix as prescribed. Here are a few fixes we did...
 
-- We made a few changes to `/etc/php/5.6/apache2/php.ini`.
+- We made a few changes to ``/etc/php/5.6/apache2/php.ini``.
 - We had to make several changes to the MySQL configuration. If you're looking
-  for the MySQL configuration file, it's spread out across multiple `.cnf`
-  files in `/etc/mysql`. Chances are, you want
-  `/etc/mysql/mysql.conf.d/mysqld.cnf`.
-- We set the `php.ini` value `date.timezone = ` to `America/Los_Angeles`.
-- We also needed to install the packages `python3-pygments` and
-  `python-pygments`.
-- We installed the package `php-apcu`. Don't worry about the `php-7`
+  for the MySQL configuration file, it's spread out across multiple ``.cnf``
+  files in ``/etc/mysql``. Chances are, you want
+  ``/etc/mysql/mysql.conf.d/mysqld.cnf``.
+- We set the ``php.ini`` value ``date.timezone = `` to ``America/Los_Angeles``.
+- We also needed to install the packages ``python3-pygments`` and
+  ``python-pygments``.
+- We installed the package ``php-apcu``. Don't worry about the ``php-7``
   dependencies it dragged in. Apache2 is still using PHP5.6 because of our
-  earlier settings changes. You can verify via `sudo php -v`.
-- We installed the packages `subversion` and `imagemagik`.
+  earlier settings changes. You can verify via ``sudo php -v``.
+- We installed the packages ``subversion`` and ``imagemagik``.
 
 Recaptcha
 -------------------------------------------------
 
 Sign up for Recaptcha on `their website <https://www.google.com/recaptcha/admin#list>`_
 (I'm using indeliblebluepen@gmail.com to admin that). Then, substitute
-`PRIVATEKEY` and `PUBLICKEY` in the following commands for the keys you get
+``PRIVATEKEY`` and ``PUBLICKEY`` in the following commands for the keys you get
 from that website.
 
 ..  code-block:: bash
@@ -1650,7 +1650,7 @@ Setting Up Alternative File Domain
 -------------------------------------------------
 
 Our DNS service and certificates are already set up to provide a second
-domain name - `hawksnest.serveftp.com` - which we can use as Phabricator's
+domain name - ``hawksnest.serveftp.com`` - which we can use as Phabricator's
 Alternative File Domain.
 
 We must now configure Apache2 to serve files as expected.
@@ -1711,7 +1711,7 @@ Save and close. Then, run...
     $ sudo a2ensite phabfiles
     $ sudo systemctl restart apache2
 
-Go to `https://<filedomainname>:8446`. You **should** see an error on the page
+Go to ``https://<filedomainname>:8446``. You **should** see an error on the page
 saying "Unhandled Exception ("AphrontMalformedRequestException")"
 This means you're on the right track!
 
@@ -1782,7 +1782,7 @@ Of course, we can run this to start the Phabricator daemons right now...
     $ sudo /opt/scripts/phab/phd_start
 
 ..  NOTE:: If it complains about not being able to modify a path starting with
-    `/var/tmp/phd`, just CAREFULLY run `sudo rm -r /var/tmp/phd`.
+    ``/var/tmp/phd``, just CAREFULLY run ``sudo rm -r /var/tmp/phd``.
 
 Phabricator Aphlict Notification Server
 -------------------------------------------------------
@@ -1798,9 +1798,9 @@ package repositories.
     $ cd /opt/phab/phabricator/support/aphlict/server/
     $ npm install ws
 
-You can safely ignore the warning messages from `npm`.
+You can safely ignore the warning messages from ``npm``.
 
-Next, we'll add the `phabdaemon` user to the group that can view
+Next, we'll add the ``phabdaemon`` user to the group that can view
 the SSL certificates.
 
 ..  code-block:: bash
@@ -1856,8 +1856,8 @@ It should start up without any issues. If there are some, check the previous
 steps.
 
 Finally, we need to tell Phabricator to use Aphlict. In Phabricator, go to
-Config→All Settings (`https://<serveraddress>:8446/config/all`). Look for
-`notification.servers`. Enter the following in the field::
+Config→All Settings (``https://<serveraddress>:8446/config/all``). Look for
+``notification.servers``. Enter the following in the field::
 
     [
       {
@@ -1875,7 +1875,7 @@ Config→All Settings (`https://<serveraddress>:8446/config/all`). Look for
     ]
 
 Navigate to the Notification Servers section of Config
-(`https://<serveraddress>/config/cluster/notifications/`) to ensure
+(``https://<serveraddress>/config/cluster/notifications/``) to ensure
 the system is running correctly.
 
 If all's well, let's add the Aphlict startup to our PHD start script.
@@ -1897,8 +1897,8 @@ Save and close.
 Phabricator Git SSH
 ---------------------------------------------
 
-The system already has a `www-data` user, and we set up a `phabdaemon` user
-earlier. We'll use both of those for use for this. We also need to add a `git`
+The system already has a ``www-data`` user, and we set up a ``phabdaemon`` user
+earlier. We'll use both of those for use for this. We also need to add a ``git``
 user, and then give these users appropriate sudo permissions.
 
 ..  code-block:: bash
@@ -1913,13 +1913,13 @@ Add these lines to that file::
     www-data ALL=(phabdaemon) SETENV: NOPASSWD: /usr/bin/git, /usr/lib/git-core/git-http-backend
     git ALL=(phabdaemon) SETENV: NOPASSWD: /usr/bin/git, /usr/bin/git-upload-pack, /usr/bin/git-receive-pack
 
-..  NOTE:: We had to comment out the recommended version for `git` and put in
+..  NOTE:: We had to comment out the recommended version for ``git`` and put in
     the second version, in order for SSH to work with our repositories. We need
-    to find out what all binaries `git` is needing to use, and add them to the
+    to find out what all binaries ``git`` is needing to use, and add them to the
     first path. When this is acheved, be sure to swap the comments...do NOT
     leave them both uncommented!
 
-Also ensure that if there is the line `Defaults    requiretty`, it is commented
+Also ensure that if there is the line ``Defaults    requiretty``, it is commented
 out. If it's not there, we're good.
 
 Save and close.
@@ -1930,7 +1930,7 @@ Now, we need to edit a couple other files.
 
     $ sudo vim /etc/shadow
 
-Find the line for `git` and change the `!` in the second field to `NP`. Save
+Find the line for ``git`` and change the ``!`` in the second field to ``NP``. Save
 and close.
 
 Next, run...
@@ -1939,10 +1939,10 @@ Next, run...
 
     $ sudo vim /etc/passwd
 
-Find the line for `git` and set (or change) the last field to `/bin/sh`.
+Find the line for ``git`` and set (or change) the last field to ``/bin/sh``.
 Save and close.
 
-Let's also add the `git` user to our `phab` group, so it can write to logfile
+Let's also add the ``git`` user to our ``phab`` group, so it can write to logfile
 locations.
 
 ..  code-block:: bash
@@ -1958,7 +1958,7 @@ Now let's configure the ports and SSH settings.
 
 Now we need to copy the SSH hook script to our scripts directory. We will
 need to create a special subdirectory that is owned by root and has permissions
-`755`, otherwise it won't start.
+``755``, otherwise it won't start.
 
 ..  code-block:: bash
 
@@ -2023,12 +2023,12 @@ on the guest computer you use for SSH, run...
     echo {} | ssh git@phabricator.mousepawmedia.net -p 2222 conduit conduit.ping
 
 After all is said and done, it should print out something like
-`{"result":"hawksnest-server","error_code":null,"error_info":null}`.
+``{"result":"hawksnest-server","error_code":null,"error_info":null}``.
 
 ..  NOTE:: If it gives the message "Could not chdir to home directory
     /home/git: No such file or directory", that means you didn't create
-    the `git` user with a home directory. If that's the case, you can add
-    one by running `$ sudo mkhomedir_helper git` (on the server).
+    the ``git`` user with a home directory. If that's the case, you can add
+    one by running ``$ sudo mkhomedir_helper git`` (on the server).
 
 Once you're assured of this working, run...
 
@@ -2111,7 +2111,7 @@ to get Jenkins and VirtualBox working together.
 Migration
 ---------------------------------------------------
 
-We copied the old `$JENKINS_HOME` folder to the new server, via...
+We copied the old ``$JENKINS_HOME`` folder to the new server, via...
 
 ..  code-block:: bash
 
@@ -2128,7 +2128,7 @@ This means that Jenkins' HOME folder is actually in /opt/jenkins, but we have a
 symbolic link to it in /var/lib/jenkins, where Jenkins will be looking for it.
 This makes life easier when we do backups.
 
-Next, we'll put the VirtualBox in `/opt`.
+Next, we'll put the VirtualBox in ``/opt``.
 
 ..  code-block:: bash
 
@@ -2150,14 +2150,14 @@ Once all that's done, we need to update our permissions one more time.
     $ sudo chgrp -R hawksnest /opt/virtualbox/LittleXenial
 
 Next, we need to register the LittleXenial VM with VirtualBox, and change
-where it looks for it's virtual hard drive (`.vdi`).
+where it looks for it's virtual hard drive (``.vdi``).
 
 ..  code-block:: bash
 
     $ VBoxManage registervm /opt/virtualbox/LittleXenial/LittleXenial.vbox
     $ VBoxManage list hdds
 
-Get the UUID of the HDD you want to remove, and then substitute it for `UUID`
+Get the UUID of the HDD you want to remove, and then substitute it for ``UUID``
 in the next command.
 
 ..  code-block:: bash
@@ -2190,7 +2190,7 @@ Next, we need to modify Jenkins' configuration.
 
     $ sudo vim /etc/default/jenkins
 
-Change `HTTP_PORT=8080` to `HTTP_PORT=8449`. Then, place the following
+Change ``HTTP_PORT=8080`` to ``HTTP_PORT=8449``. Then, place the following
 at the bottom of the file, replacing the last line.::
 
     # Old HTTP mode (turned off)
@@ -2201,8 +2201,8 @@ at the bottom of the file, replacing the last line.::
     JENKINS_ARGS="--webroot=/var/cache/$NAME/war --httpsPort=$HTTP_PORT --httpPort=8459 --httpsKeyStore=/etc/apache2/ssl/mousepawmedia.net/keys.jks --httpsKeyStorePassword=a674dRnZ15A6a4ByQ"
 
 ..  NOTE:: The password specified on the last line, by the
-    `--httpsKeyStorePassword=`, must MATCH the password supplied when we
-    set up the `renewcert_post` script under the Let's Encrypt section.
+    ``--httpsKeyStorePassword=``, must MATCH the password supplied when we
+    set up the ``renewcert_post`` script under the Let's Encrypt section.
 
 Finally, open the port for Jenkins...
 
@@ -2211,9 +2211,9 @@ Finally, open the port for Jenkins...
     $ sudo ufw allow 8449
     $ sudo ufw allow 8459
 
-Navigate to the Jenkins HTTPS URL on the server (`https://<serveraddress>:8449/`)
+Navigate to the Jenkins HTTPS URL on the server (``https://<serveraddress>:8449/``)
 to test it out. Also, check the HTTP version that Phabricator uses
-(`http://<serveraddress>:8459/`).
+(``http://<serveraddress>:8459/``).
 
 Apache2 Proxy
 ---------------------------------------------------
@@ -2270,11 +2270,11 @@ and restart Apache2.
     $ sudo a2enmod jenkins
     $ sudo systemctl apache2 restart
 
-Navigate to `http://jenkins.<serveraddress>/` and
-`https://jenkins.<serveraddress>/`. It should quietly proxy over to the HTTPS
+Navigate to ``http://jenkins.<serveraddress>/`` and
+``https://jenkins.<serveraddress>/``. It should quietly proxy over to the HTTPS
 version of Jenkins (proxy 8449).
 
-Test to ensure `http://jenkins.<serveraddress>:8459/` still works over HTTP,
+Test to ensure ``http://jenkins.<serveraddress>:8459/`` still works over HTTP,
 without redirecting.
 
 HTML Landing Page
@@ -2303,13 +2303,13 @@ from the old server, we'll do that here.
     $ sudo chgrp -R www-data /opt/html
     $ sudo chmod -R u=rwx,g=rwx,o=rx /opt/html
 
-Now we need to adjust Apache2. First, modify `apache2.conf`.
+Now we need to adjust Apache2. First, modify ``apache2.conf``.
 
 ..  code-block:: bash
 
     $ sudo vim /etc/apache2/apache2.conf
 
-Add the following `<Directory>` entries below the ones that are already there.
+Add the following ``<Directory>`` entries below the ones that are already there.
 
 ..  code-block:: apache
 
@@ -2324,13 +2324,13 @@ Add the following `<Directory>` entries below the ones that are already there.
         Require all granted
     </Directory>
 
-Next, modify `ports.conf`...
+Next, modify ``ports.conf``...
 
 ..  code-block:: bash
 
     $ sudo vim /etc/apache2/ports.conf
 
-Modify the file so it looks something like this (we only added the `Port 8442`
+Modify the file so it looks something like this (we only added the ``Port 8442``
 lines. Leave the rest alone)...
 
 ..  code-block:: apache
@@ -2458,8 +2458,8 @@ Now we enable both sites, disable the defaults, and restart Apache2.
     $ sudo ufw allow 8442
     $ sudo systemctl restart apache2
 
-Navigate to `http://<serveraddress>` and `https://secure.<serveraddress>` to test
-the `landing` and `protected` sites respectively.
+Navigate to ``http://<serveraddress>`` and ``https://secure.<serveraddress>`` to test
+the ``landing`` and ``protected`` sites respectively.
 
 Port Forward 80 to 443
 ----------------------------------
@@ -2480,7 +2480,7 @@ Set the contents of that file to...
         RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI}
     </VirtualHost>
 
-Save and close. Load the site, make sure `mod_rewrite` is enabled, and then
+Save and close. Load the site, make sure ``mod_rewrite`` is enabled, and then
 restart Apache2.
 
 ..  code-block:: bash
@@ -2489,9 +2489,9 @@ restart Apache2.
     $ sudo a2enmod rewrite
     $ sudo systemctl restart apache2
 
-Navigating to `http://<serveraddress>` should now redirect properly to
-Navigate to `https://<serveraddress>`. The same will apply for any subdirectory
-thereof, such as `http://<serveraddress>/docs`.
+Navigating to ``http://<serveraddress>`` should now redirect properly to
+Navigate to ``https://<serveraddress>``. The same will apply for any subdirectory
+thereof, such as ``http://<serveraddress>/docs``.
 
 ..  NOTE:: Apache2 sites are loaded in alphabetical order. Addresses and ports
     are first come, first served, so the first site that defines on a port
@@ -2631,7 +2631,7 @@ in Apache2's core directory.
 
     $ sudo vim /etc/apache2/apache2.conf
 
-Add the following below the other `<Directory>` entries...
+Add the following below the other ``<Directory>`` entries...
 
 ..  code-block:: apache
 
@@ -2654,7 +2654,7 @@ Then, enable the site and restart Apache2.
 Database Setup
 -------------------------------------
 
-We need to create a `nextcloud` database and a `nextcloud` user in MySQL.
+We need to create a ``nextcloud`` database and a ``nextcloud`` user in MySQL.
 This can be done through PHPmyadmin.
 
 nextCloud Configuration
@@ -2662,15 +2662,15 @@ nextCloud Configuration
 
 On the nextcloud page, specify an admin account.
 
-Click `Storage and Database`, set the Data folder to `/opt/nextcloud/data`.
-Select `MySQL` for the database, and provide the database user, password,
-and database name. The fourth field should be `localhost`.
+Click ``Storage and Database``, set the Data folder to ``/opt/nextcloud/data``.
+Select ``MySQL`` for the database, and provide the database user, password,
+and database name. The fourth field should be ``localhost``.
 
-Click `Finish setup`.
+Click ``Finish setup``.
 
 ..  NOTE:: If you have problems logging into the database on this screen,
-    check PHPmyadmin → `nextcloud` (database) → Privileges. The `nextcloud`
-    user should be listed, with `Grant Yes`.
+    check PHPmyadmin → ``nextcloud`` (database) → Privileges. The ``nextcloud``
+    user should be listed, with ``Grant Yes``.
 
 `SOURCE How To Install and Configure NextCloud on Ubuntu 16.04 (DigitalOcean) <https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-nextcloud-on-ubuntu-16-04>`_
 
@@ -2705,50 +2705,50 @@ Add the following line::
 
 Save and close.
 
-Finally, in the NextCloud Admin pane, go to `Cron` and select the `Cron` option.
+Finally, in the NextCloud Admin pane, go to ``Cron`` and select the ``Cron`` option.
 
 `SOURCE: Background Jobs Configuration (NextCloud) <https://docs.nextcloud.com/server/10/admin_manual/configuration_server/background_jobs_configuration.html>`_
 
 LDAP Authentication
 --------------------------------
 
-In NextCloud, go to `Apps` and enable LDAP. Then, go to `Admin` and `LDAP`.
+In NextCloud, go to ``Apps`` and enable LDAP. Then, go to ``Admin`` and ``LDAP``.
 
 Set the following options:
 
 * Server
 
-    * Host: `localhost`
+    * Host: ``localhost``
 
-    * Port: `389`
+    * Port: ``389``
 
-    * Base DN: `ou=Users, dc=ldap, dc=mousepawmedia, dc=net`
+    * Base DN: ``ou=Users, dc=ldap, dc=mousepawmedia, dc=net``
 
-Click `Test Base DN`, and then `Continue`.
+Click ``Test Base DN``, and then ``Continue``.
 
-Set `Only these object classes:` to just `inetOrgPerson`, and click
-`Verify settings and count users`, and then `Continue`.
+Set ``Only these object classes:`` to just ``inetOrgPerson``, and click
+``Verify settings and count users``, and then ``Continue``.
 
-Check `LDAP/AD Username` and `LDAP/AD Email Address`, and then click
-`Advanced.` Set...
+Check ``LDAP/AD Username`` and ``LDAP/AD Email Address``, and then click
+``Advanced.`` Set...
 
 * Directory Settings
 
-    * User Display Name Field: `cn`
+    * User Display Name Field: ``cn``
 
-    * 2nd User Display Name Field: `sn`
+    * 2nd User Display Name Field: ``sn``
 
-    * Base User Tree: `ou=Users, dc=ldap, dc=mousepawmedia, dc=net`
+    * Base User Tree: ``ou=Users, dc=ldap, dc=mousepawmedia, dc=net``
 
-    * Group Display Name Field: `cn`
+    * Group Display Name Field: ``cn``
 
-    * Base Group Tree: `ou=Groups, dc=ldap, dc=mousepawmedia, dc=net`
+    * Base Group Tree: ``ou=Groups, dc=ldap, dc=mousepawmedia, dc=net``
 
 * Special Attributes
 
-    * Email field: `mail`
+    * Email field: ``mail``
 
-Click `Test Configuration`.
+Click ``Test Configuration``.
 
 The settings are automatically saved. Log in as an LDAP user to test.
 
@@ -2893,7 +2893,7 @@ Backups
 ======================================
 
 With everything set up, we now need to configure regular backups to our
-external drive `/mnt/backup`.
+external drive ``/mnt/backup``.
 
 ..  NOTE:: The way we have configured everything, if this drive is absent
     for any reason, the system will refuse to boot until it is either attached
@@ -2918,7 +2918,7 @@ First, we need a place for our MySQL backups.
     $ sudo chgrp root sqlbackup
     $ sudo chmod 0600 sqlbackup
 
-Now we need to adjust the settings for `automysqlbackup`.
+Now we need to adjust the settings for ``automysqlbackup``.
 
 ..  code-block:: bash
 
@@ -2956,7 +2956,7 @@ Save and close, and then craete the next file.
 
     $ sudo vim /opt/scripts/root_scripts/startup
 
-This script will start up everything that `takedown` shut off.
+This script will start up everything that ``takedown`` shut off.
 
 ..  code-block:: bash
 
@@ -2992,7 +2992,7 @@ We can now test the configuration. Note that this may take a few minutes.
 
     $ sudo automysqlbackup
 
-As `root`, navigate to `/mnt/backup/sqlbackup` to verify that the backup
+As ``root``, navigate to ``/mnt/backup/sqlbackup`` to verify that the backup
 completed (it's probably in `daily`).
 
 Configuring Duplicity
@@ -3014,7 +3014,7 @@ Use the default values. Make sure you specify and save your password.
     # gpg --list-keys
 
 Make sure you note the public key. Then, we need to start a new backup. Because
-of how we set up our system, we can just backup `/opt`. In the following
+of how we set up our system, we can just backup ``/opt``. In the following
 command, replace PUBLICKEY with the public key, and specify the correct
 passphrase.
 
@@ -3132,3 +3132,269 @@ Save and close. Make it executable, and then run it.
     # chmod 755 verify_backup
     # exit
     $ sudo ./verify_backup
+
+Tao Testing
+=============================
+
+Installation
+--------------------
+
+..  NOTE:: Tao requires a basic LAMP server. By the point, almost necessary
+    packages are already installed. See `Tao's installation instructions <https://userguide.taotesting.com/3.1/introduction/installing-tao.html>`_
+    for more information.
+
+Let's install the rest of the stuff needed for Tao.
+
+..  code-block:: bash
+
+    $ sudo apt install composer
+
+Let's start by downloading the Tao package. We'll get the URL for the latest
+version from `Tao's official download page <https://www.taotesting.com/get-tao/official-tao-packages/>`_.
+
+..  code-block:: bash
+
+    $ cd /opt
+    $ sudo wget http://releases.taotesting.com/TAO_3.1.0-RC7_build.zip
+
+Then, we unzip, rename the folder, and reconfigure permissions.
+
+..  code-block:: bash
+
+    $ sudo unzip TAO_3.1.0-RC7_build.zip
+    $ sudo mv TAO_3.1.0-RC7_build tao
+    $ sudo chown -R hawksnest /opt/tao
+    $ sudo chgrp -R www-data /opt/tao
+    $ sudo chmod -R u=rwx,g=rwx,o=rx /opt/tao
+
+Apache2 Configuration
+-------------------------
+
+Next, we'll configure Apache2.
+
+..  code-block:: bash
+
+    $ sudo vim /etc/apache2/sites-available/quiz.conf
+
+Paste the following contents into that file.
+
+..  code-block:: apache
+
+    <IfModule mod_ssl.c>
+        <VirtualHost *:443>
+            ServerName quiz.mousepawmedia.net
+            ServerAdmin hawksnest@mousepawgames.com
+
+            DocumentRoot /opt/tao
+
+            <Directory /opt/tao>
+                Options -MultiViews -Indexes
+                AllowOverride All
+            </Directory>
+
+            RewriteEngine on
+
+            ErrorLog ${APACHE_LOG_DIR}/error.log
+            CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+            SSLEngine on
+            SSLCertificateFile  /etc/apache2/ssl/mousepawmedia.net/fullchain.pem
+            SSLCertificateKeyFile /etc/apache2/ssl/mousepawmedia.net/privkey.pem
+
+            <FilesMatch "\.(cgi|shtml|phtml|php)$">
+                    SSLOptions +StdEnvVars
+            </FilesMatch>
+            <Directory /usr/lib/cgi-bin>
+                    SSLOptions +StdEnvVars
+            </Directory>
+
+            BrowserMatch "MSIE [2-6]" \
+                    nokeepalive ssl-unclean-shutdown \
+                    downgrade-1.0 force-response-1.0
+            # MSIE 7 and newer should be able to use keepalive
+            BrowserMatch "MSIE [17-9]" ssl-unclean-shutdown
+        </VirtualHost>
+    </IfModule>
+
+Save and quit.
+
+..  IMPORTANT:: Note that the above Apache2 configuration does not have
+    the typical hawksnest.ddns.net redirect. This is because we only added
+    Tao to the server well after the domain name migration.
+
+Next, we'll edit the core configuration of Apache2.
+
+..  code-block:: bash
+
+    $ sudo vim /etc/apache2/apache2.conf
+
+Add the following below the other ``<Directory>`` entries...
+
+..  code-block:: apache
+
+    <Directory "/opt/tao">
+        Options Indexes FollowSymLinks
+        AllowOverride All
+        Require all granted
+    </Directory>
+
+Save and close.
+
+Now, we'll enable the site and restart the server.
+
+..  code-block:: bash
+
+    $ sudo a2ensite quiz
+    $ sudo systemctrl restart apache2
+
+Database Setup
+-----------------------------
+
+We need to create a ``tao`` database and a ``tao`` user in MySQL.
+This can be done through PHPmyadmin.
+
+Tao Configuration
+-------------------------------
+
+Go to ``https://<serveraddress>/tao`` and follow the setup instructions.
+
+* Server Setup
+  * Host name: ``https://quiz.<serveraddress>/tao``
+  * Unique name: ``mousepawgames_tao``
+  * Time Zone: ``America/Los_Angeles``
+  * Mode: ``Production``
+* Database Configuration
+  * Database: ``MySQL/MariaDB``
+  * Host Name: ``localhost``
+  * Username: ``tao``
+  * Password: (you know what goes here)
+  * Database name: ``tao``
+  * Overwrite? Yes
+  * Pre-load? No
+
+Use your company credientials for admin setup. We'll hook up to LDAP later.
+
+Finish following the wizard, and then when it says "Installation complete",
+click ``OK``.
+
+You should be automatically redirected to the Tao login page.
+
+..  IMPORTANT:: If you ever get error 500 on anything, set the owner, group,
+    and permissions on ``/opt/tao`` recursively again.
+
+LDAP Configuration
+------------------------------
+
+Now we'll hook up to the company LDAP server. We'll be following
+`LDAP Authentication (Tao) <https://forge.taotesting.com/projects/tao/wiki/LDAP_Authentication>`_.
+
+Edit the following file...
+
+..  code-block:: bash
+
+    $ vim /opt/tao/composer.json
+
+Add the following to the ``"repositories"`` section, being careful to follow
+JSON syntax.
+
+..  code-block:: json
+
+    {
+        "type": "vcs",
+        "url": "https://github.com/oat-sa/generis-auth-ldap"
+    }
+
+Thus, that entire section now probably looks like...
+
+..  code-block:: json
+
+    "repositories": [
+        {
+            "type" : "vcs",
+            "url" : "https://github.com/oat-sa/ZendSearch"
+        },
+        {
+        "type": "vcs",
+        "url": "https://github.com/oat-sa/generis-auth-ldap"
+        }
+    ],
+
+Also, add the following to the ``"require"`` section, again being careful of
+JSON syntax.
+
+..  code-block:: json
+
+    "oat-sa/generis-auth-ldap": "dev-develop"
+
+Thus, that section now probably looks like...
+
+..  code-block:: json
+
+    "require": {
+        "oat-sa/extension-tao-funcacl" : "~2.7.2",
+        "oat-sa/generis" : "~2.16.2",
+        "oat-sa/extension-tao-ltideliveryprovider" : "~1.3.0",
+        "oat-sa/extension-tao-itemqti-pci" : "~0.1.4",
+        "oat-sa/extension-tao-itemqti-pic" : "~0.2.4",
+        "oat-sa/extension-pcisample" :"~0.2.1",
+        "oat-sa/tao-core" : "~2.23.0",
+        "oat-sa/extension-tao-backoffice" : "~0.11.0",
+        "oat-sa/extension-tao-community" : "~1.3.0",
+        "oat-sa/extension-tao-dac-simple" : "~1.2.2",
+        "oat-sa/extension-tao-delivery" : "~3.3.0",
+        "oat-sa/extension-tao-delivery-rdf" : "~1.2.0",
+        "oat-sa/extension-tao-group" : "~2.9.0",
+        "oat-sa/extension-tao-item" : "~2.13.0",
+        "oat-sa/extension-tao-lti" : "~1.2.0",
+        "oat-sa/extension-tao-outcomelti" : "~2.6.2",
+        "oat-sa/extension-tao-mediamanager" : "~0.4.2",
+        "oat-sa/extension-tao-itemhtml" : "~2.7.1",
+        "oat-sa/extension-tao-outcomerds" : "~1.1.3",
+        "oat-sa/extension-tao-outcomeui" : "~2.7.4",
+        "oat-sa/extension-tao-itemqti" : "~2.21.0",
+        "oat-sa/extension-tao-testqti" : "~2.24.0",
+        "oat-sa/extension-tao-outcome" : "~2.8.3",
+        "oat-sa/extension-tao-revision" : "~2.0.0",
+        "oat-sa/extension-tao-testlinear" : "~0.1.4",
+        "oat-sa/extension-tao-test" : "~2.15.0",
+        "oat-sa/extension-tao-testtaker" : "~2.8.1",
+        "oat-sa/extension-tao-workspace" : "~0.3.0",
+        "oat-sa/generis-auth-ldap": "dev-develop"
+    },
+
+Save and close, and then run...
+
+..  code-block:: bash
+
+    $ cd /opt/tao
+    $ sudo composer update
+
+..  NOTE:: I had to create a token on Github using my account.
+
+Whenever prompted, opt for the default behavior on options.
+
+..  WARNING:: Could not get this working yet. Rolled back to this point for now.
+
+Next, we'll configure LDAP. Open the following file...
+
+..  code-block:: bash
+
+    $ vim /opt/tao/config/generis/auth.conf.php
+
+Add the following to that file:
+
+..  code-block::
+
+    array(
+        'driver' => 'oat\authLdap\model\LdapAdapter',
+        'config' => array(
+            array(
+                'host' => '127.0.0.1',
+                'accountDomainName' => 'mousepawmedia.net',
+                'baseDn' => 'ou=Users, dc=ldap, dc=mousepawmedia, dc=net',
+                'bindRequiresDn' => 'true',
+            )
+        )
+    ),
+
+..  WARNING:: Tao's LDAP integration isn't working yet. I stopped here.
