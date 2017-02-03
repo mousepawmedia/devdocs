@@ -2775,11 +2775,12 @@ Next, we'll pull in the Docker container for Collabora Office online.
 
 This download will take a while, so sit back and wait.
 
-Next, we'll deploy the docker image.
+Next, we'll deploy the docker image. Make sure you substitute your value
+in on the ``password`` option.
 
 ..  code-block:: bash
 
-    $ sudo docker run -t -d -p 127.0.0.1:9980:9980 -e 'domain=nextcloud\\.mousepawmedia\\.net' --restart always --cap-add MKNOD collabora/code
+    $ sudo docker run -t -d -p 127.0.0.1:9980:9980 -e 'domain=nextcloud\\.mousepawmedia\\.net' -e 'user=admin' -e 'password=ThePasswordForCollabora' --restart always --cap-add MKNOD collabora/code
 
 Next, we will set up Apache to proxy to Collabora Office.
 
@@ -2804,7 +2805,7 @@ Set the contents of that file to the following...
         #SSLHonorCipherOrder     on
 
         # Encoded slashes need to be allowed
-        AllowEncodedSlashes On
+        AllowEncodedSlashes NoDecode
 
         # Container uses a unique non-signed certificate
         SSLProxyEngine On
@@ -2825,7 +2826,7 @@ Set the contents of that file to the following...
         ProxyPassReverse    /hosting/discovery https://127.0.0.1:9980/hosting/discovery
 
         # Main websocket
-        ProxyPassMatch "/lool/(.*)/ws$" wss://127.0.0.1:9980/lool/$1/ws
+        ProxyPassMatch "/lool/(.*)/ws$" wss://127.0.0.1:9980/lool/$1/ws nocanon
 
         # Admin Console websocket
         ProxyPass   /lool/adminws wss://127.0.0.1:9980/lool/adminws
@@ -2835,12 +2836,19 @@ Set the contents of that file to the following...
         ProxyPassReverse    /lool https://127.0.0.1:9980/lool
     </VirtualHost>
 
-Save and close. Then, enable the site and restart Apache2.
+Save and close.
+
+..  IMPORTANT:: The above Apache2 configuration is for `CODE 2.0 updates 2 <https://www.collaboraoffice.com/community-en/code-2-0-updates-2/>`_
+    and onward. Using the old configuration will break things.
+
+Then, enable the site and restart Apache2.
 
 ..  code-block:: bash
 
     $ sudo a2ensite office
     $ sudo systemctl restart apache2
+
+You can see stats and admin options at ``https://office.<serveraddress>/loleaflet/dist/admin/admin.html``.
 
 Next, go to NextCloud. Click the menu, and go to
 :menuselection:`Apps --> Productivity`. Install the "Collabora Online connector".
@@ -3373,8 +3381,6 @@ Save and close, and then run...
 
 Whenever prompted, opt for the default behavior on options.
 
-..  WARNING:: Could not get this working yet. Rolled back to this point for now.
-
 Next, we'll configure LDAP. Open the following file...
 
 ..  code-block:: bash
@@ -3398,3 +3404,18 @@ Add the following to that file:
     ),
 
 ..  WARNING:: Tao's LDAP integration isn't working yet. I stopped here.
+
+== Updates
+
+Updating Collabora
+------------------------------
+
+..  code-block:: bash
+
+    $ sudo docker pull collabora/code
+    $ sudo docker ps
+    # Find the processid from the preceeding.
+    $ sudo docker stop processid
+    $ sudo docker rm processid
+    # Be sure to subtitute the password you want for Collabora!
+    $ $ sudo docker run -t -d -p 127.0.0.1:9980:9980 -e 'domain=nextcloud\\.mousepawmedia\\.net' -e 'user=admin' -e 'password=ThePasswordForCollabora' --restart always --cap-add MKNOD collabora/code
