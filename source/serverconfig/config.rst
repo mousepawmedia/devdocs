@@ -3306,6 +3306,10 @@ You should be automatically redirected to the Tao login page.
 LDAP Configuration
 ------------------------------
 
+..  IMPORTANT:: The LDAP integration is not very robust, so I'm reversing
+    these changes. Hand-tailoring the user accounts is worth the extra
+    features in Tao.
+
 Now we'll hook up to the company LDAP server. We'll be following
 `LDAP Authentication (Tao) <https://forge.taotesting.com/projects/tao/wiki/LDAP_Authentication>`_.
 
