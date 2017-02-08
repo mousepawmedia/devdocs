@@ -3253,7 +3253,7 @@ Now, we'll enable the site and restart the server.
 ..  code-block:: bash
 
     $ sudo a2ensite quiz
-    $ sudo systemctrl restart apache2
+    $ sudo systemctl restart apache2
 
 Database Setup
 -----------------------------
@@ -3264,23 +3264,36 @@ This can be done through PHPmyadmin.
 Tao Configuration
 -------------------------------
 
-Go to ``https://<serveraddress>/tao`` and follow the setup instructions.
+Go to ``https://quiz.<serveraddress>/tao`` and follow the setup instructions.
 
 * Server Setup
+
   * Host name: ``https://quiz.<serveraddress>/tao``
+
   * Unique name: ``mousepawgames_tao``
+
   * Time Zone: ``America/Los_Angeles``
+
   * Mode: ``Production``
+
 * Database Configuration
+
   * Database: ``MySQL/MariaDB``
+
   * Host Name: ``localhost``
+
   * Username: ``tao``
+
   * Password: (you know what goes here)
+
   * Database name: ``tao``
+
   * Overwrite? Yes
+
   * Pre-load? No
 
-Use your company credientials for admin setup. We'll hook up to LDAP later.
+Use your ``admin`` as the username for admin setup. We'll hook up to LDAP later,
+and we don't want a conflict.
 
 Finish following the wizard, and then when it says "Installation complete",
 click ``OK``.
@@ -3381,31 +3394,78 @@ Save and close, and then run...
 
 Whenever prompted, opt for the default behavior on options.
 
+Before we go further, bring Tao's web interface back up, and add a Group
+called ``Staff``. Then, to get its internal ID, click ``Export``. Open the
+file you downloaded, and look for the URL after ``rdf:about=``. We'll use
+that in place of ``GROUP_URI`` below.
+
 Next, we'll configure LDAP. Open the following file...
 
 ..  code-block:: bash
 
-    $ vim /opt/tao/config/generis/auth.conf.php
+    $ sudo vim /opt/tao/config/generis/auth.conf.php
 
-Add the following to that file:
+Edit that file so it matches the following:
 
-..  code-block::
+..  code-block:: php
 
+    <?php
+    /**
+     * Auth config
+     *
+     * @author Open Assessment Technologies SA
+     * @package generis
+     * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
+     */
+
+    /* Default AuthAdapter
     array(
-        'driver' => 'oat\authLdap\model\LdapAdapter',
-        'config' => array(
-            array(
-                'host' => '127.0.0.1',
-                'accountDomainName' => 'mousepawmedia.net',
-                'baseDn' => 'ou=Users, dc=ldap, dc=mousepawmedia, dc=net',
-                'bindRequiresDn' => 'true',
+        'driver' => 'oat\\generis\\model\\user\\AuthAdapter',
+    )
+    */
+    return array(
+        0 => array(
+            'driver' => 'oat\\generis\\model\\user\\AuthAdapter',
+            'hash' => array(
+                'algorithm' => 'sha256',
+                'salt' => 10
             )
-        )
-    ),
+        ),
+        1 => array(
+            'driver' => 'oat\\authLdap\\model\\LdapAdapter',
+            'config' => array(
+                array(
+                    'host' => '127.0.0.1',
+                    'accountDomainName' => 'mousepawmedia.net',
+                    'baseDn' => 'ou=Users, dc=ldap, dc=mousepawmedia, dc=net',
+                    'bindRequiresDn' => 'true',
+                )
+            ),
+            'mapping' => array(
+            'http://www.tao.lu/Ontologies/TAOGroup.rdf#member' => array(
+                    'type' => 'value',
+                    'value' => array('GROUP_URI')
+                    )
+            ),
+        ),
+    );
 
-..  WARNING:: Tao's LDAP integration isn't working yet. I stopped here.
+Restart Apache2.
 
-== Updates
+..  code-block:: bash
+
+    $ sudo systemctl restart apache2
+
+..  NOTE:: If you get Error 500 when you try to log into Tao, check the syntax
+    of the config file above. It will fail quietly if there's a problem.
+
+Tao's binding to LDAP is a bit odd - you will not see any indication on the
+admin panel that it is seeing the users. However, the ``Staff`` group is
+indeed connected, so delivering a test to that group WILL show it to anyone
+who logs in with LDAP.
+
+Updates
+==============================
 
 Updating Collabora
 ------------------------------
