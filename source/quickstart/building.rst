@@ -16,10 +16,10 @@ Dependencies
 
 .. _qgbuild_libgit:
 
-lib-git
+libdeps
 ------------------------------------
 
-..  sidebar:: Why lib-git?
+..  sidebar:: Why libdeps?
 
     It may come as a surprise to some that we track all our third-party dependencies in
     our own repository, but there really is a good reason. This approach allows us to
@@ -27,37 +27,37 @@ lib-git
     to all our developers quickly. That way, we're always on the same page!
 
 We try to keep our library dependencies to a minimum. You can quickly build all (except one)
-of our third-party dependency static libraries using our ``lib-git`` repository.
+of our third-party dependency static libraries using our ``libdeps`` repository.
 
 For the complete list of libraries and their versions, see the CHANGELOG.md file in the
-``lib-git`` repository.
+``libdeps`` repository.
 
 .. _qgbuild_libgit_building:
 
-Building lib-git
+Building libdeps
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Clone `lib-git <https://phabricator.mousepawmedia.net/source/lib-git/>`_ into your
+Clone `libdeps <https://phabricator.mousepawmedia.net/source/libdeps/>`_ into your
 repositories folder. For best results, all MousePaw Games repositories you clone should
 be in the same directory. Then run...
 
 ..  code-block:: bash
 
-    $ cd lib-git
+    $ cd libdeps
     $ git checkout -b stable origin/stable
 
-This will check out the ``stable`` remote branch of the ``lib-git`` repository. We recommend
+This will check out the ``stable`` remote branch of the ``libdeps`` repository. We recommend
 working on ``stable`` unless you specifically need the latest unstable changes.
 
 Next, we'll build the dependencies. All you need to do is run ``make <library>``, where
 ``<library>`` is the name of the library you want to build. Alternatively, run ``make ready``
 to build them all.
 
-Once the build is done, you can find all the headers in :file:`lib-git/libs/include`, and the
-compiled static libraries in :file:`lib-git/libs/lib`. The build systems in all of our other
+Once the build is done, you can find all the headers in :file:`libdeps/libs/include`, and the
+compiled static libraries in :file:`libdeps/libs/lib`. The build systems in all of our other
 repositories look for the library files at these locations by default.
 
-..  WARNING:: To make it easier to update ``lib-git`` later, DO NOT EVER commit changes on the
+..  WARNING:: To make it easier to update ``libdeps`` later, DO NOT EVER commit changes on the
     ``master`` or ``stable`` branches.
 
 .. _qgbuild_libgit_aclocal:
@@ -78,10 +78,10 @@ it along with all the others.)
 
 .. _qgbuild_libgit_updating:
 
-Updating lib-git
+Updating libdeps
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-When changes happen in ``lib-git``, you only need to pull them in and rebuild. While ``make clean``
+When changes happen in ``libdeps``, you only need to pull them in and rebuild. While ``make clean``
 commands are provided, it's generally more effective to just clean up the git repository itself.
 
 If you're working on the ``stable`` branch, run...
@@ -97,25 +97,25 @@ If you're working on the ``stable`` branch, run...
 
 .. _qgbuild_cindergit:
 
-cinder-git
+cinder
 ---------------------------------------
 
-The only third-party dependency that isn't included in ``lib-git`` is Cinder; this is because of
+The only third-party dependency that isn't included in ``libdeps`` is Cinder; this is because of
 its size, and the beta status of its Linux support necessitating more frequent updates and
 patches.
 
 .. _qgbuild_cindergit_building:
 
-Building cinder-git
+Building cinder
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Clone `cinder-git <https://phabricator.mousepawmedia.net/source/cinder-git/>`_ into your
+Clone `cinder <https://phabricator.mousepawmedia.net/source/cinder/>`_ into your
 repositories folder. For best results, all MousePaw Games repositories you clone should
 be in the same directory. Then run...
 
 ..  code-block:: bash
 
-    $ cd cinder-git
+    $ cd cinder
     $ git checkout -b stable origin/stable
 
 Before you can build Cinder for the first time, you'll need to install Cinder's dependencies.
@@ -133,16 +133,16 @@ Then, build Cinder.
 
     $ make ready
 
-Once the build is done, you can find all the headers in :file:`cinder-git/libs/include`, and the
-compiled static libraries in :file:`cinder-git/libs/lib`. The build systems in the other
+Once the build is done, you can find all the headers in :file:`cinder/libs/include`, and the
+compiled static libraries in :file:`cinder/libs/lib`. The build systems in the other
 repositories that use Cinder look for the library files at these locations by default.
 
 .. _qgbuild_cindergit_updating:
 
-Updating cinder-git
+Updating cinder
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-When changes happen in ``cinder-git``, you only need to pull them in and rebuild.
+When changes happen in ``cinder``, you only need to pull them in and rebuild.
 While ``make clean`` commands are provided, it's generally more effective to just clean up
 the git repository itself.
 
@@ -165,7 +165,7 @@ PawLIB
 Most of our repositories rely on PawLIB, which contains many common, helpful utilities and
 features.
 
-Clone `pawlib-git <https://phabricator.mousepawmedia.net/source/pawlib-git/>`_ into your
+Clone `pawlibdeps <https://phabricator.mousepawmedia.net/source/pawlibdeps/>`_ into your
 repositories folder. For best results, all MousePaw Games repositories you clone should
 be in the same directory.
 
@@ -174,7 +174,7 @@ so make sure you run...
 
 ..  code-block:: bash
 
-    $ cd pawlib-git
+    $ cd pawlibdeps
 
 .. _qgbuild_pawlib_buildingdep:
 
@@ -189,7 +189,7 @@ run...
 
     $ git checkout -b stable origin/stable
 
-PawLIB relies on CPGF, so make sure you've :ref:`built lib-git <qgbuild_libgit_building>`,
+PawLIB relies on CPGF, so make sure you've :ref:`built libdeps <qgbuild_libgit_building>`,
 or otherwise :ref:`specified an alternate location for CPGF <qgbuild_systems_conf>`
 
 Then, simply run...
@@ -234,11 +234,107 @@ repository.
 
 .. _qgbuild_systems_conf:
 
+File Structure
+---------------------------------------
+
+All C++ project repositories have the same basic directory structure,
+demonstrated below. Non-library projects would effectively have a `project`
+folder instead of `library-tester`, and would lack the `library-source`
+folder.
+
+Folders marked with (*) are untracked in the Git repository::
+
+    Repository
+    ├── docs ← Sphinx documentation.
+    │   ├── build (*) ← The compiled documentation.
+    │   ├── source ← The documentation source files.
+    │   │   └── _themes ← The Sphinx theming files.
+    │   └── Makefile ← The Makefile that automatically runs CMake.
+    ├── library (*) ← Where 'make ready' puts the compiled library and its headers.
+    ├── library-source ← The library source code.
+    │   ├── build_temp (*) ← Temporary build stuff. Also where CMake is run from.
+    │   ├── include
+    │   │   └── library ← The library's header files (.hpp).
+    │   ├── lib (*) ← The compiled library (copied from here to ../library)
+    │   ├── obj (*) ← Temporary build stuff.
+    │   ├── src ← The library's implementation files (.cpp).
+    │   ├── CMakeLists.txt ← The CMake build instructions for the library.
+    │   ├── library.cbp ← The CodeBlocks project for the library.
+    │   └── Makefile ← The Makefile that automatically runs CMake.
+    ├── library-tester ← The library tester.
+    │   ├── bin (*) ← The compiled tester.
+    │   ├── build_temp (*) ← Temporary build stuff. Also where CMake is run from.
+    │   ├── include ← The tester's header files (.hpp).
+    │   ├── src ← The tester's implementation files (.cpp).
+    │   ├── CMakeLists.txt ← The CMake build instructions for the tester.
+    │   ├── library-tester.cbp ← The CodeBlocks project for the tester.
+    │   └── Makefile ← The Makefile that automatically runs CMake.
+    ├── .arcconfig ← Configuration for Phabricator Arcanist.
+    ├── .arclint ← Configuration for Arcanist linters.
+    ├── .gitignore ← Untracks temporary build stuff and other cruft.
+    ├── build.config.txt ← The template configuration file.
+    ├── BUILDING.md ← User instructions for building.
+    ├── CHANGELOG.md ← The list of versions and their changes.
+    ├── default.config ← The default configuration file.
+    ├── LICENSE.md ← The project's license.
+    ├── Makefile ← The project's master Makefile.
+    └── README.md ← The README file.
+
+Adding New Files
+---------------------------------------
+
+..  sidebar:: What's with the extra folder in ``include/``?
+
+    It may seem redundant to have a ``project/`` folder in ``include/``,
+    but it actually makes for cleaner code. Imagine you're importing
+    ``magic.hpp`` from LibA, and ``somemagic.hpp`` from LibB in the same
+    file. Which is from where?
+
+    Because of that odd-looking folder structure, we get imports that
+    look like this...
+
+    ..  code-block:: c++
+
+        #include <liba/magic.hpp>
+        #include <libb/somemagic.hpp>
+
+To add a new file to a project build, you need to edit that project's
+``CMakeLists.txt`` file. Look for the ``add_library`` or ``add_executable``
+section, where all the project files are listed. Add your file paths
+(relative to the location of ``CMakeLists.txt``) to that list.
+
+For example, some project's ``add_executable`` command might look like this::
+
+    add_executable(${TARGET_NAME}
+        include/someproject/classA.hpp
+        include/someproject/classB.hpp
+        include/someproject/classC.hpp
+
+        main.cpp
+        src/classA.cpp
+        src/classB.cpp
+        src/classC.cpp
+    )
+
+..  NOTE:: Please be sure to list files in alphabetical order, in two groups:
+    header files and source files. Keep this section clean!
+
 Switching Dependency Locations
 ---------------------------------------
 
-Although our build systems are pre-configured to use :ref:`lib-git <qgbuild_libgit>`,
-:ref:`cinder-git <qgbuild_cindergit>`, and so forth, you can override this behavior.
+..  sidebar:: A Note About Static Library Link Order
+
+    Although you're not likely to have to add static library dependencies
+    to a project yourself, if you do, watch the order!
+
+    Imagine you're working on project C, which relies on libraries A and B.
+    Library B *also* relies on library A. Project C should link against library
+    B first, and THEN library A.
+
+    For more information, see `StackOverflow: Nested Static Libraries and a Spooky Bug <https://stackoverflow.com/questions/42323262/nested-static-linked-libraries-and-a-spooky-bug>`_.
+
+Although our build systems are pre-configured to use :ref:`libdeps <qgbuild_libgit>`,
+:ref:`cinder <qgbuild_cindergit>`, and so forth, you can override this behavior.
 
 In the root of the repository you're building, open :file:`build.config.txt`
 in that directory, and save it with another name ending in ``.config``. Then, modify the file
@@ -282,6 +378,6 @@ If your system is configured for cross-compiling, you can ask the compiler to bu
 an x86 (32-bit) or x64 (64-bit) system by including the ``ARCH=32`` or ``ARCH=64`` arguments,
 respectively.
 
-..  WARNING:: Our dependency libraries (``lib-git`` and ``cinder-git``) are not currently
+..  WARNING:: Our dependency libraries (``libdeps`` and ``cinder``) are not currently
     configured to switch architectures. You will need to manually compile these and point
     to them using a ``.config`` file.
