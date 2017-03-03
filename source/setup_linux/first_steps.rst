@@ -1,4 +1,4 @@
-First Steps: Configuring Ubuntu
+Ubuntu Setup: Configuring
 ##################################
 
 Now that you have a fresh installation of Ubuntu Linux, let's install some

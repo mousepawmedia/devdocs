@@ -1,5 +1,5 @@
-Installing Ubuntu Linux
-##############################
+Ubuntu Setup: Installing
+################################
 
 Making Some Decisions
 ==============================
@@ -11,7 +11,7 @@ Single Boot or Dual Boot?
 
 If you have a PC, your first decision is whether you want to keep
 Microsoft Windows™. Millions of people work exclusively on Linux,
-including a few people at MousePaw Games. However, if you rely on
+including a few people at MousePaw Media. However, if you rely on
 Windows-only software, such as Microsoft Office™ or software from
 Adobe or Autodesk, you may want to keep Microsoft Windows™ installed.
 

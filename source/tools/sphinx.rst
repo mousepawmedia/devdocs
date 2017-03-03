@@ -91,7 +91,7 @@ it. Then, run...
 
 * Project name: <name of your project>
 
-* Author name(s): MousePaw Games
+* Author name(s): MousePaw Media
 
 * Project version: <short project version>
 

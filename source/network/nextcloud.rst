@@ -680,17 +680,13 @@ files to and from your computer or device.
     NOT access Nextcloud from Windows, whether via the web interface or the
     client.
 
-On Linux, you can either build the new Nextcloud client from source, or just
-use the ownCloud client until they offer the new client in a pre-built form.
-Technically, Nextcloud is just the next generation of ownCloud.
-
-The second option is much easier, so we'll do that.
-
-To install the ownCloud client, run...
+To install the Nextcloud client on an Ubuntu-based system, run...
 
 ..  code-block:: bash
 
-    $ sudo apt install owncloud-client
+    $ sudo add-apt-repository ppa:nextcloud-devs/client
+    $ sudo apt update
+    $ sudo apt install nextcloud-client
 
 Once that installs, start the :guilabel:`ownCloud desktop sync client`
 application. The setup wizard will appear the first time.
@@ -699,17 +695,26 @@ Set the server address to :code:`https://nextcloud.mousepawmedia.net` and
 click :guilabel:`Next`. Enter your company login (LDAP) credentials and
 click :guilabel:`Next` again.
 
-You can choose whether to sync everything from the server (usually the best
-option), or select specific files.
+On the next screen, we'll choose to select specific folders to sync. Click
+:guilabel:`Choose what to sync` and UNCHECK :guilabel:`MLP`. (That's a large
+collection of videos you can just watch on Nextcloud online.) The other folders
+should be fine to sync, so leave the rest checked. Click :guilabel:`OK`.
 
-Be sure to change your local folder from :file:`/home/{user}/owncloud` to
-:file:`/home/{user}/nextcloud`, to make it easier to find things later!
+The default sync folder is recommended, but you can change it if you like.
 
 Finally, click :guilabel:`Connect...`, and then :guilabel:`Finish`.
-If you're on Ubuntu, you'll now see the ownCloud icon on your top bar. It will
+If you're on Ubuntu, you'll now see the Nextcloud icon on your top bar. It will
 alert you when changes are made to files, and will automatically sync to the
 server.
 
-You can now interact directly with files on the NextCloud server by adding,
-editing, and removing them within your :file:`nextcloud` directory in your
+You can now interact directly with files on the Nextcloud server by adding,
+editing, and removing them within your :file:`Nextcloud` directory in your
 home folder!
+
+Next, let's ensure the Nextcloud client starts when our computer does.
+Right-click the Nextcloud icon in your indicator area, and click
+:guilabel:`Settings...`. Select the :guilabel:`General` tab and ensure
+that :guilabel:`Launch on System Startup` is checked.
+
+Feel free to tweak the other settings to your preference, and then click
+:guilabel:`Close` when you're done.

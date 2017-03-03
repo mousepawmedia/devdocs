@@ -34,7 +34,7 @@ improvements you have planned for your patch or new version.
     task will take less than 10 minutes, and you're going to do it right now,
     you do NOT have to create a task. Otherwise, *create a task*!
 
-See :ref:`phab_maniphest_task_or_project`.
+See :ref:`gtasks_taskorproject`.
 
 Steps in Planning
 ---------------------------

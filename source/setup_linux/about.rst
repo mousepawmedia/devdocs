@@ -1,5 +1,5 @@
-About Linux
-#########################
+Ubuntu Setup: About Linux
+################################
 
 About the Linux Operating System
 ================================
@@ -40,7 +40,7 @@ and snap the pieces together. Some computer nerds like to start with just the
 Linux kernel itself and add each piece manually, but the rest of us like to
 have a starting place. That's one of the reasons we use Ubuntu-based distros.
 
-The most common distro at MousePaw Games is **Ubuntu** itself. It's unique,
+The most common distro at MousePaw Media is **Ubuntu** itself. It's unique,
 friendly, and very easy-to-use. It takes about 15 minutes to get used to
 Ubuntu, no matter what your computer experience level.
 

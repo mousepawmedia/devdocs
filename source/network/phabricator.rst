@@ -15,7 +15,7 @@ are legitimate, and keep spam to a minimum.
 
 To create a new Phabricator account with Github, click on the
 :guilabel:`Login or Register Github` button. Then, authorize the
-:code:`Hawksnest [MousePaw Games]` Github application.
+:code:`Hawksnest [MousePaw Media]` Github application.
 
 .. _phab_login_github:
 
@@ -34,7 +34,7 @@ anytime by clicking the :guilabel:`Login or Register Github` button.
 Login with LDAP
 ---------------------------------
 
-MousePaw Games staff may log into Phabricator using their LDAP credentials
+MousePaw Media staff may log into Phabricator using their LDAP credentials
 (username and password).
 
 If you're a staff member, and you are having trouble logging in with your
@@ -105,7 +105,7 @@ All comment boxes, as well as description fields and the wiki, using
     Embed object: {D123}
     Phriction link: [[gettingstarted]]
     Internal link: [[ /maniphest | Make a task. ]]
-    External link: [[ http://www.mousepawgames.com | MousePaw Games Website]]
+    External link: [[ http://www.mousepawgames.com | MousePaw Media Website]]
 
     ```
     This is a block of code.
@@ -208,7 +208,7 @@ You can browse and manage projects from the
 Types of Projects
 ------------------------------------------
 
-At MousePaw Games, we use six major types of project objects. To avoid
+At MousePaw Media, we use six major types of project objects. To avoid
 confusion, we will use these terms as defined below. From now on, we'll use the
 term "project object" or "subproject object" will be used to denote the actual
 object type, instead of the kind of project object.
@@ -224,13 +224,20 @@ object type, instead of the kind of project object.
 
   * :code:`Bots [Group]` are system bots, which can access everything.
 
+  * :code:`Trusted [Group]` is made up of all users who have "trusted"
+    level access. (See :ref:`phab_security`).
+
   * :code:`Trusted Contributors [Group]` are non-staff members who have earned
     additional authority and privileges.
+
+  * :code:`Informal Interns [Group]` are outside contributors who are
+    working as unofficial interns. They receive much of the same training
+    as interns, but are strictly volunteers, and not legally considered staff.
 
   * :code:`Interns [Group]` are official staff interns. They have the
     full authority of a staff member, but are currently in training.
 
-  * :code:`Management [Group]` are official MousePaw Games managers.
+  * :code:`Management [Group]` are official MousePaw Media managers.
 
   * :code:`Senior Staff [Group]` are official staff, usually those who have
     graduated from the internship program.
@@ -242,7 +249,7 @@ object type, instead of the kind of project object.
   * :code:`Staff [Group]` is a master group denoting all official staff.
 
 * A **Department**, designated with "[Dept]", is a particular department at
-  MousePaw Games. Membership is staff-only, and controlled by management.
+  MousePaw Media. Membership is staff-only, and controlled by management.
 
 * A **Team** is a group within a department. A team is generally characterized
   by a particular approach and skill set, and maintains a specific set of
@@ -272,7 +279,11 @@ object type, instead of the kind of project object.
 * A **Milestone** is a special kind of subproject, which belongs to a Master
   Project. It is used to designate versions.
 
-See :ref:`phab_maniphest_task_or_project`.
+* A **Label** is a project that is used exclusively for topical tagging and
+  organization. We maintain labels for most of the technologies we use.
+  (See :ref:`phab_projects_labels`).
+
+See :ref:`gtasks_taskorproject`.
 
 .. _phab_projects_membership:
 
@@ -285,15 +296,56 @@ Joining a Project
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 With most project object types, membership is controlled by management or
-admins. However, with Projects and Subprojects, we allow anyone to **Join** the
-project.
+admins. However, with Projects, Subprojects, and Labels, we allow anyone
+to **Join** the project.
+
+Joining a Project or Subproject means you are (or plan to be) an active
+contributor to the project.
+
+Joining a Label is a way of declaring your experience in that topic. (See
+:ref:`phab_projects_labels`).
 
 Watching a Project
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 If you **Watch** a project, you will receive notifications about anything
 relating to that project, without you actually joining the project. This is
-useful if you cannot join a project, but want the latest updates about it.
+useful if joining the project is impossible or undesirable, but you want the
+latest updates about it.
+
+For example, if you're interested in the PawLIB project, but don't plan to
+contribute to it, you should Watch it instead of Joining it.
+
+..  _phab_projects_labels:
+
+Labels
+------------------------------------------
+
+Labels are unusual in that, unlike other projects, they exist solely for
+organizing things by topic. This is especially helpful for Ponder Questions
+(see :ref:`phab_ponder`) and Maniphest Tasks (see :ref:`phab_maniphest`).
+
+Another chief aim of a Label is to allow one to announce their expertise
+about a topic. If you feel you have some degree of experience with Ubuntu,
+for example, you would want to join the ``Ubuntu [Label]`` project. In turn,
+if you needed help with pugixml, you could look at the members of the
+``pugixml [Label]`` project.
+
+..  NOTE:: While it is not possible to join some Labels directly because they
+    have subprojects (i.e. "Linux"), you can join them by joining one of their
+    subprojects (i.e. "Ubuntu", "Debian", or "Fedora").
+
+Adding Labels
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Any Trusted user can create a Label, so if you don't see one you need, just
+add it! The fastest way to do this is to click :guilabel:`Create Project` in the
+upper-right corner of the Projects app, and select :guilabel:`Create Label`.
+
+..  WARNING:: Labels should cover BROAD subject areas. Don't create labels
+    for things like "Compiling C on Mac" or "Ubuntu 16.04".
+
+..  _phab_projects_workboard:
 
 Workboards
 ------------------------------------------
@@ -307,6 +359,77 @@ drag-and-drop tasks to move them between milestones.
     Subproject. If it is tagged with a Subproject, it will appear on that
     workboard. Thus, it is prudent to ensure each Subproject has Milestones.
 
+..  _phab_security:
+
+Security Policies
+=========================================
+
+The visibility and editability of nearly every object on Phabricator can
+be controlled. To make the most common configurations easy to use, we've
+set up several "security levels".
+
+..  _phab_security_spaces:
+
+Spaces
+------------------------------------------
+
+The quickest way to set an object's permissions is to set its **Space**. We
+provide four.
+
+..  NOTE:: The ID numbers are out of order because of when we created the Space.
+    It's unfortunate, but we can't change these without an inordinate amount
+    of hassle and risk.
+
+* **S1: Global** allows any logged in user to access the object by default.
+  This should be used for:
+
+  * Anything relating to our open source projects (Tasks, Differentials, etc).
+
+  * Most Phriction documents.
+
+  * Most Ponder Questions.
+
+* **S4: Trusted** allows all trusted users, including staff, to access the
+  object by default. This should be used for:
+
+  * Anything beneficial to regular contributors, but not useful to others.
+
+  * Non-confidential staff-related objects.
+
+  * Most Calendar Events.
+
+* **S2: Staff-Only** only allows access by MousePaw Media Staff. This should
+  be used for anything confidential to the company.
+
+* **S3: Management** only allows access by MousePaw Media management.
+
+..  _phab_security_permissions:
+
+Visible To and Editable To
+-----------------------------------------
+
+Object access permissions can be further controlled by setting the
+:guilabel:`Visible To` and :guilabel:`Editable By` fields.
+
+While you can set this to just about anything, you should almost always set
+this to "All Users," or use group-based permissions.
+
+The most common projects to use for controlling these permissions are:
+
+* **Trusted [Group]**: Identical to the Trusted Space.
+
+* **Staff [Group]**: Identical to the Staff-only Space.
+
+* **Management [Group]**: Identical to the Management Space.
+
+Sometimes, we use a special group for certain objects:
+
+* **Hiring [Group]**: All staff involved with hiring.
+
+* **Standards Board [Access]**: All users who oversee our standards.
+
+* **Repository Masters [Access]**: All users with control over the repositories.
+
 .. _phab_maniphest:
 
 Maniphest
@@ -316,289 +439,117 @@ Maniphest
 
 See also, :ref:`phab_projects`.
 
-.. _phab_maniphest_task_or_project:
+By default, Maniphest shows you the tasks assigned to you, grouped by their
+Priority. You can search for other tasks by selecting a Query at left, or
+by clicking :guilabel:`Edit Query` in the upper-right corner and entering
+search criteria.
 
-Task or Project
-----------------------------------------
+.. _phab_maniphest_create:
 
-It can be confusing to determine whether to create a Project, Subproject,
-Milestone, Umbrella Task, or Task. Here's the use for each:
+Creating Tasks
+-----------------------------------------
 
-* A **Project** is a single library or application. It has multiple versions.
+You can create a new Maniphest Task by clicking :guilabel:`Create Task` in
+the upper-right corner, and selecting the task type.
 
-* A **Milestone** is a single version of a Project.
+* :guilabel:`Create Task` allows you to create a new task, usually for a
+  project *you* are working on.
 
-* A **Subproject** is a *subset* of features within a Project. It also can have
-  multiple versions.
+* :guilabel:`Bug Report` creates a new Bug Report for a project you aren't
+  working on. It only prompts you for the essential information, and leaves the
+  actual prioritization to the person working on that bug.
 
-* An **Umbrella Task** is used for a *single* feature or bugfix that contains
-  many smaller tasks. It does NOT have multiple versions; when it's done, it's
-  done.
+* :guilabel:`Feature Request` is like Bug Report, but is focused on a requested
+  feature instead of an actual bug.
 
-* A **Task** describes a single goal, such as a feature, a bugfix, or an
-  optimization task.
+* :guilabel:`Private Task` is for any task that should be hidden from everyone
+  but you. Please only use this if the task is MousePaw Media-related, but
+  unrelated to an actual project. For example, you may create an "Organize
+  Work Inbox" task, or a "Read 'Dreaming in Code'" task - those sorts of tasks
+  only matter to you, and might even overlap a similar task for another user
+  if made public.
 
-To put that all another way, here's a brief rule of thumb:
+..  WARNING:: DO NOT use Private Task for *any* project-related task!
 
-+-------------------------------------------+----------------+----------------------------------+
-| For a...                                  | Use...         | Example                          |
-+===========================================+================+==================================+
-| Single goal.                              | Task           | "Blueshell: Arguments" {T967}    |
-+-------------------------------------------+----------------+----------------------------------+
-| Single feature with subtasks.             | Umbrella Task  | "Goldilocks CLI" {T947}          |
-+-------------------------------------------+----------------+----------------------------------+
-| Large, distinct collection of features.   | Subproject     | "Blueshell [PawLIB]" #blueshell  |
-+-------------------------------------------+----------------+----------------------------------+
-| Project/Subproject version.               | Milestone      | "PawLIB 1.0" #pawlib1.0          |
-+-------------------------------------------+----------------+----------------------------------+
+More detail about creating tasks, bug reports, and feature requests can
+be found at :ref:`gtasks`.
 
-.. _phab_maniphest_practice:
+.. _phab_maniphest_edit:
 
-Good Task Creation Practice
-------------------------------------------
+Managing Tasks
+----------------------------------
 
-.. _phab_maniphest_practice_titles:
+Within an existing task, you will notice several actions you can take.
 
-Titles
-^^^^^^^^^^^^^^^^^
+To the right of the description, you will see the following (depending on
+permissions):
 
-This should describe the bug/feature succinctly in 3-10 words, and generally
-include the name of the code sector. A title needs to stand alone in describing
-the task, bug, or feature request.
+* :guilabel:`Edit Task` allows you to edit any field in the task. Use this
+  ability courteously! Most QTM measures are intended to be set by a
+  member of the project the task is related to.
 
-Avoid vague titles like "iochannel display bug" or "program not working". Also
-avoid overly detailed titles like "flexarray has a segfault when more than
-25,000 integers are stored in it".
+* :guilabel:`Edit Related Tasks...` lets you connect this task to others.
 
-Here are examples of some *good* titles:
+  * :guilabel:`Create Subtask` creates a new task as a subtask of this one.
 
-* Allow Override of `ioc` in Goldlocks.
+  * :guilabel:`Edit Parent Tasks` lets you select the tasks that this task
+    is a "subtask" of; in other words, what tasks are BLOCKED by this one?
 
-* OneString Code Refactoring: Improving to beat std::string
+  * :guilabel:`Edit Subtasks` lets you select the tasks that are BLOCKING
+    this one.
 
-* [IOChannel] Rework how formatting flags are used and stored
+  * :guilabel:`Merge Duplicates In` marks other tasks as duplicates of this
+    one. Instead of deleting the duplicate task, it simply links the two
+    together for reference.
 
-* Blueshell: Cursor Navigation
+  * :guilabel:`Close As Duplicate` marks this task as a duplicate of another.
 
-* Strings not properly persisted in Punchline
+* :guilabel:`Edit Related Objects...` lets you connect other non-task objects
+  to this one.
 
-.. _phab_maniphest_practice_description:
+  * :guilabel:`Edit Commits` lets you select the repository commits that are
+    related to this task. Connecting tasks and commits allows one to see the
+    all the code changes associated with a feature or bugfix, which is very
+    important for reference and historical reasons. A single task may have
+    many commits associated with it.
 
-Description
-^^^^^^^^^^^^^^^^^^^
+  * :guilabel:`Edit Mocks` lets you select the Pholio Mocks related to this
+    task. This is especially helpful for UI Design and Graphic Design tasks.
 
-For bugs, you should include the following information in the description:
+  * :guilabel:`Edit Revisions` lets you select the Differentials related to
+    this task. Linking Tasks and Differentials is just as important as
+    linking Tasks and Commits.
 
-* Exact actions, test name and scenario, or code for duplicating the bug.
+You'll also see the usual options relating to Subscribing, Tokens, and Flags.
 
-* A detailed description of the exact bug. This includes compiler warnings,
-  terminal output, Valgrind output, crash reports, and all other such
-  information.
+If you scroll down to the comment box, you'll see an :guilabel:`Add Action...`
+menu, which allows you to take additional actions on the task (depending
+on your permissions.)
 
-* Your development environment; at the minimum, include your operating system.
-  If you are staff, you are expected to be running the company's standardized
-  development environment. Otherwise, you should include your exact compiler
-  version, linked library versions, compiler settings, and all other relevant
-  development data.
+* :guilabel:`Change Status` sets the task's status. For a list of what each
+  status means, see :ref:`gtasks_practice_status`.
 
-For features, you should include the following information in the description:
+* :guilabel:`Assign/Claim` allows you to assign the task to yourself,
+  another person, or to place it "up for grabs" by assigning it to no one.
 
-* What is the exact feature or behavior required?
+* :guilabel:`Change Priority` lets you set the task's priority, which is the
+  only QTM measure that is likely to change once set. Out of courtesy, be sure
+  NOT to set priority if the task belongs to a project you aren't a member of.
 
-* One or more example use cases for the feature, including sample expected
-  input and output.
+* In general, just forget that :guilabel:`Change Gravity Points` exists.
+  Because of how we use this system, Gravity and Gravity Points should always
+  be kept in sync.
 
-* An explaination of why the feature is needed. This is important to
-  prioritization. "It would be nice if..." takes a backseat to "This common
-  scenario doesn't work without...".
+* :guilabel:`Move on Workboard` lets you quickly change which column this
+  task is in on the project workboard. (See :ref:`phab_projects_workboard`).
 
-* Any initial ideas you have on implementation (if applicable).
+* :guilabel:`Change Project Tags` allows you to quickly change the project
+  tags on the task. Remember to include the Department, Team, and Project.
+  (See :ref:`gtasks_practice_tagging`).
 
-.. _phab_maniphest_practice_tagging:
-
-Tagging
-^^^^^^^^^^^^^^^^^^^^^^
-
-Tagging is very important for project management on Phabricator.
-
-* Each task should have at least one **Project** tag. We recommend
-  using more specific tags: subproject or subproject milestone, instead of
-  master project, if available. (i.e. ``IOChannel [PawLIB]`` instead of
-  ``PawLIB [Project]``).
-
-* Each task MUST have at least one **Department** tag. This is usually
-  either Programming, Content Development, UI Design, or Graphic Design.
-
-* If this is a programming task, you should include a **Team** tag for the
-  team whose code territory the task is in.
-  (See :ref:`p_workflow_planning_territory`).
-
-.. _phab_maniphest_creatingreport:
-
-Creating a Bug Report/Feature Request
--------------------------------------------
-
-If you're reporting a bug or requesting a feature on a project you aren't
-directly involved in developing, you should use the Bug Report or Feature
-Request form, instead of the default New Task form.
-
-You can find both of these forms on Maniphest, by clicking
-:guilabel:`Create Task` in the upper-right corner, and then selecting
-which form you want to use.
-
-Fill out the following information...
-
-* Title: Describe the bug or feature succinctly. Include the name of the
-  code sector. (See :ref:`phab_maniphest_practice_titles`).
-
-* Proposed Urgency: This is how urgent you believe the task is. Actual
-  prority and gravity will be determined by a project member later.
-
-* Task Type: This is automatically set to Bug or Feature, depending on which
-  form you're using.
-
-* Description: Describe the bug or requested feature in detail.
-  (See :ref:`phab_maniphest_practice_description`).
-
-* Visible To: This should generally be left on the default visibility
-  (Global, All Users), unless you're a staff member and you need to hide
-  an internal task from outside contributors.
-
-* Editable By: Changes are tracked, so you *can* leave this set to All Users.
-  At minimum, all staff should be able to edit.
-
-* Tags: You **must** include at least one project, one department, and (for
-  programming tasks) the team that the project belongs to.
-  (See :ref:`phab_maniphest_practice_tagging`).
-
-* Subscribers: If you know of a particular user or users who should be aware
-  of the task, or who you want input from, include them in Subscribers.
-
-* Gravity Points: If you see this box, you can leave it blank. It will be
-  filled in when the task is triaged.
-
-After filling out the form, click :guilabel:`Create New Task` to submit it.
-It will live in the Triage queue until it can be processed.
-
-.. _phab_maniphest_creatingtask:
-
-Creating a Task
------------------------------------
-
-If you're creating a task for a project you're a part of, use the Create Task
-form.
-
-You can find both of these forms on Maniphest, by clicking
-:guilabel:`Create Task` in the upper-right corner, and then selecting
-:guilabel:`Create Task` from the menu.
-
-* Title: Describe the task succinctly. Include the name of the
-  code sector. (See :ref:`phab_maniphest_practice_titles`).
-
-* Task Type: There are six types of task. You should select one.
-
-  * Bug: An error or misbehavior that should be fixed.
-
-  * Feature: A new behavior or capability that should be added.
-
-  * Improvement: Anything that makes the existing behavior or capability
-    function *better*.
-
-  * Design: Tasks that don't actually involve making changes to the project,
-    but are related to planning changes.
-
-  * Documentation: Tasks related to writing the comments and documentation
-    for the project, but not otherwise changing the project.
-
-  * Other: Anything and everything else.
-
-..  sidebar:: Where Is WONTFIX?
-
-    The common bug status "WONTFIX" is actually counterintuitive. It tells
-    outsiders "we know the bug exists, and don't plan to do anything about
-    it," effectively damaging the development team's reputation by making
-    them look lazy and complacent.
-
-    We use the terms "Invalid" and "Rejected" in place of "WONTFIX", which
-    separates a bug report rejection into two categories: the bug never
-    existed (invalid) and the bug cannot be fixed (rejected).
-
-* Status: A task can have one of several statuses. The default is "Open".
-
-  * Open: The task is ready to be worked on, possibly barring blocking tasks.
-
-  * Use The Force: Same as "Open", but the task is likely to be difficult.
-
-  * Proposed: We don't know whether the task will actually be worked on.
-
-  * On Hold: We stopped working on the task, and don't know whether we will
-    resume work.
-
-  * Pending Help: All work has stopped on the task, pending help from someone
-    else other than the assignee.
-
-  * Pending Review: The task is technically done, but outside review is
-    required before it can be marked as completed.
-
-  * Resolved: The bug has been fixed.
-
-  * Completed: The feature/improvement/design/documentation task is finished.
-
-  * Rejected: We decided not to work on this task.
-
-  * Invalid: The task wasn't real. One example is filing a bug report, and then
-    discovering the "bug" was actually a user error.
-
-  * Slain: We finished this difficult task, and deserve some applause!
-
-* Assigned To: A single user who should work on this task. If you don't
-  know who to assign a task to, just leave this blank.
-
-* Description: Describe the bug or requested feature in detail.
-  (See :ref:`phab_maniphest_practice_description`).
-
-* Tags: You **must** include at least one project, one department, and (for
-  programming tasks) the team that the project belongs to.
-  (See :ref:`phab_maniphest_practice_tagging`).
-
-* Proposed Urgency: This is set to "Established" by default, unless it was
-  set by the original bug report/feature request creator. It remains locked
-  for reference purposes.
-
-* Priority: How soon should the task be completed?
-  (See `QTM: Priority <http://standards.mousepawgames.com/qtm.html#priority>`_)
-
-* Gravity: How important is the task to the project's completion?
-  (See `QTM: Gravity <http://standards.mousepawgames.com/qtm.html#gravity-importance>`_)
-
-* Relativity: How certain are you that the task can be completed by the given
-  completion date or in the given number of hours?
-  (See `QTM: Relativity <http://standards.mousepawgames.com/qtm.html#relativity-black-hole-probability-uncertainty>`_)
-
-* Target Completion Date: When should we aim to have the task completed by?
-
-* Estimated Hours: How long do you estimate it will take to complete this task?
-  You should favor use of Target Completion Date instead, when possible.
-
-* Friction: How many resources are available to help one in completing this task?
-  (See `QTM: Friction <http://standards.mousepawgames.com/qtm.html#friction-available-help>`_)
-
-* Required Skills: What does one need to know and be able to do to accomplish
-  this task?
-
-* Subscribers: If you know of a particular user or users who should be aware
-  of the task, or who you want input from, include them in Subscribers.
-
-* Visible To: This should generally be left on the default visibility
-  (Global, All Users), unless you're a staff member and you need to hide
-  an internal task from outside contributors.
-
-* Editable By: Changes are tracked, so you *can* leave this set to All Users.
-  At minimum, all staff should be able to edit.
-
-* Gravity Points: This should match the number selected under *Gravity*.
-
-After filling out the form, click :guilabel:`Create New Task` to submit it.
+* :guilabel:`Change Subscribers` lets you subscribe (or unsubscribe) users
+  from a task. Remember to be courteous when using this! The most common
+  reason to use this is if you want to notify a particular person about a task.
 
 .. _phab_calendar:
 
@@ -612,6 +563,8 @@ Meetings, events, vacations, and deadlines are posted on the
 Events you are invited to are shown in green.
 
 Events will automatically send email reminders 15 minutes before.
+
+.. _phab_calendar_rsvp:
 
 Responding to an Event
 ----------------------------------
@@ -629,11 +582,25 @@ This is the status icon that will appear next to your username around
 Phabricator. It's useful for letting people know when you are and aren't
 available.
 
+.. _phab_calendar_create:
+
 Creating an Event
 ----------------------------------
 
-You can create a new event by clicking on a day and a timeslot, or by clicking
-:guilabel:`Create Event`. Then, fill out the form.
+You can create a new event by clicking on :guilabel:`Create Event` and selecting
+an event type. There are three types:
+
+* :guilabel:`Create Event` is for your run-of-the-mill event, especially
+  the in-person variety.
+
+* :guilabel:`Create Event [Reserve Jitsi]` is for any meeting which will use
+  our Jitsi meeting rooms. This allows us to prevent schedule conflicts in the
+  meeting room.
+
+* :guilabel:`Create Hiring Event` is only for Hiring-related events. If you
+  aren't a pare of the Hiring team, this will be hidden from you.
+
+Then, fill out the form.
 
 * The event Name should describe the event briefly. "Programming Meeting",
   "Anari Planning", or "1-on-1: Sergio/Andrew" are a few examples.
@@ -656,6 +623,8 @@ You can create a new event by clicking on a day and a timeslot, or by clicking
 
 * You should *always* tag your event with the relevant Department at minimum.
   You may also want to include the appropriate Group, Team, or Project tags.
+  Also, if you're using the Jitsi meeting room, make sure you include the
+  ``Jitsi Room Reservation [Control]`` tag.
 
 * As a habit, you should include the same people in Subscribers as you set in
   Invitees, so they get email notifications about attendance.
@@ -676,6 +645,23 @@ On the popup window, set the Frequency and, if desires, the Repeat Until date.
 Then click :guilabel:`Save Changes`.
 
 Later, you can click :guilabel:`Edit Recurrence` to change these settings.
+
+.. _phab_calendar_reservations:
+
+Jitsi Room Reservations
+-----------------------------------
+
+The ``Jitsi Room Reservation [Control]`` tag page
+`here <https://phabricator.mousepawmedia.net/project/view/116/>`_ provides
+shortcuts to view and create reservations for the Jitsi meeting rooms, as
+well as to join the room itself. Simply select an action from the menu to the
+left of that page.
+
+* :guilabel:`Join Room` opens the Jitsi room in the current tab.
+
+* :guilabel:`View Room Reservations` shows all the upcoming room reservations.
+
+* :guilabel:`Reserve Room` creates a new Event reserving the room.
 
 .. _phab_phriction:
 

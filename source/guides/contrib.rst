@@ -1,8 +1,12 @@
-Quick Start: Code Contributions
+.. _gcontrib:
+
+Guides: Code Contributions
 #####################################
 
 Instead of GitHub Pull Requests, we use Phabricator Differential. Here's
 how to get started with one.
+
+.. _gcontrib_firsttime:
 
 First Time Setup
 =========================
@@ -15,6 +19,8 @@ and/or :ref:`Sphinx <sphinx>`.
 You'll also need to :ref:`Import the Repository <gitarc_importrepos>` you'll
 be working with.
 
+.. _gcontrib_gettingready:
+
 Getting Ready
 ========================
 
@@ -24,7 +30,7 @@ out on Phabricator Maniphest before starting.
 
 ..  sidebar:: The Ten Commandments of Git
 
-    #1-10: NEVER WORK ON MASTER!
+    #I-X: NEVER WORK ON MASTER!
 
 Before you make any changes, you should create a new branch on your local
 copy of the repository. You should **never** work on ``master``. To create
@@ -36,6 +42,8 @@ a new branch, run...
 
 ...where *newbranchname* is the name of the branch you're creating. You can
 call it absolutely anything (except "master" or "stable").
+
+.. _gcontrib_changes:
 
 Making Changes
 ===========================
@@ -64,6 +72,8 @@ If you're NOT ready for review, don't worry. You can always add one later.
 You should be aware of the :ref:`p_workflow_landing_checklist`, which your
 Differential must pass before it can be accepted and **landed**.
 
+.. _gcontrib_landing:
+
 Landing Changes
 ========================
 
@@ -80,5 +90,5 @@ Be sure to keep your Maniphest tasks up-to-date, marking them as complete or
 updating them as appropriate.
 
 Finally, sit back and relax, knowing you've made a valuable contribution to
-MousePaw Games! (When you're done relaxing, feel free to start a new set of
+MousePaw Media! (When you're done relaxing, feel free to start a new set of
 changes.)
