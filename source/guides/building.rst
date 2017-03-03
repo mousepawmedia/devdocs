@@ -1,6 +1,6 @@
 .. _gbuild:
 
-Guides: Building Code
+Guide: Building Code
 #####################################
 
 The first time you work with our repositories code, you'll want to set up your

@@ -1,6 +1,6 @@
 .. _gcontrib:
 
-Guides: Code Contributions
+Guide: Code Contributions
 #####################################
 
 Instead of GitHub Pull Requests, we use Phabricator Differential. Here's

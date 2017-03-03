@@ -1,6 +1,6 @@
 .. _gstaff:
 
-Guides: Staff Introduction
+Guide: Staff Introduction
 #########################################
 
 Welcome to the MousePaw Media family! We're really excited to have you aboard.
