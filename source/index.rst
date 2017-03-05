@@ -26,6 +26,7 @@ Guides
     guides/contrib
     guides/building
     guides/tasks
+    guides/reviewing
     guides/staff
 
 Network
@@ -72,6 +73,11 @@ Other
 
 Indices and tables
 ==================
+
+..  toctree::
+    :maxdepth: 1
+
+    glossary
 
 * :ref:`genindex`
 * :ref:`search`

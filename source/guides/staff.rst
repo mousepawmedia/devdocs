@@ -137,7 +137,7 @@ week highlighted.
 
 Enter your time (in hours) on the appropriate box for each day. You should also
 want to include notes on each day (by clicking the pencil), listing the
-Phabricator objects you worked on (tasks, Differentials, wiki pages, etc.)
+Phabricator objects you worked on (Tasks, Revisions, wiki pages, etc.)
 
 ..  WARNING:: These notes are not a replacement for your check-in email.
 
@@ -275,9 +275,9 @@ doing. There are six major apps you should be making frequent use of.
 
 * Differential (see :ref:`phab_differential`)
 
-  * Submit and maintain Differentials for your code revisions.
+  * Submit and maintain Revisions for your code revisions.
 
-  * Review other people's Differentials.
+  * Review other people's Revisions.
 
 * Pholio (see :ref:`phab_pholio`)
 

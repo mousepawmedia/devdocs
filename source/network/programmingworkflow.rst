@@ -243,9 +243,9 @@ Steps in Building
 6)  Keep an eye on Maniphest for bug reports from other developers. Prioritize
     those and bugfix/optimize at will.
 
-7)  Submit your changes to a Differential, updating it *every day you work*.
+7)  Submit your changes to a Revision, updating it *every day you work*.
 
-8)  Link your Maniphest tasks to your Differential.
+8)  Link your Maniphest tasks to your Revision.
 
 ..  _p_workflow_landing:
 
@@ -254,13 +254,13 @@ Step Three: Landing
 
 ..  _p_workflow_landing_checklist:
 
-Differential Checklist
+Revision Checklist
 --------------------------
 
-The Differential Checklist {P1}, which is also described below, lists the
-expectations for a completed Differential.
+The Revision Checklist {P1}, which is also described below, lists the
+expectations for a completed Differential Revision.
 
-Before landing, each Differential should...
+Before landing, each Revision should...
 
 1)  Accomplish the feature(s) it was designed to accomplish. [In some cases,
     the feature itself may be dropped, and only bugfixes and/or optimizations
@@ -306,8 +306,8 @@ items as you code, while some others require minimal effort.
 Linting
 ------------------------------------
 
-When you update a Differential, Arcanist automatically runs the ``cppcheck``
-linter on C++ code. The result of this linter is posted on your Differential. It
+When you update a Revision, Arcanist automatically runs the ``cppcheck``
+linter on C++ code. The result of this linter is posted on your Revision. It
 must pass before the code can be landed.
 
 Unfortunately, our Python 3 linter (``pylint3``) is not yet configured to work
@@ -317,9 +317,9 @@ Automatic Build and Test System
 ------------------------------------
 
 Phabricator monitors certain files, directories, and repositories. If a
-Differential or a Commit touches a monitored path, Phabricator automatically
+Revision or a Commit touches a monitored path, Phabricator automatically
 triggers one or more Jenkins builds via the Harbormaster application. The build
-result is reported back to the Differential or Commit.
+result is reported back to the Revision or Commit.
 
 Our C++ projects use the Goldilocks library for testing and benchmarking.
 Our Jenkins instance is configured to use these Goldilocks tests.
@@ -330,10 +330,12 @@ Our Jenkins instance is configured to use these Goldilocks tests.
 If a build or test suite fails, Jenkins will report the failure status and
 provide a link to the full build results.
 
+(See :ref:`harbormasterjenkins`)
+
 Controlling Automatic Builds
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Sometimes, you may want to update a Differential without the automatic builds or
+Sometimes, you may want to update a Revision without the automatic builds or
 tests running. You can temporarily shut these off using two special tags.
 
 By including the tag :code:`#nobuild` under Subscribers, all automatic builds
@@ -341,5 +343,5 @@ will be skipped. If you only want to skip the tests, include the tag
 :code:`#notest`.
 
 ..  WARNING:: Be sure to remove these tags from Subscribers *before* your final
-    Differential update, to ensure the appropriate builds and tests are run.
-    You can't land the Differential until they are!
+    Revision update, to ensure the appropriate builds and tests are run.
+    You can't land the Revision until they are!

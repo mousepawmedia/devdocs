@@ -112,7 +112,7 @@ For features, you should include the following information in the description:
 
 Tagging
 --------------------------------
-
+Slowvote
 Tagging is very important for project management on Phabricator.
 
 * Each task should have at least one **Project** tag. We recommend
@@ -149,7 +149,7 @@ Tasks can have one of many statuses:
   else other than the assignee.
 
 * Pending Review: The task is technically done, but outside review is
-required before it can be marked as completed.
+  required before it can be marked as completed.
 
 * Resolved: The bug has been fixed.
 
@@ -158,7 +158,7 @@ required before it can be marked as completed.
 * Rejected: We decided not to work on this task.
 
 * Invalid: The task wasn't real. One example is filing a bug report, and then
-discovering the "bug" was actually a user error.
+  discovering the "bug" was actually a user error.
 
 * Slain: We finished this difficult task, and deserve some applause!
 

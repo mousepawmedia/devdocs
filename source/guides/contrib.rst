@@ -30,7 +30,7 @@ out on Phabricator Maniphest before starting.
 
 ..  sidebar:: The Ten Commandments of Git
 
-    #I-X: NEVER WORK ON MASTER!
+    #I-X: NEVER WORK ON THE MASTER OR STABLE BRANCH!
 
 Before you make any changes, you should create a new branch on your local
 copy of the repository. You should **never** work on ``master``. To create
@@ -48,10 +48,9 @@ call it absolutely anything (except "master" or "stable").
 Making Changes
 ===========================
 
-Now you can begin working. Every day you finish work, you should **diff**
-your changes, meaning you upload them to a Differential. To create a
-Differential, or update the one you already have open for the repository,
-run...
+Now you can begin working. Every day you finish work, you should **diff** your
+changes, meaning you upload them to a Differential Revision. To create a
+Revision, or update the one you already have open for the repository, run...
 
 ..  code-block:: bash
 
@@ -60,7 +59,7 @@ run...
     $ arc diff
 
 The first time you run ``arc diff``, it will bring up a form for you to fill
-out to create a new Differential. Give it a brief, descriptive title. Describe
+out to create a new Revision. Give it a brief, descriptive title. Describe
 your overall plans in the description.
 
 If you're ready for code review and feedback, add a reviewer. If you don't
@@ -70,15 +69,15 @@ know who to add, mark the Team Lead for the team whose
 If you're NOT ready for review, don't worry. You can always add one later.
 
 You should be aware of the :ref:`p_workflow_landing_checklist`, which your
-Differential must pass before it can be accepted and **landed**.
+Revision must pass before it can be accepted and **landed**.
 
 .. _gcontrib_landing:
 
 Landing Changes
 ========================
 
-Once your Differential has been approved, you can land it, meaning you push
-the changes to the ``master`` branch. In the repository, run...
+Once your Differential Revision has been approved, you can land it, meaning you
+push the changes to the ``master`` branch. In the repository, run...
 
 ..  code-block:: bash
 

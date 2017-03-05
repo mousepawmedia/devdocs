@@ -53,12 +53,85 @@ Basic Layout
 
 Phabricator offers numerous **Applications**, each of which can create and
 manage a different kind of **object**. Nearly all objects are assigned a
-unique ID, such as "D123" (Differential 123) or "T50"
+unique ID, such as "D123" (Differential Revision 123) or "T50"
 (*Maniphest* Task 50).
 
 This structure makes URLs very easy to guess in Phabricator. The page for the
 Maniphest application would be :code:`https://phabricator.mousepawmedia.net/maniphest`.
 Meanwhile, the page for task 50 (T50) would be :code:`https://phabricator.mousepawmedia.net/T50`.
+
+.. _phab_toolbar:
+
+Toolbar
+-------------------------
+
+The toolbar is always visible at the top of Phabricator. From left to right...
+
+* You can click the **Phabricator icon** to return to the Right Now page.
+  (See :ref:`phab_rightnow`).
+
+* The **Notifications menu** (the bell) lists all notifications. Click one to
+  open the object it discusses and mark it as read, or click
+  :guilabel:`Mark All Read` to mark them all as read.
+
+* The **Chat menu** notifies you when there is a new message in one of the
+  Conpherence chatrooms. Checking :guilabel:`Persistant Chat` will add a
+  chat box to the lower right corner of your screen. (See
+  :ref:`phab_conpherence`).
+
+* The **Favorites menu** (the star) provides shortcuts for many common tasks.
+  You can click :guilabel:`Edit Favorites` to add more items to this menu.
+
+* The **User menu** (your profile picture) provides shortcuts to your profile,
+  settings, and logout.
+
+* The **Search bar** lets you search for any application or object by name
+  or object ID. The menu on the left side of the search bar provides more
+  search options, including Advanced Search.
+
+.. _phab_rightnow:
+
+Right Now
+--------------------------
+
+When you first log onto Phabricator, you'll start on the Right Now page.
+This will show the latest activity and help you narrow in on what you need
+to do.
+
+* **Next Tasks...** shows the five highest priority tasks assigned to you, from
+  Maniphest. (See :ref:`phab_maniphest`).
+
+* **Review...** shows the three main review queues.
+
+  * **Revisions** shows all the Differential Revisions you are involved with,
+    either as an author or reviewer. (See :ref:`phab_differential`).
+
+  * **Pholios** shows the five most recent open Pholio Mocks.
+    (See :ref:`phab_pholio`).
+
+  * **Audits** shows all the Audits you are involved with, either as the
+    commit author or a reviewer. (See :ref:`phab_audit`).
+
+* **The Latest** shows the latest activity on Phabricator.
+
+  * **Just Now...** lists the three most recent events on Phabricator.
+
+  * **What's Next?** contains helpful reminders on what you should do on
+    Phabricator every time you're working.
+
+  * **All Recent** lists everything that has happened on Phabricator recently.
+    You can also check the *Feed* application for this info.
+
+* **Answer...** lists the five most recent Ponder questions. Consider commenting
+  on or answering one! (See :ref:`phab_ponder`).
+
+* **Vote...** shows the five most recent open Polls. Be sure to vote in each!
+  (See :ref:`phab_slowvote`).
+
+* **Upcoming Events** shows the next five events on the Calendar. If it's green,
+  that means you're invited, and you should RSVP! (See :ref:`phab_calendar`).
+
+* **Flags** lists all of your flags. (See :ref:`phab_flags`).
 
 .. _phab_comments:
 
@@ -383,7 +456,7 @@ provide four.
 * **S1: Global** allows any logged in user to access the object by default.
   This should be used for:
 
-  * Anything relating to our open source projects (Tasks, Differentials, etc).
+  * Anything relating to our open source projects (Tasks, Revisions, etc).
 
   * Most Phriction documents.
 
@@ -516,8 +589,8 @@ permissions):
   * :guilabel:`Edit Mocks` lets you select the Pholio Mocks related to this
     task. This is especially helpful for UI Design and Graphic Design tasks.
 
-  * :guilabel:`Edit Revisions` lets you select the Differentials related to
-    this task. Linking Tasks and Differentials is just as important as
+  * :guilabel:`Edit Revisions` lets you select the Revisions related to
+    this task. Linking Tasks and Revisions is just as important as
     linking Tasks and Commits.
 
 You'll also see the usual options relating to Subscribing, Tokens, and Flags.
@@ -758,6 +831,283 @@ If you think you can answer a question, scroll to the bottom of the page and fil
 Differential
 ==================================
 
+Differential is for pre-commit code reviews - analogous to GitHub pull
+requests. In general, changes to code has to pass pre-commit code review
+before being accepted to the main repository.
+
+A collection of changes for review is called a **Revision** - a single update to
+a Revision is called a **Diff**.
+
+..  NOTE:: You'll often hear us referring to Revisions as "Diffs" in
+    conversation, such as "Did you Diff the code?", "What's the Diff?" or
+    "Did we land that Diff?" On occasion, we may also call a Revision a
+    "Differential," referring to the app. Just remember - colloquially,
+    a Revision, a Diff, and a Differential all refer to the same thing:
+    a "Differential Revision".
+
+.. _phab_differential_anatomy:
+
+Browsing Revisions
+---------------------------------
+
+When you first open the Differential application on Phabricator, you'll be
+on the :guilabel:`Active Revisions` query. This shows all the Revisions
+that you are involved in.
+
+Anatomy of a Revision
+---------------------------------
+
+A Revision contains a batch of changes to a repository's files. There is
+a lot to one, so let's break it down.
+
+.. _phab_differential_anatomy_details:
+
+Details
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+* **Title**: A simple description of the changes.
+
+* **Reviewers**: The individuals who will be reviewing the code. There are
+  two types: regular reviewers and blocking reviewers. The latter *must*
+  approve the code before it can be landed.
+
+* **Summary**: A detailed description of the goals of the Revision.
+
+* **Test Plan**: How will a reviewer know the goals of the Revision are
+  met? This is not an optional field!
+
+* **Revert Plan**: This optional field describes how the changes can be
+  undone once the Revision has been landed. This is usually only needed
+  if Revision's changes involve some complicated tweaks to other existing
+  code.
+
+Note that there are two more fields at the bottom of the menubox to the right.
+
+* **Tags**: The Projects that this Differental is associated with. This should
+  include Department, Team, and Project, as well as any appropriate Labels.
+
+* **Subscribers**: These users will be notified about changes. This field
+  is actually *very important* - if the ``No Build [Control]`` or
+  ``No Test [Control]`` tags are included here, Jenkins will NOT build
+  the code or run tests (respectively).
+
+.. _phab_differential_anatomy_diffdetails:
+
+Diff Detail
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Diff Detail box shows more information about the latest update to the
+Revision.
+
+* **Repository**: The repository that the Revision belongs to. Make sure
+  this is correct, or weird things can happen.
+
+* **Branch**: The branch we're working on. This should *never* be ``master``
+  or ``stable``.
+
+* **Lint**: If we have linters (static code checkers) configured for the
+  repository, this will mark whether the changes passed linting. This should
+  always been green before landing.
+
+* **Build Status**: The status of the automatic building (CI) system. Nearly
+  every Revision will report whether Arcanist's lint and unit tests
+  (although the latter is never configured). If there are any
+  Harbormaster/Jenkins builds configured, their status will be listed here.
+  (See :ref:`harbormasterjenkins`).
+
+.. _phab_differential_anatomy_history:
+
+History
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Below the details section is the history - all comments, updates, Jenkins
+test results, and other actions are posted here. The most recent stuff is
+visible by default, but older updates can be seen by clicking
+:guilabel:`Show Older Changes` at the top of the history.
+
+.. _phab_differential_anatomy_revisioncontents:
+
+Revision Contents
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The **Revision Contents** box provides an overview of the changes in the
+Revision. It has three tabs: Files, History, and Commits
+
+The **Files** tab shows all of the files that were affected by this
+Revision. It lists the change type (``A`` for added, ``M`` for modified,
+``V`` for renamed/moved, and ``D`` for deleted), the filename, the number of
+lines changed, and the Owners Package(s) the file belongs to.
+(See :ref:`phab_owners`).
+
+The **History** tab lists each update made to the Revision. A single
+Revision is usually composed of multiple "Diffs", which are listed
+here, along with their unique ID. The Base is the already-landed repository
+commit that the Diff is based on. Next, we'll see the Description, the date
+Created, and the Lint status (ignore the Unit status).
+
+.. _phab_differential_anatomy_diff:
+
+The Diff
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Most of the rest of the Revision screen is devoted to showing the changes
+themselves.
+
+..  NOTE:: How Revisions are displayed depends on your Diff Preferences.
+    To change these, click your Profile picture, select :guilabel:`Settings`,
+    and :guilabel:`Diff Preferences`.
+
+Each file is displayed separately, with changes highlighted in red (for
+deletions) and green (for additions).
+
+Comments may be left inline by clicking a line number. Full Remarkup
+is available on inline comments. Click :guilabel:`Save Draft` when you're done.
+Inline comments are not submitted until you click the :guilabel:`Submit`
+button towards the bottom-right of the page.
+
+The **File Tree** is visible on the left side of the screen. (If it isn't,
+turn it on in Diff Preferences. Then, you can tap the :kbd:`f` key to toggle
+the File Tree while viewing a Revision.)
+
+.. _phab_differential_creating:
+
+Creating a Revision
+-------------------------------------
+
+There are two ways to create a Revision.
+
+.. _phab_differential_creating_arc:
+
+Method 1: Arcanist
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+..  sidebar:: The Ten Commandments of Git
+
+    #I-X: NEVER WORK ON THE MASTER OR STABLE BRANCH!
+
+The easiest and most common is to use **Arcanist** in your command line. (See
+:ref:`gitarc`). Revisions are tied to a Git branch, so you simply create a
+new branch for your work. Typically, after making some changes to the code, you
+only need to run...
+
+..  code-block:: bash
+
+    $ git add .
+    $ git commit
+    $ arc diff
+
+That will publish all the unpublished commits to a Revision - either
+updating the currently open Diff for that branch, or else creating a new
+one.
+
+.. _phab_differential_creating_patch:
+
+Method 2: Uploading a Patch
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+If you don't have access to Arcanist, you can still upload your changes
+to a Revision via a patch file.
+
+You should still work on a separate branch from ``master``. Create a patch
+via...
+
+..  code-block:: bash
+
+    $ git add .
+    $ git commit
+    $ git diff
+
+On Revision, click :guilabel:`Create Diff`.
+
+On that screen, either paste the contents of the patch you just created into
+the box, or attach the patch file using :guilabel:`Choose File`. Be sure to
+set the :guilabel:`Repository`. Finally, click :guilabel:`Create Diff`.
+
+Edit the Revision you just created, and add the Title, Description,
+Tags, Test Plan, Reviewers, and Subscribers.
+
+Later, you can update this Revision using the :guilabel:`Update Diff`
+button on the Revision's page.
+
+.. _phab_differential_managing:
+
+Managing a Revision
+--------------------------------
+
+There are a lot of actions you can take on a Revision, depending on
+whether you're the author or a reviewer.
+
+On the right-hand menu at the top of the page, we have the following:
+
+* :guilabel:`Edit Revision` lets you edit the Revision Details.
+
+* :guilabel:`Update Diff` allows you to upload a new version of the
+  Revision using a patch file.
+
+* :guilabel:`Download Raw Diff` will download the Revision to your
+  computer as a patch file.
+
+* :guilabel:`Edit Related Revisions...` allows you to set the related
+  Revisions.
+
+  * :guilabel:`Edit Parent Revisions` lets you select the Revisions
+    that depend, or are blocked by, this one.
+
+  * :guilabel:`Edit Child Revisions` lets you select the Revisions that
+    this one depend ons; that is, which Revisions block this one.
+
+* :guilabel:`Edit Related Objects...` allows you to
+
+  * :guilabel:`Edit Commits` lets you select the repository commits that are
+    related to this Revision. Once we land this Revision, the commit
+    that is created will be automatically associated.
+
+  * :guilabel:`Edit Tasks` lets you select the Maniphest Tasks related to this
+    Revision. This is important for associating a task with its work.
+
+You'll also see the usual options relating to Subscribing, Tokens, and Flags.
+
+If you scroll down to the comment box, you'll see an :guilabel:`Add Action...`
+menu, which allows you to take additional actions on the task (depending
+on your permissions.)
+
+* :guilabel:`Accept Revision` marks the revision as accepted, meaning you
+  (the reviewer) believe it is *ready to land*.
+
+* :guilabel:`Request Changes` marks the revision as needing further
+  modifications *before* it can be accepted.
+
+* :guilabel:`Resign as Reviewer` removes you from the reviewers list.
+
+* :guilabel:`Close Revision` marks an accepted revision as closed.
+  *You generally shouldn't use this* - Phabricator will automatically
+  close the revision as soon as the Revision's commits are landed.
+
+* :guilabel:`Commandeer Revision` sets you as the author and owner of the
+  revision. Please be courteous with this - only commandeer if you need
+  to make some changes to the Revision *yourself* via Arcanist.
+
+* :guilabel:`Plan Changes` declares your intention as the author to make
+  changes to the revision. **If you're not ready for review, you should take
+  this action.**
+
+* :guilabel:`Request Review` is the opposite of *Plan Changes* - it marks the
+  Revision as being ready for review.
+
+* :guilabel:`Change Reviewers` allows you to select reviewers for the
+  Revision. Note that, when you are selecting users, you can add them
+  as a regular reviewer *or* as a Blocking reviewer.
+
+* :guilabel:`Change Project Tags` allows you to select Project tags for the
+  Revision.
+
+* :guilabel:`Change Subscribers` lets you change who is subscribed to the
+  Revision.
+
+Once you've selected all of the actions you want, and written a comment
+(recommended, but not required), click :guilabel:`Submit` to perform the
+actions.
+
 .. _phab_audit:
 
 Audit
@@ -766,6 +1116,11 @@ Audit
 .. _phab_diffusion:
 
 Diffusion
+==================================
+
+.. _phab_owners:
+
+Owners
 ==================================
 
 .. _phab_pholio:
@@ -786,4 +1141,9 @@ Paste
 .. _phab_phurl:
 
 Phurl
+==================================
+
+.. _phab_conpherence:
+
+Conpherence
 ==================================
