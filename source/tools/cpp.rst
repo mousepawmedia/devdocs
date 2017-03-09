@@ -17,8 +17,7 @@ Debian-based Linux system, you'll need to find out how to install these yourself
 
 We don't directly support Windows as a development environment. If you're
 using Windows, you'll need to use Clang or a GCC5-compatible C++ compiler
-(such as MinGW).
-**We have no plans to support MSVC.**
+(such as MinGW). **We have no plans to support MSVC.**
 
 If you're on a Mac, you should install the Command Line Tools for Xcode,
 which has Clang onboard.
@@ -29,24 +28,23 @@ which has Clang onboard.
     prevented our code from compiling.
 
 We'll start by installing Clang and LLVM. We require Clang 3.4 or later, but
-you should use the latest version available to you. There is an older version
-in the core repositories, but I recommend using `LLVM's official stable apt
-repository <http://apt.llvm.org/>`_ instead.
+recommend 3.9 for all company developers. We'll be using
+`LLVM's official stable apt repository <http://apt.llvm.org/>`_ instead of
+using the older version in the default system repository.
 
-Below are the instructions for adding the official
+Below are the instructions for adding and installing from the official
+LLVM/Clang repository.
 
 ..  code-block:: bash
 
     $ sudo add-apt-repository "deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-3.9 main"
     $ wget -O - http://apt.llvm.org/llvm-snapshot.gpg.key|sudo apt-key add -
-    $ sudo apt install llvm lldb clang
+    $ sudo apt update
+    $ sudo apt install clang-3.9 clang-3.9-doc libclang-common-3.9-dev libclang-3.9-dev libclang1-3.9 libclang1-3.9-dbg libllvm-3.9-ocaml-dev libllvm3.9 libllvm3.9-dbg lldb-3.9 llvm-3.9 llvm-3.9-dev llvm-3.9-doc llvm-3.9-examples llvm-3.9-runtime clang-format-3.9 python-clang-3.9 libfuzzer-3.9-dev
 
-..  NOTE:: The LLVM apt repositories are a work in progress. I'm in touch with the package
-    maintainer, so if you experience difficulty with installation or package configurations,
-    please let me (Jason C. McDonald) know.
-
-Although GCC is available through the core repositories, we like using
-the latest stable compiler builds. You can install those via...
+We also try to ensure our code builds on GCC. Although GCC is available through
+the core repositories, we like using the latest stable compiler builds. You can
+install those via...
 
 ..  code-block:: bash
 
@@ -65,18 +63,14 @@ between GCC and Clang.
 
 ..  code-block:: bash
 
-    $ sudo update-alternatives --install /usr/bin/cc cc /usr/bin/clang 60
-    $ sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++ 60
+    $ sudo update-alternatives --install /usr/bin/cc cc /usr/bin/clang-3.9 60
+    $ sudo update-alternatives --install /usr/bin/cc cc /usr/bin/gcc-5 50
+    $ sudo update-alternatives --install /usr/bin/cc c++ /usr/bin/clang++-3.9 60
+    $ sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++-5 50
 
-You can also switch between versions of GCC and G++, in case you have multiple versions on
-your system (like GCC 6).
-
-..  code-block:: bash
-
-    $ sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-5 60 --slave /usr/bin/g++ g++ /usr/bin/g++-5
-
-Once you've set all that up, you can easily switch between options using the following command,
-substituting ``c++`` for whatever you're switching (``cc``, ``c++``, ``gcc``).
+Once you've set all that up, you can easily switch between options using the
+following command, substituting ``cc`` for ``c++`` if you're changing the C
+compiler.
 
 ..  code-block:: bash
 
@@ -84,30 +78,8 @@ substituting ``c++`` for whatever you're switching (``cc``, ``c++``, ``gcc``).
 
 You can generally just leave each on auto.
 
-Our build systems all use the ``cc`` and ``c++`` commands for compiling, so whatever you select
-for the compiler will be used.
-
-..  NOTE:: Did you know that GCC also has compilers for Java, Objective C, D,
-    Fortran, and Ada? You can install and upgrade these as well, using the
-    same method as above, substituting the appropriate name in for `g++` in
-    most cases. When setting up alternatives, however, you will need to
-    append multiple slaves, each preceded by the `--slave` flag.
-
-+-------------+------------+
-| Language    | Compiler   |
-+=============+============+
-| Ada         | `gnat`     |
-+-------------+------------+
-| D           | `gdc`      |
-+-------------+------------+
-| Fortran     | `gfortran` |
-+-------------+------------+
-| Java        | `gcj`      |
-+-------------+------------+
-| Objective C | `gobjc`    |
-+-------------+------------+
-
-`SOURCE: How Do I Use the Latest GCC (AskUbuntu) <http://askubuntu.com/questions/466651/how-do-i-use-the-latest-gcc-4-9-on-ubuntu-14-04>`_
+Our build systems all use the ``cc`` and ``c++`` commands for compiling, so
+whatever you select for the compiler will be used.
 
 ..  _cpp_install_devtools:
 
