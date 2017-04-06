@@ -994,6 +994,44 @@ Add the following line to the end.::
 This will run the renewal script once a day at 11:42am. (Let's Encrypt asks
 that a random time be used by each user, to spread out server load.)
 
+Apache Configuration
+--------------------------------------------
+
+Create a new file...
+
+..  code-block:: bash
+
+    $ sudo vim /etc/letsencrypt/options-ssl-apache.conf
+
+Set the contents of that file to...
+
+..  code-block:: apache
+
+    # Baseline setting to Include for SSL sites
+
+    SSLEngine on
+
+    # Intermediate configuration, tweak to your needs
+    SSLProtocol all -SSLv2 -SSLv3
+    SSLCipherSuite ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:AES:CAMELLIA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!aECDH:!EDH-DSS-DES-CBC3-SHA:!EDH-RSA-DES-CBC3-SHA:!KRB5-DES-CBC3-SHA
+    SSLHonorCipherOrder on
+    SSLCompression off
+
+    SSLOptions +StrictRequire
+
+    # Add vhost name to log entries:
+    LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\"" vhost_combined
+    LogFormat "%v %h %l %u %t \"%r\" %>s %b" vhost_common
+
+    #CustomLog /var/log/apache2/access.log vhost_combined
+    #LogLevel warn
+    #ErrorLog /var/log/apache2/error.log
+
+    # Always ensure Cookies have "Secure" set (JAH 2012/1)
+    #Header edit Set-Cookie (?i)^(.*)(;\s*secure)??((\s*;)?(.*)) "$1; Secure$3$4"
+
+Save and exit.
+
 LDAP Server
 ===============================================
 
@@ -1346,6 +1384,7 @@ Set the contents of that file to...
             SSLEngine on
             SSLCertificateFile  /etc/apache2/ssl/mousepawmedia.net/fullchain.pem
             SSLCertificateKeyFile /etc/apache2/ssl/mousepawmedia.net/privkey.pem
+            Include /etc/letsencrypt/options-ssl-apache.conf
         </VirtualHost>
 
         <VirtualHost *:80>
@@ -1367,6 +1406,7 @@ Set the contents of that file to...
             SSLEngine on
             SSLCertificateFile /etc/apache2/ssl/hawksnest/fullchain.pem
             SSLCertificateKeyFile /etc/apache2/ssl/hawksnest/privkey.pem
+            Include /etc/letsencrypt/options-ssl-apache.conf
         </VirtualHost>
     </IfModule>
 
@@ -1526,6 +1566,7 @@ Copy and paste the following into that file.
                 SSLEngine on
                 SSLCertificateFile     /etc/apache2/ssl/mousepawmedia.net/fullchain.pem
                 SSLCertificateKeyFile /etc/apache2/ssl/mousepawmedia.net/privkey.pem
+                Include /etc/letsencrypt/options-ssl-apache.conf
 
                 <FilesMatch "\.(cgi|shtml|phtml|php)$">
                                 SSLOptions +StdEnvVars
@@ -1548,6 +1589,7 @@ Copy and paste the following into that file.
             SSLEngine on
             SSLCertificateFile /etc/apache2/ssl/hawksnest/fullchain.pem
             SSLCertificateKeyFile /etc/apache2/ssl/hawksnest/privkey.pem
+            Include /etc/letsencrypt/options-ssl-apache.conf
         </VirtualHost>
     </IfModule>
 
@@ -1686,6 +1728,7 @@ Set the contents to the following...
             SSLEngine on
             SSLCertificateFile  /etc/apache2/ssl/mousepawmedia.net/fullchain.pem
             SSLCertificateKeyFile /etc/apache2/ssl/mousepawmedia.net/privkey.pem
+            Include /etc/letsencrypt/options-ssl-apache.conf
 
             <FilesMatch "\.(cgi|shtml|phtml|php)$">
                     SSLOptions +StdEnvVars
@@ -2245,6 +2288,7 @@ Set the contents of that file to...
             SSLEngine on
             SSLCertificateFile  /etc/apache2/ssl/mousepawmedia.net/fullchain.pem
             SSLCertificateKeyFile /etc/apache2/ssl/mousepawmedia.net/privkey.pem
+            Include /etc/letsencrypt/options-ssl-apache.conf
         </VirtualHost>
 
         <VirtualHost *:80>
@@ -2355,7 +2399,9 @@ Now we need to create two new sites in Apache2.
 
     $ sudo vim /etc/apache2/sites-available/000-landing.conf
 
-This file should look like this::
+This file should look like this...
+
+..  code-block:: apache
 
     <IfModule mod_ssl.c>
         <VirtualHost *:443>
@@ -2370,6 +2416,7 @@ This file should look like this::
             SSLEngine on
             SSLCertificateFile     /etc/apache2/ssl/mousepawmedia.net/fullchain.pem
             SSLCertificateKeyFile /etc/apache2/ssl/mousepawmedia.net/privkey.pem
+            Include /etc/letsencrypt/options-ssl-apache.conf
 
             <FilesMatch "\.(cgi|shtml|phtml|php)$">
                 SSLOptions +StdEnvVars
@@ -2398,7 +2445,9 @@ Save and close. Open up the next.
 
     $ sudo vim /etc/apache2/sites-available/protected.conf
 
-This file should look like this::
+This file should look like this...
+
+..  code-block:: apache
 
     <IfModule mod_ssl.c>
         <VirtualHost *:443>
@@ -2424,6 +2473,7 @@ This file should look like this::
 
             SSLCertificateFile      /etc/apache2/ssl/mousepawmedia.net/fullchain.pem
             SSLCertificateKeyFile /etc/apache2/ssl/mousepawmedia.net/privkey.pem
+            Include /etc/letsencrypt/options-ssl-apache.conf
 
             BrowserMatch "MSIE [2-6]" \
                             nokeepalive ssl-unclean-shutdown \
@@ -2438,6 +2488,7 @@ This file should look like this::
             SSLEngine on
             SSLCertificateFile /etc/apache2/ssl/hawksnest/fullchain.pem
             SSLCertificateKeyFile /etc/apache2/ssl/hawksnest/privkey.pem
+            Include /etc/letsencrypt/options-ssl-apache.conf
 
             RedirectMatch ^/(.*)$ https://secure.<serveraddress>/$1
         </VirtualHost>
@@ -2600,6 +2651,7 @@ Set the contents to...
             SSLEngine on
             SSLCertificateFile     /etc/apache2/ssl/mousepawmedia.net/fullchain.pem
             SSLCertificateKeyFile /etc/apache2/ssl/mousepawmedia.net/privkey.pem
+            Include /etc/letsencrypt/options-ssl-apache.conf
 
             ErrorLog ${APACHE_LOG_DIR}/error.log
             CustomLog ${APACHE_LOG_DIR}/access.log combined
@@ -2800,9 +2852,7 @@ Set the contents of that file to the following...
         SSLEngine on
         SSLCertificateFile /etc/apache2/ssl/mousepawmedia.net/fullchain.pem
         SSLCertificateKeyFile /etc/apache2/ssl/mousepawmedia.net/privkey.pem
-        #SSLProtocol             all -SSLv2 -SSLv3
-        #SSLCipherSuite ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS
-        #SSLHonorCipherOrder     on
+        Include /etc/letsencrypt/options-ssl-apache.conf
 
         # Encoded slashes need to be allowed
         AllowEncodedSlashes NoDecode
@@ -3208,6 +3258,7 @@ Paste the following contents into that file.
             SSLEngine on
             SSLCertificateFile  /etc/apache2/ssl/mousepawmedia.net/fullchain.pem
             SSLCertificateKeyFile /etc/apache2/ssl/mousepawmedia.net/privkey.pem
+            Include /etc/letsencrypt/options-ssl-apache.conf
 
             <FilesMatch "\.(cgi|shtml|phtml|php)$">
                     SSLOptions +StdEnvVars
