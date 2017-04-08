@@ -50,7 +50,7 @@ install those via...
 
     $ sudo add-apt-repository ppa:ubuntu-toolchain-r/test
     $ sudo apt update
-    $ sudo apt install gcc g++ gcc-5 g++-5 gcc-5-doc g++-5-doc
+    $ sudo apt install gcc g++ gcc-5 g++-5 gcc-5-doc
 
 If you're on a 64-bit system, you'll need some additional packages...
 
@@ -65,7 +65,7 @@ between GCC and Clang.
 
     $ sudo update-alternatives --install /usr/bin/cc cc /usr/bin/clang-3.9 60
     $ sudo update-alternatives --install /usr/bin/cc cc /usr/bin/gcc-5 50
-    $ sudo update-alternatives --install /usr/bin/cc c++ /usr/bin/clang++-3.9 60
+    $ sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-3.9 60
     $ sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++-5 50
 
 Once you've set all that up, you can easily switch between options using the
