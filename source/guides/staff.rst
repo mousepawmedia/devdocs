@@ -102,8 +102,7 @@ necessary settings, follow these instructions...
 Regular Webmail Tasks
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-* Read Jason C. McDonald's weekly check-in every week. You'll find reminders,
-  company news, helpful tips, and his "Useless Trivia of the Week".
+* Correspond with co-workers. Read and respond to messages in a timely fashion.
 
 * Send your check-in email on the same day each week, detailing what you've
   done over the past week and what you're planning to do over the upcoming week.
@@ -240,6 +239,11 @@ Regular Phabricator Tasks
 
 Phabricator is MASSIVE, so which apps you use depend heavily on what you're
 doing. There are six major apps you should be making frequent use of.
+
+* Phame
+
+  * Read 'The Check-In' every week. You'll find reminders, company news,
+    helpful tips, and Jason McDonald's "Useless Trivia of the Week".
 
 * Calendar (see :ref:`phab_calendar`)
 
