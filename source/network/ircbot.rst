@@ -2,45 +2,31 @@
 ###############################
 
 The :code:`#mousepawgames` and :code:`##mousepawgames` Freenode IRC chatrooms
-are patrolled by our bot, **Hawksnest**.
+are patrolled by our bot, **LukeDMouse**.
 
-Addressing Hawksnest directly (i.e. :code:`Hawknest: hello!`) will sometimes
-evoke a response.
-
-Phabricator Object Lookup
-==================================
-
-The bot will post links to most Phabricator objects when they are mentioned
-(i.e. :code:`D123`, :code:`T134`, :code:`E5`). Although the titles and
-links for objects are posted, actual access to the object is still controlled
-by user access rules.
+..  NOTE:: You may remember the prior bot, Hawksnest. That bot was run by the
+    Phabricator chatbot software, which has been discontinued due to a
+    security flaw.
 
 Commands
-======================================
+========================================
 
-The following commands were also added to the bot:
+* :code:`!coin`: Flips a coin.
 
-* :code:`!!`: post info about self.
+* :code:`!dice <n>d<sides>`: Rolls ``<n>`` dice with ``<sides>``. For example,
+  `!dice 2d10` rolls two ten-sided dice.
 
-* :code:`!coding`: post info and link for Coding Standard.
+* :code:`!seen <nick>`: Lists the last time the user ``<nick>`` was seen in the
+  room by the bot, and what they last said.
 
-* :code:`!csi`: post info and link for CSI Standard.
+* :code:`!tell <nick> <text>`: Tells the user ``<nick>`` whatever message you
+  specify when they next log in.
 
-* :code:`!licensing`: post info and link for Licensing Standard.
-
-* :code:`!lit`: post info and link for LIT Standard.
-
-* :code:`!qtm`: post info and link for QTM Standard.
-
-* :code:`!rules`: post room rules.
-
-* :code:`!technical`: post info and link for Technical Standard.
-
-* :code:`!terms`: post link to Terms of Development
+Learning
+=========================================
 
 Logging
 ========================================
 
-The bot also logs the rooms. :code:`#mousepawgames` is logged to
-`Z49 <https://phabricator.mousepawmedia.net/Z49>`_, and :code:`##mousepawgames`
-is logged to `Z50 <https://phabricator.mousepawmedia.net/Z50>`_.
+The bot also logs the rooms. We are working on a way to make these logs
+publicly accessible.
