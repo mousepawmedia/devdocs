@@ -844,7 +844,7 @@ Now we'll get our certificates.
 
     $ sudo /opt/certbot/certbot-auto certonly -a webroot --webroot-path /var/www/html -d hawksnest.ddns.net
     $ sudo /opt/certbot/certbot-auto certonly -a webroot --webroot-path /var/www/html -d hawksnest.serveftp.com
-    $ sudo /opt/certbot/certbot-auto certonly -a webroot --webroot-path /var/www/html -d mousepawmedia.net -d nextcloud.mousepawmedia.net -d phabricator.mousepawmedia.net -d ehour.mousepawmedia.net -d jenkins.mousepawmedia.net -d secure.mousepawmedia.net -d files.mousepawmedia.net -d office.mousepawmedia.net -d quiz.mousepawmedia.net
+    $ sudo /opt/certbot/certbot-auto certonly -a webroot --webroot-path /var/www/html -d mousepawmedia.net -d nextcloud.mousepawmedia.net -d phabricator.mousepawmedia.net -d ehour.mousepawmedia.net -d jenkins.mousepawmedia.net -d secure.mousepawmedia.net -d files.mousepawmedia.net -d office.mousepawmedia.net -d quiz.mousepawmedia.net -d sandbox.mousepawmedia.net -d pad.mousepawmedia.net
 
 Of course, we would change the ``hawksnest.ddns.net`` part to match the domain
 name we're getting the certificate for.
@@ -3112,7 +3112,7 @@ start Etherpad again.
     $ sudo ufw allow 9001
     $ /opt/etherpad/etherpad-lite/bin/run.sh
 
-Navigate to ``https://serveraddress:9001`` to test that Etherpad is working.
+Navigate to ``https://<serveraddress>:9001`` to test that Etherpad is working.
 If you can access it, we're ready to configure Nextcloud to work with it.
 
 `SOURCE: Install Etherpad web-based real time collaborative editor on Ubuntu 16.04 Linux (LinuxConfig.org) <https://linuxconfig.org/install-etherpad-web-based-real-time-collaborative-editor-on-ubuntu-16-04-linux>`_
@@ -3127,7 +3127,7 @@ it.
 
 Then, go to ``Admin`` and ``Additional settings``. Scroll down to
 ``Collaborative documents`` and check ``Enable Etherpad``. Set the
-``Etherpad Host`` to ``http://mousepawmedia.net:9001``.
+``Etherpad Host`` to ``http://<serveraddress>.net:9001``.
 
 Finally, we need to adjust the MIME types.
 
@@ -3186,14 +3186,96 @@ Let's go ahead and run that script to startup Etherpad.
 
     $ /opt/scripts/other/start_etherpad
 
-After a minute, check to make sure ``http://serveraddress:9001`` is working,
+After a minute, check to make sure ``http://<serveraddress>:9001`` is working,
 and then we're ready to go.
+
+Apache2 Proxy
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Let's set up a proxy for Etherpad.
+
+..  code-block:: bash
+
+    $ sudo vim /etc/apache2/sites-available/pad.conf
+
+Set the contents of that file to the following...
+
+..  code-block:: apache
+
+    <IfModule mod_ssl.c>
+        <VirtualHost *:443>
+            ServerName pad.mousepawmedia.net
+            ServerAdmin hawksnest@mousepawmedia.com
+
+            ErrorLog ${APACHE_LOG_DIR}/error.log
+            CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+            SSLEngine on
+            SSLCertificateFile  /etc/apache2/ssl/mousepawmedia.net/fullchain.pem
+            SSLCertificateKeyFile /etc/apache2/ssl/mousepawmedia.net/privkey.pem
+            Include /etc/letsencrypt/options-ssl-apache.conf
+
+            <IfModule mod_proxy.c>
+                # the following allows "nice" urls such as https://etherpad.example.org/padname
+                # But, some users reported issues with this
+                RewriteEngine On
+                RewriteRule /p/*$ https://pad.mousepawmedia.net/ [NC,L]
+                RewriteCond %{REQUEST_URI} !^/locales/
+                RewriteCond %{REQUEST_URI} !^/locales.json
+                RewriteCond %{REQUEST_URI} !^/admin
+                RewriteCond %{REQUEST_URI} !^/p/
+                RewriteCond %{REQUEST_URI} !^/static/
+                RewriteCond %{REQUEST_URI} !^/pluginfw/
+                RewriteCond %{REQUEST_URI} !^/javascripts/
+                RewriteCond %{REQUEST_URI} !^/socket.io/
+                RewriteCond %{REQUEST_URI} !^/ep/
+                RewriteCond %{REQUEST_URI} !^/minified/
+                RewriteCond %{REQUEST_URI} !^/api/
+                RewriteCond %{REQUEST_URI} !^/ro/
+                RewriteCond %{REQUEST_URI} !^/error/
+                RewriteCond %{REQUEST_URI} !^/jserror
+                RewriteCond %{REQUEST_URI} !^/redirect
+                RewriteCond %{REQUEST_URI} !^/favicon.ico
+                RewriteCond %{REQUEST_URI} !^/robots.txt
+                RewriteCond %{REQUEST_URI} !^/list/
+                RewriteCond %{REQUEST_URI} !^/public/
+                RewriteRule ^/p/(.+)$ https://pad.mousepawmedia.net/p/$1 [L]
+
+                SSLProxyEngine On
+                SSLProxyVerify none
+                SSLProxyCheckPeerCN off
+                SSLProxyCheckPeerName off
+                SSLProxyCheckPeerExpire off
+
+                ProxyVia On
+                ProxyRequests Off
+                ProxyPass / https://mousepawmedia.net:9001/
+                ProxyPassReverse / https://mousepawmedia.net:9001/
+                ProxyPreserveHost on
+                <Proxy *>
+                    Options FollowSymLinks MultiViews
+                    AllowOverride All
+                    Order allow,deny
+                    allow from all
+                </Proxy>
+            </IfModule>
+        </VirtualHost>
+    </IfModule>
+
+Save and close, and then load it up.
+
+..  code-block:: bash
+
+    $ sudo a2ensite pad.conf
+    $ sudo systemctl reload apache2
+
+Go to ``https://pad.<serveraddress>`` to check that the new site works.
 
 Adding Plugins
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 We can add various plugins to Etherpad. Simply go to
-``https://serveraddress:9001/admin`` and select ``Plugin Manager``.
+``https://<serveraddress>:9001/admin`` and select ``Plugin Manager``.
 
 We are enabling the following plugins:
 
@@ -3269,7 +3351,7 @@ We'll run Etherdraw, to make sure it works...
     $ /opt/etherpad/draw/bin/run.sh
 
 Give it a minute to set up its dependencies, and then navigate to
-``https://serveraddress:9002`` to make sure it works.
+``https://<serveraddress>:9002`` to make sure it works.
 
 ..  NOTE:: We only got this far due to a bug. Once it works, we'll need to
     add this to the autostart script for Etherpad.
