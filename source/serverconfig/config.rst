@@ -2945,7 +2945,334 @@ Save and close. Then, restart fail2ban.
 
     $ sudo systemctl restart fail2ban
 
-`SOURCE: Setup Fail2Ban with Owncloud (TechKnight) <https://techknight.eu/2015/07/25/setup-fail2ban-with-owncloud-8-1-0/>`
+`SOURCE: Setup Fail2Ban with Owncloud (TechKnight) <https://techknight.eu/2015/07/25/setup-fail2ban-with-owncloud-8-1-0/>`_
+
+Etherpad
+----------------------------------
+
+Installing
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+We'll also set up Etherpad to work with Nextcloud.
+
+First, we'll install the dependencies.
+
+..  code-block:: bash
+
+    $ sudo apt install git curl python libssl-dev pkg-config build-essential
+
+
+We'll also set up node.js to work on our server.
+
+..  code-block:: bash
+
+    $ cd /var
+    $ wget https://nodejs.org/dist/v6.9.2/node-v6.9.2-linux-x64.tar.xz
+    $ tar xJf node-v6.9.2-linux-x64.tar.xz
+    $ sudo mkdir /opt/nodejs
+    $ sudo chown hawksnest:www-data /opt/nodejs
+    $ mv node-v6.9.2-linux-x64/* /opt/nodejs
+    $ echo "PATH=$PATH:/opt/nodejs/bin" >> ~/.profile
+
+At this point, you'll need to reload your terminal session (quitting and
+re-joining SSH should be enough).
+
+Now we'll pull down etherpad-lite from the official repository.
+
+..  code-block:: bash
+
+    $ sudo mkdir /opt/etherpad
+    $ sudo chown hawksnest:www-data /opt/etherpad
+    $ cd /opt/etherpad
+    $ git clone git://github.com/ether/etherpad-lite.git
+
+Next, we need to set up the database for Etherpad. Be sure to replace
+``PASSWORD`` with a secure password for the etherpad mysql user.
+
+..  code-block:: bash
+
+    $ mysql -u root -p
+    create database `etherpad-lite`;
+    grant all privileges on `etherpad-lite`.* to 'etherpad'@'localhost' identified by 'PASSWORD';
+    exit
+
+Next, we need to edit the configuration...
+
+..  code-block:: bash
+
+    $ cp settings.json.template settings.json
+    $ vim /opt/etherpad/etherpad-lite/settings.json
+
+Comment out or remove the following section...
+
+..  code-block:: json
+
+    "dbType" : "dirty",
+      //the database specific settings
+      "dbSettings" : {
+                       "filename" : "var/dirty.db"
+                     },
+
+Edit the next section so it matches the following, where ``PASSWORD`` is the
+SQL password you specified earlier. Make sure you also are uncommenting this
+section!
+
+..  code-block:: json
+
+    /* An Example of MySQL Configuration */
+    "dbType" : "mysql",
+    "dbSettings" : {
+                    "user"    : "etherpad",
+                    "host"    : "localhost",
+                    "password": "PASSWORD",
+                    "database": "etherpad-lite",
+                    "charset" : "utf8mb4"
+                  },
+
+Also, look for the following section, and change the passwords. Again, make sure
+you are uncommenting this section!
+
+..  code-block:: json
+
+    /* Users for basic authentication. is_admin = true gives access to /admin.
+     If you do not uncomment this, /admin will not be available! */
+    "users": {
+    "admin": {
+      "password": "changeme1",
+      "is_admin": true
+    }
+    },
+
+For security reasons, let's **not** show the contents of this file in the
+admin panel.
+
+..  code-block:: json
+
+    // Option to hide/show the settings.json in admin page, default option is set to true
+    "showSettingsInAdminPage" : false,
+
+Finally, look for this section and change it to match the following, thereby
+pointing to our Let's Encrypt certificates.
+
+..  code-block:: json
+
+    /*
+    // Node native SSL support
+    // this is disabled by default
+    //
+    // make sure to have the minimum and correct file access permissions set
+    // so that the Etherpad server can access them
+    */
+
+    "ssl" : {
+            "key"  : "/etc/apache2/ssl/mousepawmedia.net/privkey.pem",
+            "cert" : "/etc/apache2/ssl/mousepawmedia.net/cert.pem",
+            "ca": ["/etc/apache2/ssl/mousepawmedia.net/chain.pem"]
+          },
+
+We will need to add our ``hawksnest`` user to our ``certs`` group, since
+``hawksnest`` is what runs Etherpad, and it must be able to read the
+certificates for SSH to work.
+
+..  code-block:: bash
+
+    $ sudo usermod -a -G hawksnest certs
+
+After running that command, we may need to quit and start our terminal session
+again.
+
+Next, we'll let Etherpad set up its other dependencies.
+
+..  code-block:: bash
+
+    $ /opt/etherpad/etherpad-lite/bin/installDeps.sh
+
+Now we can run Etherpad for the first time.
+
+..  code-block:: bash
+
+    $ /opt/etherpad/etherpad-lite/bin/run.sh
+
+If all goes well and it starts, press :kdb:`Ctrl+C` to quit. Now we need
+to make some more changes to the database.
+
+..  code-block:: bash
+
+    $ mysql -u root -p
+    alter database `etherpad-lite` character set utf8 collate utf8_bin;
+    use `etherpad-lite`;
+    alter table `store` convert to character set utf8 collate utf8_bin;
+    exit
+
+With all that done, let's allow the Etherpad port through, and then
+start Etherpad again.
+
+..  code-block:: bash
+
+    $ sudo ufw allow 9001
+    $ /opt/etherpad/etherpad-lite/bin/run.sh
+
+Navigate to ``https://serveraddress:9001`` to test that Etherpad is working.
+If you can access it, we're ready to configure Nextcloud to work with it.
+
+`SOURCE: Install Etherpad web-based real time collaborative editor on Ubuntu 16.04 Linux (LinuxConfig.org) <https://linuxconfig.org/install-etherpad-web-based-real-time-collaborative-editor-on-ubuntu-16-04-linux>`_
+
+`SOURCE: How to Install Etherpad For Production with Node.js and MySQL on a VPN (DigitalOcean) <https://www.digitalocean.com/community/tutorials/how-to-install-etherpad-for-production-with-node-js-and-mysql-on-a-vps>`_
+
+Configuring Nextcloud
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+In Nextcloud, go to ``Apps``. Under ``Tools``, look for ``OwnPad`` and enable
+it.
+
+Then, go to ``Admin`` and ``Additional settings``. Scroll down to
+``Collaborative documents`` and check ``Enable Etherpad``. Set the
+``Etherpad Host`` to ``http://mousepawmedia.net:9001``.
+
+Finally, we need to adjust the MIME types.
+
+..  code-block:: bash
+
+    $ sudo su
+    # cd /opt/nextcloud
+    # cp resources/config/mimetypemapping.dist.json config/mimetypemapping.json
+    # vim config/mimetypemapping.json
+
+After the comment sections, add the following line.
+
+..  code-block:: json
+
+    "pad": ["application/x-ownpad"],
+
+That's it! You can now create new pad items on Nextcloud by creating a new
+item, and selecting ``Pad``.
+
+Be sure to exit out of the root session on your terminal.
+
+Automatically Starting Etherpad
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Finally, we need to configure the server to automatically start Etherpad.
+
+..  code-block:: bash
+
+    $ sudo mkdir /opt/scripts/other
+    $ sudo chown hawksnest:www-data other/
+    $ cd /opt/scripts/other
+    $ vim start_etherpad
+
+Set the contents of that file to the following...
+
+..  code-block:: bash
+
+    #!/usr/bin/env bash
+    screen -S "etherpad" -d -m /opt/etherpad/etherpad-lite/bin/run.sh
+
+Save and close, and then make it executable and add it to the user-level
+crontab.
+
+..  code-block:: bash
+
+    $ chmod +x start_etherpad
+    $ crontab -e
+
+Add the following to the bottom of your crontab, save, and close::
+
+    @reboot /opt/scripts/other/start_etherpad
+
+Let's go ahead and run that script to startup Etherpad.
+
+..  code-block:: bash
+
+    $ /opt/scripts/other/start_etherpad
+
+After a minute, check to make sure ``http://serveraddress:9001`` is working,
+and then we're ready to go.
+
+Adding Plugins
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+We can add various plugins to Etherpad. Simply go to
+``https://serveraddress:9001/admin`` and select ``Plugin Manager``.
+
+We are enabling the following plugins:
+
+* activepads
+* adminpads
+* authorship_toggle
+* autocomp
+* padlist
+* print
+* scrollto
+* wrap
+
+EtherDraw
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+..  NOTE:: This isn't currently working - we're waiting on a fix.
+
+We'll set up Etherdraw for integration with Etherpad.
+
+..  code-block:: bash
+
+    $ sudo apt install libpng-dev libfreetype6-dev libfontconfig1-dev libcairo2-dev libpango1.0-dev libgif-dev
+    $ cd /opt/etherpad
+    $ git clone git://github.com/JohnMcLear/draw.git
+    $ cd draw
+    $ mysql -u root -p
+    create database `etherdraw`;
+    grant all privileges on `etherdraw`.* to 'etherpad'@'localhost';
+    exit
+    $ sudo ufw allow 9002
+    $ cp settings.json.template settings.json
+    $ vim settings.json
+
+Set the contents of that file to the following, being sure to replace
+``PASSWORD`` with the Etherpad SQL password from earlier.
+
+..  code-block:: json
+
+    /*
+      This file must be valid JSON. But comments are allowed
+
+      Please edit settings.json, not settings.json.template
+    */
+
+    {
+      //IP and port which etherpad should bind at
+      "ip" : "0.0.0.0",
+      "port" : 9002,
+
+      /* MySQL Configuration */
+      "dbType" : "mysql",
+      "dbSettings" : {
+        "user"    : "etherpad",
+        "host"    : "localhost",
+        "password": "PASSWORD",
+        "database": "etherdraw"
+      },
+
+      /* The default selected tool - 'pencil', 'brush', 'select' */
+      "tool": "brush",
+
+      /* SSL Configuration */
+        "ssl" : {
+          "key": "/etc/apache2/ssl/mousepawmedia.net/privkey.pem",
+          "cert": "/etc/apache2/ssl/mousepawmedia.net/cert.pem"
+        }
+    }
+
+We'll run Etherdraw, to make sure it works...
+
+..  code-block:: bash
+
+    $ /opt/etherpad/draw/bin/run.sh
+
+Give it a minute to set up its dependencies, and then navigate to
+``https://serveraddress:9002`` to make sure it works.
+
+..  NOTE:: We only got this far due to a bug. Once it works, we'll need to
+    add this to the autostart script for Etherpad.
 
 Backups
 ======================================

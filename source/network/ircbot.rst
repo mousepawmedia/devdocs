@@ -1,4 +1,4 @@
-"Hawksnest" IRC Bot
+IRC Bot
 ###############################
 
 The :code:`#mousepawgames` and :code:`##mousepawgames` Freenode IRC chatrooms
