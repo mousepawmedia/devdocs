@@ -1,4 +1,4 @@
-Server Configuration
+Server Configuration: Hawksnest
 ##############################################
 
 This documentation outlines how the Hawksnest server was built.
@@ -310,7 +310,7 @@ Harden Network with ``sysctl`` Settings
 Edit the file, uncommenting or adding the following lines.::
 
     # IP Spoofing protection
-    net.ipv4.conf.all.rp_filter = 1de.li.cious
+    net.ipv4.conf.all.rp_filter = 1
     net.ipv4.conf.default.rp_filter = 1
 
     # Ignore ICMP broadcast requests
@@ -483,6 +483,10 @@ Enable the modules and restart Apache2, ensuring that it still works.
     $ sudo a2enmod security2
     $ sudo systemctl restart apache2
 
+..  WARNING:: While we followed the above to set this up, these instructions
+    no longer work. See the Linode server configuration for a working (as of
+    writing) version.
+
 Setup ModEvasive
 --------------------------------------------
 
@@ -515,7 +519,7 @@ Modify the file to match the following.
 
     <ifmodule mod_evasive20.c>
        DOSHashTableSize 3097
-       DOSPageCount  5
+       DOSPageCount  15
        DOSSiteCount  50
        DOSPageInterval 1
        DOSSiteInterval  1

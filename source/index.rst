@@ -69,7 +69,8 @@ Other
 ..  toctree::
     :maxdepth: 1
 
-    serverconfig/config
+    serverconfig/hawksnest
+    serverconfig/linode
 
 Indices and tables
 ==================
