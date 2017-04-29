@@ -294,6 +294,7 @@ Edit the file so the following lines have the given settings::
 
     PermitRootLogin no
     PasswordAuthentication no
+    AuthorizedKeysFile      %h/.ssh/authorized_keys
 
 Save and close the file, and then run...
 
@@ -773,6 +774,248 @@ Now enable two necessary PHP modules and restart Apache2.
 
 Validate that you can ``http://<serveraddress>/phpmyadmin``.
 
+Let's Encrypt Certificates
+===============================================
+
+We'll install the Let's Encrypt Certbox, and then create our server
+certificates. While we can *technically* install the ``letsencrypt``
+package, it's out of date compared to ``certbot-auto``.
+
+..  code-block:: bash
+
+    $ cd /opt
+    $ sudo mkdir certbot
+    $ cd certbot
+    $ sudo wget https://dl.eff.org/certbot-auto
+    $ sudo chmod a+x certbot-auto
+
+When we get our certificates, we want all the domains to point to the same
+webroot. Thus, we need to turn on our default site, and turn off the others.
+
+..  code-block:: bash
+
+    $ sudo a2dissite mousepawgames.net
+    $ sudo a2ensite 000-default
+    $ sudo systemctl reload apache2
+
+Now we’ll get our certificates.
+
+..  code-block:: bash
+
+    sudo /opt/certbot/certbot-auto certonly -a webroot --webroot-path /var/www/html -d mousepawgames.net
+
+Of course, we would change the ``mousepawgames.net`` part to match the domain
+name we're getting the certificate for.
+
+..  NOTE:: If you're needing to add a domain or subdomain to an existing
+    certificate, use the command above, and include the :code:`--expand` flag
+    as the first argument after ``certonly``.
+
+Follow the instructions on the screen to complete the process of getting the
+certificates. If successful, they can be found (visible only as root) in
+:file:`/etc/letsencrypt/live/mousepawgames.net` (change the folder name to
+match the domain, of course).
+
+We also need to add a special configuration file that Apache2 will use with
+the certificates.
+
+..  code-block:: bash
+
+    $ sudo /etc/letsencrypt/options-ssl-apache.conf
+
+Set the contents of that file to the following.
+
+..  code-block:: apache
+
+    # Baseline setting to Include for SSL sites
+    SSLEngine on
+
+    # Intermediate configuration, tweak to your needs
+    SSLProtocol all -SSLv2 -SSLv3
+    SSLCipherSuite ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:AES:CAMELLIA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!aECDH:!EDH-DSS-DES-CBC3-SHA:!EDH-RSA-DES-CBC3-SHA:!KRB5-DES-CBC3-SHA
+    SSLHonorCipherOrder on
+    SSLCompression off
+
+    SSLOptions +StrictRequire
+
+    # Add vhost name to log entries:
+    LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\"" vhost_combined
+    LogFormat "%v %h %l %u %t \"%r\" %>s %b" vhost_common
+
+    #CustomLog /var/log/apache2/access.log vhost_combined
+    #LogLevel warn
+    #ErrorLog /var/log/apache2/error.log
+
+    # Always ensure Cookies have "Secure" set (JAH 2012/1)
+    #Header edit Set-Cookie (?i)^(.*)(;\s*secure)??((\s*;)?(.*)) "$1; Secure$3$4"
+
+Save and close.
+
+Renewal Scripts
+-------------------------------
+
+There are a few things we'll need to do every time the certificate is
+renewed. Perhaps most important, we need to copy the certs over to a new
+folder and change their permissions, so they can be used by various parts
+of our server setup.
+
+We'll start by creating a special group for accessing certificates.
+
+..  code-block:: bash
+
+    $ sudo groupadd certs
+
+Now we'll create a directory for the copied certs, and make the script file.
+
+..  code-block:: bash
+
+    $ cd /etc/apache2
+    $ sudo mkdir certs
+    $ cd certs
+    $ sudo vim renewcert_pre
+
+Put the following contents into that file. Comment out the lines regarding
+the sites you do not have. Be sure to uncomment them later!
+
+..  code-block:: bash
+
+    #!/bin/bash
+
+    a2dissite mousepawgames.net
+    a2ensite 000-default
+    systemctl reload apache2
+
+Save and close. Now, let's create the post script.
+
+..  code-block:: bash
+
+    $ sudo vim renewcert_post
+
+Put the following contents into that file. Comment out the lines regarding
+the sites you do not have. Be sure to uncomment them later!
+
+..  code-block:: bash
+
+    #!/bin/bash
+
+    # Work out of the certificate's working directory.
+    cd /etc/apache2/certs
+
+    # Copy the certificates over and update their permissions.
+    cp /etc/letsencrypt/live/mousepawgames.net/*.pem ./
+    chgrp certs ./*.pem
+    chmod u=rw,g=r,o= ./*.pem
+
+    # Restore the sites and restart critical services which use this.
+    a2dissite 000-default
+    a2ensite mousepawgames.net
+    systemctl restart apache2
+
+Save and close. Change the script permissions so it can only be read, accessed,
+and run by its owner and group (both root).
+
+..  code-block:: bash
+
+    $ sudo chmod 770 renewcert_pre
+    $ sudo chmod 770 renewcert_post
+
+Finally, we'll test the configuration.
+
+..  code-block:: bash
+
+    $ sudo /opt/certbot/certbot-auto renew --dry-run --pre-hook "/etc/apache2/certs/renewcert_pre" --post-hook "/etc/apache2/certs/renewcert_post"
+
+Scheduling Auto-Renewal
+-----------------------------------
+
+Now we need to schedule the autorenewal task.
+
+..  code-block:: bash
+
+    $ sudo mkdir -p /opt/scripts/root_scripts
+    $ cd /opt/scripts
+    $ sudo chown root:root root_scripts
+    $ sudo chmod 770 root_scripts
+    $ sudo su
+    # cd /opt/scripts/root_scripts
+    # vim renewcert
+
+Set the contents of that file to the following...
+
+..  code-block:: bash
+
+    #!/bin/bash
+    /opt/certbot/certbot-auto renew --pre-hook "/etc/apache2/certs/renewcert_pre" --post-hook "/etc/apache2/certs/renewcert_post"
+
+Save and close. Then run...
+
+..  code-block:: bash
+
+    # exit
+    $ sudo crontab -e
+
+Add the following line to the end::
+
+    41 5 * * * /opt/scripts/root_scripts/renewcerts
+
+This will run the renewal script once a day at 5:41am. (Let's Encrypt asks
+that a random time be used by each user, to spread out server load.)
+
+Using Certificates
+----------------------------------------------
+
+Let's adjust our site so we can use this certificate now.
+
+..  code-block:: bash
+
+    $ sudo a2enmod ssl
+    $ sudo vim /etc/apache2/sites-available/mousepawgames.net
+
+Set the contents of that file to...
+
+..  code-block:: apache
+
+    <IfModule mod_ssl.c>
+        <VirtualHost *:443>
+            ServerName mousepawgames.net
+
+            ServerAdmin webmaster@mousepawmedia.com
+            DocumentRoot /opt/html/mousepawgames.net
+
+            ErrorLog ${APACHE_LOG_DIR}/error.log
+            CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+            <Directory /opt/html/mousepawgames.net>
+                Options -MultiViews -Indexes
+                AllowOverride All
+            </Directory>
+
+            # SSL
+            SSLEngine on
+            SSLCertificateFile      /etc/apache2/certs/fullchain.pem
+            SSLCertificateKeyFile   /etc/apache2/certs/privkey.pem
+
+            Include /etc/letsencrypt/options-ssl-apache.conf
+
+            <FilesMatch "\.(cgi|shtml|phtml|php)$">
+                    SSLOptions +StdEnvVars
+            </FilesMatch>
+            <Directory /usr/lib/cgi-bin>
+                    SSLOptions +StdEnvVars
+            </Directory>
+
+            BrowserMatch "MSIE [2-6]" \
+                nokeepalive ssl-unclean-shutdown \
+                downgrade-1.0 force-response-1.0
+            # MSIE 7 and newer should be able to use keepalive
+            BrowserMatch "MSIE [17-9]" ssl-unclean-shutdown
+        </VirtualHost>
+    </IfModule>
+
+Save and close, and then restart Apache2. (You should know how to do that
+by now.)
+
+
 Email Server
 ===============================================
 
@@ -895,5 +1138,195 @@ file, and then start making our edits.
 
     $ sudo cp /etc/postfix/main.cf /etc/postfix/main.cf.orig
     $ sudo vim /etc/postfix/main.cf
+
+Edit the file to match the following::
+
+    # See /usr/share/postfix/main.cf.dist for a commented, more complete version
+
+    # Debian specific:  Specifying a file name will cause the first
+    # line of that file to be used as the name.  The Debian default
+    # is /etc/mailname.
+    #myorigin = /etc/mailname
+
+    smtpd_banner = $myhostname ESMTP $mail_name (Ubuntu)
+    biff = no
+
+    # appending .domain is the MUA's job.
+    append_dot_mydomain = no
+
+    # Uncomment the next line to generate "delayed mail" warnings
+    #delay_warning_time = 4h
+
+    readme_directory = no
+
+    # TLS parameters
+    smtpd_tls_cert_file=/etc/apache2/certs/fullchaim.pem
+    smtpd_tls_key_file=/etc/apache2/certs/privkey.pem
+    smtpd_use_tls=yes
+    #smtpd_tls_session_cache_database = btree:${data_directory}/smtpd_scache
+    #smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
+
+    # Enabling SMTP for authenticated users, and handing off authentication to Dovecot
+    smtpd_sasl_type = dovecot
+    smtpd_sasl_path = private/auth
+    smtpd_sasl_auth_enable = yes
+
+    smtpd_recipient_restrictions =
+            permit_sasl_authenticated,
+            permit_mynetworks,
+            reject_unauth_destination
+
+    # See /usr/share/doc/postfix/TLS_README.gz in the postfix-doc package for
+    # information on enabling SSL in the smtp client.
+
+    #smtpd_relay_restrictions = permit_mynetworks permit_sasl_authenticated defer_unauth_destination
+    myhostname = delavega
+    alias_maps = hash:/etc/aliases
+    alias_database = hash:/etc/aliases
+    myorigin = /etc/mailname
+    #mydestination = $myhostname, localhost, members.linode.com, mousepawmedia.com, mousepawgames.com, mousepawgames.net, indeliblebluepen.com
+    mydestination = localhost
+    relayhost =
+    mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128
+    mailbox_size_limit = 0
+    recipient_delimiter = +
+    inet_interfaces = all
+
+    # Handing off local delivery to Dovecot's LMTP, and telling it where to store mail
+    virtual_transport = lmtp:unix:private/dovecot-lmtp
+
+    #Virtual domains, users, and aliases
+    virtual_mailbox_domains = mysql:/etc/postfix/mysql-virtual-mailbox-domains.cf
+    virtual_mailbox_maps = mysql:/etc/postfix/mysql-virtual-mailbox-maps.cf
+    virtual_alias_maps = mysql:/etc/postfix/mysql-virtual-alias-maps.cf,
+            mysql:/etc/postfix/mysql-virtual-email2email.cf
+
+    #default_transport = smtp
+    #relay_transport = smtp
+    #inet_protocols = all
+
+Save and close. Now we need to edit four files. In each, be sure to replace
+``mailuserpass`` with the password for the ``postmaster`` MySQL user we set
+earlier.
+
+..  code-block:: bash
+
+    $ sudo vim /etc/postfix/mysql-virtual-mailbox-domains.cf
+
+Set the contents to::
+
+    user = postmaster
+    password = mailuserpass
+    hosts = 127.0.0.1
+    dbname = mailserver
+    query = SELECT 1 FROM virtual_domains WHERE name='%s'
+
+Save and close, then run...
+
+..  code-block:: bash
+
+    $ sudo vim /etc/postfix/mysql-virtual-mailbox-maps.cf
+
+Set the contents to::
+
+    user = postmaster
+    password = mailuserpass
+    hosts = 127.0.0.1
+    dbname = mailserver
+    query = SELECT 1 FROM virtual_users WHERE email='%s'
+
+Save and close, then run...
+
+..  code-block:: bash
+
+    $ sudo vim /etc/postfix/mysql-virtual-alias-maps.cf
+
+Set the contents to::
+
+    user = postmaster
+    password = mailuserpass
+    hosts = 127.0.0.1
+    dbname = mailserver
+    query = SELECT destination FROM virtual_aliases WHERE source='%s'
+
+Save and close, then run...
+
+..  code-block:: bash
+
+    $ sudo vim /etc/postfix/mysql-virtual-email2email.cf
+
+Set the contents to::
+
+    user = postmaster
+    password = mailuserpass
+    hosts = 127.0.0.1
+    dbname = mailserver
+    query = SELECT email FROM virtual_users WHERE email='%s'
+
+Save and close. Then we'll restart postfix and test things. Note the comments
+below, displaying the expected output.
+
+..  code-block:: bash
+
+    $ sudo systemctl restart postfix
+    $ postmap -q mousepawgames.net mysql:/etc/postfix/mysql-virtual-mailbox-domains.cf
+    # EXPECTED OUTPUT: 1
+    $ postmap -q test@mousepawgames.net mysql:/etc/postfix/mysql-virtual-mailbox-maps.cf
+    # EXPECTED OUTPUT: 1
+    $ postmap -q test2@mousepawgames.net mysql:/etc/postfix/mysql-virtual-alias-maps.cf
+    # EXPECTED OUTPUT: test@mousepawgames.net
+
+If we got the expected outputs, we're doing great! Now we need to edit another
+configuration file.
+
+..  code-block:: bash
+
+    $ sudo cp /etc/postfix/master.cf /etc/postfix/master.cf.orig
+    $ sudo vim /etc/postfix/master.cf
+
+Uncomment the two lines starting with ``submission`` and ``smtps``, as well as
+the block of lines starting with ``-o`` after each. Thus, the first part of
+that file should look like this::
+
+    #
+    # Postfix master process configuration file.  For details on the format
+    # of the file, see the master(5) manual page (command: "man 5 master").
+    #
+    # Do not forget to execute "postfix reload" after editing this file.
+    #
+    # ==========================================================================
+    # service type  private unpriv  chroot  wakeup  maxproc command + args
+    #               (yes)   (yes)   (yes)   (never) (100)
+    # ==========================================================================
+    smtp      inet  n       -       -       -       -       smtpd
+    #smtp      inet  n       -       -       -       1       postscreen
+    #smtpd     pass  -       -       -       -       -       smtpd
+    #dnsblog   unix  -       -       -       -       0       dnsblog
+    #tlsproxy  unix  -       -       -       -       0       tlsproxy
+    submission inet n       -       -       -       -       smtpd
+      -o syslog_name=postfix/submission
+      -o smtpd_tls_security_level=encrypt
+      -o smtpd_sasl_auth_enable=yes
+      -o smtpd_client_restrictions=permit_sasl_authenticated,reject
+      -o milter_macro_daemon_name=ORIGINATING
+    smtps     inet  n       -       -       -       -       smtpd
+      -o syslog_name=postfix/smtps
+      -o smtpd_tls_wrappermode=yes
+      -o smtpd_sasl_auth_enable=yes
+      -o smtpd_client_restrictions=permit_sasl_authenticated,reject
+      -o milter_macro_daemon_name=ORIGINATING
+
+Save and close. Then we'll fix some permissions, restart postfix, and move on
+to the next piece of the email server system.
+
+..  code-block:: bash
+
+    $ sudo chmod -R o-rwx /etc/postfix
+    $ sudo systemctl restart postfix
+
+Dovecot
+-----------------------
+
+
 
 `SOURCE: Email with Postfix, Dovecot, and MySQL (Linode) <https://www.linode.com/docs/email/postfix/email-with-postfix-dovecot-and-mysql>`_
