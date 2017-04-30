@@ -749,31 +749,6 @@ To scan for vulnerabilites with Tiger, run...
     $ sudo tiger
     $ sudo less /var/log/tiger/security.report.*
 
-Server Controls
-============================================
-
-PHPMyAdmin
----------------------------------------------
-
-..  code-block:: bash
-
-    $ sudo apt-get update
-    $ sudo apt-get install phpmyadmin
-
-On the configuration dialog, select ``apache2`` by selecting it and tapping
-:kbd:`Space`. Enter an application password (different from the MySQL root
-password) and confirm it.
-
-Now enable two necessary PHP modules and restart Apache2.
-
-..  code-block:: bash
-
-    $ sudo phpenmod mcrypt
-    $ sudo phpenmod mbstring
-    $ sudo systemctl restart apache2
-
-Validate that you can ``http://<serveraddress>/phpmyadmin``.
-
 Let's Encrypt Certificates
 ===============================================
 
@@ -1012,9 +987,55 @@ Set the contents of that file to...
         </VirtualHost>
     </IfModule>
 
-Save and close, and then restart Apache2. (You should know how to do that
-by now.)
+Save and close, and then restart Apache2.
 
+..  code-block:: bash
+
+    $ sudo systemctl restart apache2
+
+Server Controls
+============================================
+
+PHPMyAdmin
+---------------------------------------------
+
+..  code-block:: bash
+
+    $ sudo apt-get update
+    $ sudo apt-get install phpmyadmin
+
+On the configuration dialog, select ``apache2`` by selecting it and tapping
+:kbd:`Space`. Enter an application password (different from the MySQL root
+password) and confirm it.
+
+Edit the configuration for PHP, to force HTTPS.
+
+..  code-block:: bash
+
+    $ sudo vim /etc/phpmyadmin/config.inc.php
+
+Add the following line to the bottom of that file.
+
+..  code-block:: php
+
+    $cfg['ForceSSL'] = true;
+
+Save and close.
+
+Now enable two necessary PHP modules and restart Apache2.
+
+..  code-block:: bash
+
+    $ sudo phpenmod mcrypt
+    $ sudo phpenmod mbstring
+    $ sudo systemctl restart apache2
+
+Validate that you can ``https://<serveraddress>/phpmyadmin``.
+
+..  WARNING:: You may need to disable the Apache2 module ``security2``
+    before you can access PHPMyAdmin. Otherwise, it throws an internal 404.
+    We're not sure why. To fix the problem, run ``sudo a2dismod security2`` and
+    restart the Apache2 service.
 
 Email Server
 ===============================================
@@ -1062,71 +1083,86 @@ password.
 
     GRANT SELECT ON mailserver.* TO 'postmaster'@'localhost' IDENTIFIED BY 'password';
     FLUSH PRIVILEGES;
-
-    CREATE TABLE `virtual_domains` (
-      `id` int(11) NOT NULL auto_increment,
-      `name` varchar(50) NOT NULL,
-      PRIMARY KEY (`id`)
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-    CREATE TABLE `virtual_users` (
-      `id` int(11) NOT NULL auto_increment,
-      `domain_id` int(11) NOT NULL,
-      `password` varchar(106) NOT NULL,
-      `email` varchar(100) NOT NULL,
-      PRIMARY KEY (`id`),
-      UNIQUE KEY `email` (`email`),
-      FOREIGN KEY (domain_id) REFERENCES virtual_domains(id) ON DELETE CASCADE
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-    CREATE TABLE `virtual_aliases` (
-      `id` int(11) NOT NULL auto_increment,
-      `domain_id` int(11) NOT NULL,
-      `source` varchar(100) NOT NULL,
-      `destination` varchar(100) NOT NULL,
-      PRIMARY KEY (`id`),
-      FOREIGN KEY (domain_id) REFERENCES virtual_domains(id) ON DELETE CASCADE
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-We'll define the domains we'll have email addresses for.
-
-..  code-block:: sql
-
-    INSERT INTO `mailserver`.`virtual_domains`
-      (`id` ,`name`)
-    VALUES
-      ('1', 'mousepawmedia.com'),
-      ('2', 'mousepawgames.com'),
-      ('3', 'mousepawgames.net'),
-      ('4', 'indeliblebluepen.com');
-
-    INSERT INTO `mailserver`.`virtual_users`
-      (`id`, `domain_id`, `password` , `email`)
-    VALUES
-      ('1', '3', ENCRYPT('password123', CONCAT('$6$', SUBSTRING(SHA(RAND()), -16))), 'test@mousepawgames.net');
-
-We can also define aliases like this.
-
-..  code-block:: sql
-
-    INSERT INTO `mailserver`.`virtual_aliases`
-      (`id`, `domain_id`, `source`, `destination`)
-    VALUES
-      ('1', '1', 'test2@mousepawgames.net', 'test@mousepawgames.net');
-
-We can confirm this all works by querying each table and verifying the contents.
-
-..  code-block:: sql
-
-    SELECT * FROM mailserver.virtual_domains;
-    SELECT * FROM mailserver.virtual_users;
-    SELECT * FROM mailserver.virtual_aliases;
-
-Finally, if everything looks good, we exit SQL.
-
-..  code-block:: sql
-
     exit
+
+We'll be setting up the tables in the next step.
+
+Postfix Admin
+-----------------------
+
+Let's install a control panel for managing Postfix. We want the latest version
+from Github, instead of the outdated one in the repos. This will also define
+our tables.
+
+..  code-block:: bash
+
+    $ cd /opt
+    $ sudo wget https://github.com/postfixadmin/postfixadmin/archive/postfixadmin-3.0.2.zip
+    $ sudo unzip postfixadmin-3.0.2.zip
+    $ sudo mv postfixadmin-postfixadmin-3.0.2 postfixadmin
+    $ sudo chown -R webster:www-data postfixadmin
+
+Now we need to either add or edit a configuration file for postfixadmin in
+Apache2.
+
+..  code-block:: bash
+
+    $ sudo vim /etc/apache2/conf-available/postfixadmin
+
+Set the contents of that file to...
+
+..  code-block:: apache
+
+    Alias /postfixadmin /opt/postfixadmin
+
+Save and close, and then edit Apache2's main configuration...
+
+..  code-block:: bash
+
+    $ sudo vim /etc/apache2/apache2.conf
+
+Adding the following.
+
+..  code-block:: apache
+
+    <Directory /opt/postfixadmin>
+        AllowOverride None
+        Require all granted
+    </Directory>
+
+Save and close, and then load our configuration and reload Apache2.
+
+..  code-block:: bash
+
+    $ sudo a2enconf postfixadmin
+    $ sudo systemctl reload apache2
+
+When prompted, create a unique password for the application to access
+MySQL.
+
+Now open the database configuration...
+
+..  code-block:: bash
+
+    $ sudo vim /opt/postfixadmin/config.inc.php
+
+In that file, change the following lines to match the given values. Of course,
+be sure to replace ``PASSWORD`` with the actual database password...
+
+..  code-block:: php
+
+    $CONF['database_user'] = 'postfixadmin';
+    $CONF['database_password'] = 'PASSWORD';
+    $CONF['database_name'] = 'mailserver';
+
+Save and close.
+
+Then, using PHPMyAdmin, grant the ``postfixadmin`` user full permissions
+over the ``mailserver`` database.
+
+Finally, navigate to ``https://<serveraddress>/postfixadmin/setup.php``
+and follow the instructions to set the setup password and proceed with
+setup.
 
 Postfix Configuration, Round Two
 -------------------------------------
@@ -1160,7 +1196,9 @@ Edit the file to match the following::
     readme_directory = no
 
     # TLS parameters
-    smtpd_tls_cert_file=/etc/apache2/certs/fullchaim.pem
+    smtpd_tls_cert_file=/etc/apache2/certs/cert.pem
+    smtpd_tls_CAfile=/etc/apache2/certs/chain.pem
+    smtpd_tls_CApath=/etc/apache2/certs
     smtpd_tls_key_file=/etc/apache2/certs/privkey.pem
     smtpd_use_tls=yes
     #smtpd_tls_session_cache_database = btree:${data_directory}/smtpd_scache
@@ -1184,7 +1222,6 @@ Edit the file to match the following::
     alias_maps = hash:/etc/aliases
     alias_database = hash:/etc/aliases
     myorigin = /etc/mailname
-    #mydestination = $myhostname, localhost, members.linode.com, mousepawmedia.com, mousepawgames.com, mousepawgames.net, indeliblebluepen.com
     mydestination = localhost
     relayhost =
     mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128
@@ -1219,7 +1256,7 @@ Set the contents to::
     password = mailuserpass
     hosts = 127.0.0.1
     dbname = mailserver
-    query = SELECT 1 FROM virtual_domains WHERE name='%s'
+    query = SELECT 1 FROM domain WHERE domain='%s'
 
 Save and close, then run...
 
@@ -1233,7 +1270,7 @@ Set the contents to::
     password = mailuserpass
     hosts = 127.0.0.1
     dbname = mailserver
-    query = SELECT 1 FROM virtual_users WHERE email='%s'
+    query = SELECT 1 FROM mailbox WHERE username='%s'
 
 Save and close, then run...
 
@@ -1247,7 +1284,7 @@ Set the contents to::
     password = mailuserpass
     hosts = 127.0.0.1
     dbname = mailserver
-    query = SELECT destination FROM virtual_aliases WHERE source='%s'
+    query = SELECT goto FROM alias WHERE address='%s'
 
 Save and close, then run...
 
@@ -1261,7 +1298,7 @@ Set the contents to::
     password = mailuserpass
     hosts = 127.0.0.1
     dbname = mailserver
-    query = SELECT email FROM virtual_users WHERE email='%s'
+    query = SELECT username FROM mailbox WHERE username='%s'
 
 Save and close. Then we'll restart postfix and test things. Note the comments
 below, displaying the expected output.
@@ -1269,11 +1306,11 @@ below, displaying the expected output.
 ..  code-block:: bash
 
     $ sudo systemctl restart postfix
-    $ postmap -q mousepawgames.net mysql:/etc/postfix/mysql-virtual-mailbox-domains.cf
+    $ sudo postmap -q mousepawgames.net mysql:/etc/postfix/mysql-virtual-mailbox-domains.cf
     # EXPECTED OUTPUT: 1
-    $ postmap -q test@mousepawgames.net mysql:/etc/postfix/mysql-virtual-mailbox-maps.cf
+    $ sudo postmap -q test@mousepawgames.net mysql:/etc/postfix/mysql-virtual-mailbox-maps.cf
     # EXPECTED OUTPUT: 1
-    $ postmap -q test2@mousepawgames.net mysql:/etc/postfix/mysql-virtual-alias-maps.cf
+    $ sudo postmap -q test2@mousepawgames.net mysql:/etc/postfix/mysql-virtual-alias-maps.cf
     # EXPECTED OUTPUT: test@mousepawgames.net
 
 If we got the expected outputs, we're doing great! Now we need to edit another
@@ -1325,8 +1362,243 @@ to the next piece of the email server system.
     $ sudo systemctl restart postfix
 
 Dovecot
------------------------
+----------------------
 
+Let's setup the other half of the mail system - Dovecot. First, we want to
+make copies of our configuration files before we start changing stuff, just
+in case.
+
+..  code-block:: bash
+
+    $ sudo cp /etc/dovecot/dovecot.conf /etc/dovecot/dovecot.conf.orig
+    $ sudo cp /etc/dovecot/conf.d/10-mail.conf /etc/dovecot/conf.d/10-mail.conf.orig
+    $ sudo cp /etc/dovecot/conf.d/10-auth.conf /etc/dovecot/conf.d/10-auth.conf.orig
+    $ sudo cp /etc/dovecot/dovecot-sql.conf.ext /etc/dovecot/dovecot-sql.conf.ext.orig
+    $ sudo cp /etc/dovecot/conf.d/10-master.conf /etc/dovecot/conf.d/10-master.conf.orig
+    $ sudo cp /etc/dovecot/conf.d/10-ssl.conf /etc/dovecot/conf.d/10-ssl.conf.orig
+    $ sudo vim /etc/dovecot/dovecot.conf
+
+Edit that file, adding the last line in the sample below in the indicated
+position::
+
+    ## Dovecot configuration file
+
+    # If you're in a hurry, see http://wiki2.dovecot.org/QuickConfiguration
+
+    # "doveconf -n" command gives a clean output of the changed settings. Use it
+    # instead of copy&pasting files when posting to the Dovecot mailing list.
+
+    # '#' character and everything after it is treated as comments. Extra spaces
+    # and tabs are ignored. If you want to use either of these explicitly, put the
+    # value inside quotes, eg.: key = "# char and trailing whitespace  "
+
+    # Default values are shown for each setting, it's not required to uncomment
+    # those. These are exceptions to this though: No sections (e.g. namespace {})
+    # or plugin settings are added by default, they're listed only as examples.
+    # Paths are also just examples with the real defaults being based on configure
+    # options. The paths listed here are for configure --prefix=/usr
+    # --sysconfdir=/etc --localstatedir=/var
+
+    # Enable installed protocols
+    !include_try /usr/share/dovecot/protocols.d/*.protocol
+    protocols = imap pop3 lmtp
+
+Save and close, and then open the next config file...
+
+..  code-block:: bash
+
+    $ sudo vim sudo vim /etc/dovecot/conf.d/10-mail.conf
+
+Search for and modify the following lines (they're not together in the file)::
+
+    mail_location = maildir:/var/mail/vhosts/%d/%n
+    mail_privileged_group = mail
+
+Save and close. Next, we need to verify some permissions, so run...
+
+..  code-block:: bash
+
+    $ ls -ld /var/mail
+
+Ensure the output is::
+
+    drwxrwsr-x 2 root mail 4096 Mar  6 15:08 /var/mail
+
+Then, we'll add subdirectories for each domain we'll be receiving
+email on.
+
+..  code-block:: bash
+
+    $ sudo mkdir -p /var/mail/vhosts/mousepawgames.net
+    $ sudo mkdir -p /var/mail/vhosts/mousepawgames.com
+    $ sudo mkdir -p /var/mail/vhosts/mousepawmedia.com
+    $ sudo mkdir -p /var/mail/vhosts/indeliblebluepen.com
+
+Now we need to set up a ``vmail`` user.
+
+..  code-block:: bash
+
+    $ sudo groupadd -g 5000 vmail
+    $ sudo useradd -g vmail -u 5000 vmail -d /var/mail
+
+We'll transfer ownership of the mail directory and all its
+contents to the ``vmail`` user.
+
+..  code-block:: bash
+
+    $ sudo chown -R vmail:vmail /var/mail
+
+Now we edit another configuration.
+
+..  code-block:: bash
+
+    $ sudo vim /etc/dovecot/conf.d/10-auth.conf
+
+Change or add the following lines. Notice that the last two
+are just being commented or uncommented::
+
+    auth_mechanisms = plain login
+    disable_plaintext_auth = yes
+
+    #!include auth-system.conf.ext
+    !include auth-sql.conf.ext
+
+Save and close. Then, run...
+
+..  code-block:: bash
+
+    $ sudo vim /etc/dovecot/conf.d/auth-sql.conf.ext
+
+Ensure the following lines match and are uncommented::
+
+    passdb {
+      driver = sql
+      args = /etc/dovecot/dovecot-sql.conf.ext
+    }
+    userdb {
+      driver = static
+      args = uid=vmail gid=vmail home=/var/mail/vhosts/%d/%n
+       }
+
+Save and close. Then, run...
+
+..  code-block:: bash
+
+    $ sudo vim /etc/dovecot/dovecot-sql.conf.ext
+
+Find, uncomment, and edit the following lines so they match, replacing
+``userpassword`` with the actual password for the ``postmaster`` MySQL
+account::
+
+    driver = mysql
+    connect = host=127.0.0.1 dbname=mailserver user=postmaster password=userpassword
+    default_pass_scheme = SHA512-CRYPT
+    password_query = \
+      SELECT username as username, password \
+      FROM mailbox WHERE username = '%u'
+
+Save and close. Then, we'll adjust a few more permissions and edit
+the sockets configuration file.
+
+..  code-block:: bash
+
+    $ sudo chown -R vmail:dovecot /etc/dovecot
+    $ sudo chmod -R o-rwx /etc/dovecot
+    $ sudo vim /etc/dovecot/conf.d/10-master.conf
+
+We're going to disable IMAP and POP3 (the unencrypted forms)
+and instead use the secure versions (IMAPS and POP3S). Edit
+the following lines of code. Be careful of the nested code
+and brackets::
+
+    service imap-login {
+      inet_listener imap {
+        port = 0
+      }
+      inet_listener imaps {
+        port = 993
+        ssl = yes
+      }
+
+    service pop3-login {
+      inet_listener pop3 {
+        port = 0
+      }
+      inet_listener pop3s {
+        port = 995
+        ssl = yes
+      }
+    }
+
+    service lmtp {
+      unix_listener lmtp {
+        mode = 0666
+        user = postfix
+        group = postfix
+      }
+
+    service auth {
+      unix_listener auth-userdb {
+        mode = 0666
+        user = vmail
+        #group =
+      }
+
+      # Postfix smtp-auth
+      unix_listener /var/spool/postfix/private/auth {
+        mode = 0666
+        user = postfix
+        group = postfix
+      }
+
+      # Auth process is run as this user.
+      #user = $default_internal_user
+      user = dovecot
+    }
+
+    service auth-worker {
+      # Auth worker process is run as root by default, so that it can access
+      # /etc/shadow. If this isn't necessary, the user should be changed to
+      # $default_internal_user.
+      user = vmail
+    }
+
+Save and close. Now we'll configure Dovecot to use our Let's Encrypt
+certificate.
+
+..  code-block:: bash
+
+    $ sudo vim /etc/dovecot/conf.d/10-ssl.conf
+
+Uncomment and change the following lines::
+
+    # SSL/TLS support: yes, no, required. <doc/wiki/SSL.txt>
+    ssl = required
+
+    # PEM encoded X.509 SSL/TLS certificate and private key. They're opened before
+    # dropping root privileges, so keep the key file unreadable by anyone but
+    # root. Included doc/mkcert.sh can be used to easily generate self-signed
+    # certificate, just make sure to update the domains in dovecot-openssl.cnf
+    ssl_cert = </etc/apache2/certs/cert.pem
+    ssl_key = </etc/apache2/certs/privkey.pem
+    ssl_ca = </etc/apache2/certs/chain.pem
+
+Save and close, and then restart Dovecot. If there are problems, you'll find
+them by running ``sudo systemctl status dovecot``.
+
+..  code-block:: bash
+
+    $ sudo systemctl restart dovecot
+
+Security Settings
+---------------------
+
+Now we need to open the firewall to allow email to pass through.
+
+..  code-block:: bash
+
+    $ sudo ufw allow 993
+    $ sudo ufw allow 995
 
 
 `SOURCE: Email with Postfix, Dovecot, and MySQL (Linode) <https://www.linode.com/docs/email/postfix/email-with-postfix-dovecot-and-mysql>`_
