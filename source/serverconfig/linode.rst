@@ -777,7 +777,7 @@ Now we’ll get our certificates.
 
 ..  code-block:: bash
 
-    sudo /opt/certbot/certbot-auto certonly -a webroot --webroot-path /var/www/html -d mousepawgames.net
+    sudo /opt/certbot/certbot-auto certonly -a webroot --webroot-path /var/www/html -d mousepawgames.net -d mail.mousepawgames.net
 
 Of course, we would change the ``mousepawgames.net`` part to match the domain
 name we're getting the certificate for.
@@ -1218,7 +1218,8 @@ Edit the file to match the following::
     # information on enabling SSL in the smtp client.
 
     #smtpd_relay_restrictions = permit_mynetworks permit_sasl_authenticated defer_unauth_destination
-    myhostname = delavega
+    myhostname = delavega.mousepawgames.net
+    mydomain = mail.mousepawgames.net
     alias_maps = hash:/etc/aliases
     alias_database = hash:/etc/aliases
     myorigin = /etc/mailname
@@ -1597,6 +1598,9 @@ Now we need to open the firewall to allow email to pass through.
 
 ..  code-block:: bash
 
+    $ sudo ufw allow 25
+    $ sudo ufw allow 465
+    $ sudo ufw allow 587
     $ sudo ufw allow 993
     $ sudo ufw allow 995
 
