@@ -18,9 +18,9 @@ We'll start by defining the name of our host.
 
 ..  code-block:: bash
 
-    # echo "delavega" > /etc/hostname
-    # hostname -F /etc/hostname
-    # vim /etc/hosts
+    $ echo "delavega" > /etc/hostname
+    $ hostname -F /etc/hostname
+    $ vim /etc/hosts
 
 In that file, add ``delavega`` to the end of the second line.
 
@@ -30,7 +30,7 @@ Now we set the timezone.
 
 ..  code-block:: bash
 
-    # dpkg-reconfigure tzdata
+    $ dpkg-reconfigure tzdata
 
 Use the arrow and ENTER keys to set your timezone.
 
@@ -46,15 +46,15 @@ user account.
 
 ..  code-block:: bash
 
-    # adduser webster
+    $ adduser webster
 
 Define the password for the new user, and other information if desired.
 Then, we add the user to the ``sudo`` group.
 
 ..  code-block:: bash
 
-    # usermod -aG sudo webster
-    # groups webster
+    $ usermod -aG sudo webster
+    $ groups webster
 
 The second command will list all of the groups ``webster`` is in. Ensure
 it includes the ``sudo`` group.
@@ -63,7 +63,7 @@ Finally, we'll log out of root...
 
 ..  code-block:: bash
 
-    # logout
+    $ logout
 
 And log in as ``webster``. Once logged in, we can test out the user's sudo
 abilities by running...
@@ -912,8 +912,8 @@ Now we need to schedule the autorenewal task.
     $ sudo chown root:root root_scripts
     $ sudo chmod 770 root_scripts
     $ sudo su
-    # cd /opt/scripts/root_scripts
-    # vim renewcert
+    $ cd /opt/scripts/root_scripts
+    $ vim renewcert
 
 Set the contents of that file to the following...
 
@@ -926,7 +926,7 @@ Save and close. Then run...
 
 ..  code-block:: bash
 
-    # exit
+    $ exit
     $ sudo crontab -e
 
 Add the following line to the end::
@@ -1532,7 +1532,7 @@ and brackets::
     }
 
     service lmtp {
-      unix_listener lmtp {
+      unix_listener /var/spool/postfix/private/auth {
         mode = 0666
         user = postfix
         group = postfix
@@ -1584,12 +1584,11 @@ Uncomment and change the following lines::
     ssl_key = </etc/apache2/certs/privkey.pem
     ssl_ca = </etc/apache2/certs/chain.pem
 
-Save and close, and then restart Dovecot. If there are problems, you'll find
-them by running ``sudo systemctl status dovecot``.
+Save and close, and then restart both Postfix and Dovecot.
 
 ..  code-block:: bash
 
-    $ sudo systemctl restart dovecot
+    $ sudo systemctl restart postfix dovecot
 
 Security Settings
 ---------------------
@@ -1604,5 +1603,18 @@ Now we need to open the firewall to allow email to pass through.
     $ sudo ufw allow 993
     $ sudo ufw allow 995
 
+Debugging
+--------------------
+
+Errors can usually be found by running :code:`sudo systemctl status postfix` and
+:code:`sudo systemctl status postfix`, with the full logs visible at
+``/var/log/mail.log``.
+
+You can check postfix's delivery queue with :code:`postfix -p`, and attempt to
+clear it (deliver everything) with :code:`postfix -f`.
+
+`MXToolbox SuperTool <https://mxtoolbox.com/SuperTool.aspx>`_ can be used to
+check for DNS and MX issues. Enter the domain and select ``Test Email Server``
+from the options.
 
 `SOURCE: Email with Postfix, Dovecot, and MySQL (Linode) <https://www.linode.com/docs/email/postfix/email-with-postfix-dovecot-and-mysql>`_

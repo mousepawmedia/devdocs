@@ -46,6 +46,8 @@ and solving problems.
 - noteirak (#vbox): Jenkins VM build agent setup, Apache troubleshooting.
 - Peng (#letsencrypt): SSL certificate technical support.
 - phunyguy (#ubuntu-offtopic): Postfix/Dovecot advice.
+- rfleming (#ubuntu-offtopic): For tireless debugging help in getting
+  Postfix/Dovecot working.
 - whitenoise (#letsencrypt): SSL certificate setup; originally pointing us to
   Let's Encrypt for certs.
 
