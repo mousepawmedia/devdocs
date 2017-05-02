@@ -1590,7 +1590,7 @@ Save and close, and then restart both Postfix and Dovecot.
 
     $ sudo systemctl restart postfix dovecot
 
-Security Settings
+Firewall Settings
 ---------------------
 
 Now we need to open the firewall to allow email to pass through.
@@ -1603,6 +1603,11 @@ Now we need to open the firewall to allow email to pass through.
     $ sudo ufw allow 993
     $ sudo ufw allow 995
 
+..  NOTE:: By this point, the email system should be 100% functional, sending
+    and receiving email and serving it to clients over POPS3, IMAPS, and
+    SMTPS. Test this out before continuing! Note the debugging instructions
+    below.
+
 Debugging
 --------------------
 
@@ -1610,11 +1615,428 @@ Errors can usually be found by running :code:`sudo systemctl status postfix` and
 :code:`sudo systemctl status postfix`, with the full logs visible at
 ``/var/log/mail.log``.
 
-You can check postfix's delivery queue with :code:`postfix -p`, and attempt to
-clear it (deliver everything) with :code:`postfix -f`.
+You can check postfix's delivery queue with :code:`postqueue -p`, and attempt to
+clear it (deliver everything) with :code:`postqueue -f`.
 
 `MXToolbox SuperTool <https://mxtoolbox.com/SuperTool.aspx>`_ can be used to
 check for DNS and MX issues. Enter the domain and select ``Test Email Server``
 from the options.
 
 `SOURCE: Email with Postfix, Dovecot, and MySQL (Linode) <https://www.linode.com/docs/email/postfix/email-with-postfix-dovecot-and-mysql>`_
+
+Mail Server Security (DKIM, SPF, and Postfix)
+================================================
+
+Setup
+---------------------------
+
+First, we'll install the packages we need.
+
+..  code-block:: bash
+
+    $ sudo apt install opendkim opendkim-tools postfix-policyd-spf-python
+
+We also need the ``postfix`` user to be a member of the group for opendkim.
+
+..  code-block:: bash
+
+    $ sudo adduser postfix opendkim
+
+SPF
+---------------------------------
+
+The purpose of SPF is to prevent spoofing and other email fraud. There are a
+couple of approaches for this, but we want to link all hosts listed
+in our MX records to our server.
+
+Go to the Linode DNS manager for the domain in question, and add a new
+``TXT Records``. Leave the ``Name`` blank, and set the ``Value`` to the
+following::
+
+    v=spf1 mx -all
+
+Now we need to edit our mail server to work with SPF.
+
+..  code-block:: bash
+
+    $ sudo vim /etc/postfix-policyd-spf-python/policyd-spf.conf
+
+Change the following lines::
+
+    HELO_reject = False
+    Mail_From_reject = False
+
+Save and close, then run...
+
+..  code-block:: bash
+
+    $ sudo vim /etc/postfix/master.cf
+
+Add the following to the bottom of that file::
+
+    policyd-spf  unix  -       n       n       -       0       spawn
+        user=policyd-spf argv=/usr/bin/policyd-spf
+
+Save and close, then run...
+
+..  code-block:: bash
+
+    $ sudo vim /etc/postfix/main.cf
+
+Edit the following section to include the last line in the example below,
+also ensuring that a comma is at the end of every line except the last one::
+
+    smtpd_recipient_restrictions =
+        permit_sasl_authenticated,
+        permit_mynetworks,
+        reject_unauth_destination,
+        check_policy_service unix:private/policyd-spf
+
+Also add the following line to the bottom::
+
+    policyd-spf_time_limit = 3600
+
+Save and close, and then restart Postfix.
+
+..  WARNING:: Be *very* careful with your configurations! Continue to test
+    your email send/receive periodically, to make sure nothing breaks.
+    Some email can actually get lost or be eaten if your settings are wrong,
+    and you don't want important messages going into a black hole.
+
+To test, send a message TO an account on your mail server, and check the
+headers. You should see a line something like this::
+
+    Received-SPF: Pass (sender SPF authorized) identity=mailfrom; client-ip=2607:f8b0:400e:c05::22a; helo=mail-pg0-x22a.google.com; envelope-from=someemail@example.com; receiver=test@mousepawgames.net
+
+You should also see something like the following in ``/var/log/mail.log``::
+
+    ubuntu policyd-spf[18663]: None; identity=helo; client-ip=2607:f8b0:400e:c00::22e; helo=mail-pf0-x22e.google.com; envelope-from=someemail@example.com; receiver=test@mousepawgames.net
+    ubuntu policyd-spf[18663]: Pass; identity=mailfrom; client-ip=2607:f8b0:400e:c00::22e; helo=mail-pf0-x22e.google.com; envelope-from=someemail@example.com; receiver=test@mousepawgames.net
+
+OpenDKIM
+------------------------
+
+DKIM allows us to verify that messages sent from our server really *did* come
+from us, which further helps ensure the safety and validity of our messages,
+and avoid winding up in spam.
+
+We'll start by modifying the configuration for OpenDKIM...
+
+..  code-block:: bash
+
+    $ sudo vim /etc/opendkim.conf
+
+Edit to make it match the following::
+
+    # Log to syslog
+    Syslog                  yes
+    # Required to use local socket with MTAs that access the socket as a non-
+    # privileged user (e.g. Postfix)
+    UMask                   002
+    # OpenDKIM user
+    # Remember to add user postfix to group opendkim
+    UserID                  opendkim
+
+    # Map domains in From addresses to keys used to sign messages
+    KeyTable                /etc/opendkim/key.table
+    SigningTable            refile:/etc/opendkim/signing.table
+
+    # Hosts to ingore when verifying signatures
+    ExternalIgnoreList      /etc/opendkim/trusted.hosts
+    InternalHosts           /etc/opendkim/trusted.hosts
+
+    # Sign for example.com with key in /etc/dkimkeys/dkim.key using
+    # selector '2007' (e.g. 2007._domainkey.example.com)
+    #Domain                 example.com
+    #KeyFile                /etc/dkimkeys/dkim.key
+    #Selector               2007
+
+    # Commonly-used options; the commented-out versions show the defaults.
+    #Canonicalization       simple
+    Canonicalization        relaxed/simple
+    Mode                    sv
+    SubDomains              no
+    #ADSPAction             continue
+    AutoRestart             yes
+    AutoRestartRate         10/1M
+    Background              yes
+    DNSTimeout              5
+    SignatureAlgorithm      rsa-sha256
+
+    # Always oversign From (sign using actual From and a null From to prevent
+    # malicious signatures header fields (From and/or others) between the signer
+    # and the verifier.  From is oversigned by default in the Debian pacakge
+    # because it is often the identity key used by reputation systems and thus
+    # somewhat security sensitive.
+    OversignHeaders         From
+
+Save and close, and then update the permissions for that file. We'll also
+be setting up directories for OpenDKIM.
+
+..  code-block:: bash
+
+    $ sudo chmod u=rw,go=r /etc/opendkim.conf
+    $ sudo mkdir /etc/opendkim
+    $ sudo mkdir /etc/opendkim/keys
+    $ sudo chown -R opendkim:opendkim /etc/opendkim
+    $ sudo chmod go-rw /etc/opendkim/keys
+    $ sudo vim /etc/opendkim/signing.table
+
+That last command will open up a file for editing, where we'll define the
+domains we're signing for. Set the contents to something like the following,
+replacing with the domains you're setting up for::
+
+    *@mousepawgames.net     mousepawgamesnet
+    *@mousepawgames.com     mousepawgamescom
+    *@mousepawmedia.com     mousepawmediacom
+    *@indeliblebluepen.com  indeliblebluepencom
+
+Save and close, and then open the key table file.
+
+..  code-block:: bash
+
+    $ sudo vim /etc/opendkim/key.table
+
+Set the contents to something like the following, with the short keys
+from the earlier file on the left. Also, be sure to change the date to the
+current four-digit year and two-digit month::
+
+    mousepawgamesnet    mousepawgames.net:201705:/etc/opendkim/keys/mousepawgamesnet.private
+    mousepawgamescom    mousepawgames.com:201705:/etc/opendkim/keys/mousepawgamescom.private
+    mousepawmediacom    mousepawmedia.com:201705:/etc/opendkim/keys/mousepawmediacom.private
+    indeliblebluepencom indeliblebluepen.com:201705:/etc/opendkim/keys/indeliblebluepencom.private
+
+Save and close, and then open the trusted hosts configuration file.
+
+..  code-block:: bash
+
+    $ sudo vim /etc/opendkim/trusted.hosts
+
+Set the contents of that file to::
+
+    127.0.0.1
+    ::1
+    localhost
+    delavega
+    delavega.mousepawgames.net
+    mousepawgames.net
+    mousepawgames.com
+    mousepawmedia.com
+    indeliblebluepen.com
+
+Save and close, and then double-check the permissions on OpenDKIM's directories.
+
+..  code-block:: bash
+
+    $ sudo chown -R opendkim:opendkim /etc/opendkim
+    $ sudo chmod -R go-rwx /etc/opendkim/keys
+
+Now we can generate our keys and set their permissions. Since we need to
+regenerate this regularly, and there is a LOT involved, I wrote up a handy
+script.
+
+..  code-block:: bash
+
+    $ sudo vim /opt/scripts/root_scripts/renewdkim
+
+..  code-block:: bash
+
+    #!/bin/bash
+
+    # Regenerate DKIM keys and parse DNS records.
+    # AUTHOR(S): Jason C. McDonald
+    # VERSION: 1.0
+
+    # Copyright (c) 2017 MousePaw Media
+    # All rights reserved.
+    #
+    # Redistribution and use in source and binary forms, with or without
+    # modification, are permitted provided that the following conditions are met:
+    #     * Redistributions of source code must retain the above copyright
+    #       notice, this list of conditions and the following disclaimer.
+    #     * Redistributions in binary form must reproduce the above copyright
+    #       notice, this list of conditions and the following disclaimer in the
+    #       documentation and/or other materials provided with the distribution.
+    #     * Neither the name of the <organization> nor the
+    #       names of its contributors may be used to endorse or promote products
+    #       derived from this software without specific prior written permission.
+    #
+    # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+    # ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+    # WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+    # DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+    # DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+    # (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+    # LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+    # ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+    # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+    # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+    # Die on error.
+    set -e
+
+    # CHANGE THIS: Set the path to the configuration file.
+    CONFIG=/opt/scripts/root_scripts/domains.conf
+
+    # Get the current year and month.
+    DATE=`date +%Y%m`
+
+    # We'll work in a temporary directory for the moment.
+    TEMP=/tmp/dkms
+    mkdir -p $TEMP
+
+    PROD=/etc/opendkim/keys
+
+    # Function to generate the keys for a domain.
+    function genkey {
+        cd $TEMP
+        opendkim-genkey -b 2048 -h rsa-sha256 -r -s $DATE -d $1.$2 -v
+        rename "s/$DATE/$1$2/" *.*
+    }
+
+    # Display the text for our DNS update
+    function displayrecord {
+        echo ""
+        echo "===== $1 DNS TXT RECORD====="
+        echo ""
+        cat /etc/opendkim/keys/$1.txt | grep -Pzo 'v=DKIM1[^)]+(?=" )' | sed 's/h=rsa-sha256;/h=sha256;/'
+        echo ""
+    }
+
+    function do_move {
+        echo "WARNING!"
+        echo "This will override your current keys. You should test first with the -t flag."
+        echo "This operation cannot be undone."
+        read -p "Are you SURE you want to continue? [y/N] " choice
+        case "$choice" in
+            y|Y )
+                # Stop the mail server.
+                systemctl stop opendkim postfix
+
+                # Move the keys
+                cp $TEMP/*.private $PROD
+
+                # Change the permissions.
+                chown opendkim:opendkim $PROD/*
+                chmod go-rw $PROD/*
+
+                # Start the mail server.
+                systemctl start opendkim postfix
+
+                echo "==========FINISHED==========="
+                echo "Keys have been moved to $PROD"
+                ;;
+            * )
+                echo "Cancelled."
+                ;;
+        esac
+    }
+
+    function do_test {
+        # For each of the domains we're working with...
+        while read LINE; do
+            IFS='.'
+            set $LINE
+            # Generate the keys
+            opendkim-testkey -d $1.$2 -s $DATE -k $TEMP/$1$2.private -vvv
+        done <"$CONFIG"
+        echo "Testing complete. If there are errors, DO NOT COPY."
+    }
+
+    function do_gen {
+        # For each of the domains we're working with...
+        while read LINE; do
+            IFS='.'
+            set $LINE
+            # Generate the keys
+            genkey $1 $2
+        done <"$CONFIG"
+        echo "==========FINISHED==========="
+        echo "Keys have been generated at $TEMP"
+    }
+
+    function do_display {
+        while read LINE; do
+            IFS='.'
+            set $LINE
+            # Display the text records
+            displayrecord $1$2
+        done <"$CONFIG"
+    }
+
+    SUCCESS="0"
+    while getopts ":hdgmt" opt; do
+        SUCCESS="1"
+        case $opt in
+            h)
+                echo "Automate DKIM key renewal."
+                echo "-d    Display DNS text record values in $TEMP."
+                echo "-g    Generate DKIM keys in $TEMP."
+                echo "-m    Move new keys from $TEMP into place."
+                echo "-t    Test the new keys before moving them."
+                ;;
+            d)
+                do_display
+                ;;
+            g)
+                do_gen
+                ;;
+            m)
+                do_move
+                ;;
+            t)
+                do_test
+                ;;
+            \?)
+                echo "Invalid option -$OPTARG. See -h for help."
+                exit 1
+                ;;
+        esac
+    done
+
+    if [ $SUCCESS -eq "0" ]; then
+        echo "Option required. See -h for help."
+        exit 1
+    fi
+
+Save and close, and set the proper permissions.
+
+..  code-block:: bash
+
+    $ sudo chmod +x /opt/scripts/root_scripts/renewdkim
+
+Before we can run the script, we also need to set up the configuration file
+it uses. Note that I'm creating this at the path specified at the top of
+script above (near the ``# CHANGE THIS`` comment.)
+
+..  code-block:: bash
+
+    $ sudo vim /opt/scripts/root_scripts/domains.txt
+
+Set the contents of that file to::
+
+    mousepawgames.net
+    mousepawgames.com
+    mousepawmedia.com
+    indeliblebluepen.com
+
+Save and close. Now we can run the script.
+
+..  code-block:: bash
+
+    $ sudo /opt/scripts/root_scripts/renewdkim -r
+
+Finally, we restart OpenDKIM.
+
+Now we need to configure our DNS to use these keys. It can be a little tricky
+to get the entries correct, so I set up the script from earlier to also
+display what we need.
+
+..  code-block:: bash
+
+    $ sudo /opt/scripts/root_scripts/renewdkim -d
+
+
+
+
+` SOURCE: Configure SPF and DKIM in Postfix on Debian 8 <https://www.linode.com/docs/email/postfix/configure-spf-and-dkim-in-postfix-on-debian-8>`_
