@@ -1899,7 +1899,8 @@ script.
         echo ""
         echo "===== $1 DNS TXT RECORD====="
         echo ""
-        cat /etc/opendkim/keys/$1.txt | grep -Pzo 'v=DKIM1[^)]+(?=" )' | sed 's/h=rsa-sha256;/h=sha256;/'
+        # Perl regex from kerframil (#bash)
+        cat $TEMP/$1.txt | grep -Pzo 'v=DKIM1[^)]+(?=" )' | sed 's/h=rsa-sha256;/h=sha256;/' | perl -0e '$x = <>; print $x =~ s/"\s+"//sgr'
         echo ""
     }
 
@@ -2020,13 +2021,11 @@ Set the contents of that file to::
     mousepawmedia.com
     indeliblebluepen.com
 
-Save and close. Now we can run the script.
+Save and close. Now we can use the script to generate the keys.
 
 ..  code-block:: bash
 
-    $ sudo /opt/scripts/root_scripts/renewdkim -r
-
-Finally, we restart OpenDKIM.
+    $ sudo /opt/scripts/root_scripts/renewdkim -g
 
 Now we need to configure our DNS to use these keys. It can be a little tricky
 to get the entries correct, so I set up the script from earlier to also
@@ -2036,7 +2035,26 @@ display what we need.
 
     $ sudo /opt/scripts/root_scripts/renewdkim -d
 
+Copy and paste each of the keys (starting with ``v=DKIM1`` to the end of
+the string) into a new TXT record for each DNS. The record name should
+be ``YYYYMM._domainkey`` (i.e. ``201705._domainkey``).
 
+Once you have these in place, wait a bit for them to propegate, and then
+test the keys.
+
+..  code-block:: bash
+
+    $ sudo /opt/scripts/root_scripts/renewdkim -t
+
+If ALL your keys have passed, we are ready to move them into place.
+
+..  code-block:: bash
+
+    $ sudo /opt/scripts/root_scripts/renewdkim -m
+
+That last command will also restart OpenDKIM and Postfix automatically.
+
+..  NOTE:: Left off on "Hook OpenDKIM into Postfix"
 
 
 ` SOURCE: Configure SPF and DKIM in Postfix on Debian 8 <https://www.linode.com/docs/email/postfix/configure-spf-and-dkim-in-postfix-on-debian-8>`_
