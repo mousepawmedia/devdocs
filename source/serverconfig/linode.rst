@@ -943,7 +943,7 @@ Let's adjust our site so we can use this certificate now.
 
 ..  code-block:: bash
 
-    $ sudo a2enmod ssl
+    $ sudo a2enmod ssl rewrite
     $ sudo vim /etc/apache2/sites-available/mousepawgames.net
 
 Set the contents of that file to...
@@ -961,8 +961,8 @@ Set the contents of that file to...
             CustomLog ${APACHE_LOG_DIR}/access.log combined
 
             <Directory /opt/html/mousepawgames.net>
-                Options -MultiViews -Indexes
-                AllowOverride All
+                    Options -MultiViews -Indexes
+                    AllowOverride All
             </Directory>
 
             # SSL
@@ -979,13 +979,15 @@ Set the contents of that file to...
                     SSLOptions +StdEnvVars
             </Directory>
 
-            BrowserMatch "MSIE [2-6]" \
-                nokeepalive ssl-unclean-shutdown \
-                downgrade-1.0 force-response-1.0
-            # MSIE 7 and newer should be able to use keepalive
-            BrowserMatch "MSIE [17-9]" ssl-unclean-shutdown
         </VirtualHost>
     </IfModule>
+    <VirtualHost *:80>
+        ServerName mousepawgames.net
+
+        RewriteEngine On
+        RewriteCond %{HTTPS} off
+        RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI}
+    </VirtualHost>
 
 Save and close, and then restart Apache2.
 
@@ -1036,6 +1038,43 @@ Validate that you can ``https://<serveraddress>/phpmyadmin``.
     before you can access PHPMyAdmin. Otherwise, it throws an internal 404.
     We're not sure why. To fix the problem, run ``sudo a2dismod security2`` and
     restart the Apache2 service.
+
+Control Access Switch
+----------------------------------------------
+
+For security reasons, we want to be able to turn on and off controls like
+PHPMyAdmin using a script.
+
+..  code-block:: bash
+
+    $ sudo vim /opt/scripts/sys_scripts/controls
+
+The contents of that file are as follows.
+
+..  code-block:: bash
+
+    #!/bin/bash
+
+    set -e
+
+    case $1 in
+    'on')
+        sudo a2dismod security2
+        sudo a2enconf phpmyadmin
+        sudo systemctl restart apache2
+        echo "Admin control panels are turned ON."
+        ;;
+    'off')
+        sudo a2enmod security2
+        sudo a2disconf phpmyadmin
+        sudo systemctl restart apache2
+        echo "Admin control panels are turned OFF."
+        ;;
+    *)
+        echo "You must specify 'on' on 'off'."
+        exit 1
+        ;;
+    esac
 
 Email Server
 ===============================================
@@ -1163,6 +1202,43 @@ over the ``mailserver`` database.
 Finally, navigate to ``https://<serveraddress>/postfixadmin/setup.php``
 and follow the instructions to set the setup password and proceed with
 setup.
+
+You will also want to add ``postfixadmin`` to your script for toggling
+admin controls.
+
+..  code-block:: bash
+
+    $ sudo vim /opt/scripts/sys_scripts/controls
+
+The edited script is below.
+
+..  code-block:: bash
+
+    #!/bin/bash
+
+    set -e
+
+    case $1 in
+    'on')
+        sudo a2dismod security2
+        sudo a2enconf phpmyadmin
+        sudo a2enconf postfixadmin
+        sudo systemctl restart apache2
+        echo "Admin control panels are turned ON."
+        ;;
+    'off')
+        sudo a2enmod security2
+        sudo a2disconf phpmyadmin
+        sudo a2disconf postfixadmin
+        sudo systemctl restart apache2
+        echo "Admin control panels are turned OFF."
+        ;;
+    *)
+        echo "You must specify 'on' on 'off'."
+        exit 1
+        ;;
+
+Save and close.
 
 Postfix Configuration, Round Two
 -------------------------------------
@@ -2054,7 +2130,48 @@ If ALL your keys have passed, we are ready to move them into place.
 
 That last command will also restart OpenDKIM and Postfix automatically.
 
-..  NOTE:: Left off on "Hook OpenDKIM into Postfix"
+OpenDKIM and Postfix
+-------------------------
 
+Once OpenDKIM is set up, we need to configure Postfix to use it.
 
-` SOURCE: Configure SPF and DKIM in Postfix on Debian 8 <https://www.linode.com/docs/email/postfix/configure-spf-and-dkim-in-postfix-on-debian-8>`_
+..  code-block:: bash
+
+    $ sudo mkdir -p /var/run/opendkim
+    $ sudo chown opendkim:postfix /var/run/opendkim
+    $ sudo vim /etc/default/opendkim
+
+Make sure the uncommented line matches::
+
+    SOCKET="local:/var/run/opendkim/opendkim.sock"
+
+You should also verify that socket exists at the given location. (On Debian8,
+it is located at ``/var/spool/postfix/opendkim/opendkim.sock"`` instead).
+
+Save and close the file, and then edit the configuration for Postfix.
+
+..  code-block:: bash
+
+    sudo vim /etc/postfix/main.cf
+
+Add the following just below the ``smtpd_recipient_restrictions`` section::
+
+    # Milter configuration
+    # OpenDKIM
+    milter_default_action = accept
+    # Postfix ≥ 2.6 milter_protocol = 6, Postfix ≤ 2.5 milter_protocol = 2
+    milter_protocol = 6
+    smtpd_milters = local:/opendkim/opendkim.sock
+    non_smtpd_milters = local:/opendkim/opendkim.sock
+
+    # FOLLOWING https://www.linode.com/docs/email/postfix/configure-spf-and-dkim-in-postfix-on-debian-8
+
+Save and close, and then restart OpenDKIM and Postfix. These need to be
+restarted separately, so OpenDKIM sets up the proper socket for Postfix.
+
+..  code-block:: bash
+
+    $ sudo systemctl restart opendkim
+    $ sudo systemctl restart postfix
+
+`SOURCE: Configure SPF and DKIM in Postfix on Debian 8 <https://www.linode.com/docs/email/postfix/configure-spf-and-dkim-in-postfix-on-debian-8>`_
