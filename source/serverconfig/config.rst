@@ -35,7 +35,7 @@ Staff
 Thank Yous
 -----------------------------
 
-I've been helped by a whole lot of lovely people in configuring the servers
+We've been helped by a whole lot of lovely people in configuring the servers
 and solving problems.
 
 - AtomicSpark (#ubuntu-offtopic): Unexpected security advice, help with HTML5,
@@ -43,11 +43,14 @@ and solving problems.
 - avivey (#phabricator): Phabricator and SSL troubleshooting.
 - big_t (#ubuntu-offtopic): Referred us to Linode.
 - csutherl (#tomcat): eHour & Tomcat setup.
+- kerframil (#bash): A critical piece of Perl code for the OpenDKIM renewal
+  script.
 - noteirak (#vbox): Jenkins VM build agent setup, Apache troubleshooting.
 - Peng (#letsencrypt): SSL certificate technical support.
 - phunyguy (#ubuntu-offtopic): Postfix/Dovecot advice.
 - rfleming (#ubuntu-offtopic): For tireless debugging help in getting
   Postfix/Dovecot working.
+- SCHAPiE (#ubuntu-offtopic): For fixing the OpenDKIM configuration.
 - whitenoise (#letsencrypt): SSL certificate setup; originally pointing us to
   Let's Encrypt for certs.
 
