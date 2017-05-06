@@ -2035,20 +2035,62 @@ each domain's DNS. The Name is ``_adsp._domainkey``, and the Value is
 
 `SOURCE: Configure SPF and DKIM in Postfix on Debian 8 <https://www.linode.com/docs/email/postfix/configure-spf-and-dkim-in-postfix-on-debian-8>`_
 
-SpamAssassin
+Mail Filtering
 =======================================
 
-We'll start by installing SpamAssassin and editing its configuration.
+Setup
+------------------------
+
+We'll start by installing the packages we need.
 
 ..  code-block:: bash
 
-    $ sudo apt install spamassassin
-    $ sudo vim /etc/default/spamassassin
+    $ sudo apt install amavisd-new spamassassin clamav-daemon postfix-policyd-spf-python pyzor razor arj cabextract cpio nomarch pax rar unrar unzip zip
 
-Because we're using systemd on Ubuntu 16.04, we do NOT need to turn on
-the `ENABLED` option. However, we do need to change the following line::
+Amavis (``amavisd-new``) is the program responsible for the actual filtering,
+but it needs to be connected to ClamAV (for virus checking).
 
+..  code-block:: bash
+
+    $ sudo adduser clamav amavis
+    $ sudo adduser amavis clamav
+
+Make sure you allow ClamAV to work with Amavis.
+
+..  code-block:: bash
+
+    $ sudo vim /etc/clamav/clamd.conf
+
+`SOUCE: How to fix amvavis reporting “permission denied” for clamav (AskUbuntu) <https://askubuntu.com/a/662672/23786>`_
+
+Change the following line::
+
+    AllowSupplementaryGroups true
+
+And then restart ClamAV.
+
+..  code-block:: bash
+
+    $ sudo systemctl restart clamav-daemon
+
+Now we need to edit SpamAssassin's configuration.
+
+..  code-block:: bash
+
+    $ sudo vim  /etc/default/spamassassin
+
+Change the following lines::
+
+    ENABLED=1
     CRON=1
+
+Save and close, and then we'll update SpamAssassin's definitions and
+start the daemon.
+
+..  code-block:: bash
+
+    $ sudo sa-update
+    $ sudo systemctl start spamassassin
 
 Save and close.
 
@@ -2059,10 +2101,288 @@ Next, we'll make a copy of the default configuration file and edit that.
     $ sudo cp /etc/spamassassin/local.cf /etc/spamassassin/local.cf.orig
     $ sudo vim /etc/spamassassin/local.cf
 
-Find and uncomment the following line::
+Find and uncomment the following lines::
 
     required_score 5.0
+    use_bayes 1
+    bayes_auto_learn 1
+    bayes_ignore_header X-Bogosity
+    bayes_ignore_header X-Spam-Flag
+    bayes_ignore_header X-Spam-Status
 
-..  NOTE:: Started following http://www.townx.org/index.php?q=blog/elliot/simple_spamassassin_setup_with_postfix_and_dovecot_on_ubuntu_breezy
+..  NOTE:: This is enabling the Bayes system for SpamAssassin. You *will*
+    need to regularly train this system.
 
 Save and close.
+
+Now we connect Amavis to ClamAV and SpamAssassin.
+
+..  code-block:: bash
+
+    $ sudo vim /etc/amavis/conf.d/15-content_filter_mode
+
+Change the file so it matches the following, simply by uncommenting the
+lines for the anti-virus and spam checking modes::
+
+    use strict;
+
+    # You can modify this file to re-enable SPAM checking through spamassassin
+    # and to re-enable antivirus checking.
+
+    #
+    # Default antivirus checking mode
+    # Please note, that anti-virus checking is DISABLED by
+    # default.
+    # If You wish to enable it, please uncomment the following lines:
+
+
+    @bypass_virus_checks_maps = (
+       \%bypass_virus_checks, \@bypass_virus_checks_acl, \$bypass_virus_checks_re);
+
+
+    #
+    # Default SPAM checking mode
+    # Please note, that anti-spam checking is DISABLED by
+    # default.
+    # If You wish to enable it, please uncomment the following lines:
+
+
+    @bypass_spam_checks_maps = (
+       \%bypass_spam_checks, \@bypass_spam_checks_acl, \$bypass_spam_checks_re);
+
+    1;  # ensure a defined return
+
+Save and close, and then run...
+
+..  code-block:: bash
+
+    $ sudo vim /etc/amavis/conf.d/20-debian_defaults
+
+We want spam messages to be discarded instead of bounced, so we need to edit
+that setting here::
+
+    $final_spam_destiny       = D_DISCARD;
+
+Also edit the following lines so all mail is given info headers, and to
+control when the spam filters kick it to varying degrees.
+
+    $sa_tag_level_deflt  = -999;  # add spam info headers if at, or above that level
+    $sa_tag2_level_deflt = 5.0; # add 'spam detected' headers at that level
+    $sa_kill_level_deflt = 12; # triggers spam evasive actions
+    $sa_dsn_cutoff_level = 10;   # spam level beyond which a DSN is not sent
+
+Save and close.
+
+`SOURCE: Amavis Spam FAQ <https://www.ijs.si/software/amavisd/#faq-spam>`_
+
+We also need to modify the hostname and domains Amavis works with.
+
+..  code-block:: bash
+
+    $ sudo vim /etc/amavis/conf.d/50-user
+
+Change or add the following lines::
+
+    $myhostname = 'delavega.mousepawgames.net';
+    @local_domains_acl = ( "mousepawgames.net", "mousepawgames.com", "mousepawmedia.com", "indeliblebluepen.com" );
+
+Save and close.
+
+We'll also want to whitelist our own domains, and a few others, given that
+the incoming message has the proper DKIM signature. Add the following items
+to the whitelist::
+
+    'mousepawgames.com'       => 'WHITELIST',
+    'mousepawgames.net'       => 'WHITELIST',
+    'mousepawmedia.com'       => 'WHITELIST',
+    'indeliblebluepen.com'    => 'WHITELIST',
+    'ewu.edu'                 => 'WHITELIST',
+    'whitworth.edu'           => 'WHITELIST',
+    'gonzaga.edu'             => 'WHITELIST',
+
+Save and close, and then restart Amavis.
+
+..  code-block:: bash
+
+    $ sudo systemctl restart amavis
+
+Postfix Integration
+----------------------------
+
+Run the following...
+
+..  code-block:: bash
+
+    $ sudo postconf -e 'content_filter = smtp-amavis:[127.0.0.1]:10024'
+    $ sudo vim /etc/postfix/master.cf
+
+Add the following to the end of the file::
+
+    smtp-amavis     unix    -       -       -       -       2       smtp
+            -o smtp_data_done_timeout=1200
+            -o smtp_send_xforward_command=yes
+            -o disable_dns_lookups=yes
+            -o max_use=20
+
+    127.0.0.1:10025 inet    n       -       -       -       -       smtpd
+            -o content_filter=
+            -o local_recipient_maps=
+            -o relay_recipient_maps=
+            -o smtpd_restriction_classes=
+            -o smtpd_delay_reject=no
+            -o smtpd_client_restrictions=permit_mynetworks,reject
+            -o smtpd_helo_restrictions=
+            -o smtpd_sender_restrictions=
+            -o smtpd_recipient_restrictions=permit_mynetworks,reject
+            -o smtpd_data_restrictions=reject_unauth_pipelining
+            -o smtpd_end_of_data_restrictions=
+            -o mynetworks=127.0.0.0/8
+            -o smtpd_error_sleep_time=0
+            -o smtpd_soft_error_limit=1001
+            -o smtpd_hard_error_limit=1000
+            -o smtpd_client_connection_count_limit=0
+            -o smtpd_client_connection_rate_limit=0
+            -o receive_override_options=no_header_body_checks,no_unknown_recipient_checks,no_milters
+
+Also add the following just below the ``pickup`` line::
+
+             -o content_filter=
+             -o receive_override_options=no_header_body_checks
+
+Save and close, and then restart Postfix.
+
+..  code-block:: bash
+
+    $ sudo systemctl restart postfix
+
+Ensure Amavis is running correctly with...
+
+..  code-block:: bash
+
+    $ telnet localhost 10024
+
+The output should be::
+
+    Trying ::1...
+    Connected to localhost.
+    Escape character is '^]'.
+    220 [::1] ESMTP amavisd-new service ready
+
+Press :kbd:`Ctrl-]` and :kbd:`Enter` to exit the telnet session, and then
+type 'quit' and press :kdb:`Enter`.
+
+To test everything out, send a message to your email server, and check it
+for the spam and virus scan headers.
+
+`SOURCE: Mail Filtering (Ubuntu) <https://help.ubuntu.com/lts/serverguide/mail-filtering.html>`_
+
+Mail Clients
+-----------------------
+
+We'll be installing the web client SquirrelMail.
+
+..  code-block:: bash
+
+    $ sudo apt install squirrelmail
+    $ sudo cp /etc/squirrelmail/apache.conf /etc/apache2/sites-available/squirrelmail.conf
+    $ sudo vim /etc/apache2/sites-available/squirrelmail.conf
+
+Set the contents to the following...
+
+..  code-block:: apache
+
+    # users will prefer a simple URL like http://webmail.example.com
+    <VirtualHost *:80>
+        DocumentRoot /usr/share/squirrelmail
+        ServerName webmail.mousepawgames.net
+
+        Alias /squirrelmail /usr/share/squirrelmail
+
+        <Directory /usr/share/squirrelmail>
+        Options FollowSymLinks
+        <IfModule mod_php.c>
+          php_flag register_globals off
+        </IfModule>
+        <IfModule mod_dir.c>
+          DirectoryIndex index.php
+        </IfModule>
+
+        # access to configtest is limited by default to prevent information leak
+        <Files configtest.php>
+          order deny,allow
+          deny from all
+          allow from 127.0.0.1
+        </Files>
+        </Directory>
+    </VirtualHost>
+
+    # redirect to https when available (thanks omen@descolada.dartmouth.edu)
+    #
+    #  Note: There are multiple ways to do this, and which one is suitable for
+    #  your site's configuration depends. Consult the apache documentation if
+    #  you're unsure, as this example might not work everywhere.
+    #
+    #<IfModule mod_rewrite.c>
+    #  <IfModule mod_ssl.c>
+    #    <Location /squirrelmail>
+    #      RewriteEngine on
+    #      RewriteCond %{HTTPS} !^on$ [NC]
+    #      RewriteRule . https://%{HTTP_HOST}%{REQUEST_URI}  [L]
+    #    </Location>
+    #  </IfModule>
+    #</IfModule>
+
+Save and close, and then enable the site and restart Apache2.
+
+..  code-block:: bash
+
+    $ sudo a2ensite squirrelmail
+    $ sudo systemctl restart apache2
+
+Edit your DNS A/AAAA records to add the new `webmail` subdomain. If you're
+impatient waiting for the DNS to update, you can edit your local computer's
+`/etc/hosts` to point the subdomain to the server IP.
+
+Before we can use SquirrelMail, however, we must configure it.
+
+..  code-block:: bash
+
+    $ sudo squirrelmail-configure
+
+This program allows you to set up SquirrelMail. Press ``2`` to edit server
+settings, and then set the following:
+
+- IMAP Settings
+  - IMAP Server: mail.mousepawgames.net
+  - IMAP Port: 993
+  - Authentication type: login
+  - Secure IMAP: true
+  - Server software: dovecot
+- SMTP Settings
+  - SMTP Server: mail.mousepawgames.net
+  - SMTP Port: 465
+  - POP before SMTP: false
+  - SMTP Authentication: login (with IMAP username and password)
+  - Secure SMTP (TLS): true
+
+Be sure to press ``S`` and ``Enter`` to save your settings, and then exit
+or change the other settings you're interested in. When you're done, be sure
+to save, and then press ``Q`` to quit.
+
+You can check your configuration from ``http://webmail.mousepawgames.net/src/configtest.php``,
+although you may need to edit ``/etc/apache2/sites-available/squirrelmail.conf``
+and comment out the following section first...
+
+..  code-block:: apache
+
+    # access to configtest is limited by default to prevent information leak
+    #<Files configtest.php>
+    #     order deny,allow
+    #     deny from all
+    #     allow from 127.0.0.1
+
+After confirming your configuration, uncomment that section again.
+
+That's it! You're now good to go.
+
+`SOURCE: Install SquirrelMail on Ubuntu 16.04 or Debian 8 (Linode) <https://www.linode.com/docs/email/clients/install-squirrelmail-on-ubuntu-16-04-or-debian-8>`_
