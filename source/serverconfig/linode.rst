@@ -777,7 +777,7 @@ Now we’ll get our certificates.
 
 ..  code-block:: bash
 
-    sudo /opt/certbot/certbot-auto certonly -a webroot --webroot-path /var/www/html -d mousepawgames.net -d mail.mousepawgames.net
+    $ sudo /opt/certbot/certbot-auto certonly -a webroot --webroot-path /var/www/html -d mousepawgames.net -d mail.mousepawgames.net -d indeliblebluepen.com -d www.indeliblebluepen.com -d mousepawmedia.com -d www.mousepawmedia.com -d mail.mousepawmedia.com -d standards.mousepawmedia.com -d staff.mousepawmedia.com -d webmail.mousepawmedia.com -d mousepawgames.com -d www.mousepawgames.com
 
 Of course, we would change the ``mousepawgames.net`` part to match the domain
 name we're getting the certificate for.
@@ -856,7 +856,7 @@ the sites you do not have. Be sure to uncomment them later!
 
     #!/bin/bash
 
-    a2dissite mousepawgames.net
+    a2dissite mousepawgames.net 000-mousepawmedia.com mousepawgames.com standards indeliblebluepen.com squirrelmail
     a2ensite 000-default
     systemctl reload apache2
 
@@ -883,7 +883,7 @@ the sites you do not have. Be sure to uncomment them later!
 
     # Restore the sites and restart critical services which use this.
     a2dissite 000-default
-    a2ensite mousepawgames.net
+    a2ensite mousepawgames.net 000-mousepawmedia.com mousepawgames.com standards indeliblebluepen.com squirrelmail
     systemctl restart apache2
 
 Save and close. Change the script permissions so it can only be read, accessed,
@@ -899,6 +899,9 @@ Finally, we'll test the configuration.
 ..  code-block:: bash
 
     $ sudo /opt/certbot/certbot-auto renew --dry-run --pre-hook "/etc/apache2/certs/renewcert_pre" --post-hook "/etc/apache2/certs/renewcert_post"
+
+..  NOTE:: The expansion script is:
+    ``sudo /opt/certbot/certbot-auto certonly --expand -a webroot --webroot-path /var/www/html -d mousepawgames.net -d mail.mousepawgames.net -d indeliblebluepen.com -d www.indeliblebluepen.com -d mousepawmedia.com -d www.mousepawmedia.com -d mail.mousepawmedia.com -d standards.mousepawmedia.com -d staff.mousepawmedia.com -d webmail.mousepawmedia.com -d mousepawgames.com -d www.mousepawgames.com --pre-hook "/etc/apache2/certs/renewcert_pre" --post-hook "/etc/apache2/certs/renewcert_post"``
 
 Scheduling Auto-Renewal
 -----------------------------------
@@ -1294,8 +1297,8 @@ Edit the file to match the following::
     # information on enabling SSL in the smtp client.
 
     #smtpd_relay_restrictions = permit_mynetworks permit_sasl_authenticated defer_unauth_destination
-    myhostname = delavega.mousepawgames.net
-    mydomain = mail.mousepawgames.net
+    myhostname = delavega.mousepawmedia.com
+    mydomain = mail.mousepawmedia.com
     alias_maps = hash:/etc/aliases
     alias_database = hash:/etc/aliases
     myorigin = /etc/mailname
@@ -2274,6 +2277,9 @@ type 'quit' and press :kdb:`Enter`.
 To test everything out, send a message to your email server, and check it
 for the spam and virus scan headers.
 
+..  NOTE:: mailbox folders must be recursively set as owner ``vmail:vmail``, with
+    recursively-applied permissions ``700`` and ``g+s``.
+
 `SOURCE: Mail Filtering (Ubuntu) <https://help.ubuntu.com/lts/serverguide/mail-filtering.html>`_
 
 Mail Clients
@@ -2291,46 +2297,55 @@ Set the contents to the following...
 
 ..  code-block:: apache
 
-    # users will prefer a simple URL like http://webmail.example.com
+    <IfModule mod_ssl.c>
+        <VirtualHost *:443>
+            ServerName webmail.mousepawmedia.com
+
+            ServerAdmin webmaster@mousepawmedia.com
+            DocumentRoot /usr/share/squirrelmail
+
+            ErrorLog ${APACHE_LOG_DIR}/error.log
+            CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+            <Directory /usr/share/squirrelmail>
+                Options FollowSymLinks
+                <IfModule mod_php.c>
+                    php_flag register_globals off
+                    </IfModule>
+                <IfModule mod_dir.c>
+                    DirectoryIndex index.php
+                </IfModule>
+
+                # access to configtest is limited by default to prevent information leak
+                <Files configtest.php>
+                    order deny,allow
+                    deny from all
+                    allow from 127.0.0.1
+            	</Files>
+            </Directory>
+
+            # SSL
+            SSLEngine on
+            SSLCertificateFile      /etc/apache2/certs/fullchain.pem
+            SSLCertificateKeyFile   /etc/apache2/certs/privkey.pem
+
+            Include /etc/letsencrypt/options-ssl-apache.conf
+
+            <FilesMatch "\.(cgi|shtml|phtml|php)$">
+                    SSLOptions +StdEnvVars
+            </FilesMatch>
+            <Directory /usr/lib/cgi-bin>
+                    SSLOptions +StdEnvVars
+            </Directory>
+        </VirtualHost>
+    </IfModule>
     <VirtualHost *:80>
-        DocumentRoot /usr/share/squirrelmail
-        ServerName webmail.mousepawgames.net
+        ServerName webmail.mousepawmedia.com
 
-        Alias /squirrelmail /usr/share/squirrelmail
-
-        <Directory /usr/share/squirrelmail>
-        Options FollowSymLinks
-        <IfModule mod_php.c>
-          php_flag register_globals off
-        </IfModule>
-        <IfModule mod_dir.c>
-          DirectoryIndex index.php
-        </IfModule>
-
-        # access to configtest is limited by default to prevent information leak
-        <Files configtest.php>
-          order deny,allow
-          deny from all
-          allow from 127.0.0.1
-        </Files>
-        </Directory>
+        RewriteEngine On
+        RewriteCond %{HTTPS} off
+        RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI}
     </VirtualHost>
-
-    # redirect to https when available (thanks omen@descolada.dartmouth.edu)
-    #
-    #  Note: There are multiple ways to do this, and which one is suitable for
-    #  your site's configuration depends. Consult the apache documentation if
-    #  you're unsure, as this example might not work everywhere.
-    #
-    #<IfModule mod_rewrite.c>
-    #  <IfModule mod_ssl.c>
-    #    <Location /squirrelmail>
-    #      RewriteEngine on
-    #      RewriteCond %{HTTPS} !^on$ [NC]
-    #      RewriteRule . https://%{HTTP_HOST}%{REQUEST_URI}  [L]
-    #    </Location>
-    #  </IfModule>
-    #</IfModule>
 
 Save and close, and then enable the site and restart Apache2.
 
@@ -2353,23 +2368,26 @@ This program allows you to set up SquirrelMail. Press ``2`` to edit server
 settings, and then set the following:
 
 - IMAP Settings
-  - IMAP Server: mail.mousepawgames.net
+  - IMAP Server: mail.mousepawmedia.com
   - IMAP Port: 993
   - Authentication type: login
   - Secure IMAP: true
   - Server software: dovecot
 - SMTP Settings
-  - SMTP Server: mail.mousepawgames.net
+  - SMTP Server: mail.mousepawmedia.com
   - SMTP Port: 465
   - POP before SMTP: false
   - SMTP Authentication: login (with IMAP username and password)
   - Secure SMTP (TLS): true
 
 Be sure to press ``S`` and ``Enter`` to save your settings, and then exit
-or change the other settings you're interested in. When you're done, be sure
-to save, and then press ``Q`` to quit.
+or change the other settings you're interested in.
 
-You can check your configuration from ``http://webmail.mousepawgames.net/src/configtest.php``,
+..  NOTE:: We had to change the folders to NOT be the ``INBOX.`` variants.
+
+When you're done, be sure to save, and then press ``Q`` to quit.
+
+You can check your configuration from ``http://webmail.mousepawmedia.com/src/configtest.php``,
 although you may need to edit ``/etc/apache2/sites-available/squirrelmail.conf``
 and comment out the following section first...
 
@@ -2377,12 +2395,160 @@ and comment out the following section first...
 
     # access to configtest is limited by default to prevent information leak
     #<Files configtest.php>
-    #     order deny,allow
-    #     deny from all
-    #     allow from 127.0.0.1
+    #    order deny,allow
+    #    deny from all
+    #    allow from 127.0.0.1
 
 After confirming your configuration, uncomment that section again.
 
 That's it! You're now good to go.
 
 `SOURCE: Install SquirrelMail on Ubuntu 16.04 or Debian 8 (Linode) <https://www.linode.com/docs/email/clients/install-squirrelmail-on-ubuntu-16-04-or-debian-8>`_
+
+WordPress (Migration)
+===================================
+
+MySQL Database
+---------------------------
+
+We start by setting up the database for WordPress.
+
+..  code-block:: bash
+
+    $ mysql -u root -p
+
+Run the following MySQL commands, where ``password`` is the password for the
+new ``wpuser`` user.
+
+
+..  code-block:: sql
+
+    CREATE DATABASE wordpress;
+    CREATE USER 'wpuser' IDENTIFIED BY 'password';
+    GRANT ALL PRIVILEGES ON wordpress.* TO 'wpuser';
+    quit
+
+Since I'm migrating and have an exported database, you can now open up
+PHPMyAdmin and import that exported database into the empty ``wordpress``
+database.
+
+Otherwise, the database would be set up by the Wordpress setup wizard during
+a new install.
+
+Migrated Installation
+-----------------------------
+
+Let's set up the new directories for our migrated install.
+
+..  code-block:: bash
+
+    $ sudo mkdir -p /opt/html/indeliblebluepen.com
+    $ sudo chown -R webster:www-data /opt/html/indeliblebluepen.com/
+
+Note that we're allowing our regular user to own that folder, to facilitate
+uploading over rsync.
+
+Upload the directory you downloaded from your old installation to
+``/opt/html/indeliblebluepen.com/``, and then readjust the permissions using...
+
+..  code-block:: bash
+
+    $ sudo chown -R www-data:www-data /opt/html/indeliblebluepen.com/
+
+We also need to edit the Wordpress configuration to point to our database.
+
+..  code-block:: bash
+
+    $ sudo vim /opt/html/indeliblebluepen.com/wp-config.php
+
+Change the following values, replacing ``password`` with the password you
+specified earlier for ``wpuser``...
+
+..  code-block:: php
+
+    // ** MySQL settings - You can get this info from your web host ** //
+    /** The name of the database for WordPress */
+    define('DB_NAME', 'wordpress');
+
+    /** MySQL database username */
+    define('DB_USER', 'wpuser');
+
+    /** MySQL database password */
+    define('DB_PASSWORD', 'password');
+
+    /** MySQL hostname */
+    define('DB_HOST', 'localhost');
+
+Save and close.
+
+Apache2 Configuration
+-----------------------------
+
+Let's set up the virtual host. Remember, you'll also need to set up the DNS
+and the Let's Encrypt certificates for the domain or subdomain you choose!
+
+..  code-block:: bash
+
+    $ sudo vim /etc/apache2/sites-available/indeliblebluepen.com.conf
+
+Set the contents of that file to...
+
+..  code-block:: apache
+
+    <IfModule mod_ssl.c>
+        <VirtualHost *:443>
+            ServerName indeliblebluepen.com
+
+            ServerAdmin webmaster@indeliblebluepen.com
+            DocumentRoot /opt/html/indeliblebluepen.com
+
+            ErrorLog ${APACHE_LOG_DIR}/error.log
+            CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+            <Directory /opt/html/indeliblebluepen.com>
+                    Options -MultiViews -Indexes
+                    AllowOverride All
+            </Directory>
+
+            # SSL
+            SSLEngine on
+            SSLCertificateFile      /etc/apache2/certs/fullchain.pem
+            SSLCertificateKeyFile   /etc/apache2/certs/privkey.pem
+
+            Include /etc/letsencrypt/options-ssl-apache.conf
+
+            <FilesMatch "\.(cgi|shtml|phtml|php)$">
+                    SSLOptions +StdEnvVars
+            </FilesMatch>
+            <Directory /usr/lib/cgi-bin>
+                    SSLOptions +StdEnvVars
+            </Directory>
+        </VirtualHost>
+    </IfModule>
+    <VirtualHost *:80>
+        ServerName indeliblebluepen.com
+
+        RewriteEngine On
+        RewriteCond %{HTTPS} off
+        RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI}
+    </VirtualHost>
+
+..  NOTE:: You may need to set this to use only port 80 until you migrate,
+    as you will have to change indeliblebluepen.com's Wordpress settings to
+    work with HTTPS.
+
+Save and close, and then enable the new site.
+
+..  code-block:: bash
+
+    $ sudo a2ensite indeliblebluepen.com
+
+Make the necessary changes to DNS and your certificates.
+
+..  NOTE:: If you're impatient to wait for the DNS changes to propegate, you
+    can also edit your local machine's ``/etc/hosts`` to point to the new
+    server.
+
+`SOURCE: Moving WordPress (WordPress Codex) <https://codex.wordpress.org/Moving_WordPress>`_
+
+`SOURCE: Install WordPress on Ubuntu 16.04 (Linode) <https://www.linode.com/docs/websites/cms/install-wordpress-on-ubuntu-16-04>`_

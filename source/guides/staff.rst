@@ -44,9 +44,9 @@ If you need help, contact Jason C. McDonald.
 Staff Network
 =======================================
 
-The Staff Network consists of six components:
+The Staff Network consists of six major components:
 
-* Webmail (mousepawgames.com/webmail)
+* Webmail (webmail.mousepawmedia.com)
 
 * eHour (ehour.mousepawmedia.net)
 
@@ -56,14 +56,29 @@ The Staff Network consists of six components:
 
 * Jenkins (jenkins.mousepawmedia.net)
 
+* Etherpad (pad.mousepawmedia.net)
+
 We also use IRC and Jitsi for regular communication.
+
+Our network is spread across two servers.
+
+- **Webster** is the public server hosting ``mousepawmedia.com``,
+  `mousepawgames.com`, and our email servers. It is based out of
+  Fremont, CA, and is available 24/7.
+
+- **Hawksnest** is our development server. It hosts DevNet, our collection
+  of development tools. Anything with a ``mousepawmedia.net`` address
+  lives on Hawksnest. it is available from 7am to 10pm Pacific, 7 days a week.
+
+Visit **staff.mousepawmedia.com** for our 24/7 staff portal, with links to
+Webmail, Jitsi, and DevNet. The DevNet landing has links to everything else.
 
 .. _gstaff_network_webmail:
 
 Webmail
 ------------------------------------------
 
-..  NOTE:: Webmail is hosted on our Provo, Utah servers, and thus is
+..  NOTE:: Webmail is hosted on our Fremont, California servers, and thus is
     available 24/7!
 
 Email is one of our primary ways of communicating at MousePaw Media. You have
@@ -72,32 +87,77 @@ a company email address issued to you.
 ..  WARNING:: Be sure to check your company email every single day, and
     respond in a timely fashion!
 
-You can check your email through any of the three build-in web clients. If you
-need help choosing a webmail client, check out this table...
+You can check your email through the web client, SquirrelMail. This is useful
+if you don't want to configure an external client, or need to check your
+email without access to your usual device.
 
-+----------------+--------------+------------------------------------------------------+
-| If you like... | Try          | Because...                                           |
-+================+==============+======================================================+
-| Outlook.com    | Horde        | Integrated calendar, tasks, and notes.               |
-+----------------+--------------+------------------------------------------------------+
-| Gmail, Yahoo   | RoundCube    | Simple graphical interface, less bells and whistles. |
-+----------------+--------------+------------------------------------------------------+
-| The 1990s      | SquirrelMail | Text-based interface.                                |
-+----------------+--------------+------------------------------------------------------+
+1.  Go to webmail.mousepawmedia.com. Sign in using your full company email
+    address and your password.
+
+2.  Set up your signature. Click :guilabel:`Options` at the top of the window
+    and select :guilabel:`Personal Information`. Enter your full name
+    (including middle initial), and then add a signature. If you're not sure
+    what to use for this, consider the example below. Make sure you check
+    the boxes for :guilabel:`Use Signature` and :guilabel:`Prefix Signature
+    with '--' Line`, and then click :guilabel:`Submit`
+
+    Here's the example signature::
+
+        Your Name Here
+        Position, MousePaw Media
+
+        Visit Us Online: MousePawMedia.com
+        Call Us: 208-557-GAME
+
+3.  Reading email will be easier and more visually pleasing by displaying
+    messages in HTML. This is off by default; to turn it on, click
+    :guilabel:`Options` at the top of the window. Select
+    :guilabel:`Display Preferences`, and check the box for
+    :guilabel:`Show HTML Version by Default`. Click :guilabel:`Submit`.
+
+..  IMPORTANT:: Access your company email through the webmail client.
 
 You can also connect your account to an external email client, such as Thirdbird
-or your mobile device. If your email client cannot automatically detect the
-necessary settings, follow these instructions...
+or your mobile device. Here are the server settings:
 
-1.  Log into Webmail with your full company email address and your password.
+..  WARNING:: Do NOT use Microsoft email clients such as Outlook or Windows Mail!
 
-2.  On the lower list of links, click :guilabel:`Configure Mail Client`.
+- Username: (Your full company email address.)
 
-3.  Scroll down and write down the information from the box titled
-    :guilabel:`Secure SSL/TLS Settings`. Use these to set up the email
-    client of your chocie. For desktops and laptops, we recommend Thunderbird.
+- Password: (Your company password.)
 
-..  IMPORTANT:: Access your company email using one of the methods above.
+- Incoming Mail: IMAP (recommended)
+
+  - Server Name: `mail.mousepawmedia.com`
+
+  - Port: `993`
+
+  - Connection security: `SSL/TLS`
+
+  - Authentication method: `Normal password`
+
+- Incoming Mail: POP3
+
+  - Server Name: `mail.mousepawmedia.com`
+
+  - Port: `995`
+
+  - Connection security: `SSL/TLS`
+
+  - Authentication method: `Normal password`
+
+- Outgoing Mail: SMTP
+
+  - Server Name: `mail.mousepawmedia.com`
+
+  - Port: `465` (recommended) or `587`.
+
+  - Connection security: `SSL/TLS`
+
+  - Authentication method: `Normal password`
+
+..  IMPORTANT:: Connect your company email to an email client, such as
+    Thunderbird or your smartphone.
 
 Regular Webmail Tasks
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -122,7 +182,7 @@ eHour
 -----------------------------------
 
 ..  NOTE:: eHour is on our development server, meaning it is subject to the
-    Hawksnest server hours.
+    DevNet (Hawksnest) server hours.
 
 eHour is where we track time. You are responsible for reporting your time
 **every day**. Each day's time sheets are locked the next morning at 10am.
@@ -155,7 +215,7 @@ Phabricator
 --------------------------------------
 
 ..  NOTE:: Phabricator is on our development server, meaning it is subject to
-    the Hawksnest server hours.
+    the DevNet (Hawksnest) server hours.
 
 Phabricator is where most of our development work takes place. It hosts our
 repositories, task tracker, knowledge base, and wiki.
