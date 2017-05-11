@@ -2819,7 +2819,10 @@ First, we install the necessary packages.
 
 ..  code-block:: bash
 
-    sudo apt install docker.io
+    $ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+    $ sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+    $ sudo apt update
+    $ sudo apt install docker-ce
 
 Next, we'll pull in the Docker container for Collabora Office online.
 
@@ -3767,7 +3770,7 @@ You should be automatically redirected to the Tao login page.
 ..  IMPORTANT:: If you ever get error 500 on anything, set the owner, group,
     and permissions on ``/opt/tao`` recursively again.
 
-Updates
+Updates and Maintainance
 ==============================
 
 Updating Collabora
@@ -3782,3 +3785,35 @@ Updating Collabora
     $ sudo docker rm processid
     # Be sure to subtitute the password you want for Collabora!
     $ $ sudo docker run -t -d -p 127.0.0.1:9980:9980 -e 'domain=nextcloud\\.mousepawmedia\\.net' -e 'user=admin' -e 'password=ThePasswordForCollabora' --restart always --cap-add MKNOD collabora/code
+
+Cleaning Cruft
+-------------------------------
+
+You can check the current disk space with...
+
+..  code-block:: bash
+
+    $ df -l
+
+You can also find what files are taking up the most space within a directory
+by running the following command. For convenience, you may want to put this
+into a script.
+
+..  code-block:: bash
+
+    du -hsx * | sort -rh | head -10
+
+Docker will typically take up a lot of space over time. To remove old files
+in Docker, run...
+
+..  code-block:: bash
+
+    $ sudo docker system prune -a --force
+
+Another common place with lots of excess files is your ``/opt/minecraft``
+directories, specifically the backups for each server. Be sure to regularly
+clean these up.
+
+Lastly, keep an eye on Jenkins for particularly large orphaned builds. If the
+build cannot be viewed (and thus deleted) on the Jenkins web interface, you
+may safely delete it from ``/var/lib/jenkins``.
