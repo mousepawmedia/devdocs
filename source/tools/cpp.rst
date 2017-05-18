@@ -40,7 +40,12 @@ LLVM/Clang repository.
     $ sudo add-apt-repository "deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-4.0 main"
     $ wget -O - http://apt.llvm.org/llvm-snapshot.gpg.key|sudo apt-key add -
     $ sudo apt update
+    $ sudo apt install python-lldb-4.0
     $ sudo apt install clang-4.0 clang-4.0-doc libclang-common-4.0-dev libclang-4.0-dev libclang1-4.0 libclang1-4.0-dbg libllvm-4.0-ocaml-dev libllvm4.0 libllvm4.0-dbg lldb-4.0 llvm-4.0 llvm-4.0-dev llvm-4.0-doc llvm-4.0-examples llvm-4.0-runtime clang-format-4.0 python-clang-4.0 libfuzzer-4.0-dev
+    $ sudo ln -sf llvm-symbolizer-4.0 llvm-symbolizer
+
+..  NOTE:: If you are upgrading from 3.9, be sure to run
+    :code:`sudo apt remove clang-3.9 clang-3.9-doc libclang-common-3.9-dev libclang-3.9-dev libclang1-3.9 libclang1-3.9-dbg libllvm-3.9-ocaml-dev libllvm3.9 libllvm3.9-dbg lldb-3.9 llvm-3.9 llvm-3.9-dev llvm-3.9-doc llvm-3.9-examples llvm-3.9-runtime clang-format-3.9 python-clang-3.9 libfuzzer-3.9-dev`
 
 We also try to ensure our code builds on GCC. Although GCC is available through
 the core repositories, we like using the latest stable compiler builds. You can
