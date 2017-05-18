@@ -28,7 +28,7 @@ which has Clang onboard.
     prevented our code from compiling.
 
 We'll start by installing Clang and LLVM. We require Clang 3.4 or later, but
-recommend 3.9 for all company developers. We'll be using
+recommend 4.0 for all company developers. We'll be using
 `LLVM's official stable apt repository <http://apt.llvm.org/>`_ instead of
 using the older version in the default system repository.
 
@@ -37,10 +37,10 @@ LLVM/Clang repository.
 
 ..  code-block:: bash
 
-    $ sudo add-apt-repository "deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-3.9 main"
+    $ sudo add-apt-repository "deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-4.0 main"
     $ wget -O - http://apt.llvm.org/llvm-snapshot.gpg.key|sudo apt-key add -
     $ sudo apt update
-    $ sudo apt install clang-3.9 clang-3.9-doc libclang-common-3.9-dev libclang-3.9-dev libclang1-3.9 libclang1-3.9-dbg libllvm-3.9-ocaml-dev libllvm3.9 libllvm3.9-dbg lldb-3.9 llvm-3.9 llvm-3.9-dev llvm-3.9-doc llvm-3.9-examples llvm-3.9-runtime clang-format-3.9 python-clang-3.9 libfuzzer-3.9-dev
+    $ sudo apt install clang-4.0 clang-4.0-doc libclang-common-4.0-dev libclang-4.0-dev libclang1-4.0 libclang1-4.0-dbg libllvm-4.0-ocaml-dev libllvm4.0 libllvm4.0-dbg lldb-4.0 llvm-4.0 llvm-4.0-dev llvm-4.0-doc llvm-4.0-examples llvm-4.0-runtime clang-format-4.0 python-clang-4.0 libfuzzer-4.0-dev
 
 We also try to ensure our code builds on GCC. Although GCC is available through
 the core repositories, we like using the latest stable compiler builds. You can
@@ -63,9 +63,9 @@ between GCC and Clang.
 
 ..  code-block:: bash
 
-    $ sudo update-alternatives --install /usr/bin/cc cc /usr/bin/clang-3.9 60
+    $ sudo update-alternatives --install /usr/bin/cc cc /usr/bin/clang-4.0 60
     $ sudo update-alternatives --install /usr/bin/cc cc /usr/bin/gcc-5 50
-    $ sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-3.9 60
+    $ sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-4.0 60
     $ sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++-5 50
 
 Once you've set all that up, you can easily switch between options using the

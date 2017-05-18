@@ -2169,6 +2169,7 @@ that setting here::
 Also edit the following lines so all mail is given info headers, and to
 control when the spam filters kick it to varying degrees.
 
+    $sa_spam_subject_tag = ''; # shut off header rewriting, we'll Junk-bin it instead.
     $sa_tag_level_deflt  = -999;  # add spam info headers if at, or above that level
     $sa_tag2_level_deflt = 5.0; # add 'spam detected' headers at that level
     $sa_kill_level_deflt = 12; # triggers spam evasive actions
@@ -2281,6 +2282,114 @@ for the spam and virus scan headers.
     recursively-applied permissions ``700`` and ``g+s``.
 
 `SOURCE: Mail Filtering (Ubuntu) <https://help.ubuntu.com/lts/serverguide/mail-filtering.html>`_
+
+Dovecot Sieve
+--------------------------
+
+To automatically place spam messages into Junk, we need to configure a Dovecot
+sieve.
+
+..  code-block:: bash
+
+    $ sudo apt install dovecot-sieve
+    $ sudo vim /etc/dovecot/conf.d/90-sieve.conf
+
+Edit that file to comment out the line::
+
+    #sieve = file:~/sieve;active=~/.dovecot.sieve
+
+Save and close, and then run...
+
+..  code-block:: bash
+
+    $ sudo vim /etc/dovecot/conf.d/90-plugin.conf
+
+Add the following to that file::
+
+    plugin {
+        sieve = /etc/dovecot/sieve/default.sieve
+    }
+
+Save and close, and run...
+
+..  code-block:: bash
+
+    $ sudo vim /etc/dovecot/conf.d/15-lda.conf
+
+Edit the following section so it incorporates the following::
+
+    protocol lda {
+      mail_plugins = $mail_plugins sieve
+    }
+
+Save and close, and then...
+
+..  code-block:: bash
+
+    $ sudo vim /etc/dovecot/conf.d/20-lmtp.conf
+
+As before, edit the following section so it incorporates the following::
+
+    protocol lmtp {
+      mail_plugins = $mail_plugins sieve
+    }
+
+Now we can set up the sieve itself.
+
+..  code-block:: bash
+
+    $ sudo mkdir /etc/dovecot/sieve/
+    $ sudo vim /etc/dovecot/sieve/default.sieve
+
+Set the contents of that new file to::
+
+    require "fileinto";
+    if header :contains "X-Spam-Flag" "YES" {
+        fileinto "Junk";
+    }
+
+Save and close, and run...
+
+..  code-block:: bash
+
+    $ sudo chown vmail:vmail /etc/dovecot/sieve/ -R
+    $ sudo systemctl restart postfix
+    $ sudo systemctl restart dovecot
+    $ sudo systemctl restart spamassassin
+    $ sudo systemctl restart amavis
+
+As always, test to make sure normal mail still gets through.
+
+`SOURCE: How to move spam to spam folder? (StackOverflow) <http://stackoverflow.com/a/34571858/472647>`_
+
+Training SpamAssassin
+---------------------------
+
+We want SpamAssassin to automatically train itself based on the Inbox, Junk,
+and Archive folders.
+
+..  NOTE:: This requires all users to monitor their own mailboxes, to ensure
+    that Junk is filled only with spam, and none slips past in the Inbox.
+
+Edit the root crontab...
+
+..  code-block:: bash
+
+    $ sudo crontab -e
+
+Add the following lines. Note that we are only searching mailboxes belonging
+to ``mousepawmedia.com`` (with many domains), and ``indeliblebluepen.com``.
+The ``mousepawgames.com`` addresses are forwarded to ``mousepawmedia.com``,
+so we don't want to unnecessarily duplicate work or scan now-unused mailboxes.
+
+..  code-block:: cron
+
+    00 8 * * * /usr/bin/sa-learn --spam /var/mail/vhosts/mousepawmedia.com/*/.Junk/cur
+    15 8 * * * /usr/bin/sa-learn --ham /var/mail/vhosts/mousepawmedia.com/*/cur
+    30 8 * * * /usr/bin/sa-learn --ham /var/mail/vhosts/mousepawmedia.com/*/.Archive*/cur
+    45 8 * * * /usr/bin/sa-learn --spam /var/mail/vhosts/indeliblebluepen.com/*/.Junk/cur
+    50 8 * * * /usr/bin/sa-learn --ham /var/mail/vhosts/indeliblebluepen.com/*/cur
+    55 8 * * * /usr/bin/sa-learn --ham /var/mail/vhosts/indeliblebluepen.com/*/.Archive*/cur
 
 Mail Clients
 -----------------------
