@@ -42,7 +42,7 @@ LLVM/Clang repository.
     $ sudo apt update
     $ sudo apt install python-lldb-4.0
     $ sudo apt install clang-4.0 clang-4.0-doc libclang-common-4.0-dev libclang-4.0-dev libclang1-4.0 libclang1-4.0-dbg libllvm-4.0-ocaml-dev libllvm4.0 libllvm4.0-dbg lldb-4.0 llvm-4.0 llvm-4.0-dev llvm-4.0-doc llvm-4.0-examples llvm-4.0-runtime clang-format-4.0 python-clang-4.0 libfuzzer-4.0-dev
-    $ sudo ln -sf llvm-symbolizer-4.0 llvm-symbolizer
+    $ sudo ln -sf /usr/bin/llvm-symbolizer-4.0 /usr/bin/llvm-symbolizer
 
 If you are upgrading from 3.9, be sure to run...
 

@@ -998,6 +998,47 @@ Save and close, and then restart Apache2.
 
     $ sudo systemctl restart apache2
 
+FTP
+============================================
+
+While SSH is usually advisable for working with files, sometimes you also need
+FTP (such as for updating Wordpress).
+
+We'll start by installing ``vsftpd`` and updating its configuration.
+
+..  code-block:: bash
+
+    $ sudo apt install vsftpd
+    $ sudo vim /etc/vsftpd.conf
+
+Change the following settings to match what's shown here, uncommenting the
+line if necessary::
+
+    anonymous_enable=NO
+    local_enable=YES
+    write_enable=YES
+    local_umask=022
+    rsa_cert_file=/etc/apache2/certs/cert.pem
+    rsa_private_key_file=/etc/apache2/certs/privkey.pem
+    ssl_enable=YES
+
+In short, we are requiring a username and password (anonymous is off), using
+the local UNIX users for credentials, and allowing file writing.
+
+We set the umask for uploaded files so that read-write permissions can
+be set for the owner, but only read permissions for all other users.
+
+We are also setting FTP to work over SSL (FTPS) using our Let's Encrypt
+certificate.
+
+Save and close, and then start ``vsftpd``.
+
+..  code-block:: bash
+
+    $ sudo systemctl start vsftpd
+
+Now we can use the credentials for the ``webster`` system user for FTPS.
+
 Server Controls
 ============================================
 
@@ -1074,7 +1115,7 @@ The contents of that file are as follows.
         echo "Admin control panels are turned OFF."
         ;;
     *)
-        echo "You must specify 'on' on 'off'."
+        echo "You must specify 'on' or 'off'."
         exit 1
         ;;
     esac
