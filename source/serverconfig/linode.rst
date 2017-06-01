@@ -900,8 +900,11 @@ Finally, we'll test the configuration.
 
     $ sudo /opt/certbot/certbot-auto renew --dry-run --pre-hook "/etc/apache2/certs/renewcert_pre" --post-hook "/etc/apache2/certs/renewcert_post"
 
-..  NOTE:: The expansion script is:
-    ``sudo /opt/certbot/certbot-auto certonly --expand -a webroot --webroot-path /var/www/html -d mousepawgames.net -d mail.mousepawgames.net -d indeliblebluepen.com -d www.indeliblebluepen.com -d mousepawmedia.com -d www.mousepawmedia.com -d mail.mousepawmedia.com -d standards.mousepawmedia.com -d staff.mousepawmedia.com -d docs.mousepawmedia.com -d webmail.mousepawmedia.com -d mousepawgames.com -d www.mousepawgames.com --pre-hook "/etc/apache2/certs/renewcert_pre" --post-hook "/etc/apache2/certs/renewcert_post"``
+..  NOTE:: The expansion script is below.
+
+..  code-block:: bash
+
+    $ sudo /opt/certbot/certbot-auto certonly --expand -a webroot --webroot-path /var/www/html -d mousepawgames.net -d mail.mousepawgames.net -d indeliblebluepen.com -d www.indeliblebluepen.com -d mousepawmedia.com -d www.mousepawmedia.com -d mail.mousepawmedia.com -d standards.mousepawmedia.com -d staff.mousepawmedia.com -d docs.mousepawmedia.com -d webmail.mousepawmedia.com -d mousepawgames.com -d www.mousepawgames.com --pre-hook "/etc/apache2/certs/renewcert_pre" --post-hook "/etc/apache2/certs/renewcert_post"
 
 Scheduling Auto-Renewal
 -----------------------------------
