@@ -2705,3 +2705,79 @@ Make the necessary changes to DNS and your certificates.
 `SOURCE: Moving WordPress (WordPress Codex) <https://codex.wordpress.org/Moving_WordPress>`_
 
 `SOURCE: Install WordPress on Ubuntu 16.04 (Linode) <https://www.linode.com/docs/websites/cms/install-wordpress-on-ubuntu-16-04>`_
+
+AWStats
+=============================
+
+Start by installing the AWStats software.
+
+..  code-block:: bash
+
+    $ sudo apt install awstats
+
+Now we need to create configuration files for each of our domains. Repeat
+the following steps for each, replacing "example.com" with the domain name.
+
+..  code-block:: bash
+
+    $ sudo cp /etc/awstats/awstats.conf /etc/awstats/awstats.example.com.conf
+    $ sudo vim /etc/awstats/awstats.example.com.conf
+
+Change the following::
+
+    SiteDomain="example.com"
+    HostAliases="www.example.com"
+
+Save and close, and generate the stats.
+
+..  code-block:: bash
+
+    $ sudo /usr/lib/cgi-bin/awstats.pl -config=example.com -update
+
+Now edit the corresponding Apache2 site configuration for each site
+(i.e. ``example.com.conf``), adding the following at the bottom of the
+``VirtualHost`` entry.
+
+..  code-block:: apache
+
+    Alias /awstatsclasses "/usr/share/awstats/lib/"
+    Alias /awstats-icon "/usr/share/awstats/icon/"
+    Alias /awstatscss "/usr/share/doc/awstats/examples/css"
+    ScriptAlias /awstats/ /usr/lib/cgi-bin/
+    Options +ExecCGI -MultiViews +SymLinksIfOwnerMatch
+
+Be sure that, if you have ``X-Frame-Options`` set, it is set as...
+
+..  code-block:: apache
+
+    Header set X-Frame-Options SAMEORIGIN
+
+If it is set to DENY, the AWStats pages won't work.
+
+After repeating those steps for each site, make sure the CGI module is
+loaded, and then reload Apache2.
+
+..  code-block:: bash
+
+    $ sudo a2enmod cgi
+    $ sudo systemctl reload apache2
+
+Last, we'll set up cron to reload these stats every hour.
+
+..  code-block:: bash
+
+    $ sudo crontab -e
+
+Add the following line, one for each domain, replacing ``example.com`` as
+appropriate.
+
+..  code-block:: cron
+
+    0 */3 * * * sudo /usr/lib/cgi-bin/awstats.pl -config=example.com -update
+
+That will refresh the stats every three hours. Save and close.
+
+Now you can view the AWStats for any of the configured sites by going to
+``https://example.com/awstats/awstats.pl``. These are not secure by any means,
+so if you don't want just anyone viewing these, you'll need to set up HTTP
+authentication or some such.
