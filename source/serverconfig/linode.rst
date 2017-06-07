@@ -2773,7 +2773,7 @@ appropriate.
 
 ..  code-block:: cron
 
-    0 */3 * * * sudo /usr/lib/cgi-bin/awstats.pl -config=example.com -update
+    0 */3 * * * /usr/lib/cgi-bin/awstats.pl -config=example.com -update
 
 That will refresh the stats every three hours. Save and close.
 
