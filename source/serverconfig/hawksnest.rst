@@ -3290,9 +3290,10 @@ We are enabling the following plugins:
 * adminpads
 * authorship_toggle
 * autocomp
-* padlist
+* cursortrace
 * print
 * scrollto
+* syntaxhighlighting
 * wrap
 
 EtherDraw

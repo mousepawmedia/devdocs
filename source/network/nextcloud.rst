@@ -1,3 +1,5 @@
+..  _nextcloud:
+
 Nextcloud
 ##########################
 
@@ -81,28 +83,39 @@ Basic Structure
 ===========================
 
 Nextcloud offers a few different Apps, which you can switch between from the
-menu on the left side of the top bar.
+top bar.
 
 * :guilabel:`Files` allows you to browse through your files and folders.
   (See :ref:`nextcloud_files`).
 
 * :guilabel:`Activity` lists all of the recent activity on Nextcloud.
 
-* :guilabel:`Office` provides a web-based version of LibreOffice for editing
-  documents, spreadsheets, and presentations. (See :ref:`nextcloud_office`).
-
 * :guilabel:`Gallery` lets you view and browse all the photos on Nextcloud.
 
+* :guilabel:`Circles` allows you to create custom groups for sharing.
+
 * :guilabel:`Notes` is a place to quickly store notes for yourself.
+  (Not collaborative.)
 
-..  NOTE:: The Notes app is NOT collaborative. It's also not entirely stable,
-    so we may stop using it in the future. If you find it useful, please be
-    sure to let the MousePaw Games administrators know!
+* :guilabel:`Announcements` shows the latest news.
 
-Clicking your username on the right side of the top bar brings up another menu.
+* :guilabel:`Bookmarks` allows you to store internet bookmarks and
+  access them from any device. (Not collaborative.)
+
+* :guilabel:`Tasks` is your personal task list. (Not collaborative.)
+
+..  NOTE:: You should still be using Phabricator Maniphest for project tasks,
+    so your teammates can see them. The Nextcloud Tasks app is only for personal
+    work tasks, such as "Read 'Dreaming in Code'" or "Clean desk".
+
+Clicking the gear on the right side of the top bar brings up another menu.
 This gives you access to your profile (:guilabel:`Personal`), Nextcloud's
 official documentation (:guilabel:`Help`), and the ability to sign out of your
 account (:guilabel:`Log out`).
+
+Most of these applications are self-explanatory. Thus, for brevity, we will
+only be covering Files and Collabora Office here. If you need other help,
+contact IT.
 
 ..  _nextcloud_files:
 
@@ -339,15 +352,13 @@ Office until you have a more reliable internet connection.
 Creating and Opening Files
 ------------------------------
 
-When you first open the Office app, you will see a large list of all the
-editable files on Nextcloud. Click any of them to open them.
+Collabora fully integrates with the Files application. Clicking the name of any
+office-format document (`.odt`, `.docx`, `.ods`, `.odp`, etc.) will open it in
+Collabora Office.
 
-Alternatively, you can go to the Files app and click a document name there
-to open it in the Office app.
-
-To create a new document, click :guilabel:`New Document`,
-:guilabel:`New Spreadsheet`, or :guilabel:`New Presentation` on the upper-left
-corner of the Office app.
+To create a new file, click the :guilabel:`+` button at the top center of the
+Files app, and select :guilabel:`New Document`, :guilabel:`New Spreadsheet`,
+or :guilabel:`New Presentation`.
 
 ..  _nextcloud_office_interface:
 
@@ -402,6 +413,17 @@ Edit Menu
 
 * :guilabel:`Select all` selects everything in the document.
 
+* :guilabel:`Track Changes` allows you to...
+
+  * :guilabel:`Record` changes made to the document.
+
+  * :guilabel:`Show` changes tracked.
+
+  * Navigate to the :guilabel:`Previous` or :guilabel:`Next` tracked change.
+
+Tracked changes appear as comments on the right side of the document. Each can
+be accepted or rejected there.
+
 ..  _nextcloud_office_interface_menus_view:
 
 View Menu
@@ -417,6 +439,9 @@ View Menu
 
 ..  NOTE:: Your web browser's default zoom controls will only scale the
     interface, not the document.
+
+* :guilabel:`Formatting Marks` toggles the visibility of various otherwise
+  invisible formatting marks, like space and paragraph break markers.
 
 ..  _nextcloud_office_interface_menus_insert:
 
@@ -444,6 +469,9 @@ Insert Menu
 
 * :guilabel:`Row` and :guilabel:`Column` insert a new row or column
   before the current position in the spreadsheet.
+
+* :guilabel:`Special character...` opens a panel which allows you to browse
+  for and insert special characters.
 
 * :guilabel:`Formatting mark` allows you to insert one of several special
   formatting marks.
@@ -603,6 +631,9 @@ editing. The button's name will appear when you hover over the button.
 * **Insert graphic** inserts an image from your computer.
   (See :ref:`nextcloud_office_interface_menus_insert`).
 
+* **Special Character** inserts a special character, which you select from
+  a panel. (See :ref:`nextcloud_office_interface_menus_insert`).
+
 ..  _nextcloud_office_interface_statusbar:
 
 Status Bar
@@ -667,6 +698,21 @@ left side. You can navigate by clicking on a slide.
 The Insert, Duplicate, and Delete Slide buttons are available at the bottom of
 this pane, in addition to the Fullscreen presentation button.
 (See :ref:`nextcloud_office_interface_menus_slide`).
+
+..  _nextcloud_etherpad:
+
+Etherpad
+===========================
+
+Nextcloud also is integrated with Etherpad (see :ref:`etherpad_usage`), a
+collaborative text editor.
+
+From the Files application, you can create a new Etherpad by clicking the
+:guilabel:`+` icon at the top center and selecting :guilabel:`Pad`.
+
+The interface for Etherpad is the same whether accessed through Nextcloud
+or directly at `pad.mousepawmedia.net`. See :ref:`etherpad_usage` for usage
+instructions.
 
 ..  _nextcloud_client:
 
