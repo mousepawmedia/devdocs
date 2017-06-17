@@ -38,6 +38,7 @@ Network
     network/ircbot
     network/nextcloud
     network/phabricator
+    network/etherpad
     network/programmingworkflow
     network/harbormaster_jenkins
 
