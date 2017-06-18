@@ -3,7 +3,7 @@
 C++ and C Development Environment
 ###################################
 
-We use C++ and C for most of our projects at MousePaw Games. This tutorial
+We use C++ and C for most of our projects at MousePaw Media. This tutorial
 will help you set up the development environment for working with those
 languages on Linux.
 

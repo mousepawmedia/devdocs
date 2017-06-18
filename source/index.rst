@@ -86,7 +86,7 @@ Indices and tables
 Feedback
 ===========================
 This documentation is written and maintained by the MousePaw Media Standards
-Board. Feedback is welcome via email (developers@mousepawgames.com).
+Board. Feedback is welcome via email (developers@mousepawmedia.com).
 
 You can also frequently find us in the #mousepawgames channel on Freenode.
 
@@ -94,4 +94,4 @@ Pull requests to this repository are not accepted. If you wish to propose a
 change, email your patch to us at the address above.
 
 For more information about contributing to MousePaw Media
-projects, see `mousepawgames.com/opensource <http://www.mousepawgames.com/opensource>`_.
+projects, see `mousepawmedia.com/developers <https://www.mousepawmedia.com/developers>`_.

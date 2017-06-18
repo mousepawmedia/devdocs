@@ -80,7 +80,7 @@ Access and Login
 Jenkins is open to the public, in that anyone can access it to view status and
 details about builds.
 
-However, only MousePaw Games staff may log into Jenkins using their LDAP
+However, only MousePaw Media staff may log into Jenkins using their LDAP
 credentials (username and password). Thus, only staff can view build
 configurations. Permissions further depend on your role - only Repository
 Masters can edit build configurations.

@@ -168,7 +168,7 @@ the now-available updates.
 Alternative Office Suites
 -----------------------------
 
-While we use LibreOffice for all of our document work at MousePaw Games, there
+While we use LibreOffice for all of our document work at MousePaw Media, there
 are two other office suites available that might be useful to you personally.
 
 Calligra

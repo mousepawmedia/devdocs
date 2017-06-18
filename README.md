@@ -19,5 +19,5 @@ Creative Commons Attribution-ShareAlike ([CC BY-SA 4.0][2]) license.
 
 The project is owned and maintained by [MousePaw Media][1].
 
-[1]: http://www.mousepawgames.com/opensource
+[1]: https://www.mousepawmedia.com/developers
 [2]: https://creativecommons.org/licenses/by-sa/4.0/

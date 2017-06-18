@@ -275,14 +275,14 @@ You can find both of these forms on Maniphest, by clicking
   for reference purposes.
 
 * Priority: How soon should the task be completed?
-  (See `QTM: Priority <http://standards.mousepawgames.com/qtm.html#priority>`_)
+  (See `QTM: Priority <http://standards.mousepawmedia.com/qtm.html#priority>`_)
 
 * Gravity: How important is the task to the project's completion?
-  (See `QTM: Gravity <http://standards.mousepawgames.com/qtm.html#gravity-importance>`_)
+  (See `QTM: Gravity <http://standards.mousepawmedia.com/qtm.html#gravity-importance>`_)
 
 * Relativity: How certain are you that the task can be completed by the given
   completion date or in the given number of hours?
-  (See `QTM: Relativity <http://standards.mousepawgames.com/qtm.html#relativity-black-hole-probability-uncertainty>`_)
+  (See `QTM: Relativity <http://standards.mousepawmedia.com/qtm.html#relativity-black-hole-probability-uncertainty>`_)
 
 * Target Completion Date: When should we aim to have the task completed by?
 
@@ -290,7 +290,7 @@ You can find both of these forms on Maniphest, by clicking
   You should favor use of Target Completion Date instead, when possible.
 
 * Friction: How many resources are available to help one in completing this task?
-  (See `QTM: Friction <http://standards.mousepawgames.com/qtm.html#friction-available-help>`_)
+  (See `QTM: Friction <http://standards.mousepawmedia.com/qtm.html#friction-available-help>`_)
 
 * Required Skills: What does one need to know and be able to do to accomplish
   this task?

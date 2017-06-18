@@ -1069,8 +1069,8 @@ Now we need to adjust PHPldapadmin's configuration.
 
 Modify the following lines in the file.::
 
-    $servers->setValue('server','name','MousePaw Games LDAP');
-    $servers->setValue('server','host','hawksnest.ddns.net');
+    $servers->setValue('server','name','MousePaw Media LDAP');
+    $servers->setValue('server','host','mousepawmedia.net');
     $servers->setValue('server','base',array('dc=ldap,dc=mousepawmedia,dc=net'));
     $servers->setValue('login','bind_id','cn=admin,dc=ldap,dc=mousepawmedia,dc=net');
     $config->custom->appearance['hide_template_warning'] = true;
@@ -1114,7 +1114,7 @@ We will create two Organisational Units: ``Groups`` and ``Users``. Under ``Group
 add a ``staff`` and an ``admin`` Posix Group.
 
 Next, add each staff member under ``Users``. Remember to include the ``Email``
-field, and use ``cn`` for their MousePaw Games username.
+field, and use ``cn`` for their MousePaw Media username.
 
 
 eHour
@@ -1376,7 +1376,7 @@ Set the contents of that file to...
     <IfModule mod_ssl.c>
         <VirtualHost *:443>
             ServerName ehour.mousepawmedia.net
-            ServerAdmin hawksnest@mousepawgames.com
+            ServerAdmin hawksnest@mousepawmedia.com
 
             SSLProxyEngine on
             ProxyPreserveHost On
@@ -1393,7 +1393,7 @@ Set the contents of that file to...
 
         <VirtualHost *:80>
             Servername ehour.mousepawmedia.net
-            ServerAdmin hawksnest@mousepawgames.com
+            ServerAdmin hawksnest@mousepawmedia.com
 
             ErrorLog ${APACHE_LOG_DIR}/error.log
             CustomLog ${APACHE_LOG_DIR}/access.log combined
@@ -1555,7 +1555,7 @@ Copy and paste the following into that file.
     <IfModule mod_ssl.c>
         <VirtualHost *:443>
                 ServerName phabricator.mousepawmedia.net
-                ServerAdmin hawksnest@mousepawgames.com
+                ServerAdmin hawksnest@mousepawmedia.com
 
                 DocumentRoot /opt/phab/phabricator/webroot
 
@@ -1716,7 +1716,7 @@ Set the contents to the following...
     <IfModule mod_ssl.c>
         <VirtualHost *:443>
             ServerName files.mousepawmedia.net
-            ServerAdmin hawksnest@mousepawgames.com
+            ServerAdmin hawksnest@mousepawmedia.com
             #ServerName hawksnest.serveftp.com:8446
 
             DocumentRoot /opt/phab/phabricator/webroot
@@ -2280,7 +2280,7 @@ Set the contents of that file to...
     <IfModule mod_ssl.c>
         <VirtualHost *:443>
             ServerName jenkins.mousepawmedia.net
-            ServerAdmin hawksnest@mousepawgames.com
+            ServerAdmin hawksnest@mousepawmedia.com
 
             SSLProxyEngine on
             ProxyPreserveHost On
@@ -2297,7 +2297,7 @@ Set the contents of that file to...
 
         <VirtualHost *:80>
             Servername jenkins.mousepawmedia.net
-            ServerAdmin hawksnest@mousepawgames.com
+            ServerAdmin hawksnest@mousepawmedia.com
 
             ErrorLog ${APACHE_LOG_DIR}/error.log
             CustomLog ${APACHE_LOG_DIR}/access.log combined
@@ -2411,7 +2411,7 @@ This file should look like this...
         <VirtualHost *:443>
             ServerName mousepawmedia.net
 
-            ServerAdmin hawksnest@mousepawgames.com
+            ServerAdmin hawksnest@mousepawmedia.com
             DocumentRoot /opt/html/landing
 
             ErrorLog ${APACHE_LOG_DIR}/error.log
@@ -2456,7 +2456,7 @@ This file should look like this...
     <IfModule mod_ssl.c>
         <VirtualHost *:443>
             ServerName secure.mousepawmedia.net
-            ServerAdmin hawksnest@mousepawgames.com
+            ServerAdmin hawksnest@mousepawmedia.com
 
             DocumentRoot /opt/html/protected
 
@@ -3658,7 +3658,7 @@ Paste the following contents into that file.
     <IfModule mod_ssl.c>
         <VirtualHost *:443>
             ServerName quiz.mousepawmedia.net
-            ServerAdmin hawksnest@mousepawgames.com
+            ServerAdmin hawksnest@mousepawmedia.com
 
             DocumentRoot /opt/tao
 

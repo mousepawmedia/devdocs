@@ -178,7 +178,7 @@ All comment boxes, as well as description fields and the wiki, using
     Embed object: {D123}
     Phriction link: [[gettingstarted]]
     Internal link: [[ /maniphest | Make a task. ]]
-    External link: [[ http://www.mousepawgames.com | MousePaw Media Website]]
+    External link: [[ https://www.mousepawmedia.com | MousePaw Media Website]]
 
     ```
     This is a block of code.
