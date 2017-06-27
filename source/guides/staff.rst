@@ -58,7 +58,8 @@ The Staff Network consists of six major components:
 
 * Etherpad (pad.mousepawmedia.net)
 
-We also use IRC and Jitsi for regular communication.
+We also use IRC and Jitsi for regular communication, although these are
+hosted on external servers that we do not own or operate.
 
 Our network is spread across two servers.
 
@@ -194,8 +195,8 @@ To log your time, go to eHour. Login using your company username and password.
 You will be on the :guilabel:`Your Hours` section by default, with the current
 week highlighted.
 
-Enter your time (in hours) on the appropriate box for each day. You should also
-want to include notes on each day (by clicking the pencil), listing the
+Enter your time (in hours) on the appropriate box for each day. You must also
+include notes on each day (by clicking the pencil), listing the
 Phabricator objects you worked on (Tasks, Revisions, wiki pages, etc.)
 
 ..  WARNING:: These notes are not a replacement for your check-in email.
@@ -313,7 +314,7 @@ doing. There are six major apps you should be making frequent use of.
 
 ..  sidebar:: Rule of Task Creation
 
-    Unless the goal will be completed in the next five minutes, **MAKE A TASK.**
+    Unless the goal will be completed in the next ten minutes, **MAKE A TASK** on Maniphest.
 
 * Maniphest (see :ref:`phab_maniphest`)
 
@@ -430,6 +431,10 @@ All the ECO forms you'll need are stored on Nextcloud, in the *ECO* folder.
 
     * The surface behind the page is NOT visible.
 
+    Alternatively, you may use software to sign by hand (such as using a
+    graphics tablet). The point is to ensure the signature is indeed
+    *your legal signature*.
+
 All forms must be filled out and signed *by hand*, scanned in, and emailed to
 the relevant supervisors.
 
@@ -460,7 +465,7 @@ There are a few more ECO forms which are accessible only to management.
   program, we use this form to collect and track all the relevant information
   about them.
 
-* **Employee Discipinary Warning Notice**: For serious and/or recurring
+* **Employee Disciplinary Warning Notice**: For serious and/or recurring
   problems, a supervisor may detail the incident and the expected remedy
   using this form. If you receive one, be sure to read it, initial and sign
   it, and send it back via e-mail ASAP.
