@@ -202,7 +202,7 @@ of channels on Freenode alone. Each channel name starts with at least one
 
 To join our programming channel, for example, type::
 
-    /join #mousepawgames
+    /join #mousepawmedia
 
 As soon as you join any channel, be sure to read the rules and information in
 the **channel topic** at the top of the page, and in any initial login message
@@ -215,11 +215,11 @@ and don't "take op" until they need it.
 
 Many channels also have **bots**, which are special computer programs that
 perform automated tasks for the channel. For example, `Hawksnest` is the
-official bot in `#mousepawgames` and `##mousepawgames`.
+official bot in `#mousepawmedia` and `#mousepawmedia-design`.
 
 You can leave a channel by typing::
 
-    /part #mousepawgames
+    /part #mousepawmedia
 
 ...and then right-clicking the channel name in HexChat and clicking
 :guilabel:`Close`. (You can also just close the channel without :code:`/part`,
@@ -270,7 +270,7 @@ Most of the time, you just type something and hit "enter" to talk in a channel.
 If you want to get someone's attention in particular, you can **ping** them
 (see :ref:`irc_netiquette_pinging`) just type their name, and HexChat will
 alert them that they were mentioned. In HexChat, you have tab-completion on
-usernames. In `#mousepawgames`, if Jason McDonald is online and you type "Co"
+usernames. In `#mousepawmedia`, if Jason McDonald is online and you type "Co"
 and hit tab, it'll likely autocomplete to "CodeMouse92".
 
 :code:`/me` allows you to look like you're taking an action. For example, if
@@ -319,10 +319,10 @@ To be kickbanned means you're thrown out, and never allowed to return. As long
 as you follow the rules, and a chatroom is relatively sane, this should be easy
 to avoid.
 
-In the `#mousepawgames` channel, some staff members have been given op status.
+In the `#mousepawmedia` channel, some staff members have been given op status.
 If you're an op, you can "take op" by typing::
 
-    /msg chanserv op #mousepawgames
+    /msg chanserv op #mousepawmedia
 
 Then, you can kick and ban using the :code:`/kick nickname` and :code:`/ban
 nickname` commands, respectively. Please use these powers wisely and
@@ -330,7 +330,7 @@ judiciously.
 
 Once you're done with your op work, you can de-op via::
 
-    /msg chanserv op #mousepawgames -nick_name
+    /msg chanserv op #mousepawmedia -nick_name
 
 ...where nick_name is your nickname. (Note the - in front.)
 

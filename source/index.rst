@@ -88,7 +88,7 @@ Feedback
 This documentation is written and maintained by the MousePaw Media Standards
 Board. Feedback is welcome via email (developers@mousepawmedia.com).
 
-You can also frequently find us in the #mousepawgames channel on Freenode.
+You can also frequently find us in the #mousepawmedia channel on Freenode.
 
 Pull requests to this repository are not accepted. If you wish to propose a
 change, email your patch to us at the address above.

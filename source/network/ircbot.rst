@@ -1,7 +1,7 @@
 IRC Bot
 ###############################
 
-The :code:`#mousepawgames` and :code:`##mousepawgames` Freenode IRC chatrooms
+The :code:`#mousepawmedia` and :code:`#mousepawmedia-design` Freenode IRC chatrooms
 are patrolled by our bot, **LukeDMouse**.
 
 ..  NOTE:: You may remember the prior bot, Hawksnest. That bot was run by the
