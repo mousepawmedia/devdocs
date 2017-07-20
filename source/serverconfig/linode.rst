@@ -777,7 +777,7 @@ Now we’ll get our certificates.
 
 ..  code-block:: bash
 
-    $ sudo /opt/certbot/certbot-auto certonly -a webroot --webroot-path /var/www/html -d mousepawgames.net -d mail.mousepawgames.net -d indeliblebluepen.com -d www.indeliblebluepen.com -d mousepawmedia.com -d www.mousepawmedia.com -d mail.mousepawmedia.com -d standards.mousepawmedia.com -d docs.mousepawmedia.com -d staff.mousepawmedia.com -d webmail.mousepawmedia.com -d mousepawgames.com -d www.mousepawgames.com
+    $ sudo /opt/certbot/certbot-auto certonly -a webroot --webroot-path /var/www/html -d mousepawgames.net -d mail.mousepawgames.net -d indeliblebluepen.com -d www.indeliblebluepen.com -d mousepawmedia.com -d www.mousepawmedia.com -d mail.mousepawmedia.com -d standards.mousepawmedia.com -d docs.mousepawmedia.com -d staff.mousepawmedia.com -d webmail.mousepawmedia.com -d mousepawgames.com -d www.mousepawgames.com -d survey.mousepawmedia.com
 
 Of course, we would change the ``mousepawgames.net`` part to match the domain
 name we're getting the certificate for.
@@ -2781,3 +2781,118 @@ Now you can view the AWStats for any of the configured sites by going to
 ``https://example.com/awstats/awstats.pl``. These are not secure by any means,
 so if you don't want just anyone viewing these, you'll need to set up HTTP
 authentication or some such.
+
+LimeSurvey
+=================
+
+Let's install LimeSurvey.
+
+Install the dependencies.
+
+..  code-block:: bash
+
+    $ sudo apt install php-gd php-ldap php-zip php-imap
+
+Get the download link from `LimeSurvey <https://www.limesurvey.org/downloads/category/25-latest-stable-release>`_,
+which we'll use in the next step.
+
+Download and unzip the latest version to our :code:`/opt` directory. Be sure
+to replace the URL and filename with the one appropriate for your download.
+We'll also set our permissions here.
+
+..  NOTE:: If you're paranoid like me about unzipping directly in an important
+    directory like ``/opt/html``, you can always unzip it in another folder and
+    move the ``limesurvey`` folder to ``/opt/html``.
+
+..  code-block:: bash
+
+    $ cd /opt/html
+    $ sudo wget https://www.limesurvey.org/stable-release?download=2095:limesurvey2672%20170719zip
+    $ sudo unzip limesurvey2.67.2+170719.zip
+    $ sudo chown -R webster:www-data /opt/html/limesurvey
+    $ sudo chmod -R 755 /opt/html/limesurvey
+    $ sudo chmod -R 775 /opt/html/limesurvey/tmp
+    $ sudo chmod -R 775 /opt/html/limesurvey/upload
+    $ sudo chmod -R 775 /opt/html/limesurvey/application/config
+
+We gave the webserver group write permissions to three specific directories,
+and read-only access to the rest of the folders for LimeSurvey.
+
+Apache2
+---------------
+
+Let's set up the subsite for Limesurvey.
+
+..  code-block:: bash
+
+    $ sudo vim /etc/apache2/sites-available/survey.conf
+
+Set the contents of that file to the following:
+
+..  code-block:: apache
+
+    <IfModule mod_ssl.c>
+        <VirtualHost *:443>
+            ServerName survey.mousepawmedia.com
+            ServerAlias survey.mousepawgames.com
+
+            ServerAdmin webmaster@mousepawmedia.com
+            DocumentRoot /opt/html/limesurvey
+
+            ErrorLog ${APACHE_LOG_DIR}/error.log
+            CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+            <Directory /opt/html/limesurvey>
+                    Options -MultiViews -Indexes
+                    AllowOverride All
+            </Directory>
+
+            # prevent iframing this site
+            #Header set X-Frame-Options DENY
+
+            # SSL
+            SSLEngine on
+            SSLCertificateFile      /etc/apache2/certs/fullchain.pem
+            SSLCertificateKeyFile   /etc/apache2/certs/privkey.pem
+
+            Include /etc/letsencrypt/options-ssl-apache.conf
+
+            <FilesMatch "\.(cgi|shtml|phtml|php)$">
+                    SSLOptions +StdEnvVars
+            </FilesMatch>
+            <Directory /usr/lib/cgi-bin>
+                    SSLOptions +StdEnvVars
+            </Directory>
+        </VirtualHost>
+    </IfModule>
+    <VirtualHost *:80>
+        ServerName survey.mousepawmedia.com
+        ServerAlias survey.mousepawgames.com
+
+        RewriteEngine On
+        RewriteCond %{HTTPS} off
+        RewriteRule ^ https://survey.mousepawmedia.com%{REQUEST_URI}
+    </VirtualHost>
+
+Save and close. Now we can enable the site.
+
+..  code-block:: bash
+
+    $ sudo a2ensite survey
+    $ sudo systemctl restart apache2
+
+Be sure to expand the certificate to include this.
+
+Database
+--------------
+
+Using PHPMyAdmin, set up a ``limesurvey`` user and database. The user must have
+the following permissions:
+``SELECT, CREATE, INSERT, UPDATE, DELETE, ALTER, DROP, INDEX``.
+
+Setup
+----------
+
+Go to ``https://survey.mousepawmedia.com`` and follow the setup wizard.
+
+`SOURCE: Installation (LimeSurvey Manual) <https://manual.limesurvey.org/Installation>`_
