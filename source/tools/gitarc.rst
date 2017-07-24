@@ -76,6 +76,25 @@ Save and close gedit. Then, restart your computer. To test it out, run...
 Arcanist may ask you to install additional PHP packages via apt. If you set
 everything up right, you'll see arc's help list.
 
+.. _gitarc_gitconfig:
+
+Configuring Git
+===============================
+
+Register yourself with Git, so you'll be credited for commits.
+
+..  NOTE:: If you only want the given name and/or email for the current
+    repository, omit the ``--global`` flag.
+
+..  code-block:: bash
+
+Run the following commands, **substituting in your own information.**
+Staff should use their company email here; otherwise use the email
+associated with your GitHub account.
+
+    $ git config --global user.name "Sam Smith"
+    $ git config --global user.email sam@example.com
+
 .. _gitarc_importrepos:
 
 Import Repositories
