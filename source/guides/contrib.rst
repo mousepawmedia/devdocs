@@ -63,10 +63,11 @@ out to create a new Revision. Give it a brief, descriptive title. Describe
 your overall plans in the description.
 
 If you're ready for code review and feedback, add a reviewer. If you don't
-know who to add, mark the Team Lead for the team whose
+know who to add, you can use the Reviewer Finder (see :ref:`phab_reviewerfinder`)
+to find someone. You should especially favor tagging someone in the same
 :ref:`code territory <p_workflow_planning_territory>` you're working in.
 
-If you're NOT ready for review, don't worry. You can always add one later.
+If you're NOT ready for review, don't worry. You can always add a reviewer later.
 
 You should be aware of the :ref:`p_workflow_landing_checklist`, which your
 Revision must pass before it can be accepted and **landed**.

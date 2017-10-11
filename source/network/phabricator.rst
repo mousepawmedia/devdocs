@@ -356,7 +356,7 @@ object type, instead of the kind of project object.
   organization. We maintain labels for most of the technologies we use.
   (See :ref:`phab_projects_labels`).
 
-See :ref:`gtasks_taskorproject`.
+See :ref:`gtaskcreate_taskorproject`.
 
 .. _phab_projects_membership:
 
@@ -545,7 +545,7 @@ the upper-right corner, and selecting the task type.
 ..  WARNING:: DO NOT use Private Task for *any* project-related task!
 
 More detail about creating tasks, bug reports, and feature requests can
-be found at :ref:`gtasks`.
+be found at :ref:`gtaskcreate`.
 
 .. _phab_maniphest_edit:
 
@@ -600,7 +600,7 @@ menu, which allows you to take additional actions on the task (depending
 on your permissions.)
 
 * :guilabel:`Change Status` sets the task's status. For a list of what each
-  status means, see :ref:`gtasks_practice_status`.
+  status means, see :ref:`gtaskcreate_practice_status`.
 
 * :guilabel:`Assign/Claim` allows you to assign the task to yourself,
   another person, or to place it "up for grabs" by assigning it to no one.
@@ -618,7 +618,7 @@ on your permissions.)
 
 * :guilabel:`Change Project Tags` allows you to quickly change the project
   tags on the task. Remember to include the Department, Team, and Project.
-  (See :ref:`gtasks_practice_tagging`).
+  (See :ref:`gtaskcreate_practice_tagging`).
 
 * :guilabel:`Change Subscribers` lets you subscribe (or unsubscribe) users
   from a task. Remember to be courteous when using this! The most common
@@ -1107,6 +1107,30 @@ on your permissions.)
 Once you've selected all of the actions you want, and written a comment
 (recommended, but not required), click :guilabel:`Submit` to perform the
 actions.
+
+.. _phab_reviewerfinder:
+
+Reviewer Finder
+==================================
+
+If you need to find someone to review your Differential, you can use the
+**Reviewer Finder** for the appropriate department. The Reviewer Finders are
+only listed on the left-hand menu on the main page of Phabricator.
+
+On the Reviewer Finder, you will see a list of all active staff and trusted
+contributors who might be able to do a code review. Under the section for each
+person is a complete list of all Differentials that the person is marked as
+"reviewer" on.
+
+You may want to take note of the status of the Differentials. "Needs Review"
+indicates that the person still needs to review the Differential, while
+"Needs Revision" means they've completed the review, but will need to repeat it
+once the requested changes are made. "Accepted" means the review is complete,
+and the Differential will most likely be landed soon without further review.
+
+For reference, the reviewers are also listed in the top-right section, under
+"Reviewer Info." Here, you will find a summary of everyone's specialties, as
+well as other relevant notes.
 
 .. _phab_audit:
 

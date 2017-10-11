@@ -1,4 +1,4 @@
-.. _gtasks:
+.. _gtaskcreate:
 
 Guide: Task Creation
 ######################
@@ -10,7 +10,7 @@ Guide: Task Creation
 Task management is central to every workflow at MousePaw Media, across all
 departments. We use Phabricator Maniphest for this. (See :ref:`phab_maniphest`).
 
-.. _gtasks_taskorproject:
+.. _gtaskcreate_taskorproject:
 
 Task or Project?
 ===========================================
@@ -46,12 +46,12 @@ To put that all another way, here's a brief rule of thumb:
 | Project/Subproject version.               | Milestone      | "PawLIB 1.0" #pawlib1.0          |
 +-------------------------------------------+----------------+----------------------------------+
 
-.. _gtasks_practice:
+.. _gtaskcreate_practice:
 
 Good Task Creation Practice
 ====================================
 
-.. _gtasks_practice_titles:
+.. _gtaskcreate_practice_titles:
 
 Titles
 -------------------------------------
@@ -76,7 +76,7 @@ Here are examples of some *good* titles:
 
 * Strings not properly persisted in Punchline
 
-.. _gtasks_practice_description:
+.. _gtaskcreate_practice_description:
 
 Description
 ------------------------------------
@@ -108,11 +108,10 @@ For features, you should include the following information in the description:
 
 * Any initial ideas you have on implementation (if applicable).
 
-.. _gtasks_practice_tagging:
+.. _gtaskcreate_practice_tagging:
 
 Tagging
 --------------------------------
-Slowvote
 Tagging is very important for project management on Phabricator.
 
 * Each task should have at least one **Project** tag. We recommend
@@ -127,7 +126,28 @@ Tagging is very important for project management on Phabricator.
   team whose code territory the task is in.
   (See :ref:`p_workflow_planning_territory`).
 
-.. _gtasks_practice_status:
+.. _gtaskcreate_practice_magictags:
+
+Magic Tags
+----------------------------------
+There are two special types of tags related to the Task Finder
+(see :ref:`gtaskfinder`): ``Help Wanted`` and ``Low-Hanging Fruit``.
+
+Any task that is fairly brief and straight-forward, and thus could be
+completed by a new outside contributor, should be tagged as
+``Low-Hanging Fruit``. This automatically places the task in that
+section of the Task Finder.
+
+Tasks which are not necessarily Low-Hanging Fruit, but still may be
+appropriate for an outside contributor, should be tagged with ``Help Wanted``.
+This automatically places the task in the Help Wanted section of the
+Task Finder.
+
+While it is perfectly acceptable to tag something with *both* tags, it is
+not necessary. The Help Wanted section does not contain any Low-Hanging Fruit.
+Conversely, the Low-Hanging Fruit section ignores the Help Wanted tag.
+
+.. _gtaskcreate_practice_status:
 
 Status
 -----------------------------------
@@ -139,6 +159,8 @@ Tasks can have one of many statuses:
 * Open: The task is ready to be worked on, possibly barring blocking tasks.
 
 * Use The Force: Same as "Open", but the task is likely to be difficult.
+  Also automatically places the task in the Task Finder
+  (see :ref:`gtaskfinder`).
 
 * Proposed: We don't know whether the task will actually be worked on.
 
@@ -155,6 +177,11 @@ Tasks can have one of many statuses:
 
 * Completed: The feature/improvement/design/documentation task is finished.
 
+* Patched: The task was temporarily completed, but not truly resolved. For
+  example, a bug might have a workaround, but the problem wasn't actually
+  solved. This automatically places the task in the Task Finder
+  (see :ref:`gtaskfinder`).
+
 * Rejected: We decided not to work on this task.
 
 * Invalid: The task wasn't real. One example is filing a bug report, and then
@@ -162,12 +189,12 @@ Tasks can have one of many statuses:
 
 * Slain: We finished this difficult task, and deserve some applause!
 
-.. _gtasks_creating:
+.. _gtaskcreate_creating:
 
 Creating Tasks
 ==============================
 
-.. _gtasks_creating_report:
+.. _gtaskcreate_creating_report:
 
 Creating a Bug Report/Feature Request
 -------------------------------------------
@@ -183,7 +210,7 @@ which form you want to use.
 Fill out the following information...
 
 * Title: Describe the bug or feature succinctly. Include the name of the
-  code sector. (See :ref:`gtasks_practice_titles`).
+  code sector. (See :ref:`gtaskcreate_practice_titles`).
 
 * Proposed Urgency: This is how urgent you believe the task is. Actual
   prority and gravity will be determined by a project member later.
@@ -192,7 +219,7 @@ Fill out the following information...
   form you're using.
 
 * Description: Describe the bug or requested feature in detail.
-  (See :ref:`gtasks_practice_description`).
+  (See :ref:`gtaskcreate_practice_description`).
 
 * Visible To: This should generally be left on the default visibility
   (Global, All Users), unless you're a staff member and you need to hide
@@ -203,7 +230,7 @@ Fill out the following information...
 
 * Tags: You **must** include at least one project, one department, and (for
   programming tasks) the team that the project belongs to.
-  (See :ref:`gtasks_practice_tagging`).
+  (See :ref:`gtaskcreate_practice_tagging`).
 
 * Subscribers: If you know of a particular user or users who should be aware
   of the task, or who you want input from, include them in Subscribers.
@@ -214,7 +241,7 @@ Fill out the following information...
 After filling out the form, click :guilabel:`Create New Task` to submit it.
 It will live in the Triage queue until it can be processed.
 
-.. _gtasks_creating_task:
+.. _gtaskcreate_creating_task:
 
 Creating a Task
 --------------------------------------------
@@ -227,7 +254,7 @@ You can find both of these forms on Maniphest, by clicking
 :guilabel:`Create Task` from the menu.
 
 * Title: Describe the task succinctly. Include the name of the
-  code sector. (See :ref:`gtasks_practice_titles`).
+  code sector. (See :ref:`gtaskcreate_practice_titles`).
 
 * Task Type: There are six types of task. You should select one.
 
@@ -258,17 +285,17 @@ You can find both of these forms on Maniphest, by clicking
     existed (invalid) and the bug cannot be fixed (rejected).
 
 * Status: A task can have one of several statuses. The default is "Open".
-  (See :ref:`gtasks_practice_status`).
+  (See :ref:`gtaskcreate_practice_status`).
 
 * Assigned To: A single user who should work on this task. If you don't
   know who to assign a task to, just leave this blank.
 
 * Description: Describe the bug or requested feature in detail.
-  (See :ref:`gtasks_practice_description`).
+  (See :ref:`gtaskcreate_practice_description`).
 
 * Tags: You **must** include at least one project, one department, and (for
   programming tasks) the team that the project belongs to.
-  (See :ref:`gtasks_practice_tagging`).
+  (See :ref:`gtaskcreate_practice_tagging`).
 
 * Proposed Urgency: This is set to "Established" by default, unless it was
   set by the original bug report/feature request creator. It remains locked
