@@ -63,7 +63,9 @@ A Repository Master can...
 
 * Add and modify the build triggers.
 
-* Push to repositories without accepted Revision.
+* Push to repositories without an accepted Revision.
+
+For more information, see :ref:`rmdabout`.
 
 ..  NOTE:: We do not accept requests to become a Repository Master, so don't ask.
 

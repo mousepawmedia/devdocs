@@ -54,6 +54,18 @@ Development Tools
     tools/python
     tools/sphinx
 
+Repository Master
+--------------------------
+
+..  toctree::
+    :maxdepth: 2
+
+    repos/about
+    repos/repos
+    repos/buildsystem
+    repos/testing
+    repos/ci
+
 Ubuntu
 --------------------------
 
