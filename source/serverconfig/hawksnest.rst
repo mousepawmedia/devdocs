@@ -3012,7 +3012,7 @@ Next, we need to edit the configuration...
 
 Comment out or remove the following section...
 
-..  code-block:: json
+..  code-block:: javascript
 
     "dbType" : "dirty",
       //the database specific settings
@@ -3024,7 +3024,7 @@ Edit the next section so it matches the following, where ``PASSWORD`` is the
 SQL password you specified earlier. Make sure you also are uncommenting this
 section!
 
-..  code-block:: json
+..  code-block:: javascript
 
     /* An Example of MySQL Configuration */
     "dbType" : "mysql",
@@ -3039,7 +3039,7 @@ section!
 Also, look for the following section, and change the passwords. Again, make sure
 you are uncommenting this section!
 
-..  code-block:: json
+..  code-block:: javascript
 
     /* Users for basic authentication. is_admin = true gives access to /admin.
      If you do not uncomment this, /admin will not be available! */
@@ -3053,7 +3053,7 @@ you are uncommenting this section!
 For security reasons, let's **not** show the contents of this file in the
 admin panel.
 
-..  code-block:: json
+..  code-block:: javascript
 
     // Option to hide/show the settings.json in admin page, default option is set to true
     "showSettingsInAdminPage" : false,
@@ -3061,7 +3061,7 @@ admin panel.
 Finally, look for this section and change it to match the following, thereby
 pointing to our Let's Encrypt certificates.
 
-..  code-block:: json
+..  code-block:: javascript
 
     /*
     // Node native SSL support
@@ -3100,7 +3100,7 @@ Now we can run Etherpad for the first time.
 
     $ /opt/etherpad/etherpad-lite/bin/run.sh
 
-If all goes well and it starts, press :kdb:`Ctrl+C` to quit. Now we need
+If all goes well and it starts, press :kbd:`Ctrl+C` to quit. Now we need
 to make some more changes to the database.
 
 ..  code-block:: bash
@@ -3147,7 +3147,7 @@ Finally, we need to adjust the MIME types.
 
 After the comment sections, add the following line.
 
-..  code-block:: json
+..  code-block:: javascript
 
     "pad": ["application/x-ownpad"],
 
@@ -3320,7 +3320,7 @@ We'll set up Etherdraw for integration with Etherpad.
 Set the contents of that file to the following, being sure to replace
 ``PASSWORD`` with the Etherpad SQL password from earlier.
 
-..  code-block:: json
+..  code-block:: javascript
 
     /*
       This file must be valid JSON. But comments are allowed
