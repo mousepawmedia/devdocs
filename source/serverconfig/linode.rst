@@ -120,7 +120,7 @@ Save and close.
 
 Next, we'll change the settings for the ``mpm_prefork`` module.
 
-..  code-block:: apache
+..  code-block:: bash
 
     $ sudo vim /etc/apache2/mods-available/mpm-prefork.conf
 
@@ -2317,7 +2317,7 @@ The output should be::
     220 [::1] ESMTP amavisd-new service ready
 
 Press :kbd:`Ctrl-]` and :kbd:`Enter` to exit the telnet session, and then
-type 'quit' and press :kdb:`Enter`.
+type 'quit' and press :kbd:`Enter`.
 
 To test everything out, send a message to your email server, and check it
 for the spam and virus scan headers.
@@ -2426,7 +2426,7 @@ to ``mousepawmedia.com`` (with many domains), and ``indeliblebluepen.com``.
 The ``mousepawgames.com`` addresses are forwarded to ``mousepawmedia.com``,
 so we don't want to unnecessarily duplicate work or scan now-unused mailboxes.
 
-..  code-block:: cron
+..  code-block:: bash
 
     00 8 * * * /usr/bin/sa-learn --spam /var/mail/vhosts/mousepawmedia.com/*/.Junk/cur
     15 8 * * * /usr/bin/sa-learn --ham /var/mail/vhosts/mousepawmedia.com/*/cur
@@ -2771,7 +2771,7 @@ Last, we'll set up cron to reload these stats every hour.
 Add the following line, one for each domain, replacing ``example.com`` as
 appropriate.
 
-..  code-block:: cron
+..  code-block:: bash
 
     0 */3 * * * /usr/lib/cgi-bin/awstats.pl -config=example.com -update
 

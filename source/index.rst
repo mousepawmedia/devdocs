@@ -25,7 +25,8 @@ Guides
 
     guides/contrib
     guides/building
-    guides/tasks
+    guides/taskcreate
+    guides/taskfinder
     guides/reviewing
     guides/staff
 
