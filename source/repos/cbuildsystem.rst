@@ -1,10 +1,8 @@
-..  _rmdbuild:
+..  _rmdcbuild:
 
-Build Systems
+C/C++ Build Systems
 ###################################
 
-C/C++ Build System
-====================================
 We have developed a hybrid build system for all our C and C++ projects, which
 simplifies the build process without sacrificing portability or control. It
 consists of several pieces:
@@ -30,7 +28,7 @@ To best understand this, we will start from the bottom of the stack and work
 our way up the layers of abstraction.
 
 Understanding Libraries
--------------------------------------
+=====================================
 
 Before we can begin to grasp the intricacies of building C and C++ projects,
 we must first understand the two kinds of dependencies: **statically-linked**
@@ -45,7 +43,8 @@ effectively baking the library's code directly into the project's final
 compiled code. The advantage is that the end-user does not need a copy of the
 library on their system to run the compiled application. However, the
 disadvantage is that the compiled application will be larger - it literally
-*contains* the libraries that were statically linked to it.
+*contains* all the parts it uses of the libraries that were statically
+linked to it.
 
 Additionally, once you've compiled the application, it is locked into the
 version of the library to which it is statically linked. The only way to
@@ -70,7 +69,7 @@ itself. On UNIX systems, statically-linked libraries are compiled to `*.a`
 files; on Windows, they are `*.lib` files.
 
 Dynamically-linked libraries compile to a single file. On UNIX, this is a
-`*.so` file, while on Windows, this is a `*.dll`.
+`*.so` file; on Windows, it's a `*.dll`; on Mac OSX, it's a `*.dylib`.
 
 That last file extension may have just made your blood run cold as you remember
 some "DLL error" on Windows. What literally happened was that a program was
@@ -86,7 +85,7 @@ directory. However, on Linux, the analogous `.so` files are usually shared
 between programs, so ensuring a consistent version can be far more difficult.
 
 Structure of the Repository
--------------------------------------
+=====================================
 
 Every C/C++ project repository follows the same structure. (This is also
 overviewed in "Guide: Building Code", under :ref:`gbuild_systems_conf`.)
@@ -94,7 +93,7 @@ overviewed in "Guide: Building Code", under :ref:`gbuild_systems_conf`.)
 ..  NOTE:: Folders marked with (*) are untracked in the Git repository
 
 Library Projects
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+-------------------------------------
 
 Library projects have the following structure::
 
@@ -175,9 +174,10 @@ Finally, take note of the files :file:`.gitignore`, :file:`.arclint`, and
 in :ref:`rmdrepos`.
 
 Executable Projects
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+-------------------------------------
 
-Executable projects, such as applications, have the following structure::
+Executable projects, such as applications, have a very similar structure
+to that of library projects::
 
     Repository
     ├── docs ← Sphinx documentation.
@@ -189,8 +189,7 @@ Executable projects, such as applications, have the following structure::
     ├── project-source ← The project source code.
     │   ├── bin (*) ← The compiled project (copied from here to ../project)
     │   ├── build_temp (*) ← Temporary build stuff. Also where CMake is run from.
-    │   ├── include
-    │   │   └── library ← The project's header files (.hpp).
+    │   ├── include ← The project's header files (.hpp).
     │   ├── obj (*) ← Temporary build stuff.
     │   ├── src ← The project's implementation files (.cpp).
     │   ├── CMakeLists.txt ← The CMake build instructions for the project.
@@ -207,17 +206,161 @@ Executable projects, such as applications, have the following structure::
     ├── Makefile ← The project's master Makefile.
     └── README.md ← The README file.
 
-Compiling the Code
+Let's explore the differences.
+
+The source code for the project belongs in :file:`project-source`. Header
+files (`*.h` and `*.hpp`) go in the :file:`include` subfolder, but unlike
+library source headers, they do not need to be placed in a second subfolder.
+This is because the project headers won't be used outside of this code base.
+If we encounter the following code...
+
+..  code-block:: c++
+
+    #include <string>
+    #include "pawlib/stdutils.hpp"
+    #include "magicclass.hpp"
+
+...we can clearly see the difference between the three sources.
+All `#include <whatever>` headers originate from the standard library,
+while all `#include "library/whatever.hpp"` headers originate from linked
+libraries. Since `#include "whatever.hpp"` is clearly neither, it must be
+a local header belonging to the project.
+
+The Compiler Toolchain
+=====================================
+
+When we **compile**, we are turning the source code into an executable
+(or a compiled library, as the case may be). In fact, what we often call the
+"compiler" is really the **compiler toolchain**, which consists of four pieces:
+
+First, the **preprocessor** rearranges the code. Header files and macros are
+copied into the source code. Basically, every command that starts with a `#` is
+an instruction for the preprocessor. This generates a temporary copy of the
+preprocessed source code.
+
+Next, the **compiler** converts the preprocessed source code into assembly code,
+generating `*.s` files. The exact nature of this assembly code varies depending
+on platform and architecture.
+
+This is where the header files are needed: they tell the compiler
+*what to expect*. All the different pieces aren't actually clicked together
+yet, but the compiler can know roughly what should appear where, and how it
+should all fit. Errors relating to syntax originate at this step.
+
+For C++, one important task the compiler undertakes is **name mangling**.
+This creates a unique name for each item, thereby allowing the linker to
+distinguish between :code:`int foo(int, int)` and
+:code:`int foo(float, float)`.
+
+The important thing to remember is that *this is still only code*, just in a
+different language. It is actually still human-readable - if we had been working
+in Assembly instead of C or C++, we'd actually be doing our coding work here.
+
+The **assembler** now converts the assembly code into machine, or binary, code.
+At this stage, we call this **object code**, stored in `*.o` or `*.obj` files.
+However, all of those function calls and references to external dependencies
+have been unresolved this entire time! The compiler toolchain works on the
+expectation that all those *will* work when all is said and done.
+
+..  NOTE:: Technically, when compiling a static library, things stop here.
+    The `*.a` or `*.lib` is just an archive of object code.
+
+The **linker** now fills in those blanks. It also completes the linking for
+the static libraries, and brings the appropriate code into the finished
+result. Errors relating to undefined references usually originate at this step.
+
+Besides this, the linker may also rearrange things to make the program run
+better, and to make the operating system happy. The end result is the compiled
+executable or dynamic library.
+
+..  NOTE:: We can force the compiler to stop anywhere in this process!
+    `-E` stops after preprocessing, `-S` after compiling, and `-c` after
+    assembling.
+
+SOURCES:
+
+* `The C++ compilation process (Northern Illinois University) <http://faculty.cs.niu.edu/~mcmahon/CS241/Notes/compile.html>`_
+
+* `How does the compilation/linking process work? (StackOverflow) <https://stackoverflow.com/questions/6264249/how-does-the-compilation-linking-process-work>`_
+
+* `Beginner's Guide to Linkers (LurkLurk) <http://www.lurklurk.org/linkers/linkers.html>`_
+
+The Standard Libraries
 -------------------------------------
 
-Understanding Linking and Libraries
--------------------------------------
+Two critical dynamic libraries are the **C standard library** and
+**C++ standard library**. Nearly every operating system comes with a version of
+these libraries, and note the word "version". Different operating systems have
+different implementations of the libraries, and the exact version sometimes
+varies from one operating system version to the next.
+
+The C Standard Library
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The C standard library is usually an inherent part of the operating system,
+in dynamic library form, although you may sometimes need to install the headers
+separately. (On Linux, you don't.)
+
+* On Linux (and some other UNIX systems), GNU's `glibc` provides the C standard
+  library. It is installed by default.
+
+* On Microsoft Windows, the Microsoft C run-time library is part of Microsoft
+  Visual C++.
+https://mousepawmedia.net/help/guides/contrib.html
+* On Mac OS X, the C standard library, the system file `libSystem.dylib`
+  provides the C standard library.
+
+* On BSD systems, BSD's own `libc` provides the C standard library.
+
+The C++ Standard Library
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The C++ standard library is usually preinstalled on the operating system, as
+virtually all C++ programs rely on it.
+
+* On Linux (and some other UNIX systems), GNU's `libstdc++` is the C++ standard
+  library. It is installed by default.
+
+* On Microsoft Windows, the C++ standard library is not installed by default.
+  Instead, it is usually provided via the "Microsoft Visual C++ Redistributable".
+
+* On Mac OS X, LLVM's `libc++` is the C++ standard library. It is installed
+  by default.
+
+* On BSD systems, GNU's `libstdc++` has historically been used. However, on
+  FreeBSD 10 and later, `libc++` is used.
+
+..  NOTE:: The **C++ standard library** is *NOT* the same thing as the
+    :abbr:`STL (standard template library)`. The STL is specifically the part
+    of the C++ standard library that has to do with containers and algorithms.
+    It was originally developed separately, and later integrated into the
+    larger standard library. The two terms are often confused.
+    (`SOURCE: What is the STL? <https://stackoverflow.com/a/827431/472647>`_)
+
+GNU vs. LLVM
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+It is important to note that, on Linux, one is not **required** to use
+`libstdc++`. It is, in fact, possible to install and use LLVM's `libc++`,
+although this often requires compiling it from source. Since this is a dynamic
+library, if you compile against `libc++` on Linux, you *will* need to ensure
+end-users also have it on their systems.
+
+Aside from this, it is perfectly possible to use both `libstdc++` and `libc++`
+in the same environment, because the mangled names for the two are actually
+different.
+
+At MousePaw Media, we primarily use the Clang compiler. However, since we
+are on Linux, it is easiest to use the default `libstdc++`. Yet, we get
+access to additional tools and optimizations in Clang if we are using `libc++`.
+Thus, we ideally want to be able to use both with our code.
+
+There is another reason for using LLVM's `libc++`. Contrasting its source
+code with that of GNU's `libstdc++`, it is considerably cleaner, better
+designed, and better documented.
 
 Automating with CMake
--------------------------------------
+=====================================
 
 Simplifying with Makefiles
--------------------------------------
-
-Sphinx
 =====================================

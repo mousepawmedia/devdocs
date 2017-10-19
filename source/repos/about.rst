@@ -67,3 +67,13 @@ The exam is open-book, and will focus primarily on your ability to recognize
 errors and resolve problems. None of the questions will be multiple choice. Be
 prepared to write commands free-form, correct configuration files, and detail
 the steps necessary to fix stated problems.
+
+Using This Text
+===================================
+
+If you are preparing for the RMCE, you should read everything presented here
+*in order*. Concepts build on each other, and we will assume you've read
+prior sections.
+
+You should also **read source material**. We are doing our best to summarize,
+but further useful information can be found on our source links.

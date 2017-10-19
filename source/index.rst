@@ -63,7 +63,7 @@ Repository Master
 
     repos/about
     repos/repos
-    repos/buildsystem
+    repos/cbuildsystem
     repos/testing
     repos/ci
 
