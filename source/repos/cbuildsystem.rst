@@ -306,7 +306,7 @@ separately. (On Linux, you don't.)
 
 * On Microsoft Windows, the Microsoft C run-time library is part of Microsoft
   Visual C++.
-https://mousepawmedia.net/help/guides/contrib.html
+
 * On Mac OS X, the C standard library, the system file `libSystem.dylib`
   provides the C standard library.
 
@@ -350,14 +350,32 @@ Aside from this, it is perfectly possible to use both `libstdc++` and `libc++`
 in the same environment, because the mangled names for the two are actually
 different.
 
-At MousePaw Media, we primarily use the Clang compiler. However, since we
-are on Linux, it is easiest to use the default `libstdc++`. Yet, we get
-access to additional tools and optimizations in Clang if we are using `libc++`.
-Thus, we ideally want to be able to use both with our code.
+There are several advantages LLVM's `libc++` has over GNU's `libstdc++`:
 
-There is another reason for using LLVM's `libc++`. Contrasting its source
-code with that of GNU's `libstdc++`, it is considerably cleaner, better
-designed, and better documented.
+* `libc++` has a signficiantly cleaner, better-designed modern code base.
+
+* The entire LLVM toolchain, including `libc++`, is thoroughly documented.
+
+* We get access to additional tools and optimizations in the LLVM Clang
+  compiler toolchain.
+
+Ideally, we want to use `libc++` as much as possible. However, because it
+is not always practical to provide this dynamic library to end users, we much
+also be able to compile against `libstdc++`.
+
+Compiler Commands
+-------------------------------------
+
+..  NOTE:: You should bookmark the `official documentation for Clang <https://clang.llvm.org/docs/>`_
+
+We rarely need to compile things manually, but it is helpful to know
+*how* regardless. Let's break down the compiler commands that our build
+system automatically generates:
+
+..  code-block:: bash
+
+    /usr/bin/c++   -I/home/jason/Code/Repositories/pawlib/pawlib-source/include -I/home/jason/Code/Repositories/pawlib/pawlib-source/../../libdeps/libs/include  -g   -Wall -Wextra -Werror -std=c++14 -o CMakeFiles/pawlib.dir/src/binconv.cpp.o -c /home/jason/Code/Repositories/pawlib/pawlib-source/src/binconv.cpp
+
 
 Automating with CMake
 =====================================
