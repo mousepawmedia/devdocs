@@ -65,8 +65,6 @@ A Repository Master can...
 
 * Push to repositories without an accepted Revision.
 
-For more information, see :ref:`rmdabout`.
-
 ..  NOTE:: We do not accept requests to become a Repository Master, so don't ask.
 
 .. _harbormasterjenkins_jenkins:

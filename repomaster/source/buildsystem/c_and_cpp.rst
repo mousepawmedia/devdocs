@@ -1,4 +1,4 @@
-..  _rmdcbuild:
+..  _buildc:
 
 C/C++ Build Systems
 ###################################
@@ -87,8 +87,7 @@ between programs, so ensuring a consistent version can be far more difficult.
 Structure of the Repository
 =====================================
 
-Every C/C++ project repository follows the same structure. (This is also
-overviewed in "Guide: Building Code", under :ref:`gbuild_systems_conf`.)
+Every C/C++ project repository follows the same structure.
 
 ..  NOTE:: Folders marked with (*) are untracked in the Git repository
 

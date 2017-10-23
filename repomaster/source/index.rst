@@ -1,10 +1,13 @@
-..  _rmdabout:
+.. MousePaw Media Development Documentation master file, created by
+   sphinx-quickstart on Mon May 30 15:25:19 2016.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
 
-Repository Master Documentation
-###################################
+MousePaw Media Repository Master Manual
+##########################################
 
-About This Documentation
-===========================
+About This Manual
+===================================
 To ensure the highest code quality and simplest workflows, we have a carefully
 developed and curated code management and build system. We've written thorough
 documentation, to ensure that staff is able to manage and maintain this system.
@@ -15,7 +18,7 @@ documentation provided here contains all the information necessary to pass
 MousePaw Media's Repository Master Certification Exam [RMCE].
 
 What Is a Repository Master?
-=================================
+-----------------------------------
 A **Repository Master** is someone with elevated access and control privileges
 over the repositories and build systems. They must have an up-to-date
 Repository Master certification from MousePaw Media.
@@ -33,7 +36,7 @@ time. This ensures that policies are properly enforced, and simplifies the
 process by which problems are resolved.
 
 Preparing For The RMCE
-===================================
+-----------------------------------
 As of 2018, MousePaw Media programming staff must pass the
 :abbr:`RMCE (Repository Master Certification Exam)` before acting as a
 Repository Master. This exam covers the following topics:
@@ -69,7 +72,7 @@ prepared to write commands free-form, correct configuration files, and detail
 the steps necessary to fix stated problems.
 
 Using This Text
-===================================
+-----------------------------------
 
 If you are preparing for the RMCE, you should read everything presented here
 *in order*. Concepts build on each other, and we will assume you've read
@@ -77,3 +80,48 @@ prior sections.
 
 You should also **read source material**. We are doing our best to summarize,
 but further useful information can be found on our source links.
+
+Table of Contents
+===================================
+
+..  toctree::
+    :maxdepth: 2
+
+    buildsystem/c_and_cpp
+    buildsystem/python
+    buildsystem/sphinx
+
+    repository/git
+    repository/arcanist
+    repository/phab
+    repository/github
+
+    infrastructure/debugging
+    infrastructure/staticanalysis
+    infrastructure/dynamicanalysis
+    infrastructure/testing
+    infrastructure/ci
+
+Indices and tables
+===================================
+
+..  toctree::
+    :maxdepth: 1
+
+    glossary
+
+* :ref:`genindex`
+* :ref:`search`
+
+Feedback
+===================================
+This documentation is written and maintained by the MousePaw Media Standards
+Board. Feedback is welcome via email (developers@mousepawmedia.com).
+
+You can also frequently find us in the #mousepawmedia channel on Freenode.
+
+Pull requests to this repository are not accepted. If you wish to propose a
+change, email your patch to us at the address above.
+
+For more information about contributing to MousePaw Media
+projects, see `mousepawmedia.com/developers <https://www.mousepawmedia.com/developers>`_.

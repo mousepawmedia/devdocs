@@ -71,21 +71,3 @@ Reverting Changes
 
 Rewriting History
 -----------------------------------
-
-Using Arcanist
-===================================
-
-Arcanist Configuration
------------------------------------
-
-Authentication
------------------------------------
-
-Interacting with Differentials
------------------------------------
-
-Managing with Diffusion
-===================================
-
-Code Territory
-===================================
