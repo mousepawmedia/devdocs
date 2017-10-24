@@ -55,9 +55,13 @@ Repository Master. This exam covers the following topics:
 
   * Makefiles
 
-* Goldilocks testing
-
 * Static analysis tools
+
+* Dynamic analysis tools
+
+* Debugging tools
+
+* Testing
 
 * MousePaw Media Standards
 

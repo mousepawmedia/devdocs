@@ -369,12 +369,278 @@ Compiler Commands
 
 We rarely need to compile things manually, but it is helpful to know
 *how* regardless. Let's break down the compiler commands that our build
-system automatically generates:
+system automatically generates. Here's the Debug target compile line::
 
-..  code-block:: bash
+    /usr/bin/clang++-5.0   -I/home/user/Code/Repositories/pawlib/pawlib-source/include -I/home/user/Code/Repositories/pawlib/pawlib-source/../../libdeps/libs/include  -g   -Wall -Wextra -Werror -std=c++14 -o CMakeFiles/pawlib.dir/src/binconv.cpp.o -c /home/user/Code/Repositories/pawlib/pawlib-source/src/binconv.cpp
 
-    /usr/bin/c++   -I/home/jason/Code/Repositories/pawlib/pawlib-source/include -I/home/jason/Code/Repositories/pawlib/pawlib-source/../../libdeps/libs/include  -g   -Wall -Wextra -Werror -std=c++14 -o CMakeFiles/pawlib.dir/src/binconv.cpp.o -c /home/jason/Code/Repositories/pawlib/pawlib-source/src/binconv.cpp
+And here is the Release target compile line::
 
+    /usr/bin/clang++-5.0   -I/home/jason/Code/Repositories/pawlib/pawlib-source/include -I/home/jason/Code/Repositories/pawlib/pawlib-source/../../libdeps/libs/include  -O3 -DNDEBUG   -Wall -Wextra -Werror -std=c++14 -o CMakeFiles/pawlib.dir/src/binconv.cpp.o -c /home/jason/Code/Repositories/pawlib/pawlib-source/src/binconv.cpp
+
+Those are ugly, long, scary lines of code (as well as specific to my system),
+so let's break them down and tame them.
+
+Compiler Path
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+First, we invoke the compiler itself. This command varies depending which
+compiler you're using, and where it's located::
+
+    /usr/bin/clang++-5.0
+
+Many times, you'll actually see :code:`/usr/bin/c++`. If the user set up
+their compilers following our Network Documentation, they probably used
+:code:`sudo update-alternatives`, which creates aliases that can be quickly
+and easily switched between Clang or GCC (or whatever other compiler).
+
+..  NOTE:: If you're not sure which compiler is being used by
+    :code:`update-alternatives`, run :code:`sudo update-alternatives --config c++`
+    and note which option is selected. Replace `c++` with `cc` in that command
+    to switch the C compiler.
+
+Include Paths
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Next, we tell the compiler where to look for header files, using the :code:`-I`
+argument. We may use either relative or absolute paths here. Often, relative
+paths are easier to manually write, and are more likely to be portable. The
+reason we see absolute paths here is because the command was automatically
+generated; the absolute paths are an implementation detail of CMake.
+
+We should always first search for header files in the project itself::
+
+    -I/home/user/Code/Repositories/pawlib/pawlib-source/include
+
+Second, we'll search through the headers files for any external dependencies::
+
+    -I/home/user/Code/Repositories/pawlib/pawlib-source/../../libdeps/libs/include
+
+Warnings
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The compiler, especially Clang, produces a lot of warnings which help us write
+cleaner code. However, many of these are disabled by default. To turn them
+on, we include the following flags::
+
+    -Wall -Wextra
+
+In those flags, the `W` stands for `Warnings`; we are enabling `Warnings all`
+and `Warnings extra`. These are actually shorthand for a whole host of
+flags. Reference the official documentation for an exhaustive list of these
+flags, and which are enabled by the commands we just used.
+
+At MousePaw Media, we don't want to just *see* the warnings, we want them
+fixed! To do this, we need to ask the compiler to treat all warnings as
+errors::
+
+    -Werror
+
+This literally prevents the code from compiling if it has any warnings. This
+causes automatic builds to fail if there are warnings, and helps us write
+cleaner code.
+
+However, there is a downside to this flag! If we're compiling *someone else's*
+code, they may have ignored warnings, suppressed some of them with compiler
+flags, or maybe even used a compiler which threw less (such as GCC). If this
+happens, we either have to fix the warnings ourselves, or else turn off
+:code:`-Werror`. As such, we usually compile third-party code *without* this
+flag.
+
+C++ Standard
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Next, we need to specify the C++ standard we are using. This affects compiler
+errors and warnings - some things that are allowed in C++14 aren't permitted in
+C++11, and so forth. If we omit this flag, the compiler will use its default
+standard, and what standard that is varies by compiler and version! Thus, it is
+always better to just specify standard explicitly::
+
+    -std=c++14
+
+Debugging Symbols
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+In the case of the Debug version of our project, we need to ask the compiler
+to add **debugging symbols** to the code. This adds additional code that
+aids debugging tools::
+
+    -g
+
+If you're ever using a code analysis or debugging tool, and you're seeing
+raw memory addresses instead of variable and function names, you almost
+certainly forgot this flag.
+
+When we're compiling with debugging symbols, we must be sure our optimation
+level is not above :code:`-O0` (see next section).
+
+Optimization
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+If we are compiling the Release version of our project, we will omit the
+:code:`-g` flag, and include another to optimize the code::
+
+    -O3
+
+Like the `-W` flags correspond to warnings, `-O` flags corresponding to
+optimizations. There are multiple levels and types of optimizations:
+
+* :code:`-O0`: No optimization. Must be used with :code:`-g`. This is the
+  default.
+
+* :code:`-O1`: Some optimization.
+
+* :code:`-O2`: Enables most optimiziations.
+
+* :code:`-O3`: Includes all of :code:`-O2`, plus optimizations that may take
+  longer to compile or may make the code larger. This is where we start trading
+  off size for execution speed.
+
+* :code:`-Ofast`: Includes all of :code:`-O3`, plus some more that may violate
+  strict compliance with language standards.
+
+* :code:`-Os`: Includes all of :code:`-O2`, but tries to make the code smaller.
+  This is where we start trading off execution speed for size.
+
+* :code:`-Oz`: Includes :code:`-Os`, and tries to make the code even smaller.
+
+There are a few more types, which can be found in the official documentation.
+
+We also see the following flag::
+
+    -DNDEBUG
+
+The :code:`-D` flags define macros, which as you may know from C and C++,
+are like preprocessor variables and functions. This specific command is used
+to define the macro :code:`NDEBUG`, which turns off :code:`assert` statements
+in the code. This is useful for Release targets, as it prevents the shipped code
+from randomly crashing (and confusing the end-user) because of an assertion
+failure.
+
+Input and Output Paths
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Now we can actually generate the object files from our code. We specify our
+output path with :code:`-o`, and our input path with :code:`-c`::
+
+    -o CMakeFiles/pawlib.dir/src/binconv.cpp.o -c /home/user/Code/Repositories/pawlib/pawlib-source/src/binconv.cpp
+
+Once again, these particular paths were generated by CMake.
+
+We must compile each implementation file (`*.c` and `*.cpp`) in our project
+to a corresponding object file.
+
+SOURCES:
+
+* `Clang command line argument reference (Clang Documentation) <https://clang.llvm.org/docs/ClangCommandLineReference.html>`_
+
+* `Code Generation Options (Clang Documentation) <https://clang.llvm.org/docs/CommandGuide/clang.html#code-generation-options>`_
+
+* `Diagnostic flags in Clang (Clang Documentation) <https://clang.llvm.org/docs/DiagnosticsReference.html>`_
+
+* `Does "-dndebug" do anything in g++? (StackOverflow) <https://stackoverflow.com/a/24257232/472647>`_
+
+..  _buildc_ld:
+
+Linker Commands
+-------------------------------------
+
+Once we have our `*.o` or `*.obj` files, we can link them together to generate
+the final product.
+
+..  NOTE:: Remember that we don't link a static library! Rather, we generate
+    an archive of the object files. (See :ref:`buildc_ar`)
+
+Let's look at the linker commands automatically generated by CMake. Here's
+the one for a Debug target::
+
+    /usr/bin/clang++-5.0  -g   -fuse-ld=lld -rdynamic CMakeFiles/pawlib-tester.dir/main.cpp.o CMakeFiles/pawlib-tester.dir/src/TestSystem.cpp.o  -o ../../bin/Debug/pawlib-tester ../../../pawlib-source/lib/Debug/libpawlib.a ../../../../libdeps/libs/lib/libcpgf.a
+
+And here is one for a Release target::
+
+    /usr/bin/c++  -O3 -DNDEBUG   -fuse-ld=lld -rdynamic CMakeFiles/pawlib-tester.dir/main.cpp.o CMakeFiles/pawlib-tester.dir/src/TestSystem.cpp.o  -o ../../bin/Release/pawlib-tester ../../../pawlib-source/lib/Debug/libpawlib.a ../../../../libdeps/libs/lib/libcpgf.a
+
+Note, we are once again invoking our *compiler* program. However, the commands
+tell it to call the linker in this step. In reality, it is going to invoke
+either the program :code:`ld` (GCC's linker) or :code:`lld`
+(LLVM's linker).
+
+By default, :code:`ld` will always be used on Linux. To use :code:`lld` in
+that situation...
+
+1. We must be using the Clang compiler.
+
+2. We must have the corresponding version of :code:`lld` installed in
+   :path:`/usr/bin`. If we are using :code:`clang++-5.0`, we must have
+   :code:`/usr/bin/lld-5.0` installed as well. You can check for this
+   with the command :code:`whereis lld-5.0`, and ensuring the expected
+   path is returned.
+
+3. We must pass the flag :code:`-fuse-ld=lld` to Clang when we invoke the
+   linker.
+
+Aside from this flag and a couple other technical details, :code:`ld` and
+:code:`lld` have exactly the same usage.
+
+Debugging Symbols
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The flag :code:`-g` is ignored by the :code:`ld` and :code:`lld` linkers
+altogether, and is only accepted for compatibility with other tools.
+
+:code:`-rdynamic` is important to debugging, as it ensures all the symbols
+needed by debugging are put in the proper places by the linker. (That's
+actually over-summarizing the technical explaination, so see the GCC docs
+I linked to below if you're curious.)
+
+Optimization Levels
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The flags :code:`-O0`, :code:`-O1`, :code:`-O2`, and :code:`-O3` work in
+much the same way with the linker as with the compiler. With :code:`ld`,
+they only affect certain types of libraries, but future versions may offer
+further optimizations.
+
+In short, it may not *help* your particular code, but it can't *hurt*, so just
+assume there's a point to it and include the appropriate flag.
+
+..  NOTE:: I was unable to find documentation on if or how :code:`lld` handles
+    optimization flags differently from :code:`ld`. It is safest to assume
+    it will be identical.
+
+As with the compiler, we also have the flag :code:`-DNDEBUG`, which functions
+in the same capacity here as it does there.
+
+Input and Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+After our other flags, we specify the file path to each of our object files.
+Then, we specify our output with :code:`-o`. This part of the earlier commands
+looks like the following::
+
+    CMakeFiles/pawlib-tester.dir/main.cpp.o CMakeFiles/pawlib-tester.dir/src/TestSystem.cpp.o  -o ../../bin/Release/pawlib-tester
+
+Finally, we must specify the file paths the `*.a` files for any and all static
+libraries we are linking to.
+
+Remember, **the order is important here!** The linker will resolve these
+external dependencies *in order*, from left to right. If B depends on A, but you
+list them in the order "A B", then the linker will be unable to link A to B,
+and the linking will fail with one or more "undefined reference" errors.
+
+This part of the commands looks like this::
+
+    ../../../pawlib-source/lib/Debug/libpawlib.a ../../../../libdeps/libs/lib/libcpgf.a
+
+SOURCES
+
+* `LLD - The LLVM Linker (LLVM) <http://releases.llvm.org/5.0.0/tools/lld/docs/index.html>`_
+
+* `Using the GNU Compiler Collection: Link Options (GCC) <https://gcc.gnu.org/onlinedocs/gcc/Link-Options.html>`_
+
+..  _buildc_ar:
+
+Archiver Command
+-------------------------------------
 
 Automating with CMake
 =====================================
