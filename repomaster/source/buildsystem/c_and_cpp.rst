@@ -592,13 +592,15 @@ to a corresponding object file.
 
 SOURCES:
 
-* `Clang command line argument reference (Clang Documentation) <https://clang.llvm.org/docs/ClangCommandLineReference.html>`_
+* `*Clang command line argument reference (Clang Documentation) <https://clang.llvm.org/docs/ClangCommandLineReference.html>`_
 
-* `Code Generation Options (Clang Documentation) <https://clang.llvm.org/docs/CommandGuide/clang.html#code-generation-options>`_
+* `*Code Generation Options (Clang Documentation) <https://clang.llvm.org/docs/CommandGuide/clang.html#code-generation-options>`_
 
-* `Diagnostic flags in Clang (Clang Documentation) <https://clang.llvm.org/docs/DiagnosticsReference.html>`_
+* `*Diagnostic flags in Clang (Clang Documentation) <https://clang.llvm.org/docs/DiagnosticsReference.html>`_
 
 * `Does "-dndebug" do anything in g++? (StackOverflow) <https://stackoverflow.com/a/24257232/472647>`_
+
+* `*GCC Option Index (GCC) <https://gcc.gnu.org/onlinedocs/gcc/Option-Index.html>`_
 
 ..  _buildc_compiler_linker:
 
@@ -622,11 +624,20 @@ And here is one for a Release target::
 
 Note, we are once again invoking our *compiler* program. However, the commands
 tell it to call the linker in this step. In reality, it is going to invoke
-either the program :code:`ld` (GCC's linker) or :code:`lld`
-(LLVM's linker).
+one of three possible linkers:
 
-By default, :code:`ld` will always be used on Linux. To use :code:`lld` in
-that situation...
+* :code:`ld.bfd`, GCC's linker.
+
+* :code:`ld.lld`, LLVM's linker. Usually versioned, i.e.
+  :code:`ld.lld-4.0` or :code:`ld.lld-5.0`.
+
+* :code:`ld.gold`, a linker designed to be faster than :code:`ld.bfd`.
+
+By default, :code:`ld.bfd` will always be used on Linux. To use a different
+linker, we use the :code:`-fuse-ld=` flag. For example, to use the
+:code:`ld.gold` linker, we'd pass the flag :code:`-fuse-ld=gold`.
+
+To use :code:`ld.lld` specifically...
 
 1. We must be using the Clang compiler.
 
@@ -639,16 +650,16 @@ that situation...
 3. We must pass the flag :code:`-fuse-ld=lld` to Clang when we invoke the
    linker.
 
-Aside from this flag and a couple other technical details, :code:`ld` and
-:code:`lld` have exactly the same usage.
+Aside from this flag and a couple other technical details, the three linkers
+have exactly the same usage.
 
 ..  _buildc_compiler_linker_g:
 
 Debugging Symbols
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The flag :code:`-g` is ignored by the :code:`ld` and :code:`lld` linkers
-altogether, and is only accepted for compatibility with other tools.
+The flag :code:`-g` is ignored by the all three linkers altogether, and is
+only accepted for compatibility with other tools.
 
 :code:`-rdynamic` is important to debugging, as it ensures all the symbols
 needed by debugging are put in the proper places by the linker. (That's
@@ -661,7 +672,7 @@ Optimization Levels
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The flags :code:`-O0`, :code:`-O1`, :code:`-O2`, and :code:`-O3` work in
-much the same way with the linker as with the compiler. With :code:`ld`,
+much the same way with the linker as with the compiler. With :code:`ld.bfd`,
 they only affect certain types of libraries, but future versions may offer
 further optimizations.
 
@@ -1023,8 +1034,403 @@ with a value other than `32` or `64`, so we throw a fatal error. Note how we
 are substituting in the given value for :code:`ARCH` into our message string
 using the code :code:`${ARCH}`.
 
+Compiler Flags
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Next, we can start adding our other compiler flags. First, we add the
+flags that we *always* use, regardless of compiler or target.
+
+..  code-block:: cmake
+
+    # Our global compiler flags.
+    add_definitions(-Wall -Wextra -Werror)
+
+Next, we make use of the :code:`COMPILERTYPE` variable we created earlier
+to determine whether we're working with GCC or Clang.
+
+..  code-block:: cmake
+
+    if(COMPILERTYPE STREQUAL "gcc")
+        # Set debug flags. -g is a default.
+        #set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} ")
+        # Set release flags. -O3 is a default.
+        set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -s")
+    elseif(COMPILERTYPE STREQUAL "clang")
+        # Use libc++ if requested.
+        if(LLVM)
+            add_definitions(-stdlib=libc++)
+            message("Using LLVM libc++...")
+        endif()
+        # Set debug flags. -g is a default.
+        #set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} ")
+        # Set release flags. -O3 is a default.
+        #set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} ")
+    endif()
+
+The outer conditional switches between :code:`"gcc"` and :code:`"clang"`.
+Inside, we can add compiler-specific flags to those used for :code:`Debug`
+and :code:`Release`. To do this, we only need to :code:`set()` the
+:code:`CMAKE_CXX_FLAGS_DEBUG` or :code:`CMAKE_CXX_FLAGS_RELEASE` built-in
+variables. Since we only want to *add* to these variables, not overwrite
+them entirely, we need to reattach the current contents of the variable to the
+new version, by including :code:`${CMAKE_CXX_FLAGS_DEBUG}` (or `RELEASE`) at
+the beginning of the new string.
+
+You'll also notice that we've commented out some of these :code:`set()`
+statements. This is because, at least in this example, we don't *need*
+to add to the compiler flags for some scenarios. However, we leave the
+commented-out line present, in case we need it later.
+
+At the moment, we only need to add one flags if we're compiling :code:`Release`
+on GCC: :code:`-s`, which is an optimization that removes all symbol table and
+relocation information from the executable, thereby making a smaller program.
+
+You will note that we never define the flags :code:`-g` or :code:`-O3`
+anywhere. That's because CMake assumes these automatically for the :code:`Debug`
+and :code:`Release` targets, respectively. We would need to specify flags that
+override these to change them.
+
+If we are using Clang, we also want to check for the definition of a custom
+variable, :code:`LLVM`, which we'll discuss in a later section. If the variable
+is defined, we add the flag :code:`-stdlib=libc++`, requesting that Clang
+uses LLVM's `libc++`.
+
+Linker Flags
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+CMake sets our typical linker options automatically based on target. However,
+we want to provide the option to use a different linker than the system
+default. We can do that with the following...
+
+..  code-block:: cmake
+
+    if(LD)
+        message("Using ${LD} linker...")
+        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fuse-ld=${LD}")
+    endif()
+
+By now, this should appear pretty straight-forward. If the custom variable
+:code:`LD` is defined, we substite its value into the linker flag
+:code:`-fuse-ld=whatever`. The valid options here are :code:`bfd`,
+:code:`gold`, and (on Clang only) :code:`lld`.
+
+Input and Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Aside from the names at the top, the above code is the same between all
+our :code:`CMakeLists.txt` files for C++ projects. From here on, we define the
+input and output files, so the code varies greatly from one project to the
+next.
+
+We start by defining our output.
+
+..  code-block:: cmake
+
+    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/../../lib/$<CONFIG>")
+
+Remember, for this file, we're creating a statically-linked library, so we must
+use the variable :code:`CMAKE_ARCHIVE_OUTPUT_DIRECTORY`. The rest of the command
+is always the same - we use the automatically defined variable
+:code:`CMAKE_CURRENT_BINARY_DIR` to start our path within the directory
+we're building in. Then we step back two levels and go into the :code:`lib`
+folder, and either the :code:`Debug` or :code:`Release` folder (determined by
+:code:`$<CONFIG>`).
+
+Now we include all the directories containing the header files we need,
+starting with our project's own...
+
+..  code-block:: cmake
+
+    include_directories(include)
+
+...and adding the header file directories for any statically-linked libraries
+we are using.
+
+..  code-block:: cmake
+
+    # Include headers of dependencies.
+    include_directories(${CPGF_DIR}/include)
+
+You'll notice that we are using another custom variable, :code:`CPGF_DIR`,
+while we define externally (we'll discuss that in a later section).
+
+Now we add the actual source files for our project - both the headers and
+implementation files! The paths here are all relative to the root of the
+project, where our :code:`CMakeLists.txt` lives.
+
+You should also note the first line of this section:
+:code:`add_library(${TARGET_NAME} STATIC`. We are creating a *library* with
+the :code:`TARGET_NAME` we defined at the top of the file (in this case,
+:code:`pawlib`). We also specify :code:`STATIC` because our library
+will be *statically-linked.*
+
+..  NOTE:: If you're having trouble getting the build system to compile,
+    check here first!
+
+..  code-block:: cmake
+
+    add_library(${TARGET_NAME} STATIC
+        include/pawlib/avl_tree.hpp
+        include/pawlib/base_flex_array.hpp
+        include/pawlib/binconv.hpp
+        include/pawlib/core_types.hpp
+        include/pawlib/core_types_tests.hpp
+        include/pawlib/flex_array.hpp
+        include/pawlib/flex_array_tests.hpp
+        include/pawlib/flex_bit_tests.hpp
+        include/pawlib/flex_bit.hpp
+        include/pawlib/flex_map.hpp
+        include/pawlib/flex_queue.hpp
+        include/pawlib/flex_queue_tests.hpp
+        include/pawlib/flex_stack.hpp
+        include/pawlib/flex_stack_tests.hpp
+        include/pawlib/goldilocks.hpp
+        include/pawlib/iochannel.hpp
+        include/pawlib/onechar.hpp
+        include/pawlib/onestring.hpp
+        include/pawlib/onestringbase.hpp
+        include/pawlib/onestring_tests.hpp
+        include/pawlib/pawsort.hpp
+        include/pawlib/pawsort_tests.hpp
+        include/pawlib/pool.hpp
+        include/pawlib/pool_tests.hpp
+        include/pawlib/quickstring.hpp
+        include/pawlib/rigid_stack.hpp
+        include/pawlib/singly_linked_list.hpp
+        include/pawlib/stdutils.hpp
+
+        src/binconv.cpp
+        src/core_types.cpp
+        src/core_types_tests.cpp
+        src/flex_array_tests.cpp
+        src/flex_bit_tests.cpp
+        src/flex_queue_tests.cpp
+        src/flex_stack_tests.cpp
+        src/goldilocks.cpp
+        src/iochannel.cpp
+        src/onechar.cpp
+        src/onestring.cpp
+        src/onestringbase.cpp
+        src/onestring_tests.cpp
+        src/pawsort_tests.cpp
+        src/pool_tests.cpp
+        src/quickstring.cpp
+        src/stdutils.cpp
+    )
+
+Take note that we carefully organize this section, for easier maintainability!
+Our company convention is to list the headers in the first section, and the
+implementation files in a separate section. Within each section, the files
+should *always* be in alphabetical order.
+
+Next, we need to list any libraries we want to link to.
+
+..  IMPORTANT:: The order is *critical* here! If you rely on A and B, and B
+    also relies on A, you must list them in the order "B, A". If you're having
+    trouble with linking, check here.
+
+..  code-block:: cmake
+
+    # Link against dependencies.
+    target_link_libraries(${TARGET_NAME} ${CPGF_DIR}/lib/libcpgf.a)
+
+Once again, we're using our :code:`TARGET_NAME` variable from the top,
+thereby telling the :code:`target_link_libraries()` command which target
+it should be linking the external library to. (Yes, it is possible to
+build multiple targets in one file, although we aren't doing that here.)
+
+Sanitizers
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The last part of this file is *also* pretty consistent across all versions
+of :code:`CMakeLists.txt` in our company. We need to be able to use any of
+Clang's many "sanitizers" - dynamic analysis tools that aid us in finding
+bugs and errors.
+
+..  code-block:: cmake
+
+    if(COMPILERTYPE STREQUAL "clang")
+        if(SAN STREQUAL "address")
+            add_definitions(-O1 -fsanitize=address -fno-optimize-sibling-calls -fno-omit-frame-pointer)
+            set_property(TARGET ${TARGET_NAME} APPEND_STRING PROPERTY LINK_FLAGS " -fsanitize=address")
+            message("Compiling with AddressSanitizer.")
+        elseif(SAN STREQUAL "leak")
+            add_definitions(-fsanitize=leak)
+            set_property(TARGET ${TARGET_NAME} APPEND_STRING PROPERTY LINK_FLAGS " -fsanitize=leak")
+            message("Compiling with LeakSanitizer.")
+        elseif(SAN STREQUAL "memory")
+            if(LLVM)
+                add_definitions(-O1 -fsanitize=memory -fno-optimize-sibling-calls -fno-omit-frame-pointer -fsanitize-memory-track-origins)
+                set_property(TARGET ${TARGET_NAME} APPEND_STRING PROPERTY LINK_FLAGS " -fsanitize=memory")
+                message("Compiling with MemorySanitizer.")
+            else()
+                message("Skipping MemorySanitizer: requires libc++")
+            endif()
+        elseif(SAN STREQUAL "thread")
+            add_definitions(-O1 -fsanitize=thread)
+            set_property(TARGET ${TARGET_NAME} APPEND_STRING PROPERTY LINK_FLAGS " -fsanitize=thread")
+            message("Compiling with ThreadSanitizer.")
+        elseif(SAN STREQUAL "undefined")
+            add_definitions(-fsanitize=undefined)
+            set_property(TARGET ${TARGET_NAME} APPEND_STRING PROPERTY LINK_FLAGS " -fsanitize=undefined")
+            message("Compiling with UndefiniedBehaviorSanitizer.")
+        endif()
+    endif()
+
+Since these sanitizers only work when we're compiling with Clang, we need to
+ensure that is the compiler we're using that. With that logic taken care of,
+we are relying on the custom variable :code:`SAN` to determine which, if any
+sanitizer we are to compile with.
+
+The syntax should be pretty easy to discern by now, so let's talk about intent.
+Each of the five santizers our build system supports need certain compiler
+and linker flags for optimal performance (see their documentation). We
+include each of those flags here.
+
+One more consideration: :code:`MemorySanitizer` doesn't work well without
+using the :code:`libc++` library, so we need to ensure that is being used
+before trying to compile and link with that sanitizer.
+
+Differences Compiling Libraries and Executables
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+If we compare the :code:`CMakeLists.txt` above with that for
+:code:`pawlib-tester`, we'll note only a handful of details.
+
+First, we specify our output using...
+
+..  code-block:: cmake
+
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/../../bin/$<CONFIG>")
+
+This is identical to the same line for statically-linked libraries, except
+we're using the variable :code:`CMAKE_RUNTIME_OUTPUT_DIRECTORY` instead of
+:code:`CMAKE_ARCHIVE_OUTPUT_DIRECTORY`.
+
+Second, while before we used the command :code:`add_library()` to list the
+files in our project, we use...
+
+..  code-block:: cmake
+
+    add_executable(${TARGET_NAME}
+        main.cpp
+
+        include/TestSystem.hpp
+
+        src/TestSystem.cpp
+    )
+
+Our convention for listing files is still the same, although we list
+:code:`main.cpp` by itself at the top.
+
+We link to libraries in the same manner as before, except now we have one
+more to link to - the version of PawLIB we *just* compiled.
+
+..  code-block:: cmake
+
+    # Link against dependencies.
+    target_link_libraries(${TARGET_NAME} ${CMAKE_HOME_DIRECTORY}/../pawlib-source/lib/$<CONFIG>/libpawlib.a)
+    target_link_libraries(${TARGET_NAME} ${CPGF_DIR}/lib/libcpgf.a)
+
+If you compare that to other projects that link to PawLIB, you'll notice that
+here we are seeking out a copy of the compiled PawLIB within the project itself.
+Elsewhere, such as in SIMPLEXpress, you'd expect to see...
+
+..  code-block:: cmake
+
+    # Link against dependencies
+    target_link_libraries(${TARGET_NAME} ${PAWLIB_DIR}/lib/libpawlib.a)
+    target_link_libraries(${TARGET_NAME} ${CPGF_DIR}/lib/libcpgf.a)
+
+Configuration Files
+-------------------------------------
+
+Not all of the information we need has to be put directly into
+:code:`CMakeLists.txt`. As you saw, we have several custom variables that
+aren't even defined yet. This is where **configuration files** come in.
+
+We can put additional information into any text file, so long as we use
+the CMake syntax, and hand that text file to CMake when we invoke it.
+
+We are allowed to name these files anything we want, but for our own
+in-house build system, we follow the convention of ending the files with
+:code:`.config`. We always provide :path:`default.config`, and allow the user
+to define other custom :code:`.config` files, using the provided
+:path:`build.config.txt` as a template.
+
+Let's break down :path:`default.config` and see what's going on.
+
+..  code-block:: cmake
+
+    # DO NOT MODIFY THIS FILE!
+    # Use build.config.txt to change the path.
+
+Obviously, we don't want users to change the default configuration file,
+thus the warning comments at the top.
+
+All of the variables defined here were used in :path:`CMakeLists.txt` to
+do different things. By themselves, they do nothing - they are part of
+*our particular build system*, and aren't inherent to CMake itself.
+
+..  code-block:: cmake
+
+    set(LLVM false)
+
+This line allows us to ask Clang to use of :code:`libc++`. Setting the value
+to :code:`true` turns on this option.
+
+..  code-block:: cmake
+
+    # set(LD "lld")
+
+This line asks the toolchain to use a particular linker. Based on how we
+wrote :path:`CMakeLists.txt`, we can use the values :code:`"lld"`,
+:code:`"gold"`, or :code:`"bfd"`.
+
+..  code-block:: cmake
+
+    set(CPGF_DIR
+    	${CMAKE_HOME_DIRECTORY}/../../libdeps/libs
+    )
+
+Finally, we need to set the paths where we can find our dependencies. In this
+example, we only need CPGF. The absolute path is generated by CMake, so we
+only need to provide a relative path, starting from the directory where
+:path:`CMakeLists.txt` is located. That starting position is provided by
+CMake with the variable :code:`CMAKE_HOME_DIRECTORY`.
+
+This default path is related to the conventional layout of repositories
+our company uses. We typically clone all repositories into the same directory,
+and we keep all our third-party static library dependencies in a repository
+named :path:`libdeps`. Thus, this path steps back two levels, to the directory
+of repositories, and then into the :path:`libdeps` repository.
+
+Some projects also look for PawLIB, and we define the path for it in the same
+basic manner...
+
+..  code-block:: cmake
+
+    set(PAWLIB_DIR
+        ${CMAKE_HOME_DIRECTORY}/../../pawlib/pawlib
+    )
+
+...except now we look for the :path:`pawlib` repository.
+
+Of course, all of this needs to be documented for the end user, so we provide
+that :path:`build.config.txt` file, which contains a lot of comments describing
+these variables and how to set them.
+
+CMake can't actually see these files by default, so we'll need to point to the
+file when we invoke CMake.
+
+Whew, we've made it through the entirety of :path:`CMakeLists.txt` and
+the config files. That was a lot of information, so take a deep breath.
+We're about to put all this into action.
+
 Building with CMake
 -------------------------------------
+
+
 
 Simplifying with Makefiles
 =====================================

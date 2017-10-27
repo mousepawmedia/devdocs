@@ -83,7 +83,12 @@ If you are preparing for the RMCE, you should read everything presented here
 prior sections.
 
 You should also **read source material**. We are doing our best to summarize,
-but further useful information can be found on our source links.
+but further useful information can be found on our source links. Thus, you
+should **thoroughly read the material on source links**, with one exception.
+If a source link has an asterisk at the beginning
+(i.e. `*Some Huge Documentation (Example)`), this means you don't have to
+read through the link, as it is likely exhaustive. However, in that case, you
+should still skim it, and bookmark the source for further reference.
 
 Table of Contents
 ===================================
