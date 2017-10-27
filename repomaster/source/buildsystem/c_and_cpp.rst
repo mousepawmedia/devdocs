@@ -902,6 +902,26 @@ this used many more times, so get comfortable with it.
 ..  NOTE:: In CMake, arguments are separated by spaces instead of commas.
     Remember this!
 
+..  _buildc_cmake_config_config:
+
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+We will be defining some variables externally (more about that later).
+We designed our system to expect to find this file in the root of the
+repository, with the extension :code:`*.config`.
+
+..  code-block:: cmake
+
+    message("Using ${CONFIG_FILENAME}.config")
+    include(${CMAKE_HOME_DIRECTORY}/../${CONFIG_FILENAME}.config)
+
+The command :code:`include()` allows us to include any arbitrary text file
+containing CMake configuration code. The variable :code:`CONFIG_FILENAME`
+will need to be defined when we call CMake. The variable
+:code:`CMAKE_HOME_DIRECTORY` is defined by CMake itself, and refers to the
+directory where :path:`CMakeLists.txt` is found.
+
 ..  _buildc_cmake_config_compiler:
 
 Checking Compilers
@@ -1034,6 +1054,8 @@ with a value other than `32` or `64`, so we throw a fatal error. Note how we
 are substituting in the given value for :code:`ARCH` into our message string
 using the code :code:`${ARCH}`.
 
+..  _buildc_cmake_config_flags:
+
 Compiler Flags
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -1095,6 +1117,8 @@ variable, :code:`LLVM`, which we'll discuss in a later section. If the variable
 is defined, we add the flag :code:`-stdlib=libc++`, requesting that Clang
 uses LLVM's `libc++`.
 
+..  _buildc_cmake_config_linker:
+
 Linker Flags
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -1113,6 +1137,8 @@ By now, this should appear pretty straight-forward. If the custom variable
 :code:`LD` is defined, we substite its value into the linker flag
 :code:`-fuse-ld=whatever`. The valid options here are :code:`bfd`,
 :code:`gold`, and (on Clang only) :code:`lld`.
+
+..  _buildc_cmake_config_io:
 
 Input and Output
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1239,6 +1265,8 @@ thereby telling the :code:`target_link_libraries()` command which target
 it should be linking the external library to. (Yes, it is possible to
 build multiple targets in one file, although we aren't doing that here.)
 
+..  _buildc_cmake_config_sanitizers:
+
 Sanitizers
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -1291,6 +1319,8 @@ One more consideration: :code:`MemorySanitizer` doesn't work well without
 using the :code:`libc++` library, so we need to ensure that is being used
 before trying to compile and link with that sanitizer.
 
+..  _buildc_cmake_config_libvsexe:
+
 Differences Compiling Libraries and Executables
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -1341,6 +1371,8 @@ Elsewhere, such as in SIMPLEXpress, you'd expect to see...
     # Link against dependencies
     target_link_libraries(${TARGET_NAME} ${PAWLIB_DIR}/lib/libpawlib.a)
     target_link_libraries(${TARGET_NAME} ${CPGF_DIR}/lib/libcpgf.a)
+
+..  _buildc_cmake_externconfig:
 
 Configuration Files
 -------------------------------------
@@ -1427,10 +1459,99 @@ Whew, we've made it through the entirety of :path:`CMakeLists.txt` and
 the config files. That was a lot of information, so take a deep breath.
 We're about to put all this into action.
 
+..  _buildc_cmake_build:
+
 Building with CMake
 -------------------------------------
 
+CMake offers a *lot* of options, even from the command line. We won't
+go into most of those - the official documents can help with that - but we
+*will* discuss the ones relevant to us.
 
+We can build our CMake project on Mac or Linux using the following commands.
+These particular commands must be run from the same directory as
+:path:`CMakeLists.txt`, but you could apply the concepts and build the project
+elsewhere.
+
+..  code-block:: bash
+
+    $ cmake -E make_directory build_temp/Debug
+
+One of CMake's biggest benefits is that it offers portable commands like
+:code:`make_directory` which automatically perform the action as appropriate
+to the system you're on. In this case, we're creating a new folder for our
+temporary files.
+
+We run any CMake command via :code:`cmake -E`.
+
+..  code-block:: bash
+
+    $ cmake -E chdir build_temp/Debug cmake ../.. -G"Unix Makefiles" -DCMAKE_BUILD_TYPE=Debug -DCONFIG_FILENAME=default
+
+The command :code:`chdir` runs the given line of command-line code from the
+specified path. In this case, we want to run the command from within the
+directory we created a moment ago.
+
+Let's break down the command in question. :code:`../..` is the path to the
+:code:`CMakeLists.txt` we're using. :code:`-G"Unix Makefiles"` specifies what
+we're making - in this case, the Makefiles for building our code on a Unix
+system.
+
+Any flag starting with :code:`-D` is **D**efining a CMake variable. This is
+where we define those last few undefined variables we use in
+:path:`CMakeLists.txt`. In this case, we are setting :code:`CMAKE_BUILD_TYPE`
+to :code:`Debug`, and :code:`CONFIG_FILENAME` to :code:`default` (thereby
+using the configuration file :code:`default.config`).
+
+Once the build files have been generated, we're ready to build!
+
+..  code-block:: bash
+
+    $ cmake -E chdir build_temp/Debug make debug
+
+This runs the :code:`make debug` in the directory we generated our build
+files into. This is when the compiling and linking actually occurs.
+
+That's it!
+
+We could obviously compile the :code:`Release` target by using the flag
+:code:`-DCMAKE_BUILD_TYPE=Release` in that second command. We could also
+define other variables, including the custom variables we use in our
+:path:`CMakeLists.txt`. For example, :code:`-DARCH=32` would request a
+32-bit build, and :code:`-DSAN=address` would ask the compiler to use
+AddressSanitizer.
+
+..  _buildc_cmake_build_compiler:
+
+Selecting a Compiler
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Ideally, you should configure your compilers following the tutorial in
+our Network Documentation, thereby allowing you to use
+:code:`sudo update-alternatives` to switch them. However, if you don't want
+to do this, you can also override which compiler the system uses.
+
+To select a C compiler, use the terminal command...
+
+..  code-block:: bash
+
+    export CC=/usr/bin/gcc
+
+...where you specify the absolute path to the compiler you want.
+
+Similarly, you can change the C++ compiler using...
+
+..  code-block:: bash
+
+    export CXX=/usr/bin/g++
+
+If you've set these previously, and you want to start using
+:code:`sudo update-alternatives`, run the following.
+
+..  code-block:: bash
+
+    export CC=/usr/bin/cc
+    export CXX=/usr/bin/c++
 
 Simplifying with Makefiles
 =====================================
