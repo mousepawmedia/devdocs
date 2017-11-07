@@ -1241,6 +1241,35 @@ be sure to replace ``PASSWORD`` with the actual database password...
     $CONF['database_password'] = 'PASSWORD';
     $CONF['database_name'] = 'mailserver';
 
+You may also want to change the welcome message sent to new users. The
+following is the setting for our setup.
+
+..  code-block:: php
+
+    $CONF['welcome_text'] = <<<EOM
+    Welcome to MousePaw Media!
+
+    Your company account has been activated, and can be used to sign into any part
+    of the Staff Network.
+
+    Please remember: the email system is available 24/7, while the rest of the
+    Staff Network (anything at mousepawmedia.net) is only available 7am-10pm Pacific
+    Time.
+
+    The best way to get started is to follow the Staff Introduction
+    (https://mousepawmedia.net/help/guides/staff.html) and all the tutorials it
+    links to, preferably in order. (If you are already running Linux on your machine,
+    you can skip that section of the Introduction.)
+
+    We can answer questions and help you get started beyond that tutorial;
+    just email your internship supervisor, or send a message to
+    eco@mousepawmedia.com if in doubt of who to contact.
+
+    Once again, please let us know if you run into any trouble or have any questions.
+
+    Welcome aboard!
+    EOM;
+
 Save and close.
 
 Then, using PHPMyAdmin, grant the ``postfixadmin`` user full permissions

@@ -71,6 +71,7 @@ Other
 ..  toctree::
     :maxdepth: 1
 
+    admin/admin
     serverconfig/config
 
 Indices and tables
