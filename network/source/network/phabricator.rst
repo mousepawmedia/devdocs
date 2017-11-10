@@ -854,6 +854,9 @@ When you first open the Differential application on Phabricator, you'll be
 on the :guilabel:`Active Revisions` query. This shows all the Revisions
 that you are involved in.
 
+On the left, you can use the other built-in queries, or else you can click
+:guilabel:`Edit Query` at the upper-right.
+
 Anatomy of a Revision
 ---------------------------------
 
@@ -1132,25 +1135,285 @@ For reference, the reviewers are also listed in the top-right section, under
 "Reviewer Info." Here, you will find a summary of everyone's specialties, as
 well as other relevant notes.
 
-.. _phab_audit:
-
-Audit
-==================================
-
 .. _phab_diffusion:
 
 Diffusion
 ==================================
 
-.. _phab_owners:
+.. _phab_audit:
 
-Owners
+Audit
 ==================================
 
 .. _phab_pholio:
 
 Pholio
 ==================================
+
+Pholio is for storing, reviewing, and discussing graphics. An object in
+Pholio is called a **Mock**.
+
+.. _phab_pholio_anatomy:
+
+Anatomy of a Mock
+----------------------------------
+
+A Mock contains one or more images, and tracks each revision made to it.
+
+The **Title** appears at the top. This is usually a brief description of
+the Mock. Below it, we see whether the Mock is **open** or **closed**.
+
+* An open mock is still in the process of being created, reviewed, or
+  modified.
+
+* A closed mock is either accepted (finalized) or rejected.
+
+The images appear next. The large image is whichever one has been selected
+for viewing. Below it is the **image title** and **image description**.
+To the right of the image title is the **Download** button and the
+**Full Image** button, which allows you to view the original image file in
+a new tab.
+
+If you hover over the large image, sometimes you will see purple quote bubbles
+floating over the image. These represent **Inline Comments**, which are attached
+to selected areas on the image. Click a comment bubble to view the comment.
+
+Next is the **Mock History**, which shows thumbnails of all the images in the
+Mock. The number of inline comments on each image is displayed as a number in
+the upper-right corner of the thumbtail. Click a thumbnail to view it full size.
+You'll notice that previous revisions are also visible on separate rows as you
+scroll the Mock History to the right.
+
+Below the Mock History box, we find the the **Mock Description**, which
+describes the Mock as a whole.
+
+Finally, we see the history of all actions taken on the Mock, including the
+**Comments**. In addition to comments on the whole Mock, Inline Comments are
+displayed here too, alongside with a thumbnail of the image selection
+associated with them. Click on a thumbnail to jump to the related full-size
+image.
+
+To the right of the Mock, we see the Tags, the list of Subscribers, and the
+original creator of the Mock.
+
+.. _phab_pholio_browse:
+
+Browsing Mocks
+----------------------------------
+
+Because we have a *lot* of Pholio Mocks, for many different purposes,
+so we automatically organize them by category and type.
+
+When you first enter Pholio, you'll see a list of Queries on the left,
+mostly organized alphabetically. These correspond to the different categories,
+types, and statuses that Mocks can be tagged with.
+(See :ref:`phab_pholio_organize`.)
+
+A few other Queries are offered by default:
+
+* Subscribed: All open Mocks which you are subscribed to. You can assume that,
+  if you are subscribed, you're either the creator or a reviewer.
+
+* Open Mocks: These are all Mocks which are still "Open".
+
+* Authored: All Mocks which you created.
+
+* Uncategorized [Empty Me!]: All Mocks which have not been tagged yet. If
+  you find anything in here, you are encouraged to tag it appropriately.
+
+* All Mocks: Just everything.
+
+.. _phab_pholio_create:
+
+Creating Mocks
+----------------------------------
+
+To create a new Mock, click :guilabel:`Create Mock` in the upper-right corner
+of Pholio.
+
+* :guilabel:`Name` should be between 1-10 words, describing the Pholio Mock
+  for easier searching. It should be specific enough to set it apart from
+  similar Mocks ("Annie Armadillo" would be too vague), but short enough that
+  it will display nicely on search results.
+
+* :guilabel:`Description` should contain all relevant information and notes
+  about the graphics and design.
+
+* :guilabel:`Tags` should include, at minimum, the department, status,
+  category, and (if relevant) type. (See :ref:`phab_pholio_organize`.)
+
+* :guilabel:`Subscribers` should include anyone you want to see and review
+  the Pholio.
+
+* :guilabel:`Visible To` is *very* important, as Pholio is used for a lot of
+  confidential materials. We generally only need to set the Space, and should
+  almost always leave the second field as :code:`All Users`.
+
+  * Use :code:`Space S2: Staff-Only` for anything relating directly to our
+    game designs, or anything else that should not be shared outside of
+    the company.
+
+  * Use :code:`Space S1: Global` for anything related to open source
+    development work, including programming references and UI design work
+    for open-source projects.
+
+  * In some cases, we want to share content with trusted outside contributors
+    and staff, but no one else. In this case, use :code:`Space S4: Trusted`.
+
+* :guilabel:`Editable By` can often safely be left as "All Users".
+  Alternatively, you may limit it to members of a particular :code:`[Project]`.
+  This is more of a formality, as *anyone* can join a :code:`[Project]`.
+  Bear in mind, if someone can't *see* Mock, they can't *edit* it.
+
+Finally, the fun part: attaching images! You can either drag-and-drop from your
+file browser to the box towards the bottom of the page, or you can click on the
+box and browse for your images.
+
+Each image has two fields:
+
+* :guilabel:`Title` is the filename by default, although it is usually useful
+  to replace this with a caption.
+
+* :guilabel:`Description` is a more in-depth description of that particular
+  image. You might include additional design notes here.
+
+Once your images are attached, you can rearrange their order by dragging the
+three lines at left of each image. You can also remove images from the Mock
+by clicking the "X" in the upper-right corner of the image.
+
+Once you have everything the way you need it, click :guilabel:`Create` at
+the bottom right of the page.
+
+.. _phab_pholio_organize:
+
+Organizing with Mock Tags
+----------------------------------
+
+Each Mock should be tagged with a **category**:
+
+* The :code:`Character Design [Label]` tag is for anything related to designing
+  characters.
+
+* The :code:`Environment Design [Label]` tag is for 3D environments, and
+  anything related to designing them.
+
+* The :code:`Programming [Dept]` tag is applied to all Mocks relating to the
+  programming department. This includes flowcharts, UML diagrams, photographs
+  of whiteboarding work, and any other graphics that relate to coding.
+
+* The :code:`Prop Design [Label]` is for anything related to designing props.
+
+* The :code:`UI Design [Dept]` tag is for anything related to user interface
+  (UI) design, including activity design.
+
+..  NOTE:: If you have not already added a :code:`[Dept]` tag to the Mock,
+    you should include either the :code:`Graphics Design [Dept]` or
+    :code:`Mass Communication [Dept]` tag.
+
+Mocks should usually also be tagged with a **type**:
+
+* The :code:`Design Reference [Label]` tag is for photographs and materials
+  meant as visual references, such as animal photographs for character design.
+
+* The :code:`Model Sheet [Label]` tag is for official character design
+  model sheets.
+
+
+* The :code:`Sketch [Label]` tag is for pencil/pen sketches and other
+  draft drawings.
+
+* The :code:`Storyboard [Label]` tag is for official storyboards.
+
+* The :code:`UI Mockup [Label]` is for formal layouts of user interfaces and UI
+  components.
+
+* The :code:`3D Model [Label]` tag is for rendered images from 3D models.
+
+Finally, a Mock should be tagged with a **status**:
+
+* :code:`Pending [Control]` is for Mocks which are ready to be reviewed.
+
+* :code:`On Hold [Control]` is for mocks which are going to be updated
+  before further review.
+
+* :code:`Approved [Control]` is for mocks which have been accepted and
+  finalized.
+
+* :code:`Rejected [Control]` is for mocks which have been abandoned for any
+  reason. These are hidden from all the other built-in Queries by default.
+
+.. _phab_pholio_manage:
+
+Managing Mocks
+----------------------------------
+
+Once you've created a Mock, you are responsible for keeping it up-to-date.
+
+To the right side of the Mock are several options:
+
+* :guilabel:`Edit Mock` allows you to edit and update the Mock.
+
+* :guilabel:`Close Mock` (or :guilabel:`Open Mock`) closes or opens the Mock
+  (obviously). Remember, an **open** Mock is still awaiting revision or
+  review, while a **closed** Mock is either finalized or rejected.
+
+* :guilabel:`Edit Related Objects...` allows you to link Maniphest Tasks
+  to your Mock. You should always link Mocks to their relevant Tasks.
+
+* :guilabel:`Subscribe` (or :guilabel:`Unsubscribe`) is very important to the
+  Pholio workflow. When you are Subscribed, you should assume that (unless
+  you're the creator), you're supposed to review the Mock.
+
+* :guilabel:`Award Tokens` has been mentioned previously, but it is *especially*
+  useful in Mocks, since Pholio's index displays how many tokens have been
+  awarded to the Mock. Feedback this way is *usually* positive, but it can be
+  used either way.
+
+When we select :guilabel:`Edit Mock`, we can change anything about it.
+This works the same way as creating a Mock does (see :ref:`phab_pholio_create`).
+However, there is one major difference: **every change to the images is stored
+as a new revision within the Mock**. This is designed to allow us to track
+and view how a design changes over time, but you should bear this in mind before
+clicking :guilabel:`Save`.
+
+..  IMPORTANT:: There is no way to change or remove a particlar revision - a
+    new one will always be created.
+
+.. _phab_pholio_review:
+
+Reviewing Mocks (Comments)
+----------------------------------
+
+Since Pholio lacks a formal "reviewers" status, you should always assume that
+if you are *subscribed* to a Mock and are not the creator, you are supposed
+to *review* it.
+
+When you review a Mock, you should view each image in the current revision.
+To view an image, click its thumbnail in the Mock History.
+
+If you see anything you want to comment on, simply click-and-drag on the
+full-size image view to draw a selection box. A **New Inline Comment** box will
+appear, and you can leave a comment. Click :guilabel:`Save Draft` to save your
+comment.
+
+..  IMPORTANT:: Your Inline Comments will not be published until you click
+    :guilabel:`Add Comment` towards the bottom of the page.
+
+Each draft inline comment will appear as a yellow speech bubble when you hover
+over the image. It will also be listed at the bottom of the page. Clicking the
+comment's image thumbnail on the list will jump to the full-size image it is
+attached to.
+
+To modify a draft comment, click on it on the full-size image. To remove it,
+modify the comment and simply clear out the comment box.
+
+You can also leave comments on the entire Mock, using the comment box towards
+the bottom of the page.
+
+Once you click :guilabel:`Add Comment`, all your comments and inline comments
+will be published for everyone to see.
+
+..  WARNING:: Once you've published your inline comments, you cannot edit them!
 
 .. _phab_slowvote:
 
@@ -1166,6 +1429,12 @@ Paste
 
 Phurl
 ==================================
+
+.. _phab_owners:
+
+Owners
+==================================
+
 
 .. _phab_conpherence:
 
