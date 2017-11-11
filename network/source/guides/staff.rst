@@ -118,8 +118,8 @@ email without access to your usual device.
 
 ..  IMPORTANT:: Access your company email through the webmail client.
 
-You can also connect your account to an external email client, such as Thirdbird
-or your mobile device. Here are the server settings:
+You can also connect your account to an external email client, such as
+Thunderbird or your mobile device. Here are the server settings:
 
 ..  WARNING:: Do NOT use Microsoft email clients such as Outlook or Windows Mail!
 
