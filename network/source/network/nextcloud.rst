@@ -240,6 +240,10 @@ the search box. You can control sharing permissions from here.
 
 * The trash can icon unshares the item with the user/group.
 
+..  IMPORTANT:: For Design+Production or Content Development, it is usually
+    most convenient to place uploaded work into a folder and share it with
+    your entire department, using the department's group name.
+
 ..  _nextcloud_files_details:
 
 File Details and Versions

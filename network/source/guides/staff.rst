@@ -39,6 +39,13 @@ You **must** have Debian Linux, ideally an Ubuntu-based distro (version 16.04
 or later), installed directly on your computer. See :doc:`/setup_linux/install`.
 If you need help, contact Jason C. McDonald.
 
+Although we work on Linux, you may access the Staff Network via Mac, iOS
+(Apple) mobile devices, Android mobile devices, or BSD-based operating
+systems if you need to.
+
+..  WARNING:: You may NOT use Microsoft Windows, including Windows Phones,
+    to access the Staff Network!
+
 .. _gstaff_network:
 
 Staff Network
@@ -390,17 +397,20 @@ Nextcloud Client on your computer. See :ref:`nextcloud_client`.
 Regular Nextcloud Tasks
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Nextcloud is where we store all important staff documents (see :ref:`gstaff_eco`),
-and where we share a lot of common non-code files.
+Nextcloud is where we store all important staff documents
+(see :ref:`gstaff_eco`), and where we share a lot of common non-code files.
 
-If you work in the Content Development department, you'll especially be
-spending a lot of time on Nextcloud.
+If you work in the Design+Production or Content Development departments,
+you'll especially be spending a lot of time on Nextcloud.
 
 * Upload files.
 
-* Review and proofread files.
+* Review and proofread files. (Content Development)
 
-* Collaborate on documents.
+* Collaborate on documents. (Content Development)
+
+When you upload files, be sure to place them in an appropriate folder and
+**share the folder with your department.**
 
 .. _gstaff_eco:
 
