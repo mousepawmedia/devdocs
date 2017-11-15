@@ -456,10 +456,10 @@ and emailed to `eco@mousepawmedia.com`.
   via informal discussions, you may file this form within 15 days of the
   most recent incident.
 
-* **Internship Graduation Request**: When you are ready to graduate from the
-  internship program, you must fill out this form and submit it to your
-  internship supervisor. You will also need the appropriate
-  **Internship Checklist**.
+* **Promotion Request**: When you are ready to be promoted to Intern II,
+  to graduate from the internship program, or otherwise be promoted to a
+  higher seniority, you must fill out and submit this form. Interns will also
+  need the appropriate **Internship Checklist**.
 
 * **Leave of Absence Request**: Any time you will be absent for a week or more,
   or under six hours a week in the case of an intern, you must file this
