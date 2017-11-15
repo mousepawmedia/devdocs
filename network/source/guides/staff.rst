@@ -24,7 +24,7 @@ expectations for staff at MousePaw Media. You should be familiar with
 the latest version of these policies at all times.
 
 We publish the latest version of the Employee Handbook at
-`mousepawmedia.net/eco <https://mousepawmedia.net/eco`_. Click
+`mousepawmedia.net/eco <https://mousepawmedia.net/eco>`_. Click
 :guilabel:`Employee Handbook` to view or download.
 
 ..  IMPORTANT:: Download the latest copy of the Employee Handbook from
