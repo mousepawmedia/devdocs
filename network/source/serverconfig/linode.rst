@@ -2464,6 +2464,107 @@ so we don't want to unnecessarily duplicate work or scan now-unused mailboxes.
     50 8 * * * /usr/bin/sa-learn --ham /var/mail/vhosts/indeliblebluepen.com/*/cur
     55 8 * * * /usr/bin/sa-learn --ham /var/mail/vhosts/indeliblebluepen.com/*/.Archive*/cur
 
+Blacklists
+-----------------------
+
+Sometimes a spam filter just isn't enough. When we're regularly getting spam
+from a particular email address or domain name, we can blacklist it entirely.
+
+..  code-block:: bash
+
+    $ sudo apt vim /etc/postfix/main.cf
+
+Change the following section to match what is shown here::
+
+    smtpd_recipient_restrictions =
+        check_sender_access hash:/etc/postfix/sender_checks,
+        permit_sasl_authenticated,
+        permit_mynetworks,
+        reject_unauth_destination,
+        check_policy_service unix:private/policyd-spf
+
+Save and close. Now we create the blacklist file.
+
+..  code-block:: bash
+
+    $ sudo vim /etc/postfix/sender_checks
+
+We format the blacklist like this::
+
+    # Restricts sender addresses this system accepts in MAIL FROM commands.
+
+    guerrillamail.com REJECT Just a test
+    .guerrillamail.com REJECT
+
+    periscopedata.com REJECT
+    .periscopedata.com REJECT
+
+    nimblechapps.co.uk REJECT
+    .nimblechapps.co.uk REJECT
+    nimblechaps@gmail.com REJECT
+
+Note that we are blocking email from the domain on the first of each pair,
+and blocking email from all subdomains on that domain on the second of each
+pair.
+
+Sometimes we also need to block a specific email address, such as on the last
+line of our example. (We obviously don't want to block all of Gmail!)
+
+After each domain or email address, we include the argument :code:`REJECT`,
+optionally followed by a comment or description thereof.
+
+..  NOTE:: The first pair is only on this list for *testing* purposes. Be
+    sure to unblock guerrillamail.com when we're done!
+
+Save and close the file, and run...
+
+..  code-block:: bash
+
+    $ sudo postmap /etc/postfix/sender_checks
+    $ sudo systemctl reload postfix
+
+This will load the blacklist in. Now, to test it, we can go to
+:code:`guerrillamail.com` and use their free service to send an email
+to our mail server. If it arrives, we made a mistake somewhere.
+
+Otherwise, if the email doesn't arrive, our blacklist works. We can unblock
+that test domain...
+
+..  code-block:: bash
+
+    $ sudo vim /etc/postfix/sender_checks
+
+Change that file to::
+
+    # Restricts sender addresses this system accepts in MAIL FROM commands.
+
+    #guerrillamail.com REJECT Just a test
+    #.guerrillamail.com REJECT
+
+    periscopedata.com REJECT
+    .periscopedata.com REJECT
+
+    nimblechapps.co.uk REJECT
+    .nimblechapps.co.uk REJECT
+    nimblechaps@gmail.com REJECT
+
+Note that we *commented out* the guerrillamail.com lines, in case we need them
+for testing again. However, you can absolutely remove those lines instead.
+
+Save and close, and then run...
+
+..  code-block:: bash
+
+    $ sudo postmap /etc/postfix/sender_checks
+    $ sudo systemctl reload postfix
+
+Send one more test email from :code:`guerrillamail.com` to make sure
+non-blacklisted email addresses are not blocked.
+
+If that works, all is humming along as it should!
+
+`SOURCE: Blacklist and Whitelist with Postfix (linuxlasse.net) <http://linuxlasse.net/linux/howtos/Blacklist_and_Whitelist_with_Postfix>`_
+
 Mail Clients
 -----------------------
 
