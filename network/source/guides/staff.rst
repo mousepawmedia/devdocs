@@ -16,19 +16,23 @@ Read through it in order. Watch out for...
 
 .. _gstaff_policies:
 
-Company Policies and Expectations
+Employee Handbook
 =======================================
 
-Our Company Policies outline all the rules and expectations for staff at
-MousePaw Media. You should be familiar with the latest version of these
-policies at all times.
+Our Employee Handbook outlines all the copmany policies, rules, and
+expectations for staff at MousePaw Media. You should be familiar with
+the latest version of these policies at all times.
 
-We maintain the latest copy of the `Company Policies on Phriction <https://phabricator.mousepawmedia.net/w/standards/policy/>`_.
+We publish the latest version of the Employee Handbook at
+`mousepawmedia.net/eco <https://mousepawmedia.net/eco`_. Click
+:guilabel:`Employee Handbook` to view or download.
 
-..  NOTE:: Read the latest version of the Company Policies on the link above.
-    You should use your company LDAP credentials to login to Phabricator.
-    Then, Subscribe to the page via :menuselection:`Actions -> Subscribe`.
+..  IMPORTANT:: Download the latest copy of the Employee Handbook from
+    that link, and save it to your work computer for quick reference.
+    Read it through now.
 
+You will be emailed whenever a new version of the Employee Handbook is
+published.
 
 .. _gstaff_tech:
 
@@ -177,9 +181,9 @@ Regular Webmail Tasks
   Including the Phabricator Maniphest task IDs/links for the tasks you've been
   working on. This is also a good time to ask your supervisors questions.
 
-..  IMPORTANT:: Log into your webmail and send an email to your supervisors -
-    specifically your internship supervisor and team lead. Let them know what
-    day you would like your weekly check-in email to be on.
+..  IMPORTANT:: Log into your webmail and send an email to
+    :code:`eco@mousepawmedia.com`. State what day you would like your weekly
+    check-in email to be on.
 
 ..  WARNING:: Your check-in email is how we track your job attendance. Be sure
     to send it on your regular day **every single week**!
@@ -445,8 +449,8 @@ All the ECO forms you'll need are stored on Nextcloud, in the *ECO* folder.
     graphics tablet). The point is to ensure the signature is indeed
     *your legal signature*.
 
-All forms must be filled out and signed *by hand*, scanned in, and emailed to
-the relevant supervisors.
+All forms must be filled out, signed *by hand*, scanned in (see sidebar),
+and emailed to `eco@mousepawmedia.com`.
 
 * **Formal Grievance**: If you are unable to resolve a conflict with a co-worker
   via informal discussions, you may file this form within 15 days of the
