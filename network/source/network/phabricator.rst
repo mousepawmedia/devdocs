@@ -1140,10 +1140,384 @@ well as other relevant notes.
 Diffusion
 ==================================
 
+Diffusion is our repository viewer, functioning very much like GitHub in many
+respects. It allows you to view the complete history of a repository -
+files, commits, and all!
+
+..  NOTE:: The Commit Details browser is technically part of Diffusion,
+    but it is important to the post-commit review workflow that Audit is
+    used for, so we'll discuss it there. See :ref:`phab_audit_commit`
+
+.. _phab_diffusion_browse:
+
+Browsing Repositories
+-----------------------------------
+
+When you first go to Diffusion, you will be presented with a list of
+our company's Git repositories. On each, you will find the following
+information:
+
+* The repository **callsign**, which starts with :code:`r` and is followed by
+  one or more uppercase letters. Each repository has a unique callsign.
+
+* The repository **name**. Clicking this will take you to the repository's
+  main index.
+
+* The **latest commit**. Click on it to view the commit information.
+
+* The **commit count**. Click it to view the complete commit history for the
+  repository.
+
+* The repository's **Projects**. Each repository should have a department
+  and project; programming repositories usually also have a team.
+
+On the far right of the repository listing, you'll see the **date** it was
+last updated, and the **:abbr:`VCS (version control software)`** the repository
+uses (which is virtually always Git).
+
+Click any repository name to view it.
+
+.. _phab_diffusion_code:
+
+Repository: Code
+-----------------------------------
+
+When you first view a repository in Diffusion, you will start on the **Code**
+tab. At the top, you'll see the repository name, its status, and view policy.
+
+In the upper-right corner of the page, you'll see :guilabel:`Pattern Search`.
+This field allows you to search all the files in the current repository
+directory using regular expressions.
+
+Below the tabs is the repository file browser. :guilabel:`Locate File` lets you
+search for a particular file or folder by name. The :guilabel:`Branch` drop-down
+menu switches between repository branches.
+
+:guilabel:`Actions` offers three actions, depending on your privileges.
+
+* :guilabel:`Manage Repository` contains all the repository administration
+  controls. In general, only Administration can use this.
+
+* :guilabel:`View Push Logs` shows a complete history of actions taken on
+  the Git repository.
+
+* :guilabel:`Flag For Later` adds a Flag to the repository.
+  (See :ref:`phab_flags`).
+
+Perhaps the single most important button here is :guilabel:`Clone`, which
+provides the URIs for the repository, as used in the :code:`git clone` command.
+
+..  IMPORTANT:: Be sure you select the correct URI! The one beginning in
+    :code:`ssh://` is recommended, as it uses your SSH keys to authenticate.
+    See :ref:`gitarc_importrepos`.
+
+The file browser itself lists each **filename** (click it to view the file
+or enter the directory), the latest **commit message**, and the
+**date of the last commit**. At the far right is the :guilabel:`History`
+button, which shows the complete commit history for that file or directory.
+
+Below the file browser is :guilabel:`Recent Commits`, which shows the last
+15 or so commits to the repository. Each entry has following:
+
+* The **Commit number**. Click it to view the commit details.
+
+* The **Build status**, which will either show a green checkmark for "Passed",
+  a red "X" for "Failed", or a grey arrow for "Building". Click the icon to see
+  the build details in Harbormaster.
+
+* The **Audit status** shows whether there are any Audits (post-commit reviews)
+  on the commit. A plain black checkmark means there are no Audits. A red "X"
+  means someone has raised a concern against the Commit, while a green checkmark
+  means the commit has been Audited and approved.
+
+* The **Revision number** is the ID of the Differential Revision related to
+  this commit. If there is no Revision number, the code was committed to the
+  repository without a Differential Revision. (Only Repository Masters can
+  do this.)
+
+* The **Author** shows the user who authored the commit.
+
+* **Details** displays the commit message.
+
+* **Committed** is the date the commit was published.
+
+On the far left of the Recent Commit list is the **graph**, which shows the
+relationship between commits.
+
+Finally, at the bottom of the page, we see the **README** for the repository.
+
+.. _phab_diffusion_code_exploring:
+
+Exploring the Repository
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+When you select a directory or file in the repository file browser,
+it will display it in a slightly different layout.
+
+At the top is the repository name and current file path. Click on any part
+of the file path to jump back to that location.
+
+Below that is the commit number. Click on it to view the commit summary.
+Next to that is the branch name.
+
+When viewing a directory, you'll notice two buttons at the top:
+
+* :guilabel:`Compare` allows you to compare branches and commits.
+
+* :guilabel:`History` displays the complete commit history for the
+  directory.
+
+When viewing a file, you'll see four or five buttons:
+
+* :guilabel:`Last Change` displays the changes made to the file during the
+  last commit.
+
+* :guilabel:`Enable Blame` (or :guilabel:`Disable Blame`) toggles the
+  blame for the file. This shows who wrote what line, and what Commit
+  and Revision the line was written in.
+
+* :guilabel:`Raw File` opens the plain file. This is the button you want if
+  you want to be able to download or copy/paste from the web interface.
+
+* :guilabel:`Back to HEAD` allows you to jump to the current version of the
+   file. If you're already there, this button will be hidden.
+
+* :guilabel:`History` displays the complete commit history for the file.
+
+..  NOTE:: You can click on a line number to highlight it. Then, when you
+    provide the URL to another person, their browser will jump to and
+    highlight that line.
+
+Below the file browser is **Owner Packages**, which shows which Packages
+the directory belongs to. (See :ref:`phab_owners`.)
+
+.. _phab_diffusion_branches:
+
+Repository: Branches
+-----------------------------------
+
+The :guilabel:`Branches` tab displays all branches on the repository.
+Each entry displays the **name** of the branch, followed by the last
+**commit number**, **commit message**, and **date** of the commit.
+
+On the right side is the **build status** (click it to see the Harbormaster
+build details).
+
+* The :guilabel:`Browse` button jumps to the repository file browser for
+  that branch.
+
+* The :guilabel:`Compare` button allows you to compare branches and commits.
+
+.. _phab_diffusion_tags:
+
+Repository: Tags
+-----------------------------------
+
+The :guilabel:`Tags` tab displays the tags on the repository. Each entry
+displays the **version** of the tag, followed by the last **commit number**,
+the **tag name**, the **author**, and the **date created.**
+
+On the right side is the **build status** (click it to see the Harbormaster
+build details).
+
+* The :guilabel:`Browse` button jumps to the repository file browser for
+  that tag.
+
+* The :guilabel:`Compare` button allows you to compare branches and commits.
+
+.. _phab_diffusion_history:
+
+Repository: History
+-----------------------------------
+
+The :guilabel:`History` tab displays all the Commits on the repository.
+Each box displays...
+
+* The **date** of the commit.
+
+* The **commit message**. Click it to view the Commit details.
+
+* The **Commit number**, which you can click to view the Commit details.
+
+* The **Revision number**, which takes you to the Differential Revision related
+  to the Commit.
+
+* The **author** and **timestamp** of the commit.
+
+* The **build status** on the right, which you can click to see the Harbormaster
+  build details.
+
+* The :guilabel:`Compare` button, which allows you to compare branches and
+  commits.
+
+.. _phab_diffusion_graph:
+
+Repository: Graph
+-----------------------------------
+
+The :guilabel:`Graph` tab also displays the complete commit history, in the same
+way as on the main page of the Code tab. The graph on the left side shows you
+the relationships between the commits.
+
 .. _phab_audit:
 
 Audit
 ==================================
+
+What Is Audit?
+-----------------------------------
+
+Audit is for **post-commit reviews**. In other words, you should use this
+when:
+
+* Problem code made it into the repository.
+
+* Something was missed in a landed Differential Revision.
+
+* You've found the exact commit that caused a bug.
+
+In many ways, Audit functions in largely the same way as Differential.
+The one critical difference to note is that **changes cannot be made
+to a Commit**! This means you will have to stay on top of any Commit
+that you raise concerns on; when the problem is resolved, go back and
+approve the earlier commit!
+
+..  sidebar:: **The Rule of Audit Verification**
+    If you Raise Concern on a Commit, you are responsible to *Verify* the
+    concerns have been addressed; if they have, you should Accept the
+    Commit you originally audited.
+
+Audits have the following workflow:
+
+1)  Code is committed to the Git repository by user A.
+
+2)  User B finds a problem in the code and **Raises a Concern** against the
+    Commit.
+
+3)  User A is notified, and makes the appropriate changes in one or more
+    *later commits*. They **Request Verification** on the original Commit.
+
+4)  User B is notified of the verification request, and confirms that the
+    problems are resolved in later commits. They **Accept Commit**.
+
+Browsing Audits
+-----------------------------------
+
+By default, Audit will display a list of open Audits you are involved in:
+
+* Needs Attention: Commits you authored that have concerned raised against them.
+
+* Needs Verification: Commits which you previously reviewed, and which you
+  now need to verify that your concerns were addressed (in later commits).
+
+* Ready to Audit: Commits awaiting you to audit (review) them.
+
+* Waiting on Authors: Commits you raised concerns against, and which the author
+  needs to look at.
+
+* Waiting on Auditors: Commits you authored that are pending review.
+
+.. _phab_audit_commit:
+
+Anatomy of a Commit
+-----------------------------------
+
+When you view a Commit, there is a lot of additional information, as well as
+several actions you can take on it.
+
+..  NOTE:: This is technically part of Diffusion, but we cover it here because
+    it is highly relevant to the Audit workflow.
+
+.. _phab_audit_commit_details:
+
+Description and Details
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+At the top of page is the **commit message**, which doubles as the name,
+as well as the **commit number**. Below that is the **author** and
+**timestamp.**
+
+The **Description** ordinarily shows all the information from the related
+Differential Revision, or else it just restates the commit message.
+
+On the **Details** pane, we see the following:
+
+* **Auditors**: A list of individual post-commit reviewers.
+
+* **Group Auditors**: A list of group post-commit reviewers. A member of each
+  listed project must audit the commit.
+
+* **Committed**: Who created the commit, and when.
+
+* **Pushed**: Who pushed the commit to the repository (`git push`), and when.
+
+* **Reviewer**: Who reviewed the related Revision, if anyone.
+
+* **Differential Revision**: The ID of the related Revision.
+
+* **Parents**: The Commits this one was derived from.
+
+* **Branches**: The branches this commit appears on.
+
+* **Tags**: The tags this commit appears on.
+
+* **Tasks**: The Maniphest Tasks that this commit is linked to.
+
+* **References**: The Git reference to this commit, if any. For example, the
+  latest `master` commit will have the reference `HEAD -> master`.
+
+Below the Details box is the complete commit history, including build reports
+and comments.
+
+.. _phab_audit_commit_actions:
+
+Actions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+..  NOTE:: The concept of Auditing is discussed in more detail in
+    :ref:`phab_audit`.
+
+On the right, there are several actions you can take, depending on permissions.
+
+* :guilabel:`Edit Commit` allows you to modify the Auditors
+  (post-commit Reviewers), Project tags, and Subscribers.
+
+* :guilabel:`Download Raw Diff` downloads the Commit as a Git patch file.
+
+* :guilabel:`Edit Related Objects...` lets you link the Commit to Maniphest
+  Tasks and Differential Revisions.
+
+At the bottom of the Commit, you may select any of the following actions from
+the drop-down box above the comment box.
+
+* :guilabel:`Accept Commit` marks the commit as Audited and Approved.
+
+* :guilabel:`Request Verification` means you believe you've addressed the
+  concerns raised, and would like the auditor(s) to check that the problems
+  have been satisfactorily resolved.
+
+* :guilabel:`Raise Concern` indicates that there may be problems with the
+  commit, which may need to be addressed in a later commit.
+
+* :guilabel:`Change Auditors` lets you add and remove Auditors (reviewers)
+  on the Commit.
+
+* :guilabel:`Change Project Tags` modifies the Project Tags on the Commit.
+
+* :guilabel:`Change Subscribers` modifies the Subscribers on the Commit.
+
+.. _phab_audit_commit_changes:
+
+Changes
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Commit details screen looks and acts much like that of a Differential
+Revision. For complete instructions on how to use it, see
+:ref:`_phab_differential_anatomy`.
+
+The **Changes** pane lists all the files that were changed. Below this,
+all the changes are displayed, and inline comments can be left on the commit
+in the same way as on a Differential.
 
 .. _phab_pholio:
 
