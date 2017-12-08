@@ -1789,19 +1789,117 @@ will be published for everyone to see.
 
 ..  WARNING:: Once you've published your inline comments, you cannot edit them!
 
-.. _phab_slowvote:
-
-Slowvote
-==================================
-
 .. _phab_paste:
 
 Paste
 ==================================
 
+Snippets of text and code can be stored and shared using **Paste**. In
+practice, it functions almost exactly like a pastebin service. It offers
+the following features:
+
+* Specify filename or title.
+
+* Syntax highlighting.
+
+* Complete edit history.
+
+Browsing Pastes
+-----------------------------------
+
+When you first open the application, you will see a list of all Active Pastes.
+Using the query system, you can search them by author, language, status
+(active or archived), tags, and subscribers.
+
+The default queries on the left also allow you to view `All Pastes`
+(both active and archived) and `Authored` (pastes you created).
+
+Anatomy of a Paste
+-----------------------------------
+
+Every Paste has a **title**, which can be one of two things: either the
+*filename*, or a *proper name* describing its contents.
+
+A Paste's **status** is either `Active` (meaning it is visible on the main
+index of the Paste application) or `Archived` (hidden by default). It is
+not possible to delete a Paste, only to Archive it.
+
+On the Paste details page, below the title, status, and visibility,
+you will see the **author** and **creation timestamp**.
+
+Next are the paste contents themselves, with the line numbers displayed along
+the left side. If you click a line number, it will highlight that line and
+modify the URL; sharing this URL will highlight and jump to the selected line.
+
+Below the paste contents themselves is the complete item history, including
+all edits and mentions. You can click :guilabel:`Show Details` next to any
+edit to see the complete changes made at that time.
+
+On the right of the page are three important actions:
+
+* :guilabel:`Edit Paste` allows you to modify the paste and its properties.
+
+* :guilabel:`Archive Paste` changes the paste status from Active to Archived;
+  :guilabel:`Activate Paste` changes it to Active again.
+
+* :guilabel:`View Raw File` displays the paste as a straight text or code
+  file, using the title as its filename.
+
+As always, you can comment on the object using the comment box at the bottom
+of the page and clicking :guilabel:`Nom Nom Nom Nom Nom` (formerly
+:guilabel:`Eat Paste`, because Phabricator is funny like that.)
+
+Creating or Editing a Paste
+-----------------------------------
+
+You can create a new Paste by clicking :guilabel:`Create Paste` in the
+upper-right corner of the application's initial page. After creation, you
+can always edit a Paste by clicking :guilabel:`Edit Paste` on the Paste's
+details page. Both forms look and act the same.
+
+* The :guilabel:`Title` is typically the filename of the new Paste (recommended),
+  or else it is a proper name. You can call it whatever you like, but if the
+  Paste is viewed as a Raw File, the Title will be used as its filename.
+
+* :guilabel:`Language` allows you to select the syntax highlighting you want
+  to use on the post. If you leave this blank, it will try and figure it out
+  automatically based on the filename in Title; otherwise, it will fall back on
+  `Plain Text`.
+
+..  NOTE:: This uses Pygments, so not all possible languages are present.
+    Ratscript is absent right now, although we *will* be adding it at a later
+    date.
+
+* :guilabel:`Text` is the actual text of the Paste.
+
+..  NOTE:: Line wrapping is always automatically applied when the Paste is
+    displayed, although it will not modify the raw file.
+
+* :guilabel:`Visible To` allows you to set the visibility on your Paste.
+  In most cases, it is sufficient to set the Space in the first field and
+  leave the second field as :guilabel:`All Users`.
+
+* :guilabel:`Editable To` allows you to control who can edit the Paste. This
+  may be useful if you're concerned about important information being changed
+  or removed accidentally (or maliciously).
+
+..  NOTE:: Remember, all changes to the Paste will be tracked, so you can
+    always revert unwanted modifications.
+
+* :guilabel:`Tags` is useful for tagging the related departments, projects,
+  and technologies (via `Labels`).
+
+* :guilabel:`Subscribers` is the list of users who will be notified about
+  changes to this Paste.
+
 .. _phab_phurl:
 
 Phurl
+==================================
+
+.. _phab_slowvote:
+
+Slowvote
 ==================================
 
 .. _phab_owners:
