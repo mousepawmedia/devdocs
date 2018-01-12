@@ -528,7 +528,7 @@ Modify the file to match the following.
        DOSLogDir   /var/log/mod_evasive
        DOSEmailNotify  hawksnest@hawksnest-server.netgear.com
        DOSWhitelist   127.0.0.1
-       DOSWhitelist   192.168.254.*
+       DOSWhitelist   192.168.1.*
     </ifmodule>
 
 There is also a bug reported for Ubuntu 12.04 regarding email. I don't know
@@ -593,6 +593,14 @@ of jails we enabled:
 - apache-modsecurity
 - apache-shellshock
 
+Under `[apache-auth]`, you also need to add the following line, to prevent
+Nextcloud admin users from being automatically banned because of a bug::
+
+    # ignore intentional auth failures from nextcloud admin page
+    ignoreregex = nextcloud/data/.ocdata
+
+Save and close.
+
 We also need to modify a file for ``apache-fakegooglebot`` to work around a bug.
 If you run ``python -V`` and it reports a version of Python2 (which it almost
 certainly will), run...
@@ -604,6 +612,7 @@ certainly will), run...
 Change the first line to ``#!/usr/bin/python3``, and then save and close.
 
 `SOURCE: Fail2Ban fakegooglebot Jail Bug (Shell and Co) <https://www.shellandco.net/fail2ban-fakegooglebot-jail-bug/>`_
+`SOURCE: Client denied by server configuration: .ocdata (Nextcloud) <https://help.nextcloud.com/t/client-denied-by-server-configuration-ocdata/13250/8>`_
 
 Finally, restart the fail2ban process.
 
@@ -770,7 +779,7 @@ Adjust the ``<Directory /usr/share/phpmyadmin>`` section to look like this.
     Order deny,allow
     Deny from all # Deny from everyone!!!!
     Allow from 127.0.0.1 # Allow from localhost
-    Allow from 192.168.254.0/24 # Allow from local network
+    Allow from 192.168.1.0/24 # Allow from local network
 
 Restart the Apache2 server...
 
@@ -1100,7 +1109,7 @@ this.
     Order deny,allow
     Deny from all # Deny from everyone!!!!
     Allow from 127.0.0.1 # Allow from localhost
-    Allow from 192.168.254.0/24 # Allow from local network
+    Allow from 192.168.1.0/24 # Allow from local network
 
 Restart Apache (you geniuses should know how to do that by now) and check
 ``http://<serveraddress>/phpldapadmin``.
