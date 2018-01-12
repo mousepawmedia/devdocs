@@ -12,6 +12,8 @@ languages on Linux.
 Install the Compiler
 ============================
 
+..  NOTE:: Updated 12 January 2018
+
 We use the Clang compiler primarily, and GCC5 secondarily. If you're not on a
 Debian-based Linux system, you'll need to find out how to install these yourself.
 
@@ -37,18 +39,18 @@ LLVM/Clang repository.
 
 ..  code-block:: bash
 
-    $ sudo add-apt-repository "deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-4.0 main"
+    $ sudo add-apt-repository "deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-5.0 main"
     $ wget -O - http://apt.llvm.org/llvm-snapshot.gpg.key|sudo apt-key add -
     $ sudo apt update
-    $ sudo apt install python-lldb-4.0
-    $ sudo apt install clang-4.0 clang-4.0-doc libclang-common-4.0-dev libclang-4.0-dev libclang1-4.0 libclang1-4.0-dbg libllvm-4.0-ocaml-dev libllvm4.0 libllvm4.0-dbg lldb-4.0 llvm-4.0 llvm-4.0-dev llvm-4.0-doc llvm-4.0-examples llvm-4.0-runtime clang-format-4.0 python-clang-4.0 libfuzzer-4.0-dev
-    $ sudo ln -sf /usr/bin/llvm-symbolizer-4.0 /usr/bin/llvm-symbolizer
+    $ sudo apt install python-lldb-5.0
+    $ sudo apt install clang-5.0 clang-5.0-doc libclang-common-5.0-dev libclang-5.0-dev libclang1-5.0 libclang1-5.0-dbg libllvm-5.0-ocaml-dev libllvm5.0 libllvm5.0-dbg lldb-5.0 llvm-5.0 llvm-5.0-dev llvm-5.0-doc llvm-5.0-examples llvm-5.0-runtime clang-format-5.0 python-clang-5.0 libfuzzer-5.0-dev
+    $ sudo ln -sf /usr/bin/llvm-symbolizer-5.0 /usr/bin/llvm-symbolizer
 
-If you are upgrading from 3.9, be sure to run...
+If you are upgrading from 4.0, be sure to run...
 
 ..  code-block:: bash
 
-    $ sudo apt remove clang-3.9 clang-3.9-doc libclang-common-3.9-dev libclang-3.9-dev libclang1-3.9 libclang1-3.9-dbg libllvm-3.9-ocaml-dev libllvm3.9 libllvm3.9-dbg lldb-3.9 llvm-3.9 llvm-3.9-dev llvm-3.9-doc llvm-3.9-examples llvm-3.9-runtime clang-format-3.9 python-clang-3.9 libfuzzer-3.9-dev
+    $ sudo apt remove clang-4.0 clang-4.0-doc libclang-common-4.0-dev libclang-4.0-dev libclang1-4.0 libclang1-4.0-dbg libllvm-4.0-ocaml-dev libllvm4.0 libllvm4.0-dbg lldb-4.0 llvm-4.0 llvm-4.0-dev llvm-4.0-doc llvm-4.0-examples llvm-4.0-runtime clang-format-4.0 python-clang-4.0 libfuzzer-4.0-dev
 
 We also try to ensure our code builds on GCC. Although GCC is available through
 the core repositories, we like using the latest stable compiler builds. You can
@@ -56,25 +58,43 @@ install those via...
 
 ..  code-block:: bash
 
-    $ sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+    $ sudo add-apt-repository
     $ sudo apt update
-    $ sudo apt install gcc g++ gcc-5 g++-5 gcc-5-doc
+    $ sudo apt install gcc g++ gcc-7 g++-7 gcc-7-doc
+
+..  NOTE:: Many Ubuntu systems older than 16.04 can still install the correct
+    version via the PPA `ppa:ubuntu-toolchain-r/test`.
 
 If you're on a 64-bit system, you'll need some additional packages...
 
 ..  code-block:: bash
 
-    $ sudo apt-get install gcc-5-multilib g++-5-multilib libc6-dev-i386
+    $ sudo apt-get install gcc-7-multilib g++-7-multilib libc6-dev-i386
 
 Once you have everything installed, configure Ubuntu to allow you to switch
 between GCC and Clang.
 
+..  IMPORTANT:: If you already have this configured and know what you're doing,
+    you should modify your `update-alternatives` yourself to better fit your
+    own workflow.
+
+If you aren't familiar with `update-alternatives`, we can *completely reset*
+and configure this tool using the following commands.
+
+..  WARNING:: The following will remove any existing `update-alternatives`
+    configuration for `cc` and `c++`. This is **strongly** recommended if you
+    followed this guide before.
+
 ..  code-block:: bash
 
-    $ sudo update-alternatives --install /usr/bin/cc cc /usr/bin/clang-4.0 60
-    $ sudo update-alternatives --install /usr/bin/cc cc /usr/bin/gcc-5 50
-    $ sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-4.0 60
-    $ sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++-5 50
+    $ sudo update-alternatives --remove-all cc
+    $ sudo update-alternatives --install /usr/bin/cc cc /usr/bin/clang-5.0 30
+    $ sudo update-alternatives --install /usr/bin/cc cc /usr/bin/gcc-7 20
+    $ sudo update-alternatives --install /usr/bin/cc cc /usr/bin/gcc-7 10
+    $ sudo update-alternatives --remove-all c++
+    $ sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-5.0 30
+    $ sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++-7 20
+    $ sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++ 10
 
 Once you've set all that up, you can easily switch between options using the
 following command, substituting ``cc`` for ``c++`` if you're changing the C
@@ -106,23 +126,28 @@ quickly install the whole batch (except the IDE) by running the following...
 Code::Blocks 16.01
 ==================================
 
-We use **Code::Blocks** as our C and C++ IDE.
+You can use any C/C++ IDE you like. If you don't know what to use,
+we recommend **Code::Blocks**.
 
 Installing Code::Blocks
 ----------------------------------
 
-While it is available directly from the Ubuntu repositories, that version is
-vastly outdated for some distributions. You can get the newest stable version by
-running the following...
+Ubuntu 16.04 and later offer the recommended stable version of Code::Blocks
+in the main repositories.
+
+On any supported Ubuntu (or Debian) system, run...
 
 ..  code-block:: bash
 
-    $ sudo add-apt-repository ppa:damien-moore/codeblocks-stable
     $ sudo apt update
     $ sudo apt install codeblocks codeblocks-contrib
 
 That will install (or update) both `codeblocks` itself, and the plugins
 (of which we use quite a few).
+
+..  NOTE:: Many Ubuntu systems older than 16.04 can still install the correct
+    version by using the PPA `ppa:damien-moore/codeblocks-stable`.
+
 
 Trimming Down on Plugins
 ----------------------------------
