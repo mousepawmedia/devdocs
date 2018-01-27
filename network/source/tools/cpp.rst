@@ -37,13 +37,16 @@ using the older version in the default system repository.
 Below are the instructions for adding and installing from the official
 LLVM/Clang repository.
 
+..  IMPORTANT:: If you're using a version of Ubuntu other than 16.04, be sure to change
+    the `add-apt-repository` line to your version (instead of `xenial`).
+
 ..  code-block:: bash
 
     $ sudo add-apt-repository "deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-5.0 main"
     $ wget -O - http://apt.llvm.org/llvm-snapshot.gpg.key|sudo apt-key add -
     $ sudo apt update
     $ sudo apt install python-lldb-5.0
-    $ sudo apt install clang-5.0 clang-5.0-doc libclang-common-5.0-dev libclang-5.0-dev libclang1-5.0 libclang1-5.0-dbg libllvm-5.0-ocaml-dev libllvm5.0 libllvm5.0-dbg lldb-5.0 llvm-5.0 llvm-5.0-dev llvm-5.0-doc llvm-5.0-examples llvm-5.0-runtime clang-format-5.0 python-clang-5.0 libfuzzer-5.0-dev
+    $ sudo apt install clang-5.0 clang-5.0-doc libclang-common-5.0-dev libclang-5.0-dev libclang1-5.0 libclang1-5.0-dbg libllvm5.0 libllvm5.0-dbg lldb-5.0 llvm-5.0 llvm-5.0-dev llvm-5.0-doc llvm-5.0-examples llvm-5.0-runtime clang-format-5.0 python-clang-5.0 libfuzzer-5.0-dev
     $ sudo ln -sf /usr/bin/llvm-symbolizer-5.0 /usr/bin/llvm-symbolizer
 
 If you are upgrading from 4.0, be sure to run...
@@ -58,7 +61,7 @@ install those via...
 
 ..  code-block:: bash
 
-    $ sudo add-apt-repository
+    $ sudo add-apt-repository ppa:ubuntu-toolchain-r/test
     $ sudo apt update
     $ sudo apt install gcc g++ gcc-7 g++-7 gcc-7-doc
 
