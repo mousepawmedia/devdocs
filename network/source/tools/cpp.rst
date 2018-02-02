@@ -48,6 +48,7 @@ LLVM/Clang repository.
     $ sudo apt install python-lldb-5.0
     $ sudo apt install clang-5.0 clang-5.0-doc libclang-common-5.0-dev libclang-5.0-dev libclang1-5.0 libclang1-5.0-dbg libllvm5.0 libllvm5.0-dbg lldb-5.0 llvm-5.0 llvm-5.0-dev llvm-5.0-doc llvm-5.0-examples llvm-5.0-runtime clang-format-5.0 python-clang-5.0 libfuzzer-5.0-dev
     $ sudo ln -sf /usr/bin/llvm-symbolizer-5.0 /usr/bin/llvm-symbolizer
+    $ sudo ln -sf /usr/bin/lldb-server-5.0 /usr/lib/llvm-5.0/bin/lldb-server-5.0.0
 
 If you are upgrading from 4.0, be sure to run...
 
