@@ -237,6 +237,10 @@ right.
 Be aware, others can also subscribe you to notifications. You should only
 subscribe someone to an object if you require their attention or input on it.
 
+If you want to stay subscribed to an object, but don't want Notifications,
+you can click :guilabel:`Mute Notifications`. (This is helpful, for example,
+if you created the object, but don't want to keep getting emails about it.)
+
 .. _phab_flags:
 
 Flags
@@ -534,6 +538,8 @@ the upper-right corner, and selecting the task type.
 
 * :guilabel:`Feature Request` is like Bug Report, but is focused on a requested
   feature instead of an actual bug.
+
+* :guilabel:`D+P Task` is for Design+Production department tasks.
 
 * :guilabel:`Private Task` is for any task that should be hidden from everyone
   but you. Please only use this if the task is MousePaw Media-related, but

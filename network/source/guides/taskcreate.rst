@@ -307,6 +307,16 @@ You can find both of these forms on Maniphest, by clicking
 * Gravity: How important is the task to the project's completion?
   (See `QTM: Gravity <http://standards.mousepawmedia.com/qtm.html#gravity-importance>`_)
 
+* Gravity Points: This should match the number selected under *Gravity*.
+
+* Volatility (Caught At): For bugs *only*, you should indicate what stage you
+  found the bug at.
+  (See `QTM: Volatility <https://standards.mousepawmedia.com/qtm.html#volatility>`_)
+
+* Origin: For bugs *only*, you should indicate what stage the bug originated
+  at.
+  (See `QTM: Volatility <https://standards.mousepawmedia.com/qtm.html#volatility>`_)
+
 * Relativity: How certain are you that the task can be completed by the given
   completion date or in the given number of hours?
   (See `QTM: Relativity <http://standards.mousepawmedia.com/qtm.html#relativity-black-hole-probability-uncertainty>`_)
@@ -331,7 +341,5 @@ You can find both of these forms on Maniphest, by clicking
 
 * Editable By: Changes are tracked, so you *can* leave this set to All Users.
   At minimum, all staff should be able to edit.
-
-* Gravity Points: This should match the number selected under *Gravity*.
 
 After filling out the form, click :guilabel:`Create New Task` to submit it.

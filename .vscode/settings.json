@@ -1,3 +1,4 @@
 {
-    "restructuredtext.confPath": "/home/jason/Code/Repositories/devdocs"
+    "restructuredtext.confPath": "${workspaceRoot}",
+    "restructuredtext.workspaceRoot": "${workspaceRoot}"
 }
