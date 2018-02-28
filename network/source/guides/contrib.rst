@@ -1,94 +1,169 @@
-.. _gcontrib:
+..  _gcontrib:
 
-Guide: Code Contributions
-#####################################
+Guide: Contributor Introduction
+###########################################
 
-Instead of GitHub Pull Requests, we use Phabricator Differential. Here's
-how to get started with one.
+Welcome to MousePaw Media! We're so excited you've chosen to volunteer
+your time and skills to help make our projects awesome.
 
-.. _gcontrib_firsttime:
+This tutorial will help you get started as an open source contributor.
 
-First Time Setup
-=========================
+Logging On
+===============================
 
-The first time you contribute code, you'll want to set up your development
-environment. At minimum, you will need to set up :ref:`gitarc`. You may also
-need to set up the tools for :ref:`C and C++ <cpp>`, :ref:`Python <python>`,
-and/or :ref:`Sphinx <sphinx>`.
+Phabricator
+-------------------------------
 
-You'll also need to :ref:`Import the Repository <gitarc_importrepos>` you'll
-be working with.
+Nearly all of our development work takes place on **DevNet Phabricator**,
+located at `phabricator.mousepawmedia.net <https://phabricator.mousepawmedia.net>`_.
 
-.. _gcontrib_gettingready:
+1. Log into your `GitHub <https://github.com/>`_ account. If you haven't
+   already created a GitHub account, do that now.
 
-Getting Ready
-========================
+2. Go to `phabricator.mousepawmedia.net <https://phabricator.mousepawmedia.net>`_
+   and click the :guilabel:`Log In or Register (GitHub)` button towards the
+   bottom of the screen.
 
-Before you start making changes, you should reference the :ref:`p_workflow`,
-so you know what's expected. For each batch of changes, you should plan them
-out on Phabricator Maniphest before starting.
+..  NOTE:: The LDAP username and password are for staff only. Don't worry
+    about that.
 
-..  sidebar:: The Ten Commandments of Git
+3. Read through and sign the **Community Rules**.
 
-    #I-X: NEVER WORK ON THE MASTER OR STABLE BRANCH!
+4. You should now see the home page of DevNet Phabricator. Click your profile
+   picture on the top bar, towards the right, and select :guilabel:`Settings`.
+   Review and change the following *at minimum*.
+   Be sure to click :guilabel:`Save Changes` on each page!
 
-Before you make any changes, you should create a new branch on your local
-copy of the repository. You should **never** work on ``master``. To create
-a new branch, run...
+* :guilabel:`Account`: Set desired ``Pronoun``.
 
-..  code-block:: bash
+* :guilabel:`Date and Time`: Set ``Timezone``.
 
-    $ git checkout -b newbranchname
+* :guilabel:`Conpherence`: Set ``Notifications`` to ``Send Notifications``.
 
-...where *newbranchname* is the name of the branch you're creating. You can
-call it absolutely anything (except "master" or "stable").
+* :guilabel:`Notifications`: We recommend setting ``Notifications`` to
+  ``Web and Desktop``, so you'll get the latest notifications as they happen
+  while you're logged onto Phabricator. You may also need to grant permission
+  for the desktop notifications to work.
 
-.. _gcontrib_changes:
+* :guilabel:`Email Addresses`: Ensure your desired email address is added to
+  this list, and ``Verify`` it. Verification emails come from
+  ``hawksnest@mousepawmedia.com``; you may need to check your spam bin if you
+  don't get it.
 
-Making Changes
-===========================
+* :guilabel:`Email Delivery`: Set ``Self Actions`` to ``Disable``. You may also
+  choose to disable all email notifications under ``Email Notifications`` if
+  you plan to check Phabricator manually. Otherwise, if you only want *some*
+  emails, you can select which notifications to receive via email on the
+  :guilabel:`Email Preferences` pane.
 
-Now you can begin working. Every day you finish work, you should **diff** your
-changes, meaning you upload them to a Differential Revision. To create a
-Revision, or update the one you already have open for the repository, run...
 
-..  code-block:: bash
+5. Click your profile picture on the top bar, towards the right, and select
+   :guilabel:`Manage`. Click :guilabel:`Edit Profile` at right and fill out
+   your user profile.
 
-    $ git add .
-    $ git commit
-    $ arc diff
+That's it! You're now set up to use DevNet Phabricator! For complete
+instructions on using Phabricator, see :ref:`phab`.
 
-The first time you run ``arc diff``, it will bring up a form for you to fill
-out to create a new Revision. Give it a brief, descriptive title. Describe
-your overall plans in the description.
+..  WARNING:: DevNet (anything at ``mousepawmedia.net``) is only online from
+    6:00am until 10:00pm Pacific time, seven days a week. You can see the
+    current status at `mousepawmedia.com/devnet <https://mousepawmedia.com/devnet>`_
 
-If you're ready for code review and feedback, add a reviewer. If you don't
-know who to add, you can use the Reviewer Finder (see :ref:`phab_reviewerfinder`)
-to find someone. You should especially favor tagging someone in the same
-:ref:`code territory <p_workflow_planning_territory>` you're working in.
+Freenode IRC
+-------------------------------
 
-If you're NOT ready for review, don't worry. You can always add a reviewer later.
+We use IRC chat for real-time collaboration. You can find us in the
+``#mousepawmedia`` room on the Freenode network. For help setting up and
+using IRC, see :ref:`irc`.
 
-You should be aware of the :ref:`p_workflow_landing_checklist`, which your
-Revision must pass before it can be accepted and **landed**.
+Development Environment
+===============================
 
-.. _gcontrib_landing:
+Operating System
+-------------------------------
 
-Landing Changes
-========================
+We officially support the following operating systems for development work:
 
-Once your Differential Revision has been approved, you can land it, meaning you
-push the changes to the ``master`` branch. In the repository, run...
+* Debian Linux (recommended)
+* Other Linux
+* macOS
+* FreeBSD
+* Windows (support upcoming)
 
-..  code-block:: bash
+..  NOTE:: We do not provide technical support for third-party development
+    tools on non-Debian systems.
 
-    $ arc land yourbranchname
+Tools
+-------------------------------
 
-...where *yourbranchname* is the name of the branch you've been working in.
+Before you get started, you should set up your development environment.
+You need the following:
 
-Be sure to keep your Maniphest tasks up-to-date, marking them as complete or
-updating them as appropriate.
+* **Git**
+* **Arcanist**
+* **CMake**
 
-Finally, sit back and relax, knowing you've made a valuable contribution to
-MousePaw Media! (When you're done relaxing, feel free to start a new set of
-changes.)
+For setup instructions for Git and Arcanist, see :ref:`gitarc`.
+
+For C/C++ development:
+
+* **C/C++ compiler and toolchain**: Clang (recommended), GCC, or
+  MSVC (support upcoming).
+* **A C++ IDE**: We recommend either VSCode, Code::Blocks, or Atom.
+
+If you're using Linux, see :ref:`cpp`.
+
+For Python development:
+
+* **Python 3**
+* **A Python IDE**: We recommend either VSCode or Atom.
+
+If you're using Linux, see :ref:`python`.
+
+For Sphinx development:
+
+* **Python 3**
+* **Sphinx**
+* **A code editor**: We recommend either VSCode or Atom.
+
+If you're using Linux, see :ref:`sphinx`.
+
+We have guides for setting up :ref:`vscode`, :ref:`codeblocks`, and
+:ref:`atom`.
+
+Getting Started
+===============================
+
+A Quick Tour of Phabricator
+-------------------------------
+
+The first time you log into Phabricator, it can look a bit overwhelming.
+Don't panic! There are only a few things you need. We've listed them here
+in the relative order they appear on the main menu on the Phabricator
+home page (a.k.a. ``Right Now``).
+
+* **Getting Started**: Instructions to get started.
+* **Maniphest**: Task and bug tracker. Similar to GitHub Issues.
+* **Ponder**: Q&A, StackOverflow style.
+* **Phriction**: Our wiki. You are welcome to create and edit pages.
+  Similar to GitHub Wiki.
+* **Projects**: Browse projects, groups, and other tags. Projects also have
+  **Workboards**, similar to GitHub Projects.
+* **Differential**: Submit and review code (pre-commit review). Similar to
+  GitHub Pull Requests.
+* **Audit**: Post-commit review. Raise concerns about code that's already been
+  committed.
+* **Diffusion**: Browse code and commits. Similar to GitHub Code.
+* **Task Finder [P]**: Find a programming task to work on.
+* **Reviewer Finder [P]**: Find someone who can review your code.
+* **Paste**: Pastebin with syntax highlighting, history, and comments.
+  Similar to GitHub Gist.
+
+From anywhere in Phabricator, you can always click the company logo in the
+upper left corner of the page to go Home.
+
+Finding a Task
+-------------------------------
+
+You may already know what you want to work on. If you don't, you can use
+our **Task Finder** to locate one. See :ref:`gtaskfinder` to learn how to use
+that feature.

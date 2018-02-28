@@ -444,7 +444,7 @@ conversations without causing problems. Here are a few rules:
 
 * If the debate is getting out of control, and you cannot escape it in the
   room, leave for a few minutes to cool down. Although a few would mislabel
-  this as "rage-quitting," it is actually a mature way to handle exposive
+  this as "rage-quitting," it is actually a mature way to handle explosive
   "no-win" situations. Check the room every few minutes to see if the debate
   has ended, and then rejoin. If you have to use this tactic, *never* resume
   the debate!
@@ -538,7 +538,7 @@ bot, mix up your sentence structure - bots cannot do that very well.
 
 .. _irc_netiquette_snark:
 
-Sarcasm, Snark, and Pedantia
+Sarcasm, Snark, and Pedanticism
 --------------------------------------
 
 You have entered the single largest online community of nerds on the planet.

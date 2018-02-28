@@ -19,7 +19,7 @@ Read through it in order. Watch out for...
 Employee Handbook
 =======================================
 
-Our Employee Handbook outlines all the copmany policies, rules, and
+Our Employee Handbook outlines all the company policies, rules, and
 expectations for staff at MousePaw Media. You should be familiar with
 the latest version of these policies at all times.
 
@@ -393,7 +393,7 @@ First Steps
 
 4.  Uncheck the boxes labeled :guilabel:`List your own file actions in the stream`
     and :guilabel:`Notify about your own actions via email`, so you don't
-    recieve notifications about your *own* actions.
+    receive notifications about your *own* actions.
 
 If you'll be using Nextcloud regularly, you may consider setting up the
 Nextcloud Client on your computer. See :ref:`nextcloud_client`.
@@ -500,5 +500,5 @@ the appropriate Internship Checklist at the bottom of the
 
 Programmers should check out these sections next:
 
-* :ref:`gcontrib`
+* :ref:`grevision`
 * :ref:`gbuild`

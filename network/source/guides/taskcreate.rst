@@ -66,7 +66,7 @@ avoid overly detailed titles like "flexarray has a segfault when more than
 
 Here are examples of some *good* titles:
 
-* Allow Override of `ioc` in Goldlocks.
+* Allow Override of `ioc` in Goldilocks.
 
 * OneString Code Refactoring: Improving to beat std::string
 
@@ -102,7 +102,7 @@ For features, you should include the following information in the description:
 * One or more example use cases for the feature, including sample expected
   input and output.
 
-* An explaination of why the feature is needed. This is important to
+* An explanation of why the feature is needed. This is important to
   prioritization. "It would be nice if..." takes a backseat to "This common
   scenario doesn't work without...".
 
@@ -213,7 +213,7 @@ Fill out the following information...
   code sector. (See :ref:`gtaskcreate_practice_titles`).
 
 * Proposed Urgency: This is how urgent you believe the task is. Actual
-  prority and gravity will be determined by a project member later.
+  priority and gravity will be determined by a project member later.
 
 * Task Type: This is automatically set to Bug or Feature, depending on which
   form you're using.
@@ -275,7 +275,7 @@ You can find both of these forms on Maniphest, by clicking
 
 ..  sidebar:: Where Is WONTFIX?
 
-    The common bug status "WONTFIX" is actually counterintuitive. It tells
+    The common bug status "WONTFIX" is actually counter-intuitive. It tells
     outsiders "we know the bug exists, and don't plan to do anything about
     it," effectively damaging the development team's reputation by making
     them look lazy and complacent.
