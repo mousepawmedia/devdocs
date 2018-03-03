@@ -27,6 +27,7 @@ Guides
     guides/building
     guides/taskcreate
     guides/taskfinder
+    guides/revision
     guides/reviewing
     guides/staff
 
@@ -54,6 +55,22 @@ Development Tools
     tools/cpp
     tools/python
     tools/sphinx
+
+IDEs and Editors
+---------------------------
+
+We officially support four major editors for our projects. Each language
+setup tutorial will independently discuss these options.
+
+If you can't decide on one, try :ref:`vscode`!
+
+..  toctree::
+    :maxdepth: 2
+
+    tools/atom
+    tools/codeblocks
+    tools/ninjaide
+    tools/vscode
 
 Ubuntu
 --------------------------

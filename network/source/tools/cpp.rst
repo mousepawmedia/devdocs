@@ -125,10 +125,14 @@ quickly install the whole batch (except the IDE) by running the following...
 
     $ sudo apt install build-essential cmake valgrind kcachegrind vim cccc
 
--------------------
+..  _cpp_install_ide:
 
-**That's it!** The essential setup is finished for Code::Blocks. I recommend
-you go back and browse through the other settings, and get familiar with the
-coding environment.
+Choosing an IDE
+=========================
 
-If you want to set up an IDE, see :ref:`vscode` or :ref:`codeblocks`.
+There are many IDEs available for the C++ and C languages. Personally, we
+recommend and support :ref:`vscode` or :ref:`codeblocks`. Otherwise, there
+are plenty of other options out there.
+
+Optionally, you could just use a plain text editor and a terminal to work
+with C++. (A couple of us do actually use Vim!)

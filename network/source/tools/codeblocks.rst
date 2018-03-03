@@ -1,4 +1,4 @@
-..  _codeblocks::
+..  _codeblocks:
 
 Code::Blocks 16.01
 ##################################
@@ -389,3 +389,7 @@ Change the following colors:
 
 Once you've made your changes, click :guilabel:`OK`, and then save your
 workspace via :menuselection:`File --> Save workspace`.
+
+**That's it!** The essential setup is finished for Code::Blocks. I recommend
+you go back and browse through the other settings, and get familiar with the
+coding environment.

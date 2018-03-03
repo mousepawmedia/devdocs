@@ -21,42 +21,16 @@ Python 2 or Python 3. Since we use the latter, we'll install that.
     $ sudo apt update
     $ sudo apt install python3-sphinx pandoc
 
-.. _sphinx_install_atom:
+.. _sphinx_editor:
 
-Installing Atom
+Choosing an Editor
 =========================
 
 ReST files are just plain text files written in the ReStructuredText markup
-language. Thus, you can edit them in any text editor. However, I've found that
-Atom handles ReST files uncommonly well.
+language. Thus, you can edit them in any text editor.
 
-Atom is a FOSS multi-language text and code editor with a lot of nifty features.
-It's also completely customizable, allowing you to add functionality and themes
-from the built-in packages. (If you're a programmer, you can also write your
-own!)
-
-We'll be installing Atom from a
-`third-party repository <http://www.webupd8.org/2014/05/install-atom-text-editor-in-ubuntu-via-ppa.html>`_.
-
-..  code-block:: bash
-
-    $ sudo add-apt-repository ppa:webupd8team/atom
-    $ sudo apt update
-    $ sudo apt install atom
-
-Configuring Atom
--------------------------------
-
-Atom has a lot of pretty impressive features that I won't be covering in the
-tutorial. Consider taking some time to play around with it.
-
-It doesn't come with very good built-in support of ReST, so there are a couple
-of packages you'll want to add to Atom. Go to
-:menuselection:`Edit --> Preferences`, and then select :guilabel:`Install` on
-the left hand menu. You'll want to install the following packages:
-
-* :code:`language-restructuredText`
-* :code:`rst-preview-pandoc`
+However, we've found that :ref:`vscode` and :ref:`atom` handle ReST files
+uncommonly well.
 
 .. _sphinx_setup_docs:
 

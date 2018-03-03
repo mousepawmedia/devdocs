@@ -56,6 +56,8 @@
         "    \\$.*",
         // Skip C++ include directives
         "#include .+",
+        // Skip :code: directives
+        ":code:`.+`",
         // Skip :file: directives
         ":file:`.+`",
         // Skip code filenames
@@ -142,6 +144,7 @@
         "imap",
         "inkscape",
         "inlines",
+        "installable",
         "iochannel",
         "jitsi",
         "kanban",
@@ -216,6 +219,7 @@
         "pylintrc",
         "quickstart",
         "ratscript",
+        "rcfile",
         "redstring",
         "remarkup",
         "repost",
@@ -228,6 +232,7 @@
         "simplexpress",
         "slowvote",
         "smtp",
+        "spyder",
         "squirrelmail",
         "stormsound",
         "strikethrough",

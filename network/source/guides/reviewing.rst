@@ -13,7 +13,7 @@ follow a very similar workflow, which is covered in the linked documentation.
 
 ..  NOTE:: If you're looking for a more generic version of this guide, perhaps
     for application outside of MousePaw Media, check out the article
-    *`10 Principles of a Good Code Review <https://dev.to/codemouse92/10-principles-of-a-good-code-review-2eg>`_ *
+    *`10 Principles of a Good Code Review <https://dev.to/codemouse92/10-principles-of-a-good-code-review-2eg>`_*
     by Jason C. McDonald on dev.to().
 
 Who Can Review?

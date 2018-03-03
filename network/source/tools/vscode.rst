@@ -51,6 +51,7 @@ You may also consider the following helpful extensions:
 * Auto Close Tag
 * Bookmarks
 * Bracket Pair Colorizer
+* Code Spell Checker
 * Contextual Duplicate
 * GitLens
 * Reflow Paragraph

@@ -1391,6 +1391,7 @@ that you raise concerns on; when the problem is resolved, go back and
 approve the earlier commit!
 
 ..  sidebar:: **The Rule of Audit Verification**
+
     If you Raise Concern on a Commit, you are responsible to *Verify* the
     concerns have been addressed; if they have, you should Accept the
     Commit you originally audited.
@@ -1521,7 +1522,7 @@ Changes
 
 The Commit details screen looks and acts much like that of a Differential
 Revision. For complete instructions on how to use it, see
-:ref:`_phab_differential_anatomy`.
+:ref:`phab_differential_anatomy`.
 
 The **Changes** pane lists all the files that were changed. Below this,
 all the changes are displayed, and inline comments can be left on the commit
