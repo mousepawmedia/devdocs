@@ -127,8 +127,8 @@ For Sphinx development:
 
 If you're using Linux, see :ref:`sphinx`.
 
-We have guides for setting up :ref:`vscode`, :ref:`codeblocks`, and
-:ref:`atom`.
+We have guides for setting up :ref:`vscode`, :ref:`codeblocks`, :ref:`atom`,
+and :ref:`ninjaide`.
 
 Getting Started
 ===============================
@@ -161,9 +161,43 @@ home page (a.k.a. ``Right Now``).
 From anywhere in Phabricator, you can always click the company logo in the
 upper left corner of the page to go Home.
 
+Getting the Code
+-------------------------------
+
+Each of our projects has a dedicated Git repository. You should create a
+dedicated folder on your computer for the repositories you clone. You can find
+each repository's clone command on Phabricator Diffusion. If you need help
+with cloning a repository, see :ref:`gitarc_importrepos`.
+
+After you have cloned a project repository, see its :file:`BUILDING.md` file
+for instructions on how to build the code for the first time.
+
+For our C++ projects, you will almost certainly need the following:
+
+* :code:`libdeps`: All our third-party dependency libraries.
+
+* :code:`pawlib`: Our in-house utility library.
+
+For help with working with these repositories and building code, see
+:ref:`gbuild`
+
 Finding a Task
 -------------------------------
 
 You may already know what you want to work on. If you don't, you can use
 our **Task Finder** to locate one. See :ref:`gtaskfinder` to learn how to use
 that feature.
+
+Once you've found the task you want to work on, scroll to the bottom of its
+page, to the comment box. From :guilabel:`Actions...`, select
+:guilabel:`Assign/Claim`, and make sure your name is selected.
+
+Submitting the Code
+-------------------------------
+
+Once you're ready for the code to be reviewed, you should submit it to a
+Phabricator Differential.
+
+If you have set up Arcanist (see :ref:`gitarc`), you can use it to create a new
+Differential Revision, or update the one you already have open. For more
+information on how to do this, see :ref:`grevision`.

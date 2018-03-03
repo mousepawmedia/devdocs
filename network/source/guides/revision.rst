@@ -48,6 +48,15 @@ call it absolutely anything (except "master" or "stable").
 Making Changes
 ===========================
 
+..  sidebar:: **In-Progress Differentials**
+
+    We consider it good practice to create/update your Differential Revision
+    after *every work session*. This stores the code remotely (in case
+    something terrible happens), and allows you to get feedback on your work
+    so far. To do this, submit via :code:`arc diff` like normal. Then on your
+    Differential Revision, scroll to the bottom, click :guilabel:`Actions...`,
+    select :guilabel:`Plan Changes`, and press :guilabel:`Submit`. Easy as that!
+
 Now you can begin working. Every day you finish work, you should **diff** your
 changes, meaning you upload them to a Differential Revision. To create a
 Revision, or update the one you already have open for the repository, run...
@@ -92,3 +101,36 @@ updating them as appropriate.
 Finally, sit back and relax, knowing you've made a valuable contribution to
 MousePaw Media! (When you're done relaxing, feel free to start a new set of
 changes.)
+
+.. _grevision_patch:
+
+Pulling Down A Revision
+==========================
+
+If you want to pull down someone else's Differential Revision to your local
+repository for testing it out, or if you want to recover your lost work
+from your Differential Revision, Arcanist can do that!
+
+First, make sure you're on the master branch, and it is up-to-date.
+
+..  code-block:: bash
+
+    $ git checkout master
+    $ git pull origin master
+
+Then patch the Differential Revision with...
+
+..  code-block:: bash
+
+    $ arc patch D###
+
+...where :code:`D###` is the Differential Revision ID (such as ``D123``).
+
+This will create a new branch called ``arcpatch_D###``. You may want to take
+note of the original branch name mentioned on the Differential Revision page,
+and rename the ``arcpatch_D###`` branch to the correct name. You can do this
+via...
+
+..  code-block:: bash
+
+    $ git branch -m arcpatch_D### newbranchname

@@ -13,10 +13,52 @@ any up-to-date Debian-based distro. They'll also probably work on almost
 any modern Linux system (though we haven't tested.) We will be adding official
 support for building on Mac OS X and Windows later.
 
+Quick Guide
+====================================
+
+Before you dive in, you should take note of what you actually need for the
+project you're working on.
+
+Developing for Anari
+------------------------------------
+
+If you plan to work on **Anari**, follow sections...
+
+1. :ref:`gbuild_libdeps` (you need CPGF and Eigen)
+2. :ref:`gbuild_pawlib_buildingdep`
+3. :ref:`gbuild_systems`
+
+Developing for PawLIB
+------------------------------------
+
+If you plan to work on **PawLIB**, follow sections...
+
+1. :ref:`gbuild_libdeps` (you actually only need CPGF)
+2. :ref:`gbuild_pawlib_buildingdev`
+3. :ref:`gbuild_systems`
+
+Developing for Ratscript
+------------------------------------
+
+If you plan to work on **Ratscript**, follow sections...
+
+1. :ref:`gbuild_libdeps`
+2. :ref:`gbuild_pawlib_buildingdep`
+3. :ref:`gbuild_systems`
+
+Developing for SIMPLEXpress
+------------------------------------
+
+If you plan to work on **SIMPLEXpress**, follow sections...
+
+1. :ref:`gbuild_libdeps`
+2. :ref:`gbuild_pawlib_buildingdep`
+3. :ref:`gbuild_systems`
+
 Dependencies
 ====================================
 
-.. _gbuild_libgit:
+.. _gbuild_libdeps:
 
 libdeps
 ------------------------------------
@@ -82,7 +124,7 @@ If the Opus build fails on an Ubuntu-based system with a message about
 Hereafter, you can just run ``make opus`` to build that library (or ``make
 ready`` to build it along with all the others.)
 
-.. _gbuild_libgit_updating:
+.. _gbuild_libdeps_updating:
 
 Updating libdeps
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -102,7 +144,7 @@ If you're working on the ``stable`` branch, run...
 ..  NOTE:: If you're using the ``master`` branch, just change the second command to
     ``git pull origin master``.
 
-.. _gbuild_cindergit:
+.. _gbuild_cinder:
 
 cinder
 ---------------------------------------
@@ -111,7 +153,7 @@ The only third-party dependency that isn't included in ``libdeps`` is Cinder;
 this is because of its size, and the beta status of its Linux support
 necessitating more frequent updates and patches.
 
-.. _gbuild_cindergit_building:
+.. _gbuild_cinder_building:
 
 Building cinder
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -145,7 +187,7 @@ Once the build is done, you can find all the headers in
 :file:`cinder/libs/lib`. The build systems in the other repositories that use
 Cinder look for the library files at these locations by default.
 
-.. _gbuild_cindergit_updating:
+.. _gbuild_cinder_updating:
 
 Updating cinder
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -344,8 +386,9 @@ Switching Dependency Locations
 
     For more information, see `StackOverflow: Nested Static Libraries and a Spooky Bug <https://stackoverflow.com/questions/42323262/nested-static-linked-libraries-and-a-spooky-bug>`_.
 
-Although our build systems are pre-configured to use :ref:`libdeps <gbuild_libgit>`,
-:ref:`cinder <gbuild_cindergit>`, and so forth, you can override this behavior.
+Although our build systems are pre-configured to use
+:ref:`libdeps <gbuild_libdeps>`, :ref:`cinder <gbuild_cinder>`, and so forth,
+you can override this behavior.
 
 In the root of the repository you're building, open :file:`build.config.txt` in
 that directory, and save it with another name ending in ``.config``. Then,
