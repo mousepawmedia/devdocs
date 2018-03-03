@@ -33,8 +33,8 @@ We try to keep our library dependencies to a minimum. You can quickly build all
 (except one) of our third-party dependency static libraries using our
 ``libdeps`` repository.
 
-For the complete list of libraries and their versions, see the CHANGELOG.md file
-in the ``libdeps`` repository.
+For the complete list of libraries and their versions, see the
+:file:`CHANGELOG.md` file in the ``libdeps`` repository.
 
 .. _gbuild_libgit_building:
 
@@ -197,9 +197,9 @@ want to use ``stable``, run...
 
     $ git checkout -b stable origin/stable
 
-PawLIB relies on CPGF, so make sure you've :ref:`built libdeps
-<gbuild_libgit_building>`, or otherwise :ref:`specified an alternate location
-for CPGF <gbuild_systems_conf>`
+PawLIB relies on CPGF, so make sure you've
+:ref:`built libdeps <gbuild_libgit_building>`, or otherwise
+:ref:`specified an alternate location for CPGF <gbuild_systems_conf>`
 
 Then, simply run...
 
@@ -298,7 +298,7 @@ Adding New Files
 
     It may seem redundant to have a ``project/`` folder in ``include/``,
     but it actually makes for cleaner code. Imagine you're importing
-    ``magic.hpp`` from LibA, and ``somemagic.hpp`` from LibB in the same
+    :file:`magic.hpp` from LibA, and :file:`somemagic.hpp` from LibB in the same
     file. Which is from where?
 
     Because of that odd-looking folder structure, we get imports that
@@ -310,9 +310,9 @@ Adding New Files
         #include <libb/somemagic.hpp>
 
 To add a new file to a project build, you need to edit that project's
-``CMakeLists.txt`` file. Look for the ``add_library`` or ``add_executable``
+:file:`CMakeLists.txt` file. Look for the ``add_library`` or ``add_executable``
 section, where all the project files are listed. Add your file paths
-(relative to the location of ``CMakeLists.txt``) to that list.
+(relative to the location of :file:`CMakeLists.txt`) to that list.
 
 For example, some project's ``add_executable`` command might look like this::
 

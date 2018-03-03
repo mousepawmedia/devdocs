@@ -1,8 +1,8 @@
 IRC Bot
 ###############################
 
-The :code:`#mousepawmedia` and :code:`#mousepawmedia-design` Freenode IRC chatrooms
-are patrolled by our bot, **LukeDMouse**.
+The :code:`#mousepawmedia` and :code:`#mousepawmedia-design` Freenode IRC
+chatrooms are patrolled by our bot, **LukeDMouse**.
 
 ..  NOTE:: You may remember the prior bot, Hawksnest. That bot was run by the
     Phabricator chatbot software, which has been discontinued due to a
@@ -16,7 +16,7 @@ Commands
 * :code:`!dice <n>d<sides>`: Rolls ``<n>`` dice with ``<sides>``. For example,
   `!dice 2d10` rolls two ten-sided dice.
 
-* :code:`!news`: Read the lastest channel news.
+* :code:`!news`: Read the latest channel news.
 
 * :code:`!seen <nick>`: Lists the last time the user ``<nick>`` was seen in the
   room by the bot, and what they last said.

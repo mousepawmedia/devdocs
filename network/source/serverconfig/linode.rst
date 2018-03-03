@@ -110,7 +110,7 @@ We'll start by setting up Apache2.
     $ sudo apt install apache2
 
 Next, we'll edit the configuration file to turn off ``KeepAlive``, as that
-uses up extra memoery (and we don't have that much to spare).
+uses up extra memory (and we don't have that much to spare).
 
 ..  code-block:: apache
 

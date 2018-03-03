@@ -52,7 +52,7 @@ Other options include...
 
 - **elementaryOS**: Perfect for Apple lovers.
 - **Ubuntu MATE**: Offers a simple and customizable interface.
-- **Kubuntu**: Packed with cool graphical effects and customizations.
+- **Kubuntu**: Packed with cool graphical effects and customization.
 - **Lubuntu**: A lightweight option for slower machines.
 - **Xubuntu**: A lighter, Apple-like system.
 

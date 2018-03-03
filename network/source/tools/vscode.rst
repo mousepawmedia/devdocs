@@ -52,7 +52,7 @@ You may also consider the following helpful extensions:
 * Bookmarks
 * Bracket Pair Colorizer
 * Contextual Duplicate
-* Git Blame
+* GitLens
 * Reflow Paragraph
 * TODO Highlight
 

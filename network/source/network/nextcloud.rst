@@ -50,7 +50,7 @@ Photos, audio, and video files are much larger (*especially* video), so you
 should be mindful of their size when uploading. Higher resolution photos,
 uncompressed audio, and high resolution video take up more space.
 
-Some media files shoud be stored as high resolution, especially those being used
+Some media files should be stored as high resolution, especially those being used
 for production. Media used only for internal reference, on the other hand, can
 usually be stored in a compressed format (such as .ogg instead of .wav) or
 a lower resolution (such as 800 x 450 instead of 7680 x 4320).
@@ -157,19 +157,19 @@ You can upload nearly any kind of file to Nextcloud.
 * Image files (.jpg, .png, .gif, .svg, etc.) can be viewed directly via the
   Gallery app.
 
-* Document files (.odt, .doc, .docx) can be viewed and edited via the Office
-  (Document) app.
+* Document files (``*.odt``, ``*.doc``, ``*.docx``) can be viewed and edited
+  via the Office (Document) app.
 
-* Spreadsheet files (.ods, .xls, .xlsx) can be viewed and edited via the
-  Office (Spreadsheet) app.
+* Spreadsheet files (``*.ods``, ``*.xls``, ``*.xlsx``) can be viewed and
+  edited via the Office (Spreadsheet) app.
 
-* Presentation files (.odp, .ppt, .pptx) can be viewed and edited via the
-  Office (Presentation) app.
+* Presentation files (``*.odp``, ``*.ppt``, ``*.pptx``) can be viewed and
+  edited via the Office (Presentation) app.
 
 * PDF files can be viewed directly via the built-in PDF viewer.
 
-* Text files (.txt) can be viewed and edited directly via the built-in Text
-  editor.
+* Text files (``*.txt``) can be viewed and edited directly via the built-in
+  Text editor.
 
 * Many video files can be viewed directly via the built-in Video player.
 
@@ -238,7 +238,7 @@ the search box. You can control sharing permissions from here.
 
 * :guilabel:`Can edit` means the user/group is able to edit the item.
 
-* The trash can icon unshares the item with the user/group.
+* The trash can icon un-shares the item with the user/group.
 
 ..  IMPORTANT:: For Design+Production or Content Development, it is usually
     most convenient to place uploaded work into a folder and share it with
@@ -307,7 +307,7 @@ Missing Features
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 For performance reasons, many of LibreOffice's editing features have been
-ommitted from Collabora Office.
+omitted from Collabora Office.
 
 While Collabora Office can display all OpenDocument format documents,
 spreadsheets, and presentations (among other document types and formats) almost
@@ -316,7 +316,7 @@ identically to how LibreOffice displays them, it cannot necessary *create* or
 
 Here are a few common examples:
 
-* Missing fonts may be subtituted, without actually changing what font is
+* Missing fonts may be substituted, without actually changing what font is
   called for in the document.
 
 * Complex formatting on documents is retained and usually displayed, but
@@ -342,7 +342,7 @@ take this into consideration when using it.
 
 If your internet connection is slow or unreliable, you may experience lags in
 typing, applying changes, or seeing the collaborative changes of others. In the
-worst case, you might not be able to make any changes becase they're getting
+worst case, you might not be able to make any changes because they're getting
 lost between your computer and the server.
 
 ..  NOTE:: If you *see* your changes on the document, you can rest assured
@@ -357,8 +357,8 @@ Creating and Opening Files
 ------------------------------
 
 Collabora fully integrates with the Files application. Clicking the name of any
-office-format document (`.odt`, `.docx`, `.ods`, `.odp`, etc.) will open it in
-Collabora Office.
+office-format document (``*.odt``, ``*.docx``, ``*.ods``, ``*.odp``, etc.)
+will open it in Collabora Office.
 
 To create a new file, click the :guilabel:`+` button at the top center of the
 Files app, and select :guilabel:`New Document`, :guilabel:`New Spreadsheet`,
@@ -500,7 +500,7 @@ Format Menu
   table cells.
 
 * :guilabel:`Lists` supplies controls and options for bulleted and numbered
-  lists, specifically indendation and levels. (Bullet and numbering formatting
+  lists, specifically indentation and levels. (Bullet and numbering formatting
   is not directly editable.)
 
 * :guilabel:`Clear direct formatting` resets the selection to the default
@@ -619,7 +619,7 @@ editing. The button's name will appear when you hover over the button.
 * **Sort Ascending** and **Sort Descending** will sort the selected cells.
 
 * **Bullets on/off** and **Numbering on/off** toggle the two kinds of lists
-  availble to you.
+  available to you.
   (See :ref:`nextcloud_office_interface_menus_format`).
 
 * **Increase Indent** and **Decrease Indent** let you control the indentation

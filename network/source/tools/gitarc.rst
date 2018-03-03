@@ -52,7 +52,7 @@ path.
 
 ..  code-block:: bash
 
-    $ sudo gedit /etc/environment
+    $ sudo pluma /etc/environment
 
 Just before the last ", insert the following, replacing `USERNAME` with your
 Ubuntu username.::
@@ -64,7 +64,7 @@ probably look something like this::
 
     PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/home/USERNAME/.arcanist/arcanist/bin/"
 
-Save and close gedit. Then, restart your computer. To test it out, run...
+Save and close pluma. Then, restart your computer. To test it out, run...
 
 ..  code-block:: bash
 
@@ -155,7 +155,7 @@ new keypair at :file:`~/.ssh/{id_rsa}.pub`.
 Adding Your Public Key
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Open your public key in a plain text editor like Gedit.
+Open your public key in a plain text editor like Gedit or Pluma.
 
 ..  code-block:: bash
 

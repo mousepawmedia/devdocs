@@ -80,7 +80,7 @@ upper-right corner of the list to see the exhaustive list.
 
 ..  _gtaskfinder_challenging:
 
-Challlenging
+Challenging
 ======================
 
 Open and unassigned tasks with high Friction (f4 and f5)

@@ -2,11 +2,11 @@ Server Configuration
 ##############################################
 
 We've documented most details relating to how we built our servers. This
-serves (a) as a reference for ongoing maintainance, (b) a training
+serves (a) as a reference for ongoing maintenance, (b) a training
 resource for anyone wanting to learn more about LAMP servers, and (c) a
 way for others to provide feedback on our server architectures.
 
-..  NOTE:: Of course, these guides are provided without warrenty.
+..  NOTE:: Of course, these guides are provided without warranty.
 
 If you find errors, omissions, typos, or other problems, or otherwise want
 to make a suggestion, please file a bug report on Phabricator.
@@ -30,7 +30,7 @@ Staff
 - Jeff "Hawk" Clark: Building the server machine.
 - Chris "Fox" Frasier: 2014 build support, 2016 build support.
 - Jared Hutton: Penetration testing.
-- Jason C. McDonald: Setup lead, server maintainance.
+- Jason C. McDonald: Setup lead, server maintenance.
 
 Thank Yous
 -----------------------------

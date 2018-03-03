@@ -151,7 +151,7 @@ real-world programming. Thus, we should hold *all* code to the same standards
 and expectations.
 
 In other words, even if the code's solution isn't ideal, the implementation
-should be clean, maintanable, and reasonably efficient.
+should be clean, maintainable, and reasonably efficient.
 
 To put it yet another way, **there is never an excuse for kludgy code.**
 

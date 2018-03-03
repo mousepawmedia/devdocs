@@ -77,7 +77,7 @@ The toolbar is always visible at the top of Phabricator. From left to right...
   :guilabel:`Mark All Read` to mark them all as read.
 
 * The **Chat menu** notifies you when there is a new message in one of the
-  Conpherence chatrooms. Checking :guilabel:`Persistant Chat` will add a
+  Conpherence chatrooms. Checking :guilabel:`Persistent Chat` will add a
   chat box to the lower right corner of your screen. (See
   :ref:`phab_conpherence`).
 
@@ -160,7 +160,7 @@ All comment boxes, as well as description fields and the wiki, using
     //Italics//
     __Underline__
     !!Highlighted!!
-    `Monospaces`
+    `Monospaced`
     ~~Strikethrough~~
     > Quoted text.
 
@@ -228,7 +228,7 @@ If you want to browse through all of our available Macros, see the
 Subscribing
 ---------------------------------
 
-When you **Subscribe** to an object, you will recieve email notifications for
+When you **Subscribe** to an object, you will receive email notifications for
 any updates to that object. You are automatically subscribed to any object
 you create.
 
@@ -350,8 +350,8 @@ object type, instead of the kind of project object.
 * **Access** designates a special permission group.
 
 * A **Subproject** belongs to a Project for further organizing objects. For
-  example, PawLIB has subprojects for OneString, Tripline, and Goldilocks,
-  to name a few. A subproject should define a large, distinct collection of
+  example, PawLIB has subprojects for OneString and Goldilocks,
+  to name a couple. A subproject should define a large, distinct collection of
   features with a unique name. These aren't arbitrary divisions. Use with
   caution!
 
@@ -786,7 +786,7 @@ out the form.
 
 * Question Details is where you go into detail. Describe the exact nature of your problem.
   If there is code involved, you should include an :abbr:`MCVE (Minimum, Complete, and
-  Verfiable Example)` (taking cue from `StackOverflow <https://stackoverflow.com/help/mcve>`_).
+  Verifiable Example)` (taking cue from `StackOverflow <https://stackoverflow.com/help/mcve>`_).
 
 * Answer Summary is only needed once the problem is solved. You may fill this in now if you're
   sharing knowledge in a Q&A format (which is great to do!), or wait and fill it in later to
@@ -894,7 +894,7 @@ Details
 
 Note that there are two more fields at the bottom of the menubox to the right.
 
-* **Tags**: The Projects that this Differental is associated with. This should
+* **Tags**: The Projects that this Differential is associated with. This should
   include Department, Team, and Project, as well as any appropriate Labels.
 
 * **Subscribers**: These users will be notified about changes. This field
@@ -1562,7 +1562,7 @@ to selected areas on the image. Click a comment bubble to view the comment.
 
 Next is the **Mock History**, which shows thumbnails of all the images in the
 Mock. The number of inline comments on each image is displayed as a number in
-the upper-right corner of the thumbtail. Click a thumbnail to view it full size.
+the upper-right corner of the thumbnail. Click a thumbnail to view it full size.
 You'll notice that previous revisions are also visible on separate rows as you
 scroll the Mock History to the right.
 
@@ -1758,7 +1758,7 @@ as a new revision within the Mock**. This is designed to allow us to track
 and view how a design changes over time, but you should bear this in mind before
 clicking :guilabel:`Save`.
 
-..  IMPORTANT:: There is no way to change or remove a particlar revision - a
+..  IMPORTANT:: There is no way to change or remove a particular revision - a
     new one will always be created.
 
 .. _phab_pholio_review:

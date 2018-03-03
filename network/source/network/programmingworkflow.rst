@@ -205,9 +205,9 @@ Compiler and Environment
 
 ..  sidebar:: What About MSVC?
 
-    The Microsoft Visual compilers have some very odd behaviors that we do
-    not want to have to work around. On Windows, you can use MinGW or Cygwin
-    for compiling. Otherwise, you're on your own.
+    We are currently working on adding support for the Microsoft Visual
+    compilers. In the meantime, on Windows, you can use MinGW or Cygwin
+    for compiling. Otherwise, you're on your own for the moment.
 
 CMake is configured to require a very specific build environment. Our C++
 libraries are designed to be compiled on GCC 5 using C++14. Any compiler which
