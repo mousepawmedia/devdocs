@@ -31,8 +31,8 @@ Extensions
 We recommend the following extensions:
 
 * C/C++
-* C/C++ Advanced Lint
 * C/C++ Snippets
+* cppcheck
 * CMake
 * gitignore
 * Kivy
@@ -43,8 +43,11 @@ We recommend the following extensions:
 * reStructuredText
 * XML Tools
 
-..  IMPORTANT:: `C/C++ Clang Command Adapter` makes the linter act weird.
+..  IMPORTANT:: ``C/C++ Clang Command Adapter`` makes the linter act weird.
     Do not install it.
+
+..  NOTE:: NOTE: ``cppcheck`` pays attention to inline linter suppressions,
+    whereas ``C/C++ Advanced Linter`` does not, thus why we use the one we do.
 
 You may also consider the following helpful extensions:
 
