@@ -106,9 +106,11 @@ For setup instructions for Git and Arcanist, see :ref:`gitarc`.
 
 For C/C++ development:
 
-* **C/C++ compiler and toolchain**: Clang (recommended), GCC, or
-  MSVC (support upcoming).
+* **C/C++ compiler and toolchain**: Clang (recommended) or GCC.
 * **A C++ IDE**: We recommend either VSCode, Code::Blocks, or Atom.
+
+..  NOTE:: We have **no plans** to support MSVC. Use Clang for compiling on
+    Microsoft Windows.
 
 If you're using Linux, see :ref:`cpp`.
 

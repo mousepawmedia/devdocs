@@ -21,8 +21,8 @@ consists of several pieces:
   Makefiles serve as a beginner-friendly wrapper, providing one-command builds.
 
 ..  WARNING:: We do *not* support the Microsoft Visual C++ [MSVC] compiler,
-    and have no plans to officially support it in the future. Both Clang and
-    GCC can be used to compile software on Windows.
+    and have **no plans** to officially support it in the future. LLVM Clang is
+    officially supported by Microsoft to compile software on Windows.
 
 To best understand this, we will start from the bottom of the stack and work
 our way up the layers of abstraction.
