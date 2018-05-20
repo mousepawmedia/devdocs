@@ -23,17 +23,41 @@ by default.
     get the entire command. If you prefer to copy and paste, triple-click the third
     command so you get the whole thing.
 
-We'll also install the libraries and development tools we use for Python3. We'll be getting
-the latest stable version of Kivy from a third-party repository.
+We'll also install the libraries and development tools we use for Python3.
 
 ..  code-block:: bash
 
-    $ sudo add-apt-repository ppa:kivy-team/kivy
     $ sudo apt update
-    $ sudo apt install python3 python3-kivy python3-lxml python3-pip python3-virtualenv pylint3 ninja-ide
+    $ sudo apt install python3 python3-pip python3-virtualenv pylint3 python-dev python3-dev
 
 ..  WARNING:: Do not **ever** use :code:`sudo pip`. If you want to install
     packages via pip, use a virtual environment.
+
+Install Kivy
+-----------------------------
+
+We first need to install all the dependencies for Kivy.
+
+..  code-block:: bash
+
+    $ sudo apt install build-essential git ffmpeg libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev libportmidi-dev libswscale-dev libavformat-dev libavcodec-dev zlib1g-dev libgstreamer1.0 gstreamer1.0-plugins-base gstreamer1.0-plugins-good
+
+Then, we'll create a new virtual environment for Kivy. In this example, we'll
+just make a virtual environment called ``kivy-venv`` in our home folder, but
+you can put it wherever you like by changing the path in the first command
+below.
+
+..  code-block:: bash
+
+    $ virtualenv --no-site-packages ~/kivy-venv
+    $ source ~/kivy-venv/bin/activate
+    $ pip install Cython==0.28.2
+    $ pip install kivy
+    $ deactivate
+
+Any time you want to use that virtual environment, just run
+:code:`source ~/kivy-venv/bin/activate`. The command :code:`deactivate`
+exits the virtual environment.
 
 .. _python_ide:
 

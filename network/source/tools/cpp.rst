@@ -12,9 +12,9 @@ languages on Linux.
 Install the Compiler
 ============================
 
-..  NOTE:: Updated 12 January 2018
+..  NOTE:: Updated 19 May 2018
 
-We use the Clang compiler primarily, and GCC5 secondarily. If you're not on a
+We use the Clang compiler primarily, and GCC secondarily. If you're not on a
 Debian-based Linux system, you'll need to find out how to install these yourself.
 
 We don't directly support Windows as a development environment. If you're
@@ -30,19 +30,19 @@ which has Clang onboard.
     prevented our code from compiling.
 
 We'll start by installing Clang and LLVM. We require Clang 3.4 or later, but
-recommend 4.0 for all company developers. We'll be using
+recommend 5.0 for all company developers. We'll be using
 `LLVM's official stable apt repository <http://apt.llvm.org/>`_ instead of
 using the older version in the default system repository.
 
 Below are the instructions for adding and installing from the official
 LLVM/Clang repository.
 
-..  IMPORTANT:: If you're using a version of Ubuntu other than 16.04, be sure to change
-    the `add-apt-repository` line to your version (instead of `xenial`).
+..  IMPORTANT:: If you're using a version of Ubuntu other than 18.04, be sure to change
+    the `add-apt-repository` line to your version (instead of `bionic`).
 
 ..  code-block:: bash
 
-    $ sudo add-apt-repository "deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-5.0 main"
+    $ sudo add-apt-repository "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-5.0 main"
     $ wget -O - http://apt.llvm.org/llvm-snapshot.gpg.key|sudo apt-key add -
     $ sudo apt update
     $ sudo apt install python-lldb-5.0
@@ -94,7 +94,7 @@ and configure this tool using the following commands.
     $ sudo update-alternatives --remove-all cc
     $ sudo update-alternatives --install /usr/bin/cc cc /usr/bin/clang-5.0 30
     $ sudo update-alternatives --install /usr/bin/cc cc /usr/bin/gcc-7 20
-    $ sudo update-alternatives --install /usr/bin/cc cc /usr/bin/gcc-7 10
+    $ sudo update-alternatives --install /usr/bin/cc cc /usr/bin/gcc 10
     $ sudo update-alternatives --remove-all c++
     $ sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-5.0 30
     $ sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++-7 20
