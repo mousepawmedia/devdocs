@@ -22,10 +22,33 @@ directly to Phabricator, we use a program called Arcanist.
 Installing Git and Arcanist
 =============================
 
-If you're on a Debian-based Linux OS (such as Ubuntu), you can follow these
-instructions to install Arcanist. If you're on another Linux OS, these
-instructions should still work, although you may need to adjust commands
-a little to make it work.
+Installing on Ubuntu
+------------------------------
+
+On Ubuntu, you can simply install Arcanist like any other package. We'll
+install it along with its dependencies and related tools.
+
+..  code-block:: bash
+
+    $ sudo apt install git php php-curl php-cli php-xml cppcheck arcanist
+
+Then, we just test it out.
+
+..  code-block:: bash
+
+    $ arc help
+
+If the help list shows up, that's it! You're ready to go.
+
+Installing on Linux, Alternate
+--------------------------------
+
+..  WARNING:: If the above worked, do NOT follow this version of the
+    instructions. Just skip to next section, ``Configuring Git``.
+
+If you're on a Debian-based Linux OS, you can follow these instructions to
+install Arcanist. If you're on another Linux OS, these instructions should
+still work, although you may need to adjust commands a little to make it work.
 
 First, we need to install our dependencies.
 
