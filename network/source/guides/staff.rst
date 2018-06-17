@@ -39,7 +39,7 @@ published.
 Technical Requirements
 =======================================
 
-You **must** have Debian Linux, ideally an Ubuntu-based distro (version 16.04
+You **must** have Linux, ideally an Ubuntu-based distro (version 18.04
 or later), installed directly on your computer. See :doc:`/setup_linux/install`.
 If you need help, contact Jason C. McDonald.
 
@@ -503,3 +503,12 @@ Programmers should check out these sections next:
 * :ref:`genv`
 * :ref:`grevision`
 * :ref:`gbuild`
+
+Content Developers should check out this section next:
+
+* :ref:`genv_content`
+
+Design+Production and Mass Communication staff should check out this
+section next:
+
+* :ref:`genv_designprod`
