@@ -77,6 +77,7 @@ editing tool, largely analogous to Adobe Photoshop®.
 
 ..  code-block:: bash
 
+    $ sudo apt remove gimp
     $ sudo add-apt-repository ppa:otto-kesselgulasch/gimp
     $ sudo apt install gimp
 
