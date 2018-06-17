@@ -24,10 +24,11 @@ Guides
     :maxdepth: 1
 
     guides/contrib
+    guides/environment
     guides/building
-    guides/taskcreate
-    guides/taskfinder
     guides/revision
+    guides/taskfinder
+    guides/taskcreate
     guides/reviewing
     guides/staff
 
@@ -37,11 +38,12 @@ Network
 ..  toctree::
     :maxdepth: 2
 
+    network/phabricator
+    network/programmingworkflow
+    network/etherpad
+    tools/irc
     network/ircbot
     network/nextcloud
-    network/phabricator
-    network/etherpad
-    network/programmingworkflow
     network/harbormaster_jenkins
 
 Development Tools
@@ -50,16 +52,16 @@ Development Tools
 ..  toctree::
     :maxdepth: 2
 
-    tools/irc
     tools/gitarc
     tools/cpp
     tools/python
     tools/sphinx
+    tools/devtools
 
 IDEs and Editors
 ---------------------------
 
-We officially support four major editors for our projects. Each language
+We officially support five major code editors for our projects. Each language
 setup tutorial will independently discuss these options.
 
 If you can't decide on one, try :ref:`vscode`!
@@ -69,10 +71,25 @@ If you can't decide on one, try :ref:`vscode`!
 
     tools/atom
     tools/codeblocks
+    tools/geany
     tools/ninjaide
     tools/vscode
 
-Ubuntu
+Design Tools
+---------------------------
+
+We use a number of additional tools for our graphics design and audio/video
+work.
+
+..  toctree::
+    :maxdepth: 2
+
+    tools/graphics
+    tools/avtools
+    tools/fonts
+    tools/wacom
+
+Ubuntu Installation
 --------------------------
 
 ..  toctree::
@@ -86,7 +103,7 @@ Other
 --------------------------
 
 ..  toctree::
-    :maxdepth: 1
+    :maxdepth: 2
 
     admin/admin
     serverconfig/config

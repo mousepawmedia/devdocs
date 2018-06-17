@@ -11,13 +11,9 @@ how to get started with one.
 First Time Setup
 =========================
 
-The first time you contribute code, you'll want to set up your development
-environment. At minimum, you will need to set up :ref:`gitarc`. You may also
-need to set up the tools for :ref:`C and C++ <cpp>`, :ref:`Python <python>`,
-and/or :ref:`Sphinx <sphinx>`.
-
-You'll also need to :ref:`Import the Repository <gitarc_importrepos>` you'll
-be working with.
+The first time you work with our repositories code, you'll want to
+:ref:`set up your development environment <genv>`. You'll also need to
+read :ref:`gbuild`.
 
 .. _grevision_gettingready:
 

@@ -99,6 +99,26 @@ Save and close pluma. Then, restart your computer. To test it out, run...
 Arcanist may ask you to install additional PHP packages via apt. If you set
 everything up right, you'll see arc's help list.
 
+Installing on Mac
+-----------------------------------
+
+On Mac, Git is automatically installed as part of
+``Command Line Tools for Xcode``. If you prefer an alternative means of
+installation, see `Git: Getting Started Installing Git <https://git-scm.com/book/en/v2/Getting-Started-Installing-Git>`_
+
+You can install Arcanist following these instructions:
+`Arcanist User Guide: Mac OS X <https://secure.phabricator.com/book/phabricator/article/arcanist_mac_os_x/>`_
+
+Installing on Windows
+-----------------------------------
+
+On Windows, you can use the Windows Subsystem for Linux, or MinGW, and follow
+the instructions for Linux.
+
+Otherwise, to install directly on Windows, follow these instructions:
+* `Git: Getting Started Installing Git <https://git-scm.com/book/en/v2/Getting-Started-Installing-Git>`_
+* `Arcanist User Guide: Windows <https://secure.phabricator.com/book/phabricator/article/arcanist_windows/>`_
+
 .. _gitarc_gitconfig:
 
 Configuring Git
@@ -123,12 +143,13 @@ associated with your GitHub account.
 Import Repositories
 ===============================
 
-All of our projects are preconfigured to work on an Ubuntu system. You only
-need to pull them down using Git.
+All of our projects are preconfigured to work on Linux and Mac systems.
+You only need to pull them down using Git.
 
 Decide on a place to put your repositories. I recommend creating a
 :file:`repos` directory in your Home folder. Wherever you want your
 repositories, create and navigate to the directory in question.
+On Linux or Mac, run...
 
 ..  code-block:: bash
 
@@ -142,22 +163,26 @@ Now we need to check out a repository. You have two options for this...
 2) Use your Phabricator username and a VCS password.
 
 Using an SSH Key
-----------------------------
+-------------------------------
 
 We need a public and private SSH key pair for this method. If you already
 have one set up, find your public key, which probably has a file path like
 :file:`~/.ssh/{id_rsa}.pub`. If you have an SSH key already, skip to
 `Adding Your Public Key`.
 
-Creating a Keypair
-^^^^^^^^^^^^^^^^^^^^^^^^
+Creating a Keypair (Linux/Mac)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 If you need to create a new SSH key pair, we can do that now. We start by
 installing OpenSSH Client, so we can log into other systems with SSH.
 
+On Ubuntu, you can install OpenSSH via...
+
 ..  code-block:: bash
 
     sudo apt install openssh-client
+
+If you're on Mac, the necessary software is already installed by default.
 
 Next, we generate a new keypair. Be sure to enter your GitHub or company
 email address in place of `me@example.com`.
@@ -175,17 +200,24 @@ new keypair at :file:`~/.ssh/{id_rsa}.pub`.
 ..  WARNING:: Your public key is the part you share. **NEVER EVER EVER share
     your private key** (the part ending in `.rsa`)!
 
+Creating a Keypair (Windows)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+If you're using Windows, you can create an SSH keypair using PuTTYGen or
+Git Bash. Two methods are described below:
+
+* `Using PuTTYGen on Windows <https://www.ssh.com/ssh/putty/windows/puttygen>`_
+* `Generating a new SSH Key (Git Bash) <https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/#platform-windows>`_
+
 Adding Your Public Key
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Open your public key in a plain text editor like Gedit or Pluma.
+Open your public key in a plain text editor, or just output it in your terminal.
+On Linux or Mac, you can do this via...
 
 ..  code-block:: bash
 
-    $ gedit ~/.ssh/id_rsa.pub
-
-Copy the entire contents of the file. Be sure to **close without modifying
-the file!**
+    $ cat ~/.ssh/id_rsa.pub
 
 On Phabricator, click your profile picture towards the right of the top menubar,
 and click :guilabel:`Settings`. From the menu pane on the left,
@@ -224,7 +256,7 @@ box for the `Clone` commands. If you're using the VCS password, select the
 URL.
 
 In your terminal, make sure you're in the directory where you want to
-check out your repositories...
+check out your repositories. On Linux or Mac, run...
 
 ..  code-block:: bash
 
@@ -244,11 +276,8 @@ If you've cloned a repository using one protocol, and decide you need to use
 the other, you can switch them out fairly easily without having to clone
 the repository all over again.
 
-Navigate to the root of the repository you want to switch out, and run...
-
-..  code-block:: bash
-
-    $ gedit .git/config
+In the root of the repository you want to switch out, edit the file
+:file`.git/config`.
 
 Look for the `url =` section. Swap that URL out for the one that matches
 the method you want to move. (Again, you can find those URLs on the Phabricator

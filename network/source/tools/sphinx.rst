@@ -8,18 +8,65 @@ We use a Python library called Sphinx to generate documentation from
 
 .. _sphinx_install:
 
+Installing Python
+=========================
+
+If you haven't already installed Python 3, see :ref:`python_installing`.
+When you come to the end of the Python installation section, come back to
+this guide.
+
 Installing Sphinx
 =========================
+
+Installing Sphinx on Linux
+------------------------------
 
 In Ubuntu, Sphinx is very easy to install. You can install it for either
 Python 2 or Python 3. Since we use the latter, we'll install that.
 
-..  NOTE:: If you don't have Python3 installed, see :doc:`/tools/python`
+To install on Ubuntu, simply run...
 
 ..  code-block:: bash
 
-    $ sudo apt update
     $ sudo apt install python3-sphinx pandoc
+
+Installing Sphinx on Mac
+------------------------------
+
+We can install Sphinx on Mac using either Homebrew or MacPorts.
+
+Installing Via MacPorts
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+..  code-block:: bash
+
+    $ sudo port install py36-sphinx pandoc
+    $ sudo port select --set sphinx py36-sphinx
+
+`SOURCE: Installing Sphinx - MacPorts <http://www.sphinx-doc.org/en/master/usage/installation.html#macports>`_
+
+Installing Via Homebrew
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+..  code-block:: bash
+
+    $ brew install sphinx-doc pandoc
+
+`SOURCE: Installing Sphinx - Homebrew <http://www.sphinx-doc.org/en/master/usage/installation.html#homebrew>`_
+
+Installing Sphinx on Windows
+------------------------------
+
+You can install Sphinx using Python pip.
+
+..  code-block:: batch
+
+    python -m pip install -U sphinx
+
+Then, download and install Pandoc from its official website:
+`<http://www.pandoc.org/installing.html>`_.
+
+`SOURCE: Installing Sphinx - Windows <http://www.sphinx-doc.org/en/master/usage/installation.html#windows>`_
 
 .. _sphinx_editor:
 
@@ -30,78 +77,8 @@ ReST files are just plain text files written in the ReStructuredText markup
 language. Thus, you can edit them in any text editor.
 
 However, we've found that :ref:`vscode` and :ref:`atom` handle ReST files
-uncommonly well.
-
-.. _sphinx_setup_docs:
-
-Setting Up Documentation
-=====================================
-
-..  WARNING:: If your project already has documentation, skip this section!
-
-In the repository for the project that you want to create the documentation for,
-run...
-
-..  code-block:: bash
-
-    $ mkdir docs
-    $ cd docs
-
-This creates a new folder :file:`docs` for our documentation, and navigates into
-it. Then, run...
-
-..  code-block:: bash
-
-    $ sphinx-quickstart
-
-* Below are the settings you should select during Quickstart. I've marked ENTER
-  for those options that you should use the default on.
-
-* Root path: ENTER
-
-* Separate source and build: :code:`y`
-
-* Name prefix for templates and static dir: :code:`.`
-
-* Project name: <name of your project>
-
-* Author name(s): MousePaw Media
-
-* Project version: <short project version>
-
-* Project release: <long project version>
-
-* Project language: :kbd:`Enter`
-
-* Source file suffix: :kbd:`Enter`
-
-* Name of your master document: :kbd:`Enter`
-
-* Do you want to use the epub builder?: :code:`y`
-
-* **Use defaults for the rest of the options.**
-
-..  NOTE:: You can change most of those options again later.
-
-Before continuing, you should also edit your :file:`.gitignore` file, adding
-the line::
-
-    build/
-
-This ensures that Sphinx's output is not tracked by the repository.
-
-Configuring
----------------------------
-
-:file:`source/conf.py` is the configuration file for Sphinx. This is where you
-change things like project name, author, copyright, and version, as well as
-build options and theme.
-
-If you just created this documentation directory, open this file in Atom,
-and then look for :code:`html_theme`. Change this from :code:`alabaster` to
-:code:`sphinx_rtd_theme`. The new line should look like this::
-
-    html_theme = 'sphinx_rtd_theme'
+uncommonly well. You can also use a plain text and code editor, such as
+:ref:`geany`.
 
 .. _sphinx_edit_docs:
 
@@ -205,7 +182,81 @@ malformed tables, and so on.
 Once the HTML is created, go to :file:`build/html/`, and open :file:`index.html`
 in your favorite web browser.
 
---------------
+.. _sphinx_setup_docs:
+
+Setting Up Documentation
+=====================================
+
+..  WARNING:: **If your project already has documentation, skip this section!**
+
+In the repository for the project that you want to create the documentation for,
+run...
+
+..  code-block:: bash
+
+    $ mkdir docs
+    $ cd docs
+
+This creates a new folder :file:`docs` for our documentation, and navigates into
+it. Then, run...
+
+..  code-block:: bash
+
+    $ sphinx-quickstart
+
+* Below are the settings you should select during Quickstart. I've marked ENTER
+  for those options that you should use the default on.
+
+* Root path: ENTER
+
+* Separate source and build: :code:`y`
+
+* Name prefix for templates and static dir: :code:`.`
+
+* Project name: <name of your project>
+
+* Author name(s): MousePaw Media
+
+* Project version: <short project version>
+
+* Project release: <long project version>
+
+* Project language: :kbd:`Enter`
+
+* Source file suffix: :kbd:`Enter`
+
+* Name of your master document: :kbd:`Enter`
+
+* Do you want to use the epub builder?: :code:`y`
+
+* **Use defaults for the rest of the options.**
+
+..  NOTE:: You can change most of those options again later.
+
+Before continuing, you should also edit your :file:`.gitignore` file, adding
+the line::
+
+    build/
+
+This ensures that Sphinx's output is not tracked by the repository.
+
+Configuring
+---------------------------
+
+:file:`source/conf.py` is the configuration file for Sphinx. This is where you
+change things like project name, author, copyright, and version, as well as
+build options and theme.
+
+If you just created this documentation directory, open this file in Atom,
+and then look for :code:`html_theme`. Change this from :code:`alabaster` to
+:code:`sphinx_rtd_theme`. The new line should look like this::
+
+    html_theme = 'sphinx_rtd_theme'
+
+.. _sphinx_learning-rst:
+
+Learning ReStructuredText
+=====================================
 
 ReStructuredText is a markup language all its own. It has a ton and a half of
 awesome features, but it's hard to know them all. Check out

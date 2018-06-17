@@ -3,14 +3,17 @@
 Code::Blocks 16.01
 ##################################
 
-You can use any C/C++ IDE you like. If you don't know what to use,
-we recommend **Code::Blocks**.
+You can use the Code::Blocks C/C++ IDE with many MousePaw Media projects.
+While this isn't our officially recommended IDE, many of our staff members use
+it.
 
 Installing Code::Blocks
 ==================================
 
-Ubuntu 16.04 and later offer the recommended stable version of Code::Blocks
-in the main repositories.
+Installing Code::Blocks 16.01 on Linux
+-----------------------------------------
+
+Ubuntu 16.04 and later offer Code::Blocks v16.01 in the main repositories.
 
 On any supported Ubuntu (or Debian) system, run...
 
@@ -22,9 +25,44 @@ On any supported Ubuntu (or Debian) system, run...
 That will install (or update) both `codeblocks` itself, and the plugins
 (of which we use quite a few).
 
-..  NOTE:: Many Ubuntu systems older than 16.04 can still install the correct
-    version by using the PPA `ppa:damien-moore/codeblocks-stable`.
+..  NOTE:: Many Ubuntu systems older than 16.04 can still install v16.01
+    by using the PPA `ppa:damien-moore/codeblocks-stable`.
 
+If you want the newer release, 17.12, you'll need to download it from
+`<http://www.codeblocks.org/downloads/26#linux>`_.
+
+Installing Code::Blocks 16.01 on Mac
+-----------------------------------------
+
+The last version of Code::Blocks available for Mac was 13.12, which is
+considerably outdated. If you still want to use it, you can download it
+from `<http://www.codeblocks.org/downloads/26#mac>`_
+
+Installing Code::Blocks 16.01 on Windows
+-----------------------------------------
+
+You can download the official installer for Code::Blocks v16.01 from
+`<https://sourceforge.net/projects/codeblocks/files/Binaries/16.01/Windows/>`_.
+This is the version that we use at MousePaw Media, and which these instructions
+are based on.
+
+You'll notice there are several options there.
+
+* For most situations, you should use :file:`codeblocks-17.12-setup.exe`.
+
+* If you would like to setup MinGW at the same time as Code::Blocks
+  (assuming you have NOT already set it up!), you can use
+  :file:`codeblocks-17.12mingw-setup.exe`.
+
+If you would prefer to install the *latest* version of Code::Blocks (v17.12),
+you can download it from `<http://www.codeblocks.org/downloads/26#windows>`_.
+However, these instructions may not apply, and our projects may not
+necessarily work correctly in that version. Use at your own risk.
+
+
+..  NOTE:: The Code::Blocks projects we include in our repositories are all
+    configured to use UNIX Makefiles. If you're attempting to compile from
+    Code::Blocks on Windows, you may need to figure some things out yourself.
 
 Trimming Down on Plugins
 ==================================

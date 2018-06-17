@@ -17,17 +17,8 @@ Install the Compiler
 We use the Clang compiler primarily, and GCC secondarily. If you're not on a
 Debian-based Linux system, you'll need to find out how to install these yourself.
 
-We don't directly support Windows as a development environment. If you're
-using Windows, you'll need to use Clang or a GCC5-compatible C++ compiler
-(such as MinGW). **We have no plans to support MSVC.**
-
-If you're on a Mac, you should install the Command Line Tools for Xcode,
-which has Clang onboard.
-
-..  WARNING:: If you're using an operating system based on a version of
-    Ubuntu before 16.04, you may not be able to compile our code with GCC.
-    There was a major bug in the last version of GCC5 for Ubuntu 14.04 which
-    prevented our code from compiling.
+Linux
+----------------------------
 
 We'll start by installing Clang and LLVM. We require Clang 3.4 or later, but
 recommend 5.0 for all company developers. We'll be using
@@ -55,6 +46,11 @@ If you are upgrading from 4.0, be sure to run...
 ..  code-block:: bash
 
     $ sudo apt remove clang-4.0 clang-4.0-doc libclang-common-4.0-dev libclang-4.0-dev libclang1-4.0 libclang1-4.0-dbg libllvm-4.0-ocaml-dev libllvm4.0 libllvm4.0-dbg lldb-4.0 llvm-4.0 llvm-4.0-dev llvm-4.0-doc llvm-4.0-examples llvm-4.0-runtime clang-format-4.0 python-clang-4.0 libfuzzer-4.0-dev
+
+..  WARNING:: If you're using an operating system based on a version of
+    Ubuntu before 16.04, you may not be able to compile our code with GCC.
+    There was a major bug in the last version of GCC5 for Ubuntu 14.04 which
+    prevented our code from compiling.
 
 We also try to ensure our code builds on GCC. Although GCC is available through
 the core repositories, we like using the latest stable compiler builds. You can
@@ -113,17 +109,97 @@ You can generally just leave each on auto.
 Our build systems all use the ``cc`` and ``c++`` commands for compiling, so
 whatever you select for the compiler will be used.
 
+Mac
+----------------------------
+
+If you're on a Mac, you should install ``Command Line Tools for Xcode``,
+which has Clang onboard.
+
+Optionally, if you want to install the GCC compilers, you can do so using
+Macports.
+
+Windows
+----------------------------
+
+We don't directly support Windows as a development environment. If you're
+using Windows, you'll need to use Clang or a GCC5-compatible C++ compiler
+(such as MinGW). **We have no plans to support MSVC.**
+
+* If you're using Windows 10, you may use the `Windows Subsystem for Linux <https://docs.microsoft.com/en-us/windows/wsl/install-win10>`_. (Recommended)
+* You may use `MinGW <http://mingw.org/>`_ for C++ compiling.
+* You can have `Visual Studio use the Clang compiler <https://blogs.msdn.microsoft.com/vcblog/2017/03/07/use-any-c-compiler-with-visual-studio/>`_.
+
+If you're using the Windows Subsystem for Linux, you can follow the Linux
+version of the instructions in this guide.
+
 ..  _cpp_install_devtools:
 
 Install Development Tools
 ==================================
 
-We use a number of coding tools, both command-line and otherwise. You can
-quickly install the whole batch (except the IDE) by running the following...
+We use a number of coding tools, both command-line and otherwise.
+
+**Required:**
+* CMake
+
+**Recommended:**
+* Valgrind
+* KCachegrind
+* Vim *or* Emacs
+
+Linux
+----------------------------
+
+On Ubuntu, you can quickly install the whole batch (except the IDE), plus the
+essential packages for compiling code, by running the following...
 
 ..  code-block:: bash
 
-    $ sudo apt install build-essential cmake valgrind kcachegrind vim cccc
+    $ sudo apt install build-essential cmake valgrind kcachegrind vim emacs cccc
+
+You can install the same packages on most other versions of Linux.
+
+Mac
+----------------------------
+
+By installing the Command Line Tools for Xcode, you should have most of the
+essentials already installed.
+
+Instead of KCachegrind, you may have an easier time installing QCachegrind,
+which is practically identical.
+
+Installing Via Macports
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+..  code-block:: bash
+
+    $ port install cmake emacs valgrind qcachegrind
+
+Installing Via Homebrew
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+..  code-block:: bash
+
+    $ brew install cmake emacs valgrind qcachegrind
+
+Alternative
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+If you prefer, you can download the official installer for CMake from
+`<https://cmake.org/download/>`_.
+
+
+Windows
+----------------------------
+
+Most of the development tools can be downloaded and installed. Please note,
+Valgrind can only be run under certain circumstances.
+
+* **CMake**: Official download from `<https://cmake.org/download/>`_.
+* **Emacs**: Official download from `<https://www.gnu.org/software/emacs/download.html#windows>`_.
+* **QCachegrind**: Unofficial binary download from `<https://sourceforge.net/projects/qcachegrindwin/>`_.
+* **Valgrind**: Can only be installed via ``Windows Subsystem for Linux`` or ``MinGW``.
+* **Vim**: Official download from `<https://www.vim.org/download.php/>`_
 
 ..  _cpp_install_ide:
 

@@ -40,20 +40,21 @@ and snap the pieces together. Some computer nerds like to start with just the
 Linux kernel itself and add each piece manually, but the rest of us like to
 have a starting place. That's one of the reasons we use Ubuntu-based distros.
 
-The most common distro at MousePaw Media is **Ubuntu** itself. It's unique,
-friendly, and very easy-to-use. It takes about 15 minutes to get used to
-Ubuntu, no matter what your computer experience level.
+The most common distro at MousePaw Media is **Ubuntu MATE**, which can be
+customized to suit your tastes, whether you prefer the feel of Windows XP,
+macOS, Ubuntu Unity, classic GNOME, or something entirely different.
 
-The second most common distro is **Linux Mint**, which looks a lot like
-Windows 7 in its layout, but is still based on Ubuntu. It's highly
-customizable, so you can make it look and act the way you want.
+Optionally, you may choose the polished, modern **Ubuntu**, which uses the
+**GNOME 3** desktop environment. It's a unique desktop environment, which can
+be learned in a period of about fifteen minutes, regardless of your computer
+experience level.
 
 Other options include...
 
-- **elementaryOS**: Perfect for Apple lovers.
-- **Ubuntu MATE**: Offers a simple and customizable interface.
 - **Kubuntu**: Packed with cool graphical effects and customization.
+- **Linux Mint**: A polished, easy to use option which resembles Windows 7.
 - **Lubuntu**: A lightweight option for slower machines.
+- **Ubuntu Budgie**: A modern option, which resembles Windows 10 in many ways.
 - **Xubuntu**: A lighter, Apple-like system.
 
 We'll get to the process of selecting and downloading an operating system
@@ -139,7 +140,7 @@ application on Linux. You do need to bring your own Microsoft Windows™
 installation disc and license key. However, You can find free (and legal)
 downloads of Windows 98 and prior through many abandonware catalogs.
 
-Is there a Linux replacement for..?
+Is there a Linux replacement for...?
 ---------------------------------------
 
 Quite possibly! While Linux alternatives to popular Windows software look
@@ -149,36 +150,46 @@ examples. You can find more at `alternativeto.net <http://alternativeto.net/>`_.
 +--------------------+---------------------+
 | Instead of...      | Try...              |
 +====================+=====================+
-| Microsoft Office   | LibreOffice/        |
+| Microsoft Office™  | LibreOffice         |
+|                    | FreeOffice*         |
 |                    | WPS Office*         |
 +--------------------+---------------------+
-| iTunes             | Banshee/            |
+| Evernote®          | Simplenote*         |
+|                    | Cherrytree          |
+|                    | Rednotebook         |
++--------------------+---------------------+
+| Apple iTunes®      | Amarok              |
+|                    | Banshee             |
+|                    | Clementine          |
 |                    | Rhythmbox           |
 +--------------------+---------------------+
-| Adobe Photoshop    | GIMP                |
+| Adobe Photoshop®   | GIMP                |
 |                    | Krita               |
 +--------------------+---------------------+
-| Adobe Lightroom    | Darktable/          |
+| Adobe Lightroom®   | Darktable           |
 |                    | RawTherapee         |
 +--------------------+---------------------+
-| Adobe Illustrator  | Inkscape            |
+| Adobe Illustrator® | Inkscape            |
 +--------------------+---------------------+
-| Adobe Animate      | Synfig              |
+| Adobe Animate®     | Synfig Studio       |
 +--------------------+---------------------+
-| Adobe Audition     | Audacity            |
+| Adobe Audition®    | Audacity            |
 +--------------------+---------------------+
-| 3DS Max or Maya    | Blender             |
+| Adobe InDesign®    | Scribus             |
 +--------------------+---------------------+
-| Any video editor   | Kdenlive/           |
+| Autodesk 3DS Max®  | Blender             |
+| Autodesk Maya®     |                     |
++--------------------+---------------------+
+| Any video editor   | Kdenlive            |
 |                    | Openshot            |
 +--------------------+---------------------+
-| (Any DAW)          | LMMS/               |
-|                    | Ardour              |
+| Avid Pro Tools®    | Ardour5             |
+|                    | LMMS                |
 +--------------------+---------------------+
-| AutoCAD            | FreeCAD/            |
+| Autodesk AutoCAD®  | FreeCAD             |
 |                    | BrisCAD**           |
 +--------------------+---------------------+
-| Finale             | MuseScore/          |
+| Finale®            | MuseScore           |
 |                    | Lilypond            |
 +--------------------+---------------------+
 
@@ -189,20 +200,24 @@ examples. You can find more at `alternativeto.net <http://alternativeto.net/>`_.
 I have an iDevice. Will it still work with my PC?
 ---------------------------------------------------------
 
-Unfortunately, Apple *blocked* music sync with Linux on all 4th Gen and later
-iDevices. There are ways around this, however. I have an iPod Touch that runs
-Google Music (a free service), that my Ubuntu machine automatically syncs with.
+Unfortunately, Apple® *blocked* music sync with Linux on all 4th Gen and later
+iDevices. There are ways around this, however. I have an iPod touch® that runs
+Google Music™ (a free service), that my Ubuntu machine automatically syncs with.
 
 Will my <device> work?
 ----------------------------
 
-Fitbit and Livescribe are two devices I'm frequently asked about. Although there
-is demand from the community, these companies have shown no interest in
+Fitbit® and Livescribe™ are two devices I'm frequently asked about. Although
+there is demand from the community, these companies have shown no interest in
 supporting Linux. There are some open-source efforts to get these devices
 working with Linux, but it'll be a while.
 
 On the other hand, Wacom tablets, many cameras, and most printers (just to
 name a few things) work BEAUTIFULLY with Linux!
+
+..  NOTE:: Ubuntu MATE 18.04 has no control panel for Wacom devices, while
+           Ubuntu 18.04 *does*. If you're using MATE, you can control your
+           Wacom tablet using a set of scripts written by Jason C. McDonald.
 
 Ultimately, you should just do a web search to see if your device is compatible.
 
@@ -211,5 +226,5 @@ Does Linux support speech recognition?
 
 While there are a number of projects attempting to add this functionality to
 Linux, there is no ready-to-use speech recognition software that works with
-Linux. Unfortunately, Dragon Naturally Speaking has no plans to work on Linux
+Linux. Unfortunately, Dragon NaturallySpeaking® has no plans to work on Linux
 either.

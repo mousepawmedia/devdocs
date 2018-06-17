@@ -500,5 +500,6 @@ the appropriate Internship Checklist at the bottom of the
 
 Programmers should check out these sections next:
 
+* :ref:`genv`
 * :ref:`grevision`
 * :ref:`gbuild`

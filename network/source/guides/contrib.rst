@@ -1,7 +1,7 @@
 ..  _gcontrib:
 
-Guide: Contributor Introduction
-###########################################
+Guide: Contributor Introduction (Start Here!)
+###############################################
 
 Welcome to MousePaw Media! We're so excited you've chosen to volunteer
 your time and skills to help make our projects awesome.
@@ -78,59 +78,7 @@ using IRC, see :ref:`irc`.
 Development Environment
 ===============================
 
-Operating System
--------------------------------
-
-We officially support the following operating systems for development work:
-
-* Debian Linux (recommended)
-* Other Linux
-* macOS
-* FreeBSD
-* Windows (support upcoming)
-
-..  NOTE:: We do not provide technical support for third-party development
-    tools on non-Debian systems.
-
-Tools
--------------------------------
-
-Before you get started, you should set up your development environment.
-You need the following:
-
-* **Git**
-* **Arcanist**
-* **CMake**
-
-For setup instructions for Git and Arcanist, see :ref:`gitarc`.
-
-For C/C++ development:
-
-* **C/C++ compiler and toolchain**: Clang (recommended) or GCC.
-* **A C++ IDE**: We recommend either VSCode, Code::Blocks, or Atom.
-
-..  NOTE:: We have **no plans** to support MSVC. Use Clang for compiling on
-    Microsoft Windows.
-
-If you're using Linux, see :ref:`cpp`.
-
-For Python development:
-
-* **Python 3**
-* **A Python IDE**: We recommend either VSCode or Atom.
-
-If you're using Linux, see :ref:`python`.
-
-For Sphinx development:
-
-* **Python 3**
-* **Sphinx**
-* **A code editor**: We recommend either VSCode or Atom.
-
-If you're using Linux, see :ref:`sphinx`.
-
-We have guides for setting up :ref:`vscode`, :ref:`codeblocks`, :ref:`atom`,
-and :ref:`ninjaide`.
+You should start by setting up your :ref:`Development Environment <genv>`.
 
 Getting Started
 ===============================

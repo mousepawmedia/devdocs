@@ -50,15 +50,54 @@ heart, so just pick one you like.
 If you have absolutely no idea what to go for, just go with Ubuntu itself.
 I'm writing these instructions on Ubuntu anyway!
 
+If you're not sure which version to select, we recommend one of these two:
+
 - `Ubuntu <https://www.ubuntu.com/desktop>`_
+- `Ubuntu MATE <https://ubuntu-mate.org/>`_
+
+These are other options in the Ubuntu family:
+
+- `elementaryOS <https://elementary.io/>`_
+- `Kubuntu <http://www.kubuntu.org/>`_
 - `Linux Mint <https://linuxmint.com/>`_ ← (There are actually three versions
   of Linux Mint. Cinnamon is the one that looks most like Windows.)
-- `elementaryOS <https://elementary.io/>`_
-- `Ubuntu MATE <https://ubuntu-mate.org/>`_
-- `Kubuntu <http://www.kubuntu.org/>`_
 - `Lubuntu <http://lubuntu.net/>`_
-- `Xubuntu <http://xubuntu.org/>`_
+- `Ubuntu Budgie <https://ubuntubudgie.org/>`_
 - `Ubuntu Studio <http://ubuntustudio.org/>`_
+- `Xubuntu <http://xubuntu.org/>`_
+
+Alterative Distributions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+..  sidebar:: Can I Use FreeBSD?
+
+    FreeBSD is another UNIX operating system, which does *not* use the Linux
+    kernel. Because of the technical similarity between Linux and
+    FreeBSD, we *do* permit use of FreeBSD for official development work at
+    MousePaw Media. However, as with any non-Debian operating system, you are
+    solely responsible for your own technical support, and may need to build
+    some required packages from source.
+
+If you're a more experienced Linux user, there are hundreds of other varieties
+of Linux that can be used.
+
+However, **these are not officially supported by MousePaw Media for
+development**, and we offer no in-house technical support for them. In some
+cases, you'll need to compile some required software packages from source.
+
+If you're up for the challenge, and are willing to be your own technical
+support, you are welcome to use any variety of Linux you like for development
+work at MousePaw Media.
+
+Here's a few popular, non-Ubuntu varieties of Linux.
+
+- `Antergos <https://antergos.com/>`_
+- `Arch Linux <https://www.archlinux.org/>`_
+- `Debian <https://www.debian.org/>`_
+- `CentOS <https://www.centos.org/>`_
+- `Fedora <https://getfedora.org/>`_
+- `OpenSUSE <https://www.opensuse.org/>`_
+- `Solus <https://solus-project.com/>`_
 
 Choosing a Version
 ----------------------------------
@@ -69,7 +108,7 @@ entire operating system in the process.
 
 Every two years, Ubuntu releases a **Long-Term Support [LTS] version**,
 which is supported with updates for five years. The most recent LTS was
-**Ubuntu 16.04 "Xenial Xerus"**. If you'd prefer stability over cutting-edge
+**Ubuntu 18.04 "Bionic Beaver"**. If you'd prefer stability over cutting-edge
 new features, I'd recommend this option.
 
 However, if you're tech-savvy and love experimenting with the latest features,
@@ -79,17 +118,11 @@ you might want to use the newest release.
     LTS release. If you use a newer version, you will be responsible for
     adjusting instructions for your release yourself.
 
-The LTS versions of each of the above distros is as follows:
-
-- Ubuntu 16.04 "Xenial Xerus" (same for all distros with "ubuntu" in the name)
-- Linux Mint 18 "Sarah"
-- elementaryOS 0.4 "Loki"
-
 32-bit or 64-bit?
 ----------------------------------
 
 You should know whether your computer is a 32-bit or a 64-bit system. In any
-version of Windows, go to Control Panel → System. On Windows 7/8, you may
+version of Windows, go to Control Panel → System. On Windows 7/8/10, you may
 need to use the search box in the Control Panel to find this. Look for
 “32-bit” or “64-bit”.
 
@@ -131,8 +164,17 @@ flash drives).
 to dual-boot, you'll want to have this handy in case something goes wrong
 and Windows gets nuked.
 
-3) **Write down your Microsoft Windows™ license key.** You can recover this
-key using `Magical Jellybean KeyFinder <http://www.magicaljellybean.com/keyfinder/>`_.
+..  sidebar:: Windows 10 Recovery
+
+    Official Windows 10 install images can be
+    `downloaded from microsoft.com <https://www.microsoft.com/en-us/software-download/windows10>`_.
+    The Windows 10 key is generally installed on your computer's BIOS. You can,
+    however, generally retrieve it using `the instructions from Microsoft <https://support.microsoft.com/en-us/help/10749/windows-product-key>`.
+
+3) **Write down your Microsoft Windows™ license key.** For Windows 7 or 8, you
+can recover this key using `Magical Jellybean KeyFinder <http://www.magicaljellybean.com/keyfinder/>`_.
+You may want to write down any other software license keys that tool recovers,
+as well.
 
 4) **Write down a list of all your Windows software.** Make sure you have
 install disks, registration info and/or keys, etc. You should probably do
@@ -161,10 +203,11 @@ Installing Linux
 Turn Off Secure Boot
 ------------------------------
 
-If you have a PC running Windows 8 or later, you must turn off Secure Boot
+If you have a PC running Windows 8 or later, you may need to turn off Secure Boot
 before you can install Linux.
 
-..  NOTE:: It is not possible to install Linux on Microsoft-branded computers.
+..  NOTE:: It is not possible to install Linux on Microsoft-branded computers,
+    such as the Surface Pro.
 
 To do this, go to the Power menu (where you shut down from), hold down SHIFT,
 and click `Restart`. After a few moments, a menu screen will appear. Select
@@ -228,29 +271,35 @@ and `Install this third-party software`. Click `Continue`.
 For Single-Boot
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+..  sidebar:: Future-Proofing (Advanced)
+
+    Personally, I find it helpful to have two system partitions, and a shared
+    `/home` partition. This way, if there is an error in installing a new
+    version of Ubuntu, I still have my old version untouched. To do this, select
+    ``Something else`` for partitioning, create two 30-50 GB partitions, and
+    allocate the rest for the `/home` partition.
+
 If you want to **permanently remove Windows** and install Linux, select
 "Erase disk and install Ubuntu". This is usually the best option for a
 completely new install.
 
 Alternatively, you can click `Something else` and set up the partitions
-yourself. In addition to the necessary partitions (swap, boot sectors, etc.),
-I personally recommend having a 50 GB `/` partition, and using the rest as a
-separate `/home` partition. You can find more information about setting up
-partitions on `this page <https://help.ubuntu.com/community/DiskSpace>`_.
+yourself. I personally recommend having a 50 GB `/` partition, and using the
+rest as a separate `/home` partition. You can find more information about
+setting up partitions on
+`this page <https://help.ubuntu.com/community/DiskSpace>`_.
+
+..  NOTE:: As of Ubuntu 18.04, it is no longer necessary to set up a separate
+    ``swap`` partition.
 
 For Dual-Boot
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-..  NOTE:: For some reason, they chose to use the conversion (1 GB = 1000 MB)
-    on the partition editor. Bear that in mind when viewing. We'll still work
-    with the proper (1 GB = 1024 MB) for our math, but the results will appear
-    to be off.
-
 If you're dual-booting, be very careful. Look for the section marked
 `free space`, and click the `+` button to create a new partition.
 
-We'll first set aside 50 GB for our system, so set the partition size to
-`51200` MB, `Primary` and `Beginning of this space`. Set `Use as` to `ext4`,
+We'll first set aside 50 GB for our system, so set the partition size to be
+`50000` MB, `Primary` and `Beginning of this space`. Set `Use as` to `ext4`,
 and `Mount point` to `/`. Confirm.
 
 Next, we'll create the swap space, which is used as a sort of extension to
@@ -288,7 +337,7 @@ see that name every time you open the Terminal. This is also the name that
 will appear on local networks when you connect, so it's helpful to have a
 unique and identifiable name.
 
-Some computer names I've seen include `tardis`, `bagofholding`, `ratbox`
+Some computer names I've seen include `tardis`, `bagofholding`, `enigma`
 (that one's mine), `cortex`, and `sunshine`. Just pick something that makes
 you happy.
 

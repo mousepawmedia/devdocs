@@ -12,36 +12,45 @@ via :kbd:`Ctrl+Alt+T`. Many commands require you to enter sudo, which will often
 prompt you for your computer password. As you type, it will show nothing, not
 even asterisks. Just finish typing it and press enter.
 
-In general, when installing via apt-get install, I will list multiple packages,
-each one separated from the last by a space. if one fails, the whole thing
-fails. Just find and remove any packages that you cannot install, and the rest
-will install just fine.
+In general, when installing via :code:`apt install`, I will list multiple
+packages, each one separated from the last by a space. if one fails, the whole
+thing fails. Just find and remove any packages that you cannot install, and
+the rest will install just fine.
 
 You can also copy and paste to the Terminal. Just be sure a) Not to copy the
 $ in the command, and b) to use :kbd:`Ctrl+Shift+V` to paste in the Terminal.
 (:kbd:`Ctrl+v` doesn't work.)
 
-Intro to Ubuntu Unity
+Intro to Ubuntu
 ================================================
 
-If you installed Ubuntu, as opposed to one of the other distros, you're using
-the interface called "Unity". Using it is very simple:
+Ubuntu MATE
+------------------------------------------------
 
-- The bar on the left is called the **Launcher**.
-- The top button on the Launcher is called the **Dash**. You can search for and
-  open applications and files from here. You can also bring this up by tapping
-  your **Super key** (or "Windows key").
-- The second button on the Launcher is your **File Browser**. The package that
-  Ubuntu Unity uses for this is technically called ``nautilus``.
-- The toolbar at the top of the screen is called the **Menu Bar**. When you
-  hover your mouse over it, the menus ("File", "Edit", etc.) for the program
-  you're using appear.
-- Tapping :kbd:`Left Alt` brings up the **HUD**, which you can use to search
-  through the options in the menus.
-- The right side of the Menu Bar is the **Panel**.
-- The upper right button (at the far right of the Menu Bar) is the
-  **Power Menu**. You can access System Settings and power functions here.\
-- Hold down the Super Key to see all of the default keyboard shortcuts in Unity.
+The ``Welcome`` application will walk you through the initial setup process
+for Ubuntu MATE, and introduce you to many features in the operating system.
+
+Early on, you should also start the ``MATE Tweak`` application, select
+``Panel``, and try out each of the eight panel layouts. By default, the
+``Familiar`` layout is used.
+
+- If you liked the original Ubuntu Unity, try ``Mutiny``.
+- If you like Microsoft Windows, try ``Redmond``.
+- If you like Apple macOS, try ``Cupertino``.
+- For the best of both worlds, try ``Pantheon`` (Jason McDonald's favorite).
+- If you have a very small screen, try ``Netbook``.
+
+Ubuntu (GNOME)
+------------------------------------------------
+
+You can learn how to use Ubuntu from the official
+`Ubuntu 18.04 Getting Started Guide <https://help.ubuntu.com/stable/ubuntu-help/getting-started.html.en>`_.
+
+You can customize many aspects of Ubuntu MATE using the ``GNOME Tweak``
+application.
+
+..  IMPORTANT:: The rest of the instructions are universal to all varieties
+    of Ubuntu 18.04.
 
 Updating System
 ================================================
@@ -88,9 +97,6 @@ Ubuntu system. We'll install those now:
 
     $ sudo apt install gdebi synaptic apt-xapian-index gufw ubuntu-restricted-extras
 
-    # If you're on Ubuntu itself, run this command as well.
-    $ sudo apt install unity-tweak-tool compizconfig-settings-manager
-
 While those install, here's a quick breakdown of what those packages are for...
 
 - ``gdebi`` makes it easier to install packages from downloaded installers.
@@ -99,8 +105,6 @@ While those install, here's a quick breakdown of what those packages are for...
 - ``gufw`` is for managing your firewall.
 - ``ubuntu-restricted-extras`` installs extra media codecs and tools that,
   while free, are not FOSS.
-- ``unity-tweak-tool`` and ``compizconfig-settings-manager`` make it easier to
-  change some of Ubuntu's hidden settings.
 
 Before we can use synaptic, we need to run...
 
@@ -133,10 +137,10 @@ to "On". You can open and close extra ports as needed on this window as well.
 Virus Scanning
 ------------------------
 
-While there are all of about 30 viruses for Linux in existence (and all of them
-require you to give them your password), there are plenty of viruses for Windows
-and Mac. To make sure you don't accidentally infect a non-Linux machine, it is
-helpful to have an anti-virus. There's only one trusted source for that on Linux -
+While there are very few viruses for Linux, all of which require a password to
+be installed, there are plenty of viruses for Windows and Mac. To make sure
+you don't accidentally infect a non-Linux machine, it is helpful to have an
+anti-virus. There's only one trusted source for that on Linux -
 the open-source ClamAV.
 
 ..  code-block:: bash
@@ -169,7 +173,7 @@ Alternative Office Suites
 -----------------------------
 
 While we use LibreOffice for all of our document work at MousePaw Media, there
-are two other office suites available that might be useful to you personally.
+are three other office suites available that might be useful to you personally.
 
 Calligra
 ^^^^^^^^^^^^^^^^
@@ -178,18 +182,33 @@ One is `Calligra <https://duckduckgo.com/?q=calligra&t=opera&ia=web>`_,
 which sports a rather usual interface. Some people love it, and some people
 hate it. If you'd like to try it out, just install the ``calligra`` package.
 
+FreeOffice
+^^^^^^^^^^^^^^^^^
+
+If you're pining for the familiar design of Microsoft Office™, consider the
+proprietary **FreeOffice**. It is completely free on both Windows and Linux,
+and is designed to completely replace Word, Excel, and PowerPoint. Best of all,
+it is capable of working with both the Office and OpenDocument formats.
+
+You can download FreeOffice from `the FreeOffice webside <www.freeoffice.com/>`_.
+Click ``Download``, and register as a user to receive your product key. Then,
+download ``FreeOffice for Linux`` from that page. Save the ``*.deb`` file to
+your computer, and then browse to it in your File Browser. Right-click it and
+open with "GDebi Package Installer", then click :guilabel:`Install`.
+
 WPS Office
 ^^^^^^^^^^^^^^^^^
 
-If you're pining for the familiar design of Microsoft Office™, check out the
-proprietary **WPS Office** from China-based Kingsoft. Although it's not FOSS,
-it is free on Linux. It can open Microsoft Office formats, and offers familiar
-replacements for Word, Excel, and PowerPoint. Unfortunately, WPS Office cannot
-work with the OpenDocument formats (`*.odt`, `*.ods`, etc.).
+Another Microsoft Office™ lookalike is the proprietary **WPS Office** from
+China-based Kingsoft. Although it's not FOSS, it is free on Linux. It can open
+Microsoft Office formats, and offers familiar replacements for Word, Excel, and
+PowerPoint. Unfortunately, WPS Office cannot work with the OpenDocument formats
+(`*.odt`, `*.ods`, etc.).
 
-You can download WPS Office from `their website <https://www.wps.com/>`_. Save
-the ``*.deb`` file to your computer, and then browse to it in your File Browser.
-Right-click it and open with "GDebi Package Installer", then click Install.
+You can download WPS Office from `the WPS website <https://www.wps.com/>`_.
+Save the ``*.deb`` file to your computer, and then browse to it in your File
+Browser. Right-click it and open with "GDebi Package Installer", then click
+:guilabel:`Install`.
 
 Web Browser
 ==============================
@@ -197,44 +216,16 @@ Web Browser
 Installing Chrome or Opera
 --------------------------------
 
-Firefox is probably installed by default. However, if you want Google Chrome
-or Opera, you can install those easily.
+**Firefox** is installed by default, and works quite well. However, there are a
+number of other browsers available. On Ubuntu MATE, these can all be installed
+using the ``Software Boutique``. On Ubuntu, most can be installed from
+``Software``. (Vivaldi must be installed by downloading the official ``.DEB``
+file from their website.)
 
-..  NOTE:: Google Chrome has some major bugs that appear on certain Mac and
-    Linux systems. If you're looking for a different browser that supports
-    Chrome Extensions, try Opera. (It's also faster!)
-
-You can download `Google Chrome here <https://www.google.com/chrome/browser/desktop/>`_,
-and `Opera here <http://www.opera.com/>`_. For either, save the ``*.deb`` file
-to your computer, browse to it in your File Browser, right-click, and open it
-with "GDebi Package Installer."
-
-Installing Adobe Flash
----------------------------------
-
-After not supporting Linux for a few years, Adobe has started offering an
-official package for the Adobe Flash plugin. This package works for Firefox,
-Chrome, and Opera.
-
-To install, you first must enable the Canonical Partners package repository. You
-can do so by going to Power Menu → :guilabel:`System Settings` →
-:guilabel:`Software and Updates`. Go to the :guilabel:`Other Software` tab and
-check the box next to ``Canonical Partners``. (NOT next to "Canonical Partners
-(Source code).") Click :guilabel:`Close`. When prompted, allow the repository
-to update.
-
-Next, install...
-
-..  code-block:: bash
-
-    sudo apt install adobe-flashplugin adobe-flash-properties-gtk
-
-Restart your web browser, and then go to `<https://www.adobe.com/software/flash/about/>`_
-to test the installation.
-
-..  IMPORTANT:: Adobe Flash will now manage its own updates. You should never
-    have to download any update of Flash through the web browser. On Linux,
-    Flash can only be installed and updated through ``apt``.
+- **Brave**: A privacy-focused browser. `brave.com <https://www.brave.com/>`_
+- **Chromium**: The open source version of the Google Chrome browser.
+  (We recommend this over Google Chrome for privacy reasons.)
+- **Vivaldi**: A highly customizable browser, based on Chromium. `vivaldi.com <https://vivaldi.com/>`_
 
 A Note On Web Search Engines
 --------------------------------------
@@ -269,20 +260,14 @@ In addition to this, DuckDuckGo offers a number of unique features!
 
 To set DuckDuckGo as your default search engine, follow these instructions:
 
-In Firefox
-^^^^^^^^^^^^^^^^^
-Go to the menu (upper right of Firefox) and click :guilabel:`Preferences`.
-Click :guilabel:`Search` on the left side, and select "DuckDuckGo" from the
-menu under "Default Search Engine".
+In Brave
+^^^^^^^^^^^^^^^^^^^^^^
+Click the hamburger menu (upper right, just below the Lion shield), and
+click :guilabel:`Settings...`. Select :guilabel:`Search` from the left.
+Click the "DuckDuckGo" line to set that as the default search engine.
 
-In Opera
-^^^^^^^^^^^^^^^^^^
-Go to :guilabel:`Edit` and :guilabel:`Preferences...`. Select
-:guilabel:`Browser` on the left side. Under "Search", select "DuckDuckGo"
-from the drop-down list.
-
-In Chrome
-^^^^^^^^^^^^^^^^^^
+In Chrome/Chromium
+^^^^^^^^^^^^^^^^^^^^^^
 Go to the menu (upper right of Chrome) and click :guilabel:`Settings`. Scroll
 down to "Search". If "DuckDuckGo" is not in the list (which, suspiciously,
 it has been absent from for years), click :guilabel:`Manage search engines...`.
@@ -290,6 +275,25 @@ Towards the bottom, in the box marked "Add a new search engine", type
 "DuckDuckGo". For "Keyword" type "duckduckgo.com", and for "URL" type
 "https://duckduckgo.com/". Press :kbd:`Enter`. Then, hover over the new entry
 in the list and click :guilabel:`Make default`.
+
+In Firefox
+^^^^^^^^^^^^^^^^^^^^^^
+Go to the menu (upper right of Firefox) and click :guilabel:`Preferences`.
+Click :guilabel:`Search` on the left side, and select "DuckDuckGo" from the
+menu under "Default Search Engine".
+
+In Opera
+^^^^^^^^^^^^^^^^^^^^^^
+Go to the menu (upper left of Opera) and :guilabel:`Settings`. Select
+:guilabel:`Browser` on the left side. Under "Search", select "DuckDuckGo"
+from the drop-down list.
+
+In Vivaldi
+^^^^^^^^^^^^^^^^^^^^^^
+Go to the menu (upper left of Vivaldi) and :guilabel:`Tools` → :guilabel:`Settings`.
+Select :guilabel:`Search`, select ``DuckDuckGo`` from the list of Search Engines,
+and check the boxes :guilabel:`Set as Default Search` and
+:guilabel:`Set as Private Search`. Click :guilabel:`Save`.
 
 DVD Playback
 ====================================
@@ -306,115 +310,11 @@ Want to play DVDs? Yes, Ubuntu can do that, but you have to set it up first.
 
 ..  code-block:: bash
 
-    sudo apt install libdvd-pkg
+    $ sudo apt install libdvd-pkg
+    $ sudo dpkg-reconfigure libdvd-pkg
 
-After installation, follow the instructions on the screen.
-
-While the default movie player works fine in Ubuntu, consider installing ``vlc``
-if you want additional features for video and DVD playback.
-
-Customizing Ubuntu
-=====================================
-
-Themes and Icons
--------------------------------------
-
-There are some amazing themes and icons available from
-`Noobslab <http://www.noobslab.com/p/themes-icons.html>`_. However, I
-believe the best themes and icons are the ones from the Ravefinity project
-(and a few others). Having tried a number of themes, I find that these provide
-the cleanest and most consistent results. Plus, they come in a wide variety of
-colors!
-
-Installing Themes and Icons
----------------------------------------
-
-If you're on any of the Ubuntu-based distros (besides elementaryOS), you can
-install these themes with the following commands. The lines starting with
-`#` are comments describing the command after it. Skip the commands that
-don't apply to you.
-
-..  code-block:: bash
-
-    sudo add-apt-repository ppa:noobslab/themes
-    sudo add-apt-repository ppa:ravefinity-project/ppa
-
-    # Install icon sets...
-    sudo apt install vivacious-colors vibrancy-colors
-
-    # Install themes...
-    sudo apt install radiance-flat-colors radiance-colors ambiance-blackout-colors ambiance-blackout-flat-colors ambiance-colors ambiance-crunchy ambiance-flat-colors ambiance-lime vivacious-colors-gtk-dark vivacious-colors-gtk-light ambiance-radiance-xfce-lxde
-
-    # Run if you're on Ubuntu Unity...
-    sudo apt install vivacious-unity-gtk-dark vivacious-unity-gtk-light
-
-(I might be a little biased towards the Vibrancy icon set, as I contributed
-several icons to it.)
-
-Choosing a Theme (Unity)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Start the Unity Tweak Tool, and click :guilabel:`Themes`. Select a theme from
-the list to view it. (The left and right list selections will always
-automatically match each other.)
-
-..  WARNING:: The "Ambiance Blackout" themes cause some CSS problems with
-    Firefox, and make parts of the Opera interface unreadable. Be forewarned.
-
-Next, select the :guilabel:`Icons` tab. The Vibrancy and Vivacious icon sets
-come in many colors, but the main idea of both is to make all your icons look
-unified. Use a "Dark" set if you're using an "Ambiance" theme, and a "Light"
-set if you're using a "Radiance" theme.
-
-Choosing a Theme (Linux Mint)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Go to your System Settings and select :guilabel:`Themes`. Try the different
-options out to find a combination you like.
-
-..  WARNING:: The "Ambiance Blackout" themes cause some CSS problems with
-    Firefox, and make parts of the Opera interface unreadable. Be forewarned.
-
-The Vibrancy and Vivacious icon sets come in many colors, but the main idea of
-both is to make all your icons look unified. Use a "Dark" set if you're using
-an "Ambiance" theme, and a "Light" set if you're using a "Radiance" theme.
-
-Screensavers
-------------------------------------------
-
-Personally, I love screensavers. Besides being practical, they're *fun*.
-Linux has hundreds of screensavers to choose from, so there's something for
-everyone.
-
-However, these screensavers are not present by default. Let's install them:
-
-..  code-block:: bash
-
-    sudo apt install xscreensaver xscreensaver-data xscreensaver-data-extra xscreensaver-gl xscreensaver-gl-extra  xscreensaver-screensaver-bsod
-    sudo apt purge gnome-screensaver
-
-Note, we had to completely remove ``gnome-screensaver`` from the system, to
-prevent a conflict between the two screensaver programs.
-
-If you're on Linux Mint, that's all you have to do! You can now go to
-System Settings and :guilabel:`Screensavers` to select one.
-
-If you're on one of the Ubuntu distros (Ubuntu, Xubuntu, Ubuntu Studio, etc),
-you'll need to add XScreensaver to the list of programs to start automatically.
-Look for the program "Startup Applications". Click :guilabel:`Add`. Under
-"Name", type "Xscreensaver". For "Command", enter "xscreensaver&".
-Click :guilabel:`Add` again, and then :guilabel:`Close`.
-
-Now, start the program "Screensavers" and begin exploring your options! Most of
-them even have lots of options you can tweak.
-
-..  WARNING:: One of the screensavers, BSOD, simulates the "Blue Screen of
-    Death" for various systems, including, Windows, Mac, Linux, BSD, and even
-    ATMs and GLaDOS. While this is fun for computer nerds, it's probably a
-    good idea to turn off the Linux-based BSODs in the screensaver settings,
-    to avoid confusing yourself into hard-booting the computer in a panic.
-    Also, warn your roommates, so *they* don't "helpfully" restart your machine
-    for you. :)
+..  NOTE:: In my experience, mpv Media Player (package ``mpv``) provides the
+    best video and DVD playback experience.
 
 Helpful Settings
 ===========================================
@@ -432,15 +332,14 @@ sadly missing by default on Linux. Thankfully, you can set up custom
 keyboard shortcuts for anything you like, so adding that in is easy!
 
 First, we need to free up the keyboard shortcut for our use.
-Go to Power Menu → :guilabel:`System Settings` → :guilabel:`Keyboard`.
-Select :guilabel:`Shortcuts` if necessary, and then go to :guilabel:`System`.
-Double-click the ``Ctrl-Alt-Delete`` entry in the row for "Log out" and
-press :kbd:`Ctrl+Alt+Backspace`. This will be the keyboard shortcut if you
-want to quickly log off your computer.
+Bring up the ``Keyboard Shortcuts`` application (``Keyboard`` on GNOME).
+Under the :guilabel:`Desktop` section, double-click the ``Ctrl-Alt-Delete``
+entry in the row for "Log out" and press :kbd:`Ctrl+Alt+Backspace`. This will
+be the keyboard shortcut if you want to quickly log off your computer.
 
-Now, go to :guilabel:`Custom Shortcuts`. Click :guilabel:`+`. Set the name
-to "System Monitor" and the command to "gnome-system-monitor". Press
-:guilabel:`Apply`.
+Now, click :guilabel:`+ Add` at the bottom of the screen. Set the name to
+"System Monitor" and the command to :code:`gnome-system-monitor` on Ubuntu,
+or :code:`mate-system-monitor` on Ubuntu MATE. Press :guilabel:`Apply`.
 
 Finally, double-click ``Disabled`` on the "System Monitor" row in the list and press
 :kbd:`Ctrl+Alt+Delete`.
@@ -453,29 +352,40 @@ Compose Key
 
 One of the coolest features in Ubuntu is the ability to type accented
 characters very quickly. To do this, you'll need to turn on your Compose Key.
-Still in the Shortcuts control pane from the previous step, click
-:guilabel:`Typing`. Click the keyboard shortcut (probably "Disabled") on the
-"Compose Key" row, and select "Right Alt".
 
-Unity Tweaks
+Ubuntu MATE
+""""""""""""""""""""""""""""""""""
+
+Bring up the ``Keyboard`` preferences. Click :guilabel:`Layouts` and
+:guilabel:`Options...`. Find and click :guilabel:`Position of Compose key`,
+and check the box for :guilabel:`Right Alt`. Close both windows.
+
+Ubuntu
+"""""""""""""""""""""""""""""""""""
+
+Make sure ``gnome-tweaks`` is installed, and then launch it. Go to the
+:guilabel:`Keyboard & Mouse` section. Next to "Compose Key", click
+:guilabel:`Disabled`. Toggle the switch at the top to the on position, and
+then select the option for :guilabel:`Right Alt`.
+
+Tweaks
 -------------------------------------------
 
-As you may have noticed, the Unity Tweak Tool on Ubuntu Unity offers a lot of
-hidden options. Here are a few to consider:
+Both Ubuntu and Ubuntu MATE allow you to set a lot of hidden options.
 
-- You can change a lot about the panel, including displaying your name or the date,
-  setting the clock to 12 or 24-hour time, and showing the volume and power
-  icons.
-- You can set Window Snapping to place a window in a given corner if you
-  drag-and-drop it to said corner.
-- You can set the Launcher to be on the left or bottom of the screen, and to
-  autohide.
+On Ubuntu, you should install the ``gnome-tweaks`` package via
+:code:`sudo apt install gnome-tweaks`, after which you can use the
+``GNOME Tweaks`` application.
 
-..  WARNING:: Do NOT set the Launcher position to "Bottom" **AND** set
-    Auto-hide Reveal location to "Top left corner". It doesn't work.
+On Ubuntu MATE, ``MATE Tweaks`` is already installed by default.
+
+Browse through your system's tweak tool and try out the different options.
+Customize things to your liking!
 
 -------------------------------------
 
 This should be enough information to get you started! From here, you can keep
-adjusting things to your liking. Continue to the next step when you're ready
-to set up your work tools.
+adjusting things to your tastes.
+
+You should now go through :ref:`genv`, following the instructions for
+Ubuntu Linux.

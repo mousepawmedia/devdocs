@@ -3,12 +3,10 @@
 Guide: Building Code
 #####################################
 
-The first time you work with our repositories code, you'll want to set up your
-development environment. At minimum, you will need to set up :ref:`gitarc`. You
-may also need to set up the tools for :ref:`C and C++ <cpp>`, :ref:`Python
-<python>`, and/or :ref:`Sphinx <sphinx>`.
+The first time you work with our repositories code, you'll want to
+:ref:`set up your development environment <genv>`.
 
-Our builds are currently tested for Ubuntu 16.04 LTS, but they should work on
+Our builds are currently tested for Ubuntu 18.04 LTS, but they should work on
 any up-to-date Debian-based distro. They'll also probably work on almost
 any modern Linux system (though we haven't tested.) We will be adding official
 support for building on Mac OS X and Windows later.
@@ -130,69 +128,6 @@ Updating libdeps
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 When changes happen in ``libdeps``, you only need to pull them in and rebuild.
-While ``make clean`` commands are provided, it's generally more effective to
-just clean up the git repository itself.
-
-If you're working on the ``stable`` branch, run...
-
-..  code-block:: bash
-
-    $ git clean -xdff
-    $ git pull origin stable
-    $ make ready
-
-..  NOTE:: If you're using the ``master`` branch, just change the second command to
-    ``git pull origin master``.
-
-.. _gbuild_cinder:
-
-cinder
----------------------------------------
-
-The only third-party dependency that isn't included in ``libdeps`` is Cinder;
-this is because of its size, and the beta status of its Linux support
-necessitating more frequent updates and patches.
-
-.. _gbuild_cinder_building:
-
-Building cinder
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Clone `cinder <https://phabricator.mousepawmedia.net/source/cinder/>`_ into your
-repositories folder. For best results, all MousePaw Media repositories you clone
-should be in the same directory. Then run...
-
-..  code-block:: bash
-
-    $ cd cinder
-    $ git checkout -b stable origin/stable
-
-Before you can build Cinder for the first time, you'll need to install Cinder's
-dependencies. Thankfully, these are all packages readily available on
-Debian-based Linux systems, so we created a script for quickly installing them.
-(For other systems, you'll need to install the dependencies yourself.)
-
-..  code-block:: bash
-
-    $ make ubuntu-install-deps
-
-Then, build Cinder.
-
-..  code-block:: bash
-
-    $ make ready
-
-Once the build is done, you can find all the headers in
-:file:`cinder/libs/include`, and the compiled static libraries in
-:file:`cinder/libs/lib`. The build systems in the other repositories that use
-Cinder look for the library files at these locations by default.
-
-.. _gbuild_cinder_updating:
-
-Updating cinder
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-When changes happen in ``cinder``, you only need to pull them in and rebuild.
 While ``make clean`` commands are provided, it's generally more effective to
 just clean up the git repository itself.
 
@@ -387,8 +322,7 @@ Switching Dependency Locations
     For more information, see `StackOverflow: Nested Static Libraries and a Spooky Bug <https://stackoverflow.com/questions/42323262/nested-static-linked-libraries-and-a-spooky-bug>`_.
 
 Although our build systems are pre-configured to use
-:ref:`libdeps <gbuild_libdeps>`, :ref:`cinder <gbuild_cinder>`, and so forth,
-you can override this behavior.
+:ref:`libdeps <gbuild_libdeps>`, you can override this behavior.
 
 In the root of the repository you're building, open :file:`build.config.txt` in
 that directory, and save it with another name ending in ``.config``. Then,
@@ -433,6 +367,6 @@ If your system is configured for cross-compiling, you can ask the compiler to
 build for an x86 (32-bit) or x64 (64-bit) system by including the ``ARCH=32`` or
 ``ARCH=64`` arguments, respectively.
 
-..  WARNING:: Our dependency libraries (``libdeps`` and ``cinder``) are not
+..  WARNING:: Our dependency libraries (``libdeps``) are not
     currently configured to switch architectures. You will need to manually
     compile these and point to them using a ``.config`` file.

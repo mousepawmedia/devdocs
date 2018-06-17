@@ -18,6 +18,9 @@ It's also completely customizable, allowing you to add functionality and themes
 from the built-in packages. (If you're a programmer, you can also write your
 own!)
 
+Installing on Linux
+-------------------------------
+
 If you're on Ubuntu, you can install Atom from a
 `third-party repository <http://www.webupd8.org/2014/05/install-atom-text-editor-in-ubuntu-via-ppa.html>`_.
 
@@ -29,6 +32,29 @@ If you're on Ubuntu, you can install Atom from a
 
 On other operating systems, you can install Atom from the official packages
 on `the Atom website <https://atom.io/>`_.
+
+`SOURCE: Installing Atom - Linux <https://flight-manual.atom.io/getting-started/sections/installing-atom/#platform-linux>`_
+
+Installing on Mac
+-------------------------------
+
+On Mac, you can go to the `official Atom releases page <https://github.com/atom/atom/releases/>`_
+and download the file :file:`atom-mac.zip` for the latest stable release.
+
+Extract the ZIP file, and drag the ``Atom`` application into your
+:file:`Applications` folder.
+
+`SOURCE: Installing Atom - Mac <https://flight-manual.atom.io/getting-started/sections/installing-atom/#platform-mac>`_
+
+Installing on Windows
+-------------------------------
+
+On Windows, you can go to the `official Atom releases page <https://github.com/atom/atom/releases/>`_
+and download the file :file:`AtomSetup.exe` for the latest stable release.
+
+Run the executable to launch the Atom installer.
+
+`SOURCE: Installing Atom - Windows <https://flight-manual.atom.io/getting-started/sections/installing-atom/#platform-windows>`_
 
 Configuring Atom
 ===============================
