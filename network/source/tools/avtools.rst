@@ -196,6 +196,25 @@ option, and then you can start JACK with ``Start``.
 **QJackCtl**
 * Official Website: `<https://qjackctl.sourceforge.io/>`_
 
+.. _avtools_op_dvdstyler:
+
+DVDStyler (3.0.x)
+=============================
+
+**DVDStyler** allows you to create production-quality DVDs with custom,
+hand-crafted menus.
+
+We will install DVDStyle fro the unofficial PPA.
+
+..  code-block:: bash
+
+    $ sudo add-apt-repository ppa:ubuntuhandbook1/dvdstyler
+    $ sudo apt install dvdstyler
+
+* Official Website: `<https://www.dvdstyler.org/en/>`_
+* Documentation: `<https://www.dvdstyler.org/en/70>`_
+* Tutorials: `<https://www.dvdstyler.org/en/documents>`_
+
 .. _avtools_op_hydrogen:
 
 Hydrogen

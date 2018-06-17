@@ -253,7 +253,12 @@ Audio/Video Tools
 We use the following audio and video tools:
 
 * **Audacity**
+* **Audio Recorder**
 * **Handbrake**
 * **Kdenlive**
+* **Musescore**
+
+Depending on your assignment, there are several other applications in this
+category we recommend.
 
 For setup instructions, see :ref:`avtools`.
