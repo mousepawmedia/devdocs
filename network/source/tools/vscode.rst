@@ -29,20 +29,19 @@ article `Running VS Code on Linux <https://code.visualstudio.com/docs/setup/linu
 Extensions
 =================================
 
-We recommend the following extensions:
+We recommend the following extensions (author name in parenthesis):
 
-* C/C++
-* C/C++ Advanced Linter
-* C/C++ Snippets
-* CMake
-* gitignore
-* Kivy
-* LLDB Debugger
-* Makefiles support for VSCode
-* markdownlint
-* Python
-* reStructuredText
-* XML Tools
+* C/C++ (Microsoft)
+* C/C++ Advanced Lint (Joseph Benden)
+* C/C++ Snippets (Harsh)
+* CMake (twxs)
+* gitignore (CodeZombie)
+* Kivy (BattleBas)
+* CodeLLDB (Vadim Chugunov)
+* markdownlint (David Anson)
+* Python (Microsoft)
+* reStructuredText (LeXtudio)
+* XML Tools (Josh Johnson)
 
 ..  IMPORTANT:: ``C/C++ Clang Command Adapter`` makes the linter act weird.
     Do not install it.
@@ -52,14 +51,14 @@ We recommend the following extensions:
 
 You may also consider the following helpful extensions:
 
-* Auto Close Tag
-* Bookmarks
-* Bracket Pair Colorizer
-* Code Spell Checker
-* Contextual Duplicate
-* GitLens
-* Reflow Paragraph
-* TODO Highlight
+* Auto Close Tag (Jus Han)
+* Bookmarks (Alessandro Fragnani)
+* Bracket Pair Colorizer (CoenraadS)
+* Code Spell Checker (Street Side Software)
+* Contextual Duplicate (Lars Fernhomberg)
+* GitLens (Eric Amodio)
+* Reflow Paragraph (Troels Damgaard)
+* TODO Highlight (Wayou Liu)
 
 Settings
 =================================
