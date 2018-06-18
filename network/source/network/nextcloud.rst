@@ -738,7 +738,7 @@ To install the Nextcloud client on an Ubuntu-based system, run...
     $ sudo apt update
     $ sudo apt install nextcloud-client
 
-Once that installs, start the :guilabel:`ownCloud desktop sync client`
+Once that installs, start the :guilabel:`Nextcloud desktop sync client`
 application. The setup wizard will appear the first time.
 
 Set the server address to :code:`https://nextcloud.mousepawmedia.net` and
