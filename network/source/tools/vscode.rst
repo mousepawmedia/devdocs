@@ -36,7 +36,6 @@ We recommend the following extensions (author name in parenthesis):
 * C/C++ Snippets (Harsh)
 * CMake (twxs)
 * gitignore (CodeZombie)
-* Kivy (BattleBas)
 * CodeLLDB (Vadim Chugunov)
 * markdownlint (David Anson)
 * Python (Microsoft)

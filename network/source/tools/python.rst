@@ -4,7 +4,7 @@ Python3 Development Environment
 ######################################
 
 We use the latest version of Python 3 for a lot of our application
-and GUI development. Kivy is our GUI toolkit.
+and GUI development. PySide2 is our GUI toolkit.
 
 We recommend either VSCode, Atom, or NINJA-IDE as our main Python IDE, although
 you can use whatever you're most comfortable with.
@@ -31,7 +31,7 @@ We'll also install the libraries and development tools we use for Python3.
 ..  code-block:: bash
 
     $ sudo apt update
-    $ sudo apt install python3 python3-pip python3-virtualenv pylint3 python-dev python3-dev
+    $ sudo apt install python3 python3-pip python3-virtualenv pylint3 python-dev python3-dev virtualenv
 
 ..  WARNING:: Do not **ever** use :code:`sudo pip`. If you want to install
     packages via pip, use a virtual environment.
@@ -74,80 +74,47 @@ command to install the rest of what we need.
     python -m pip install --upgrade pip wheel setuptools
     python -m pip install virtualenv pylint
 
-.. _python_kivy:
+.. _python_pyside2:
 
-Installing Kivy
+Installing PySide2
 =============================
 
-Installing Kivy on Linux
+Installing PySide2 on Linux
 -----------------------------
 
-We first need to install all the dependencies for Kivy. On Ubuntu, we
-can run...
+We'll create a new virtual environment for PySide2. You can reuse these
+instructions to create a different virtual environment for any project
+you're working on using PySide2, but this provides a good general testing
+ground.
 
-..  code-block:: bash
+..  code-blocks:: bash
 
-    $ sudo apt install build-essential git ffmpeg libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev libportmidi-dev libswscale-dev libavformat-dev libavcodec-dev zlib1g-dev libgstreamer1.0 gstreamer1.0-plugins-base gstreamer1.0-plugins-good
-
-Then, we'll create a new virtual environment for Kivy. In this example, we'll
-just make a virtual environment called ``kivy-venv`` in our home folder, but
-you can put it wherever you like by changing the path in the first command
-below.
-
-..  code-block:: bash
-
-    $ virtualenv --no-site-packages ~/kivy-venv
-    $ source ~/kivy-venv/bin/activate
-    $ pip install Cython==0.28.2
-    $ pip install kivy
+    $ virtualenv --no-site-packages --python=python3 ~/pyside2-venv
+    $ source ~/pyside2-venv/bin/activate
+    $ pip install --index-url=http://download.qt.io/snapshots/ci/pyside/5.11/latest/ pyside2 --trusted-host download.qt.io
     $ deactivate
 
 Any time you want to use that virtual environment, just run
-:code:`source ~/kivy-venv/bin/activate`. The command :code:`deactivate`
+:code:`source ~/pyside2-venv/bin/activate`. The command :code:`deactivate`
 exits the virtual environment.
 
-`SOURCE: Kivy: Installation in a Virtual Environment <https://kivy.org/docs/installation/installation-linux.html#installation-in-a-virtual-environment>`_
+`SOURCE: Qt For Python/Getting Started <https://wiki.qt.io/Qt_for_Python/GettingStarted>`_
 
-Installing Kivy on Mac
+Installing PySide2 on Mac
 -----------------------------
-
-We can install Kivy using either MacPorts or Homebrew.
-
-Installing Kivy via MacPorts
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 ..  code-block:: bash
 
-    $ sudo port install libsdl2 libsdl2_image libsdl2_ttf libsdl2_mixer
-    $ pip install Cython==0.26.1
-    $ pip install kivy
+    $ pip install --index-url=http://download.qt.io/snapshots/ci/pyside/5.11/latest/ pyside2 --trusted-host download.qt.io
 
-`SOURCE: Kivy: Installation on OS X - Using MacPorts with pip <https://kivy.org/docs/installation/installation-osx.html#using-macports-with-pip>`_
-
-Installing Kivy via Homebrew
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-..  code-block:: bash
-
-    $ brew install pkg-config sdl2 sdl2_image sdl2_ttf sdl2_mixer gstreamer
-    $ pip install Cython==0.26.1
-    $ pip install kivy
-
-`SOURCE: Kivy: Installation on OS X - Using Homebrew with pip <https://kivy.org/docs/installation/installation-osx.html#using-homebrew-with-pipl>`_
-
-Installing Kivy on Windows
------------------------------
+Installing PySide2 on Windows
+-------------------------------
 
 In your Command Prompt, run the following...
 
 ..  code-block:: batch
 
-    python -m pip install docutils pygments pypiwin32 kivy.deps.sdl2 kivy.deps.glew
-    python -m pip install kivy.deps.gstreamer
-    python -m pip install kivy.deps.angle
-    python -m pip install kivy
-
-`SOURCE: Kivy: Installation on Windows <https://kivy.org/docs/installation/installation-windows.html#installation>`_
+    python -m pip install --index-url=http://download.qt.io/snapshots/ci/pyside/5.11/latest/ pyside2 --trusted-host download.qt.io
 
 .. _python_ide:
 

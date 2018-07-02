@@ -73,7 +73,6 @@ We recommend the following packages:
 * :code:`autocomplete-python`
 * :code:`autocomplete-xml`
 * :code:`language-cmake`
-* :code:`language-kivy`
 * :code:`language-python`
 * :code:`language-restructuredText`
 * :code:`linter`
