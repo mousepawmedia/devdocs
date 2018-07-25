@@ -87,11 +87,11 @@ instructions to create a different virtual environment for any project
 you're working on using PySide2, but this provides a good general testing
 ground.
 
-..  code-blocks:: bash
+..  code-block:: bash
 
     $ virtualenv --no-site-packages --python=python3 ~/pyside2-venv
     $ source ~/pyside2-venv/bin/activate
-    $ pip install --index-url=http://download.qt.io/snapshots/ci/pyside/5.11/latest/ pyside2 --trusted-host download.qt.io
+    $ pip install pyside2
     $ deactivate
 
 Any time you want to use that virtual environment, just run
@@ -105,7 +105,7 @@ Installing PySide2 on Mac
 
 ..  code-block:: bash
 
-    $ pip install --index-url=http://download.qt.io/snapshots/ci/pyside/5.11/latest/ pyside2 --trusted-host download.qt.io
+    $ pip install pyside2
 
 Installing PySide2 on Windows
 -------------------------------
@@ -114,7 +114,7 @@ In your Command Prompt, run the following...
 
 ..  code-block:: batch
 
-    python -m pip install --index-url=http://download.qt.io/snapshots/ci/pyside/5.11/latest/ pyside2 --trusted-host download.qt.io
+    python -m pip install pyside2
 
 .. _python_ide:
 
