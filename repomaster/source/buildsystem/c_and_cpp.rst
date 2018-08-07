@@ -1074,6 +1074,12 @@ to determine whether we're working with GCC or Clang.
 ..  code-block:: cmake
 
     if(COMPILERTYPE STREQUAL "gcc")
+        # -Wimplicit-fallthough=0 is required for
+        # GCC 7.x and onward. That is, until we switch
+        # to C++17
+        if(CMAKE_CXX_COMPILER_VERSION VERSION_EQUAL "7" OR CMAKE_CXX_COMPILER_VERSION VERSION_GREATER "7")
+            add_definitions(-Wimplicit-fallthrough=0)
+        endif()
         # Set debug flags. -g is a default.
         #set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} ")
         # Set release flags. -O3 is a default.
@@ -1091,7 +1097,19 @@ to determine whether we're working with GCC or Clang.
     endif()
 
 The outer conditional switches between :code:`"gcc"` and :code:`"clang"`.
-Inside, we can add compiler-specific flags to those used for :code:`Debug`
+
+Inside, we have a conditional to check the compiler version for GCC. In
+GCC 7.x, new warnings were introduced in regard to implicit fallthroughs
+for C++ switch statements, because of some new features in C++17. However,
+because we're still on C++14, we need to silence these warnings. Otherwise,
+the build will abort because of the :code:`-Werror` flag later, that tells
+the compiler to abort on warnings.
+
+Thus, we have to first check if the GCC version is equal to or greater than
+7.x, and then add the flag to mute the implicit fallthrough warnings. On
+earlier versions of GCC, this flag doesn't exist; Clang also doesn't have it.
+
+We also add compiler-specific flags to those used for :code:`Debug`
 and :code:`Release`. To do this, we only need to :code:`set()` the
 :code:`CMAKE_CXX_FLAGS_DEBUG` or :code:`CMAKE_CXX_FLAGS_RELEASE` built-in
 variables. Since we only want to *add* to these variables, not overwrite
@@ -1199,7 +1217,6 @@ will be *statically-linked.*
     add_library(${TARGET_NAME} STATIC
         include/pawlib/avl_tree.hpp
         include/pawlib/base_flex_array.hpp
-        include/pawlib/binconv.hpp
         include/pawlib/core_types.hpp
         include/pawlib/core_types_tests.hpp
         include/pawlib/flex_array.hpp
@@ -1212,6 +1229,7 @@ will be *statically-linked.*
         include/pawlib/flex_stack.hpp
         include/pawlib/flex_stack_tests.hpp
         include/pawlib/goldilocks.hpp
+        include/pawlib/goldilocks_shell.hpp
         include/pawlib/iochannel.hpp
         include/pawlib/onechar.hpp
         include/pawlib/onestring.hpp
@@ -1226,7 +1244,6 @@ will be *statically-linked.*
         include/pawlib/singly_linked_list.hpp
         include/pawlib/stdutils.hpp
 
-        src/binconv.cpp
         src/core_types.cpp
         src/core_types_tests.cpp
         src/flex_array_tests.cpp
@@ -1234,6 +1251,7 @@ will be *statically-linked.*
         src/flex_queue_tests.cpp
         src/flex_stack_tests.cpp
         src/goldilocks.cpp
+        src/goldilocks_shell.cpp
         src/iochannel.cpp
         src/onechar.cpp
         src/onestring.cpp
@@ -1695,7 +1713,7 @@ builds in CMake.
 By turning the options into macros, it will shorten and simply our code later.
 
 If you recall, we configured CMake to accept a :file:`.config` file.
-(See :ref:`:buildc_cmake_config_config` and :ref:`buildc_cmake_externconfig`.)
+(See :ref:`buildc_cmake_config_config` and :ref:`buildc_cmake_externconfig`.)
 We need to allow the end-user to specify that when they call :code:`make`.
 
 ..  code-block:: make
@@ -1728,11 +1746,12 @@ Next, we'll define three common commands.
 
     MK_DIR = @cmake -E make_directory
     CH_DIR = @cmake -E chdir
+    RM_DIR = @cmake -E remove_directory
     ECHO = @cmake -E echo
 
 CMake offers these functions to make it easier for us to write cross-platform
 scripts: they call the system-specific command for making a directory,
-changing directory, or printing to the terminal, respectively.
+changing directory, removing a directory, or printing to the terminal, respectively.
 
 By default, Makefiles print each line they're about to execute, before actually
 running it. That's useful in some cases, and really noisy and annoying in
@@ -1810,7 +1829,13 @@ This is pretty straightforward. The first line (:code:`none: help` just defines
 the :code:`help` target as the default.
 
 The :code:`help:` target itself is comprised solely of echo statements, which
-just print their text onto the terminal.
+just print their text onto the terminal. If we expand out the :code:`$(ECHO)`
+macro, subtituting the macro's value for its name in the code, the top "echo"
+line would be...
+
+..  code-block:: bash
+
+    @cmake -E echo "=== PawLIB Static Library ==="
 
 If we were adapting this Makefile for another project, we would need to change
 the title line, just below :code:`help:`. Otherwise, this is universal across
@@ -1828,16 +1853,16 @@ and :code:`cleanrelease`.
 ..  code-block:: make
 
     clean:
-        @cmake -E remove_directory $(BUILD_DIR)
-        @cmake -E remove_directory $(TEMP_DIR)
+        $(RM_DIR) $(BUILD_DIR)
+        $(RM_DIR) $(TEMP_DIR)
 
     cleandebug:
-        @cmake -E remove_directory $(BUILD_DIR)/Debug
-        @cmake -E remove_directory $(TEMP_DIR)/Debug
+        $(RM_DIR) $(BUILD_DIR)/Debug
+        $(RM_DIR) $(TEMP_DIR)/Debug
 
     cleanrelease:
-        @cmake -E remove_directory $(BUILD_DIR)/Release
-        @cmake -E remove_directory $(TEMP_DIR)/Release
+        $(RM_DIR) $(BUILD_DIR)/Release
+        $(RM_DIR) $(TEMP_DIR)/Release
 
 The :code:`clean:` target removes the :file:`build_temp` or :file:`lib`
 (or :file:`bin`) directories that we defined in the :code:`BUILD_DIR` and
@@ -1847,6 +1872,23 @@ In the same way, the :code:`cleandebug:` and :code:`cleanrelease:` targets
 remove their respective subdirectories from those directories. This is useful
 if, for example, you want to rebuild the Debug version of the library, but
 want to leave the Release version intact for comparison.
+
+Remeber, we're using variables and macros. If we were to perform all the
+substitutions, this section would look like this...
+
+..  code-block:: make
+
+    clean:
+        @cmake -E remove_directory lib
+        @cmake -E remove_directory build_temp
+
+    cleandebug:
+        @cmake -E remove_directory lib/Debug
+        @cmake -E remove_directory build_temp/Debug
+
+    cleanrelease:
+        @cmake -E remove_directory lib/Release
+        @cmake -E remove_directory build_temp/Release
 
 ..  _buildc_makefiles_automating_build:
 
@@ -1876,7 +1918,7 @@ First, we need to create the directory for building, which we do with
 :code:`$(MK_DIR) $(TEMP_DIR)/Debug$(ARCH)`. If we expand that out using
 our macros, it reads like this...
 
-..  code-block:: make
+..  code-block:: bash
 
     @cmake -E make_directory build_temp/Debug
 
@@ -1889,7 +1931,7 @@ Next, we switch to that directory and invoke CMake. Expanding out that line,
 and assuming :code:`ARCH=`, :code:`CONFIG=`, and :code:`SAN=` were not defined
 by the user, we get...
 
-..  code-block:: make
+..  code-block:: bash
 
     @cmake -E chdir build_temp/Debug cmake ../.. -G"Unix Makefiles" -DCMAKE_BUILD_TYPE=Debug -DARCH= -DSAN= -DCONFIG_FILENAME=default
 
@@ -1908,7 +1950,7 @@ earlier as the combination of :code:`CH_DIR` and :code:`TEMP_DIR`.
 
 If we expand that last line out, we get...
 
-..  code-block:: make
+..  code-block:: bash
 
     @cmake -E chdir build_temp/Debug $(MAKE) VERBOSE=1
 
@@ -1931,7 +1973,350 @@ actually building anything with the cleaning or help targets.
 Top Level Makefile
 -------------------------------------
 
+The top-level Makefile, at :file:`pawlib/Makefile`, uses many of those same
+principles. Its purpose is to perform the top-level automation that requires
+calling both the :file:`pawlib` and :file:`pawlib-tester` Makefiles, as well as
+the one provided with the Sphinx documentation (see :ref:`buildsphinx`.
 
+..  _buildc_makefiles_toplevel_macros:
+
+Macros
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+We don't need quite so many variables in this Makefile, but we do need a few
+additional macros for other CMake commands we'll be using.
+
+..  code-block:: make
+
+    MK_DIR = @cmake -E make_directory
+    CH_DIR = @cmake -E chdir
+    CP = @cmake -E copy
+    CP_DIR = @cmake -E copy_directory
+    RM = @cmake -E remove
+    RM_DIR = @cmake -E remove_directory
+    ECHO = @cmake -E echo
+    LN = @cmake -E create_symlink
+
+You'll recognize a number of those macros from earlier, but let's review them
+all anyway:
+
+* :code:`MK_DIR = @cmake -E make_directory` creates a new directory,
+
+* :code:`CH_DIR = @cmake -E chdir` switches to a different directory,
+
+* :code:`CP = @cmake -E copy` copies a file,
+
+* :code:`CP_DIR = @cmake -E copy_directory` copies a directory,
+
+* :code:`RM = @cmake -E remove` removes a file,
+
+* :code:`RM_DIR = @cmake -E remove_directory` removes a directory,
+
+* :code:`ECHO = @cmake -E echo` prints a message to the terminal,
+
+* :code:`LN = @cmake -E create_symlink` creates a symbolic link (shortcut).
+
+..  NOTE:: :code:`create_symlink` only works on Unix systems, such as Linux,
+    OpenBSD, and macOS. It won't work on non-Unix systems like Windows...but
+    then, Makefiles won't work by default on Windows either.
+
+..  _buildc_makefiles_toplevel_default:
+
+Default Target and Help
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+As before, we want to display the :code:`help:` target by default. Our help
+is a little longer in this file.
+
+..  code-block:: make
+
+    none: help
+
+    help:
+        $(ECHO) "=== PawLIB 1.1 ==="
+        $(ECHO) "Select a build target:"
+        $(ECHO) "  make ready         Build PawLIB and bundles it for distribution."
+        $(ECHO) "  make clean         Clean up PawLIB and Tester."
+        $(ECHO) "  make cleandebug    Clean up PawLIB and Tester Debug."
+        $(ECHO) "  make cleanrelease  Clean up PawLIB and Tester Release."
+        $(ECHO) "  make docs          Generate HTML docs."
+        $(ECHO) "  make docs_pdf      Generate PDF docs."
+        $(ECHO) "  make pawlib        Build PawLIB as release."
+        $(ECHO) "  make pawlib_debug  Build PawLIB as debug."
+        $(ECHO) "  make tester        Build PawLIB Tester (+PawLIB) as release."
+        $(ECHO) "  make tester_debug  Build PawLIB Tester (+PawLIB) as debug."
+        $(ECHO) "  make all           Build everything."
+        $(ECHO) "  make allfresh      Clean and rebuild everything."
+        $(ECHO)
+        $(ECHO) "Clang Sanitizers (requires Debug build and Clang.)"
+        $(ECHO) "  SAN=address     Use AddressSanitizer"
+        $(ECHO) "  SAN=leak        Use LeakSanitizer w/o AddressSanitizer (Linux only)"
+        $(ECHO) "  SAN=memory      Use MemorySanitizer"
+        $(ECHO) "  SAN=thread      Use ThreadSanitizer"
+        $(ECHO) "  SAN=undefined   Use UndefiniedBehaviorSanitizer"
+        $(ECHO)
+        $(ECHO) "Optional Architecture"
+        $(ECHO) "  ARCH=32         Make x86 build (-m32)"
+        $(ECHO) "  ARCH=64         Make x64 build (-m64)"
+        $(ECHO)
+        $(ECHO) "Use Configuration File"
+        $(ECHO) "  CONFIG=foo      Uses the configuration file 'foo.config'"
+        $(ECHO) "                  in the root of this repository."
+        $(ECHO) "  When unspecified, default.config will be used."
+        $(ECHO)
+        $(ECHO) "For other build options, see the 'make' command in 'docs/', 'pawlib-source/', and 'pawlib-tester/'.
+
+..  _buildc_makefiles_toplevel_clean:
+
+Clean Targets
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+We want to allow the user to quickly clean up build artifacts and compiled
+binaries from this top-level file.
+
+..  code-block:: make
+
+    clean:
+        $(MAKE) clean -C pawlib-source
+        $(MAKE) clean -C pawlib-tester
+        $(RM) tester_debug
+        $(RM) tester
+
+    cleanall: clean
+        $(MAKE) clean -C docs
+
+    cleandebug:
+        $(MAKE) cleandebug -C pawlib-source
+        $(MAKE) cleandebug -C pawlib-tester
+        $(RM) tester_debug
+
+    cleanrelease:
+        $(MAKE) cleanrelease -C pawlib-source
+        $(MAKE) cleanrelease -C pawlib-tester
+        $(RM) tester
+
+You'll notice that we aren't actually many files ourselves. Rather, we are
+asking the lower-level Makefiles to run their :code:`clean` targets
+(or :code:`cleandebug`/:code:`cleanrelease`, as the case may be.)
+
+You see here the other way of one Makefile invoking another.
+We call :code:`$(MAKE)`, followed by the make target we want to call. All of
+the flags and options from the call to the top-level Makefile are passed down
+automatically by Make. We only need to use the special flag :code:`-C`, followed
+by the name of the subdirectory containing the Makefile you're calling.
+
+We do need to remove the symbolic links to the tester exectuables, which we'll
+be discussing more in :ref:`buildc_makefiles_toplevel_build`.
+
+You'll also notice that the :code:`cleanall:` target has a depencency; it calls
+the :code:`clean` target before running its own commands.
+
+..  _buildc_makefiles_toplevel_docs:
+
+Building Docs
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+We want to provide a quick way to build the Sphinx documentation,
+in either HTML or PDF formats.
+
+..  code-block:: make
+
+    docs:
+        $(RM_DIR) docs/build/html
+        $(MAKE) html -C docs
+        $(ECHO) "-------------"
+        $(ECHO) "<<<<<<< FINISHED >>>>>>>"
+        $(ECHO) "View docs at 'docs/build/html/index.html'."
+        $(ECHO) "-------------"
+
+    docs_pdf:
+        $(MAKE) latexpdf -C docs
+        $(ECHO) "-------------"
+        $(ECHO) "<<<<<<< FINISHED >>>>>>>"
+        $(ECHO) "View docs at 'docs/build/latex/PawLIB.pdf'."
+        $(ECHO) "-------------"
+
+The first target, :code:`docs`, first cleans up the old HTML version of the
+documentation, to ensure all files are rebuilt.
+
+Beyond that, both of these targets basically do the same thing.
+They call a target on :file:`docs/Makefile`, building either the
+:code:`html` or :code:`latexpdf` versions of the Sphinx documentation.
+Then, they print a nice little message on the terminal to announce that the
+build is completed.
+
+..  _buildc_makefiles_toplevel_build:
+
+Building PawLIB
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+We offer targets for the Release and Debug targets of PawLIB.
+We generally assume that users of this Makefile implicitly want the
+Release version (true of nearly all end users). Therefore, the target
+:code:`pawlib:` will be for the Release, and we'll offer :code:`pawlib_debug`
+for the Debug version.
+
+..  code-block:: make
+
+    pawlib:
+        $(MAKE) release -C pawlib-source
+        $(ECHO) "-------------"
+        $(ECHO) "<<<<<<< FINISHED >>>>>>>"
+        $(ECHO) "PawLIB is in 'pawlib-source/lib/Release'."
+        $(ECHO) "-------------"
+
+    pawlib_debug:
+        $(MAKE) debug -C pawlib-source
+        $(ECHO) "-------------"
+        $(ECHO) "<<<<<<< FINISHED >>>>>>>"
+        $(ECHO)  on "PawLIB is in 'pawlib-source/lib/Debug'."
+        $(ECHO) "-------------"
+
+We are calling the :code:`release` or :code:`debug` targets on
+:file:`pawlib-source/Makefile`, using the :code:`-C` flag to change the
+directory that Make is being run on.
+
+We do the same thing for the testers, with a few major additions...
+
+..  code-block:: make
+
+    tester: pawlib
+        $(MAKE) release -C pawlib-tester
+        $(RM) tester
+        $(LN) pawlib-tester/bin/Release/pawlib-tester tester
+        $(ECHO) "-------------"
+        $(ECHO) "<<<<<<< FINISHED >>>>>>>"
+        $(ECHO) "PawLIB Tester is in 'pawlib-tester/bin/Release'."
+        $(ECHO) "The link './tester' has been created for convenience."
+        $(ECHO) "-------------"
+
+
+    tester_debug: pawlib_debug
+        $(MAKE) debug -C pawlib-tester
+        $(RM) tester_debug
+        $(LN) pawlib-tester/bin/Debug/pawlib-tester tester_debug
+        $(ECHO) "-------------"
+        $(ECHO) "<<<<<<< FINISHED >>>>>>>"
+        $(ECHO) "PawLIB Tester is in 'pawlib-tester/bin/Debug'."
+        $(ECHO) "The link './tester_debug' has been created for convenience."
+        $(ECHO) "-------------"
+
+First, you'll notice that :code:`pawlib` is a dependency of the :code:`tester`
+target, and :code:`pawlib_debug` is a dependency of the :code:`tester_debug`
+target. This is because we must build PawLIB *before* its tester.
+
+As before, we call the :code:`release` or :code:`debug` target on
+:file:`pawlib-tester/Makefile`.
+
+Next, we want to create (or recreate) a symbolic link to the compiled tester.
+This will appear in the root of the repository, as either :file:`tester`
+or :file:`tester_debug`. We must first delete the existing symbolic link
+(:code:`$(RM) tester`), and then create a new one
+(:code:`$(LN) pawlib-tester/bin/Release/pawlib-tester tester`). If the link
+did not exist when we tried to delete it, the :code:`$(RM)` command won't
+do anything.
+
+..  _buildc_makefiles_toplevel_ready:
+
+Ready Target
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Now we're ready to tie everything together into a single magical command:
+:code:`make ready`. This is intended to compile and bundle the library so
+it can be immediately used by other projects.
+
+Whatever our project is, and regardless of whether it is a library or
+application, we want to place the files intended for distribution into a
+directory with the same name as the project. In the case of PawLIB, this
+directory is named :file:`pawlib/`.
+
+..  code-block:: make
+
+    ready: pawlib
+        $(RM_DIR) pawlib
+        $(ECHO) "Creating file structure..."
+        $(MK_DIR) pawlib
+        $(ECHO) "Copying PawLIB..."
+        $(CP_DIR) pawlib-source/include/ pawlib/include/
+        $(CP_DIR) pawlib-source/lib/Release/ pawlib/lib/
+        $(ECHO) "Copying README and LICENSE..."
+        $(CP) README.md pawlib/README.md
+        $(CP) LICENSE.md pawlib/LICENSE.md
+        $(ECHO) "-------------"
+        $(ECHO) "<<<<<<< FINISHED >>>>>>>"
+        $(ECHO) "The libraries are in 'pawlib'."
+        $(ECHO) "-------------"
+
+We obviously first compile the library, via the dependency (in this case,
+:code:`pawlib`).
+
+Next, we need to completely remove any previous version of the distribution
+directory via :code:`$(RM_DIR) pawlib`.
+
+Then we can create it again with :code:`$(MK_DIR) pawlib`.
+
+Since this is a library, we need to copy the library's entire
+:file:`include/` subdirectory to our distribution directory, via
+:code:`$(CP_DIR) pawlib-source/include pawlib/`.
+Then, we can copy the :file:`lib/Release` directory, which contains our
+compiled library files (:code:`*.a` or :code:`*.so` files on Unix) to
+:file:`pawlib/lib`.
+
+..  NOTE:: If we were building an application, instead of a library, we'd
+    need to copy the :file:`bin/Release` subdirectory, instead of the
+    :file:`include` and :file:`lib/Release` subdirectories.
+
+Lastly, we copy the :file:`README.md` and :file:`LICENSE.md` files into our
+distribution folder (:code:`$(CP) README.md pawlib/README.md` and
+:code:`$(CP) LICENSE.md pawlib/LICENSE.md`), as these should be included
+with all distributions of PawLIB.
+
+Our project is now ready for use and distribution. Many of our projects look
+for the :file:`pawlib` directory and link directly to it (see
+:ref:`buildc_cmake_externconfig`). Otherwise, one might create a tarball of
+this directory for distribution.
+
+..  _buildc_overview:
 
 Build System Overview
 =====================================
+
+We've covered an extraordinary amount of ground! To ensure everything makes
+sense in context, let's review.
+
+1. The top-level Makefile in a repository is run, e.g. :code:`make ready`.
+   That runs...
+
+2. The inner-level Makefile, which directly invokes...
+
+3. CMake, which uses either the default or user-defined :code:`.config` file
+   to build the code, using...
+
+4. The C/C++ compiler and linker.
+
+..  _buildc_overview_troubleshooting:
+
+Troubleshooting Problems
+-------------------------------------
+
+Now that you know how things are *supposed* to work, you are also equipped
+to debug problems. Here are a few tips:
+
+* **Read the build system output, from the last line back.** More often than
+  not, the exact nature of the problem will be described.
+
+* When did the build stop working? Review the changes, especially to build
+  system files.
+
+* Are all the files being compiled listed in :file:`CMakeLists.txt`? This
+  is the single most common reason for failures.
+
+* Rule out problems with the code itself. These will always show up as
+  errors or warnings.
+
+* Are the indents in a :file:`Makefile` tabs? **Make does not support spaces
+  for indentation.**
+
+* Is a different version of the compiler being used? If so, try another.
+  Once you isolate the exact compiler and version that fails, review the
+  changelog for that compiler version.
