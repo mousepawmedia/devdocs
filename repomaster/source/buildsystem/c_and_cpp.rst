@@ -107,7 +107,7 @@ besides, and couldn't find it.
 
 This is where the trade-off must be considered. For every dependency, we
 can either **increase the compiled program size** (static linking) or
-**increase the liklihood of user-end errors** (dynamic linking). Some
+**increase the likelihood of user-end errors** (dynamic linking). Some
 problems with DLLs on Windows can be mitigated by shipping the right versions
 of the libraries with the application, and placing them all in the install
 directory. However, on Linux, the analogous `.so` files are usually shared
@@ -396,7 +396,7 @@ different.
 
 There are several advantages LLVM's `libc++` has over GNU's `libstdc++`:
 
-* `libc++` has a signficiantly cleaner, better-designed modern code base.
+* `libc++` has a significantly cleaner, better-designed modern code base.
 
 * The entire LLVM toolchain, including `libc++`, is thoroughly documented.
 
@@ -527,7 +527,7 @@ If you're ever using a code analysis or debugging tool, and you're seeing
 raw memory addresses instead of variable and function names, you almost
 certainly forgot this flag.
 
-When we're compiling with debugging symbols, we must be sure our optimation
+When we're compiling with debugging symbols, we must be sure our optimization
 level is not above :code:`-O0` (see next section).
 
 ..  _buildc_compiler_commands_o:
@@ -548,7 +548,7 @@ optimizations. There are multiple levels and types of optimizations:
 
 * :code:`-O1`: Some optimization.
 
-* :code:`-O2`: Enables most optimiziations.
+* :code:`-O2`: Enables most optimizations.
 
 * :code:`-O3`: Includes all of :code:`-O2`, plus optimizations that may take
   longer to compile or may make the code larger. This is where we start trading
@@ -663,7 +663,7 @@ only accepted for compatibility with other tools.
 
 :code:`-rdynamic` is important to debugging, as it ensures all the symbols
 needed by debugging are put in the proper places by the linker. (That's
-actually over-summarizing the technical explaination, so see the GCC docs
+actually over-summarizing the technical explanation, so see the GCC docs
 I linked to below if you're curious.)
 
 ..  _buildc_compiler_linker_o:
@@ -793,7 +793,7 @@ we have two major options.
 
 **Autotools** is the longtime standard of the Linux world. However, it is
 sometimes criticized for being complicated to configure, even downright
-unwieldy, and for being internally crufy and outdated. It also doesn't work
+unwieldy, and for being internally crufty and outdated. It also doesn't work
 out-of-the-box on non-UNIX systems, such as Windows, but rather must be run
 within a Linux compatibility layer like MSYS2.
 
@@ -880,7 +880,7 @@ Project and Target Name
 
 ..  code-block:: cmake
 
-    #Name your project here
+    # CHANGEME: Name your project here
     project("PawLIB")
     set(TARGET_NAME "pawlib")
 
@@ -963,7 +963,7 @@ compiler. We do that here...
 The variable :code:`CMAKE_CXX_COMPILER_ID` is defined by CMake itself, and
 indicates the type of compiler being used. (The full list of possible values
 can be found here: `CMAKE_LANG_COMPILER_ID (CMake) <https://cmake.org/cmake/help/v3.9/variable/CMAKE_LANG_COMPILER_ID.html>`_).
-For quality purposes, we only officially support compliling with GNU GCC or
+For quality purposes, we only officially support compiling with GNU GCC or
 LLVM Clang at this time. If it didn't matter what we were using, we could
 actually skip this entire section.
 
@@ -1066,7 +1066,7 @@ flags that we *always* use, regardless of compiler or target.
 ..  code-block:: cmake
 
     # Our global compiler flags.
-    add_definitions(-Wall -Wextra -Werror)
+    add_definitions(-Wall -Wextra -Werror -pedantic)
 
 Next, we make use of the :code:`COMPILERTYPE` variable we created earlier
 to determine whether we're working with GCC or Clang.
@@ -1074,7 +1074,7 @@ to determine whether we're working with GCC or Clang.
 ..  code-block:: cmake
 
     if(COMPILERTYPE STREQUAL "gcc")
-        # -Wimplicit-fallthough=0 is required for
+        # -Wimplicit-fallthrough=0 is required for
         # GCC 7.x and onward. That is, until we switch
         # to C++17
         if(CMAKE_CXX_COMPILER_VERSION VERSION_EQUAL "7" OR CMAKE_CXX_COMPILER_VERSION VERSION_GREATER "7")
@@ -1122,7 +1122,7 @@ statements. This is because, at least in this example, we don't *need*
 to add to the compiler flags for some scenarios. However, we leave the
 commented-out line present, in case we need it later.
 
-At the moment, we only need to add one flags if we're compiling :code:`Release`
+At the moment, we only need to add one flag if we're compiling :code:`Release`
 on GCC: :code:`-s`, which is an optimization that removes all symbol table and
 relocation information from the executable, thereby making a smaller program.
 
@@ -1153,7 +1153,7 @@ default. We can do that with the following...
     endif()
 
 By now, this should appear pretty straight-forward. If the custom variable
-:code:`LD` is defined, we substite its value into the linker flag
+:code:`LD` is defined, we substitute its value into the linker flag
 :code:`-fuse-ld=whatever`. The valid options here are :code:`bfd`,
 :code:`gold`, and (on Clang only) :code:`lld`.
 
@@ -1193,7 +1193,7 @@ we are using.
 
 ..  code-block:: cmake
 
-    # Include headers of dependencies.
+    # CHANGEME: Include headers of dependencies.
     include_directories(${CPGF_DIR}/include)
 
 You'll notice that we are using another custom variable, :code:`CPGF_DIR`,
@@ -1214,6 +1214,7 @@ will be *statically-linked.*
 
 ..  code-block:: cmake
 
+    # CHANGEME: Include files to compile.
     add_library(${TARGET_NAME} STATIC
         include/pawlib/avl_tree.hpp
         include/pawlib/base_flex_array.hpp
@@ -1276,7 +1277,7 @@ Next, we need to list any libraries we want to link to.
 
 ..  code-block:: cmake
 
-    # Link against dependencies.
+    # CHANGEME: Link against dependencies.
     target_link_libraries(${TARGET_NAME} ${CPGF_DIR}/lib/libcpgf.a)
 
 Once again, we're using our :code:`TARGET_NAME` variable from the top,
@@ -1320,7 +1321,7 @@ bugs and errors.
         elseif(SAN STREQUAL "undefined")
             add_definitions(-fsanitize=undefined)
             set_property(TARGET ${TARGET_NAME} APPEND_STRING PROPERTY LINK_FLAGS " -fsanitize=undefined")
-            message("Compiling with UndefiniedBehaviorSanitizer.")
+            message("Compiling with UndefinedBehaviorSanitizer.")
         endif()
     endif()
 
@@ -1330,7 +1331,7 @@ we are relying on the custom variable :code:`SAN` to determine which, if any
 sanitizer we are to compile with.
 
 The syntax should be pretty easy to discern by now, so let's talk about intent.
-Each of the five santizers our build system supports need certain compiler
+Each of the five sanitizers our build system supports need certain compiler
 and linker flags for optimal performance (see their documentation). We
 include each of those flags here.
 
@@ -1361,6 +1362,7 @@ files in our project, we use...
 
 ..  code-block:: cmake
 
+    # CHANGEME: Include files to compile.
     add_executable(${TARGET_NAME}
         main.cpp
 
@@ -1377,7 +1379,7 @@ more to link to - the version of PawLIB we *just* compiled.
 
 ..  code-block:: cmake
 
-    # Link against dependencies.
+    # CHANGEME: Link against dependencies.
     target_link_libraries(${TARGET_NAME} ${CMAKE_HOME_DIRECTORY}/../pawlib-source/lib/$<CONFIG>/libpawlib.a)
     target_link_libraries(${TARGET_NAME} ${CPGF_DIR}/lib/libcpgf.a)
 
@@ -1387,7 +1389,7 @@ Elsewhere, such as in SIMPLEXpress, you'd expect to see...
 
 ..  code-block:: cmake
 
-    # Link against dependencies
+    # CHANGEME: Link against dependencies
     target_link_libraries(${TARGET_NAME} ${PAWLIB_DIR}/lib/libpawlib.a)
     target_link_libraries(${TARGET_NAME} ${CPGF_DIR}/lib/libcpgf.a)
 
@@ -1673,7 +1675,7 @@ reusable chunks called **macros**. While this might make the file a bit harder
 to read initially, it is considerably easier to change the functionality later
 if necessary.
 
-Makefiles have many similarlities to Bash scripts, including how variables
+Makefiles have many similarities to Bash scripts, including how variables
 are declared. There are no practical differences between variables and macros
 in shell scripts, nor in Makefiles. In both cases, we merely follow the
 syntax of :code:`NAME = value`.
@@ -1758,21 +1760,31 @@ running it. That's useful in some cases, and really noisy and annoying in
 other cases, such as an :code:`echo` command to print something on the terminal.
 The :code:`@` symbol tells Make not to print the command before running it.
 
+Just to make things simple, let's get the name of the application from a
+variable.
+
+..  code-block:: make
+
+    # CHANGEME: Project name
+    NAME = "PawLIB (Static Library)"
+
 Next up, we define the paths important to our build.
 
 ..  code-block:: make
 
-    TEMP_DIR = build_temp
+    # CHANGEME: Set to 'lib' or 'bin'
     BUILD_DIR = lib
 
-:file:`build_temp` is the name of the subdirectory that we'll be creating,
-and then running CMake from within. When we clean the build, this directory
-will be deleted.
+    TEMP_DIR = build_temp
 
 The variable :code:`BUILD_DIR` contains the name of the subdirectory that the
 finished binaries will be moved to. This should be set to :file:`lib` for
 libraries, as seen here, and :file:`bin` for executables
 (such as seen in :file:`pawlib-tester/Makefile`).
+
+:file:`build_temp` is the name of the subdirectory that we'll be creating,
+and then running CMake from within. When we clean the build, this directory
+will be deleted.
 
 Finally, we have the macro containing the first part of the command for
 actually invoking the CMake-generated Makefile. There's quite a bit more to
@@ -1800,7 +1812,7 @@ instructions.
     none: help
 
     help:
-        $(ECHO) "=== PawLIB Static Library==="
+        $(ECHO) "=== $(NAME) ==="
         $(ECHO) "Select a build target:"
         $(ECHO) "  make debug"
         $(ECHO) "  make release"
@@ -1830,12 +1842,12 @@ the :code:`help` target as the default.
 
 The :code:`help:` target itself is comprised solely of echo statements, which
 just print their text onto the terminal. If we expand out the :code:`$(ECHO)`
-macro, subtituting the macro's value for its name in the code, the top "echo"
-line would be...
+macro (and the :code:`$(NAME)` macro), substituting the macro's value for its
+name in the code, the top "echo" line would be...
 
 ..  code-block:: bash
 
-    @cmake -E echo "=== PawLIB Static Library ==="
+    @cmake -E echo "=== PawLIB (Static Library) ==="
 
 If we were adapting this Makefile for another project, we would need to change
 the title line, just below :code:`help:`. Otherwise, this is universal across
@@ -1873,7 +1885,7 @@ remove their respective subdirectories from those directories. This is useful
 if, for example, you want to rebuild the Debug version of the library, but
 want to leave the Release version intact for comparison.
 
-Remeber, we're using variables and macros. If we were to perform all the
+Remember, we're using variables and macros. If we were to perform all the
 substitutions, this section would look like this...
 
 ..  code-block:: make
@@ -2028,6 +2040,11 @@ Default Target and Help
 As before, we want to display the :code:`help:` target by default. Our help
 is a little longer in this file.
 
+You'll notice, we don't use the :code:`$(NAME)` variable in this Makefile.
+This is because we have to change so many other things, such as directory and
+compiled binary names, and project-specific instructions, we're better off
+just rewriting this particular file to meet our needs.
+
 ..  code-block:: make
 
     none: help
@@ -2105,10 +2122,10 @@ the flags and options from the call to the top-level Makefile are passed down
 automatically by Make. We only need to use the special flag :code:`-C`, followed
 by the name of the subdirectory containing the Makefile you're calling.
 
-We do need to remove the symbolic links to the tester exectuables, which we'll
+We do need to remove the symbolic links to the tester executables, which we'll
 be discussing more in :ref:`buildc_makefiles_toplevel_build`.
 
-You'll also notice that the :code:`cleanall:` target has a depencency; it calls
+You'll also notice that the :code:`cleanall:` target has a dependency; it calls
 the :code:`clean` target before running its own commands.
 
 ..  _buildc_makefiles_toplevel_docs:
