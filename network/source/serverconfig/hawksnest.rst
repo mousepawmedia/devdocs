@@ -857,7 +857,7 @@ Now we'll get our certificates.
 
     $ sudo /opt/certbot/certbot-auto certonly -a webroot --webroot-path /var/www/html -d hawksnest.ddns.net
     $ sudo /opt/certbot/certbot-auto certonly -a webroot --webroot-path /var/www/html -d hawksnest.serveftp.com
-    $ sudo /opt/certbot/certbot-auto certonly -a webroot --webroot-path /var/www/html -d mousepawmedia.net -d nextcloud.mousepawmedia.net -d phabricator.mousepawmedia.net -d ehour.mousepawmedia.net -d jenkins.mousepawmedia.net -d secure.mousepawmedia.net -d files.mousepawmedia.net -d office.mousepawmedia.net -d quiz.mousepawmedia.net -d sandbox.mousepawmedia.net -d pad.mousepawmedia.net
+    $ sudo /opt/certbot/certbot-auto certonly -a webroot --webroot-path /var/www/html -d mousepawmedia.net -d nextcloud.mousepawmedia.net -d phabricator.mousepawmedia.net -d ehour.mousepawmedia.net -d jenkins.mousepawmedia.net -d secure.mousepawmedia.net -d files.mousepawmedia.net -d office.mousepawmedia.net -d quiz.mousepawmedia.net -d sandbox.mousepawmedia.net -d pad.mousepawmedia.net -d ajc.mousepawmedia.net
 
 Of course, we would change the ``hawksnest.ddns.net`` part to match the domain
 name we're getting the certificate for.
@@ -926,9 +926,7 @@ the sites you do not have. Be sure to uncomment them later!
 
     #!/bin/bash
 
-    a2dissite 000-redirect
-    a2dissite ehour
-    a2dissite jenkins
+    a2dissite 000-redirect ajc ehour jenkins nextcloud office pad phab phabfile protected quiz sandbox
     a2ensite 000-default
     systemctl restart apache2
 
@@ -970,9 +968,7 @@ the sites you do not have. Be sure to uncomment them later!
 
     # Restart critical services which use this.
     a2dissite 000-default
-    a2ensite 000-redirect
-    a2ensite ehour
-    a2ensite jenkins
+    a2ensite 000-redirect ajc ehour jenkins nextcloud office pad phab phabfile protected quiz sandbox
     systemctl restart apache2
     #systemctl restart jenkins
     #systemctl restart tomcat
@@ -2562,7 +2558,7 @@ thereof, such as ``http://<serveraddress>/docs``.
     gets all addresses on that port, unless something else snatches away
     a specific address.
 
-NextCloud
+Nextcloud
 ===========================
 
 Installation
@@ -2575,7 +2571,7 @@ probably already installed, but we're putting them here to be certain.
 
     $ sudo apt install php5.6-bz2 php5.6-intl php5.6-xml php5.6-zip php5.6-curl php5.6-gd php-imagick php5.6-mbstring php5.6-ldap
 
-Now we can install NextCloud itself.
+Now we can install Nextcloud itself.
 
 ..  code-block:: bash
 
@@ -2672,6 +2668,7 @@ Set the contents to...
             <Directory "/opt/nextcloud">
                 Options +FollowSymLinks
                 AllowOverride All
+                Satisfy Any
 
                 <IfModule mod_dave.c>
                       Dav off
@@ -2737,13 +2734,13 @@ Click ``Finish setup``.
     check PHPmyadmin → ``nextcloud`` (database) → Privileges. The ``nextcloud``
     user should be listed, with ``Grant Yes``.
 
-`SOURCE How To Install and Configure NextCloud on Ubuntu 16.04 (DigitalOcean) <https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-nextcloud-on-ubuntu-16-04>`_
+`SOURCE How To Install and Configure Nextcloud on Ubuntu 16.04 (DigitalOcean) <https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-nextcloud-on-ubuntu-16-04>`_
 
 Configuring Memory Caching
 -----------------------------
 
 To improve performance, we'll enable memory caching. We are using APCu (since
-we're using PHP 5.6), so we simply need to enable this for NextCloud.
+we're using PHP 5.6), so we simply need to enable this for Nextcloud.
 
 ..  code-block:: bash
 
@@ -2770,14 +2767,14 @@ Add the following line::
 
 Save and close.
 
-Finally, in the NextCloud Admin pane, go to ``Cron`` and select the ``Cron`` option.
+Finally, in the Nextcloud Admin pane, go to ``Cron`` and select the ``Cron`` option.
 
-`SOURCE: Background Jobs Configuration (NextCloud) <https://docs.nextcloud.com/server/10/admin_manual/configuration_server/background_jobs_configuration.html>`_
+`SOURCE: Background Jobs Configuration (Nextcloud) <https://docs.nextcloud.com/server/10/admin_manual/configuration_server/background_jobs_configuration.html>`_
 
 LDAP Authentication
 --------------------------------
 
-In NextCloud, go to ``Apps`` and enable LDAP. Then, go to ``Admin`` and ``LDAP``.
+In Nextcloud, go to ``Apps`` and enable LDAP. Then, go to ``Admin`` and ``LDAP``.
 
 Set the following options:
 
@@ -2819,7 +2816,7 @@ The settings are automatically saved. Log in as an LDAP user to test.
 
 ..  TODO:: Set up LDAP Avatar Integration.
 
-`SOURCE: User Auth with LDAP (NextCloud) <https://docs.nextcloud.com/server/9/admin_manual/configuration_user/user_auth_ldap.html>`_
+`SOURCE: User Auth with LDAP (Nextcloud) <https://docs.nextcloud.com/server/9/admin_manual/configuration_user/user_auth_ldap.html>`_
 
 Collabora Office Online
 --------------------------------
@@ -2916,16 +2913,16 @@ Then, enable the site and restart Apache2.
 
 You can see stats and admin options at ``https://office.<serveraddress>/loleaflet/dist/admin/admin.html``.
 
-Next, go to NextCloud. Click the menu, and go to
+Next, go to Nextcloud. Click the menu, and go to
 :menuselection:`Apps --> Productivity`. Install the "Collabora Online connector".
 Then, go to :menuselection:`Admin --> Additional settings --> Collabora Online`.
 
 Set :guilabel:`Collabora Online server` to :code:`https://office.mousepawmedia.net/`
 and click :guilabel:`Apply`.
 
-Now you can go to the Office app in NextCloud to access Collabora Office!
+Now you can go to the Office app in Nextcloud to access Collabora Office!
 
-`SOURCE: Getting started in 3 steps (NextCloud) <https://nextcloud.com/collaboraonline/>`_
+`SOURCE: Getting started in 3 steps (Nextcloud) <https://nextcloud.com/collaboraonline/>`_
 
 Last, we need to modify fail2ban so it won't lock users out when using
 CollaboraOffice.
@@ -3505,9 +3502,10 @@ passphrase.
 ..  code-block:: bash
 
     # PASSPHRASE='thepasswordforgpg' duplicity --encrypt-key PUBLICKEY /opt file:///mnt/backup/xenial_backup/
+    # PASSPHRASE='thepasswordforgpg' duplicity --encrypt-key PUBLICKEY /mnt/stash file:///mnt/backup/stash_backup/
 
-Give that command some time to run. It's creating a full backup for the first
-time.
+Give those commands some time to run. They're creating a full backups for the
+first time.
 
 Finally, let's set up a cron job to run daily backups. Note, we are still
 running as root.
@@ -3543,6 +3541,7 @@ Set the contents of that file to...
 
     export PASSPHRASE
     $(which duplicity) --encrypt-key PUBLICKEY /opt file:///mnt/backup/xenial_backup/
+    $(which duplicity) --encrypt-key PUBLICKEY /mnt/stash file:///mnt/backup/stash_backup/
 
 Save and close, and then make the script executable. After that, we'll create
 a cron script to run a weekly full backup.
@@ -3564,9 +3563,11 @@ Set the contents of the weekly file to...
 
     export PASSPHRASE
     $(which duplicity) full --encrypt-key PUBLICKEY /opt file:///mnt/backup/xenial_backup/
+    $(which duplicity) full --encrypt-key PUBLICKEY /mnt/stash file:///mnt/backup/stash_backup/
 
     #Clear old backups.
     $(which duplicity) remove-all-but-n-full 3 file:///mnt/backup/xenial_backup/
+    $(which duplicity) remove-all-but-n-full 3 file:///mnt/backup/stash_backup/
 
 Save and close, and fix that file's permissions.
 
@@ -3605,9 +3606,10 @@ Set the contents of that file to...
 
     export PASSPHRASE
     $(which duplicity) --encrypt-key PUBLICKEY /opt file:///mnt/backup/xenial_backup/
-
+    $(which duplicity) --encrypt-key PUBLICKEY /mtn/stash file:///mnt/backup/stash_backup/
     export PASSPHRASE
     $(which duplicity) verify --encrypt-key PUBLICKEY file:///mnt/backup/xenial_backup/ /opt
+    $(which duplicity) verify --encrypt-key PUBLICKEY file:///mnt/backup/stash_backup/ /mnt/stash
 
 Save and close. Make it executable, and then run it.
 
