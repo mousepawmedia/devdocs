@@ -19,10 +19,6 @@ Adobe or Autodesk, you may want to keep Microsoft Windows™ installed.
     Windows-only software you use, or if a Linux alternative will do just
     as well. See :doc:`about`
 
-..  WARNING:: Use of Microsoft Windows™ 7 or later for company work is
-    **strictly prohibited**. This means **you may not install and use
-    your work copy of Linux as a virtual machine on Windows.**
-
 If you want Ubuntu Linux to be your only operating system on the computer,
 the installation process is a *lot* easier.
 

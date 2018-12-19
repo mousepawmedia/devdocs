@@ -1,7 +1,7 @@
 {
     // Disable RST linter
     "restructuredtext.linter.run": "off",
-    "restructuredtext.confPath": "${workspaceRoot}/network/source",
+    "restructuredtext.confPath": "${workspaceFolder}/network/source",
     "restructuredtext.workspaceRoot": "/home/jason/Code/Repositories/devdocs/network",
     "restructuredtext.builtDocumentationPath": "${workspaceRoot}/network/build/html",
 
