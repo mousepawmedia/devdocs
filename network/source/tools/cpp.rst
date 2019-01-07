@@ -12,7 +12,7 @@ languages on Linux.
 Install the Compiler
 ============================
 
-..  NOTE:: Updated 19 May 2018
+..  NOTE:: Updated 07 January 2019
 
 We use the Clang compiler primarily, and GCC secondarily. If you're not on a
 Debian-based Linux system, you'll need to find out how to install these yourself.
@@ -21,31 +21,28 @@ Linux
 ----------------------------
 
 We'll start by installing Clang and LLVM. We require Clang 3.4 or later, but
-recommend 5.0 for all company developers. We'll be using
+recommend 6.0 for all company developers. We'll be using
 `LLVM's official stable apt repository <http://apt.llvm.org/>`_ instead of
 using the older version in the default system repository.
 
 Below are the instructions for adding and installing from the official
 LLVM/Clang repository.
 
-..  IMPORTANT:: If you're using a version of Ubuntu other than 18.04, be sure to change
-    the `add-apt-repository` line to your version (instead of `bionic`).
-
 ..  code-block:: bash
 
-    $ sudo add-apt-repository "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-5.0 main"
-    $ wget -O - http://apt.llvm.org/llvm-snapshot.gpg.key|sudo apt-key add -
+    $ sudo add-apt-repository "deb http://apt.llvm.org/`lsb_release -sc`/ llvm-toolchain-`lsb_release -sc`-6.0 main"
+    $ wget -O - http://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
     $ sudo apt update
-    $ sudo apt install python-lldb-5.0
-    $ sudo apt install clang-5.0 clang-5.0-doc libclang-common-5.0-dev libclang-5.0-dev libclang1-5.0 libclang1-5.0-dbg libllvm5.0 libllvm5.0-dbg lldb-5.0 llvm-5.0 llvm-5.0-dev llvm-5.0-doc llvm-5.0-examples llvm-5.0-runtime clang-format-5.0 python-clang-5.0 libfuzzer-5.0-dev
-    $ sudo ln -sf /usr/bin/llvm-symbolizer-5.0 /usr/bin/llvm-symbolizer
-    $ sudo ln -sf /usr/bin/lldb-server-5.0 /usr/lib/llvm-5.0/bin/lldb-server-5.0.0
+    $ sudo apt install python-lldb-6.0
+    $ sudo apt install clang-6.0 clang-6.0-doc libclang-common-6.0-dev libclang-6.0-dev libclang1-6.0 libclang1-6.0-dbg libllvm6.0 libllvm6.0-dbg lldb-6.0 llvm-6.0 llvm-6.0-dev llvm-6.0-doc llvm-6.0-examples llvm-6.0-runtime clang-format-6.0 python-clang-6.0 libfuzzer-6.0-dev
+    $ sudo ln -sf /usr/bin/llvm-symbolizer-6.0 /usr/bin/llvm-symbolizer
+    $ sudo ln -sf /usr/bin/lldb-server-6.0 /usr/lib/llvm-5.0/bin/lldb-server-6.0.0
 
-If you are upgrading from 4.0, be sure to run...
+If you are upgrading from 5.0, be sure to run...
 
 ..  code-block:: bash
 
-    $ sudo apt remove clang-4.0 clang-4.0-doc libclang-common-4.0-dev libclang-4.0-dev libclang1-4.0 libclang1-4.0-dbg libllvm-4.0-ocaml-dev libllvm4.0 libllvm4.0-dbg lldb-4.0 llvm-4.0 llvm-4.0-dev llvm-4.0-doc llvm-4.0-examples llvm-4.0-runtime clang-format-4.0 python-clang-4.0 libfuzzer-4.0-dev
+    $ sudo apt remove clang-5.0 clang-5.0-doc libclang-common-5.0-dev libclang-5.0-dev libclang1-5.0 libclang1-5.0-dbg libllvm-5.0-ocaml-dev libllvm5.0 libllvm5.0-dbg lldb-5.0 llvm-5.0 llvm-5.0-dev llvm-5.0-doc llvm-5.0-examples llvm-5.0-runtime clang-format-5.0 python-clang-5.0 libfuzzer-5.0-dev
 
 ..  WARNING:: If you're using an operating system based on a version of
     Ubuntu before 16.04, you may not be able to compile our code with GCC.
@@ -60,16 +57,13 @@ install those via...
 
     $ sudo add-apt-repository ppa:ubuntu-toolchain-r/test
     $ sudo apt update
-    $ sudo apt install gcc g++ gcc-7 g++-7 gcc-7-doc
-
-..  NOTE:: Many Ubuntu systems older than 16.04 can still install the correct
-    version via the PPA `ppa:ubuntu-toolchain-r/test`.
+    $ sudo apt install gcc g++ gcc-8 g++-8 gcc-8-doc
 
 If you're on a 64-bit system, you'll need some additional packages...
 
 ..  code-block:: bash
 
-    $ sudo apt-get install gcc-7-multilib g++-7-multilib libc6-dev-i386
+    $ sudo apt-get install gcc-8-multilib g++-8-multilib libc6-dev-i386
 
 Once you have everything installed, configure Ubuntu to allow you to switch
 between GCC and Clang.
@@ -88,12 +82,12 @@ and configure this tool using the following commands.
 ..  code-block:: bash
 
     $ sudo update-alternatives --remove-all cc
-    $ sudo update-alternatives --install /usr/bin/cc cc /usr/bin/clang-5.0 30
-    $ sudo update-alternatives --install /usr/bin/cc cc /usr/bin/gcc-7 20
+    $ sudo update-alternatives --install /usr/bin/cc cc /usr/bin/clang-6.0 30
+    $ sudo update-alternatives --install /usr/bin/cc cc /usr/bin/gcc-8 20
     $ sudo update-alternatives --install /usr/bin/cc cc /usr/bin/gcc 10
     $ sudo update-alternatives --remove-all c++
-    $ sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-5.0 30
-    $ sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++-7 20
+    $ sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-6.0 30
+    $ sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++-8 20
     $ sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++ 10
 
 Once you've set all that up, you can easily switch between options using the
