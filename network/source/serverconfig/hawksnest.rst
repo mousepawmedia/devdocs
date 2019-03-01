@@ -163,11 +163,10 @@ Set ``EMAIL`` to ``"hawksnest@localhost"``. Save and close.
 LAMP Server
 ===================================================
 
-PHP5
+PHP7.2
 ----------------------------------------------------
 
-Because Phabricator cannot work with PHP7.0, we have to downgrade.
-We are using the ``ondrej`` PPA.
+We'll be using PHP 7.2. We are using the ``ondrej`` PPA.
 
 ..  code-block:: bash
 
@@ -175,28 +174,27 @@ We are using the ``ondrej`` PPA.
     $ sudo apt purge `dpkg -l | grep php| awk '{print $2}' |tr "\n " "`
 
     $ sudo add-apt-repository ppa:ondrej/php
-    $ sudo add-apt-repository ppa:ondrej/php5-compat
     $ sudo apt update
     $ sudo apt dist-upgrade
-    $ sudo apt install php5
+    $ sudo apt install php7.2
 
-    # Verify that PHP is on version 5.6
+    # Verify that PHP is on version 7.2
     $ sudo php -v
 
     # Install the libapache module.
-    $ sudo apt install libapache2-mod-php5
+    $ sudo apt install libapache2-mod-php7.2
 
     # Install the needed PHP packages.
-    $ sudo apt install php5-cli php5-common php5-curl php5-dev php5-gd php-gettext php5-json php5.6-mbstring php5-mysql php5.6-opcache php5-readline
+    $ sudo apt install php7.2-cli php7.2-common php7.2-curl php7.2-dev php7.2-gd php-gettext php7.2-json php7.2-mbstring php7.2-mysql php7.2-opcache php7.2-readline php7.2-xml
 
     # Finally, update the alternatives.
     $ sudo update-alternatives --config php
-    # Select the option for php5.6
+    # Select the option for php7.2
 
 `SOURCE: How Do I Install Different PHP Version? (Ask Ubuntu) <http://askubuntu.com/a/109544/23786>`_
 
-..  NOTE:: We are not installing APC because it is not supported on PHP5.6
-    or above. ``php5-opcache`` handles that now.
+..  NOTE:: We are not installing APC because it is not supported on PHP7.2
+    or above. ``php7.2-opcache`` handles that now.
 
 SSH
 ------------------------------------------
@@ -372,11 +370,10 @@ Harden PHP
 
 ..  code-block:: bash
 
-    $ sudo vim /etc/php/5.6/apache2/php.ini
+    $ sudo vim /etc/php/7.2/apache2/php.ini
 
 Add or edit the following lines and save.::
 
-    disable_functions = exec,system,shell_exec,passthru
     register_globals = Off
     expose_php = Off
     display_errors = Off
@@ -750,13 +747,15 @@ On the configuration dialog, select ``apache2`` by selecting it and tapping
 :kbd:`Space`. Enter an application password (different from the MySQL root
 password) and confirm it.
 
-Now enable two necessary PHP modules and restart Apache2.
+Now enable one necessary PHP module and restart Apache2.
 
 ..  code-block:: bash
 
-    $ sudo phpenmod mcrypt
     $ sudo phpenmod mbstring
     $ sudo systemctl restart apache2
+
+..  NOTE:: This previously required mcrypt, which is lacking in PHP7.2.
+    However, it appears to be operating as expected without it.
 
 Test Apache2 again, as always.
 
@@ -1608,7 +1607,7 @@ Save and close the file. Finally, load them up.
 
     $ sudo a2ensite phab
     $ sudo a2enmod ssl
-    $ sudo a2enmod php-5.6
+    $ sudo a2enmod php-7.2
     $ sudo a2enmod rewrite
     $ sudo ufw allow 8446
     $ sudo systemctl restart apache2
@@ -1622,7 +1621,7 @@ Next, we need to make some modifications to ``php.ini`` for Phabricator to work.
 
 ..  code-block:: bash
 
-    $ sudo vim /etc/php/5.6/apache2/php.ini
+    $ sudo vim /etc/php/7.2/apache2/php.ini
 
 Make these changes...
 
@@ -1670,7 +1669,7 @@ you can see these at ``https://<serveraddress>:8446/config/issues``.
 
 View each and fix as prescribed. Here are a few fixes we did...
 
-- We made a few changes to ``/etc/php/5.6/apache2/php.ini``.
+- We made a few changes to ``/etc/php/7.2/apache2/php.ini``.
 - We had to make several changes to the MySQL configuration. If you're looking
   for the MySQL configuration file, it's spread out across multiple ``.cnf``
   files in ``/etc/mysql``. Chances are, you want
@@ -1678,9 +1677,6 @@ View each and fix as prescribed. Here are a few fixes we did...
 - We set the ``php.ini`` value ``date.timezone = `` to ``America/Los_Angeles``.
 - We also needed to install the packages ``python3-pygments`` and
   ``python-pygments``.
-- We installed the package ``php-apcu``. Don't worry about the ``php-7``
-  dependencies it dragged in. Apache2 is still using PHP5.6 because of our
-  earlier settings changes. You can verify via ``sudo php -v``.
 - We installed the packages ``subversion`` and ``imagemagik``.
 
 Recaptcha
@@ -2569,9 +2565,13 @@ probably already installed, but we're putting them here to be certain.
 
 ..  code-block:: bash
 
-    $ sudo apt install php5.6-bz2 php5.6-intl php5.6-xml php5.6-zip php5.6-curl php5.6-gd php-imagick php5.6-mbstring php5.6-ldap
+    $ sudo apt install php7.2-bz2 php7.2-intl php7.2-xml php7.2-zip php7.2-curl php7.2-gd php-imagick php7.2-mbstring php7.2-ldap
 
 Now we can install Nextcloud itself.
+
+..  NOTE:: While we are installing 10.0.1 below, Nextcloud has been upgraded
+    many times since; as of this, the latest is 15.0.5. Adjust commands below
+    according to the latest stable version of Nextcloud.
 
 ..  code-block:: bash
 
@@ -2740,7 +2740,7 @@ Configuring Memory Caching
 -----------------------------
 
 To improve performance, we'll enable memory caching. We are using APCu (since
-we're using PHP 5.6), so we simply need to enable this for Nextcloud.
+we're using PHP 7.2), so we simply need to enable this for Nextcloud.
 
 ..  code-block:: bash
 
@@ -2751,6 +2751,27 @@ Add the following line before the end::
     'memcache.local' => '\OC\Memcache\APCu',
 
 Save and close, and then restart Apache2.
+
+PHP Configuration
+----------------------------
+
+Nextcloud recommends a few tweaks to php.ini. Run...
+
+.. code-block:: bash
+
+    $ sudo vim /etc/php/7.2/apache2/php.ini
+
+Find and edit the following lines::
+
+    opcache.enable=1
+    opcache.enable_cli=1
+    opcache.interned_strings_buffer=8
+    opcache.max_accelerated_files=10000
+    opcache.memory_consumption=128
+    opcache.save_comments=1
+    opcache.revalidate_freq=1
+
+Save and close.
 
 Set Up Cronjob
 ----------------------------
