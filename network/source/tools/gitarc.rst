@@ -60,13 +60,12 @@ Enter your password if prompted. It will want to install a few other packages.
 Tell it "yes" (`Y`) and let it run. It might take a little while.
 
 Still in your terminal, create the folder for Arcanist to live in, and then pull
-in Arcanist and its support library, Libphutil.
+in Arcanist.
 
 ..  code-block:: bash
 
     $ mkdir ~/.arcanist
     $ cd ~/.arcanist
-    $ git clone https://github.com/phacility/libphutil.git
     $ git clone https://github.com/phacility/arcanist.git
 
 Now we need to tell our system where to look for Arcanist. The easiest way

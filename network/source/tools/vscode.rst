@@ -35,10 +35,14 @@ We recommend the following extensions (author name in parenthesis):
 * C/C++ Advanced Lint (Joseph Benden)
 * C/C++ Snippets (Harsh)
 * CMake (twxs)
+* CodeLLDB (Vadim Chugunov)
 * gitignore (CodeZombie)
 * CodeLLDB (Vadim Chugunov)
+* Makefiles support for VSCode (Lilian Besson)
 * markdownlint (David Anson)
 * Python (Microsoft)
+* Python Test Explorer for Visual Studio Code (Little Fox Team)
+* Test Explorer UI (Holger Benl)
 * reStructuredText (LeXtudio)
 * XML Tools (Josh Johnson)
 
@@ -48,16 +52,26 @@ We recommend the following extensions (author name in parenthesis):
 ..  NOTE:: ``cppcheck`` has extremely high CPU usage, so we use
     ``C/C++ Advanced Linter`` instead.
 
-You may also consider the following helpful extensions:
+You may also consider the following helpful extensions. You should read the
+description of each before installing:
 
 * Auto Close Tag (Jus Han)
+* Better C+ Syntax (Jeff Hykin)
 * Bookmarks (Alessandro Fragnani)
 * Bracket Pair Colorizer (CoenraadS)
 * Code Spell Checker (Street Side Software)
 * Contextual Duplicate (Lars Fernhomberg)
 * GitLens (Eric Amodio)
+* Insert Unicode (brunnerh)
+* Overtype (Adam Maras)
+* Peacock (John Papa)
+* Phabricator Links (matt-good)
 * Reflow Paragraph (Troels Damgaard)
 * TODO Highlight (Wayou Liu)
+* Unicode code point of current character (zeithaste)
+* Visual Studio IntelliCode -- Preview (Microsoft DevLabs)
+* VSCode Great Icons (Emmanuel Béziat)
+* XML (Red Hat)
 
 Settings
 =================================

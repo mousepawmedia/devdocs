@@ -257,17 +257,13 @@ and fill out your profile. Follow these instructions...
 7.  Select :guilabel:`Account` at left, and set :guilabel:`Pronoun`
     appropriately. Click :guilabel:`Save Changes`.
 
-8.  Click :guilabel:`Conpherence Preferences` at left, and set it to
-    "Send Notifications". (Otherwise, you may get spammed.)
-    Click :guilabel:`Save Changes`.
-
-9.  Click :guilabel:`Desktop Notifications` at left. Select the option
-    ``Send Desktop Notifications Too``, and save. Then, click
+8.  Click :guilabel:`Notifications` at left. Select the option
+    :code:`Web and Desktop`, and save. Then, click
     :guilabel:`Enable Desktop Notifications`. You may consider clicking
     :guilabel:`Send Test Notification` in the upper-right corner to test.
     Then, click :guilabel:`Save Preference`.
 
-10. Click :guilabel:`External Accounts` at left. Add your GitHub account.
+9. Click :guilabel:`External Accounts` at left. Add your GitHub account.
     Click :guilabel:`Save Changes`.
 
 ..  IMPORTANT:: You should also add your company email address to your GitHub
@@ -284,26 +280,24 @@ and fill out your profile. Follow these instructions...
     you should ensure you are *already* in the habit of checking Phabricator
     at the start of each workday.
 
-    A great way to be notified about things while you're working is to leave
-    Phabricator open in a browser tab. This way, you'll get a handy popup
-    whenever something important occurs. Otherwise, you can check missed
-    notifications from the Bell menu in the upper-left corner of Phabricator.
+    A great way to be notified about things while you're working is to open
+    Phabricator in **Rambox**, or to leave it open in a browser tab.
+    This way, you'll get a handy popup whenever something important occurs.
+    Otherwise, you can check missed notifications from the Bell menu in the
+    upper-left corner of Phabricator.
 
-11. Click :guilabel:`Email Delivery` at left. DISABLE :guilabel:`Self Actions`,
-    but leave :guilabel:`Email Notifications` ENABLED.
-    Click :guilabel:`Save Changes`.
-
-12. Click :guilabel:`Email Preferences` at left. Here, you may shut off many
+11. Click :guilabel:`Email Preferences` at left. Here, you may shut off many
     email notifications by selecting the :guilabel:`Notify` option for any
-    given item.
+    given item. Recommended defaults are provided, but you can adjust these
+    to your needs.
 
 ..  WARNING:: Do NOT select "Ignore" for any notifications! All notifications
     are ultimately controlled by whether you're "Subscribed" to an object.
 
-13. Take a few minutes to go through the rest of the settings independently.
+12. Take a few minutes to go through the rest of the settings independently.
     Use the menu at left to see more settings.
 
-14. Click :guilabel:`Phabricator` in the upper-left corner to return to the
+13. Click :guilabel:`Phabricator` in the upper-left corner to return to the
     main page.
 
 Regular Phabricator Tasks
@@ -363,6 +357,9 @@ doing. There are six major apps you should be making frequent use of.
 
 All of these apps (and more) are on the left side of the main page of
 Phabricator.
+
+I ***strongly recommend*** setting up :ref:`rambox` with Phabricator, so you
+can get notifications and Conpherence chat messages automatically, in real time.
 
 .. _gstaff_nextcloud:
 

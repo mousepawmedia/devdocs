@@ -35,7 +35,7 @@ of them FOSS.
 ..  NOTE:: While you can also access many IRC networks through a browser-based
     client, it isn't recommended, as many useful IRC tools don't work on those.
 
-For Linux, one of the most popular IRC clients is **Hexchat**, which we will
+For Linux, one of the most popular IRC clients is **HexChat**, which we will
 install and set up in this section. If you've never used IRC before, I recommend
 installing this client now. Once you're comfortable, you'll have the basic
 IRC knowledge necessary to experiment with other options.
@@ -46,6 +46,12 @@ To install Hexchat on any Ubuntu-based distribution, run...
 
     $ sudo apt update
     $ sudo apt install hexchat
+
+If you're on Windows, you can download the installer from the
+`HexChat website <https://hexchat.github.io/downloads.html>`_.
+
+HexChat is not supported on Mac, but `XChat Azure <https://xchataqua.github.io/>`_
+is nearly identical.
 
 .. _irc_setup_choosing_network:
 
