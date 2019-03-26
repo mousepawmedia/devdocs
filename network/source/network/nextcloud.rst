@@ -726,17 +726,35 @@ Installing Nextcloud Client
 You may want to install the Nextcloud client, which allows you to sync your
 files to and from your computer or device.
 
-..  WARNING:: The company Windows ban extends to accessing NextCloud. You may
-    NOT access Nextcloud from Windows, whether via the web interface or the
-    client.
+..  _nextcloud_client_install:
 
-To install the Nextcloud client on an Ubuntu-based system, run...
+Installing
+----------------------------
+
+To install the Nextcloud client on an Debian-based system, including Ubuntu,
+run...
 
 ..  code-block:: bash
 
     $ sudo add-apt-repository ppa:nextcloud-devs/client
     $ sudo apt update
     $ sudo apt install nextcloud-client
+
+To install the Nextcloud client on Windows (7-10) or macOS (10.10+)
+`download the installer <https://nextcloud.com/install/#install-clients>`_
+from the official website. Run the installer like you usually would.
+
+If you're running another version of Linux, native packages are available for
+all major distributions.
+`The complete list is available here <https://help.nextcloud.com/t/linux-packages-status/10216>`_.
+Alternatively, you can
+`download the AppImage <https://nextcloud.com/install/#install-clients>`_
+from the official website.
+
+..  _nextcloud_client_setup:
+
+Client Setup
+----------------------------
 
 Once that installs, start the :guilabel:`Nextcloud desktop sync client`
 application. The setup wizard will appear the first time.

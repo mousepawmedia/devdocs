@@ -137,7 +137,7 @@ Another option is to run a `VirtualBox <https://www.virtualbox.org>`_ of
 Microsoft Windows™ inside of Linux. This means that you have a full
 installation of Microsoft Windows™ that you can use via a special software
 application on Linux. You do need to bring your own Microsoft Windows™
-installation disc and license key. However, You can find free (and legal)
+installation disc and license key. However, you can find free (and legal)
 downloads of Windows 98 and prior through many abandonware catalogs.
 
 Is there a Linux replacement for...?
@@ -159,7 +159,6 @@ examples. You can find more at `alternativeto.net <http://alternativeto.net/>`_.
 |                    | Rednotebook         |
 +--------------------+---------------------+
 | Apple iTunes®      | Amarok              |
-|                    | Banshee             |
 |                    | Clementine          |
 |                    | Rhythmbox           |
 +--------------------+---------------------+
@@ -188,6 +187,7 @@ examples. You can find more at `alternativeto.net <http://alternativeto.net/>`_.
 +--------------------+---------------------+
 | Autodesk AutoCAD®  | FreeCAD             |
 |                    | BrisCAD**           |
+|                    | OnShape**           |
 +--------------------+---------------------+
 | Finale®            | MuseScore           |
 |                    | Lilypond            |
@@ -201,8 +201,9 @@ I have an iDevice. Will it still work with my PC?
 ---------------------------------------------------------
 
 Unfortunately, Apple® *blocked* music sync with Linux on all 4th Gen and later
-iDevices. There are ways around this, however. I have an iPod touch® that runs
-Google Music™ (a free service), that my Ubuntu machine automatically syncs with.
+iDevices. There are ways around this, however. One solution is to install
+Google Music™ (a free service) on your mobile device and Ubuntu computer,
+and use that to automatically sync music between devices.
 
 Will my <device> work?
 ----------------------------

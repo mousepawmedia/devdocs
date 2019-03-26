@@ -43,12 +43,9 @@ You **must** have Linux, ideally an Ubuntu-based distro (version 18.04
 or later), installed directly on your computer. See :doc:`/setup_linux/install`.
 If you need help, contact Jason C. McDonald.
 
-Although we work on Linux, you may access the Staff Network via Mac, iOS
-(Apple) mobile devices, Android mobile devices, or BSD-based operating
+Although we work on Linux, you may access the Staff Network via Windows, Mac,
+iOS (Apple) mobile devices, Android mobile devices, or BSD-based operating
 systems if you need to.
-
-..  WARNING:: You may NOT use Microsoft Windows, including Windows Phones,
-    to access the Staff Network!
 
 .. _gstaff_network:
 
@@ -131,8 +128,6 @@ email without access to your usual device.
 
 You can also connect your account to an external email client, such as
 Thunderbird or your mobile device. Here are the server settings:
-
-..  WARNING:: Do NOT use Microsoft email clients such as Outlook or Windows Mail!
 
 - Username: (Your full company email address.)
 
@@ -377,11 +372,7 @@ First Steps
 
 2.  If you scroll down a little, you will see buttons for downloading the Nextcloud
     client for various platforms. Now would be a good time to set up one or more
-    up. To install the client for Linux, see :ref:`nextcloud_client`.
-
-..  IMPORTANT:: Remember, Windows is banned from the company for all
-    staff-related tasks. This includes accessing Nextcloud, even through
-    the Windows client.
+    up. To install the client, see :ref:`nextcloud_client`.
 
 3.  The Activity section allows you to customize notifications. You should leave
     most Stream options checked, so you'll know when things happen on Nextcloud.

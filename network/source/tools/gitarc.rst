@@ -128,11 +128,11 @@ Register yourself with Git, so you'll be credited for commits.
 ..  NOTE:: If you only want the given name and/or email for the current
     repository, omit the ``--global`` flag.
 
-..  code-block:: bash
-
 Run the following commands, **substituting in your own information.**
 Staff should use their company email here; otherwise use the email
 associated with your GitHub account.
+
+..  code-block:: bash
 
     $ git config --global user.name "Sam Smith"
     $ git config --global user.email sam@example.com
