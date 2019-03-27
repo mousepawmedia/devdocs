@@ -30,19 +30,20 @@ LLVM/Clang repository.
 
 ..  code-block:: bash
 
-    $ sudo add-apt-repository "deb http://apt.llvm.org/`lsb_release -sc`/ llvm-toolchain-`lsb_release -sc`-6.0 main"
+    $ sudo add-apt-repository "deb http://apt.llvm.org/`lsb_release -sc`/ llvm-toolchain-`lsb_release -sc` main"
     $ wget -O - http://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
     $ sudo apt update
     $ sudo apt install python-lldb-6.0
     $ sudo apt install clang-6.0 clang-6.0-doc libclang-common-6.0-dev libclang-6.0-dev libclang1-6.0 libclang1-6.0-dbg libllvm6.0 libllvm6.0-dbg lldb-6.0 llvm-6.0 llvm-6.0-dev llvm-6.0-doc llvm-6.0-examples llvm-6.0-runtime clang-format-6.0 python-clang-6.0 libfuzzer-6.0-dev
     $ sudo ln -sf /usr/bin/llvm-symbolizer-6.0 /usr/bin/llvm-symbolizer
-    $ sudo ln -sf /usr/bin/lldb-server-6.0 /usr/lib/llvm-5.0/bin/lldb-server-6.0.0
+    $ sudo ln -sf /usr/bin/lldb-server-6.0 /usr/lib/llvm-6.0/bin/lldb-server-6.0.0
 
 If you are upgrading from 5.0, be sure to run...
 
 ..  code-block:: bash
 
-    $ sudo apt remove clang-5.0 clang-5.0-doc libclang-common-5.0-dev libclang-5.0-dev libclang1-5.0 libclang1-5.0-dbg libllvm-5.0-ocaml-dev libllvm5.0 libllvm5.0-dbg lldb-5.0 llvm-5.0 llvm-5.0-dev llvm-5.0-doc llvm-5.0-examples llvm-5.0-runtime clang-format-5.0 python-clang-5.0 libfuzzer-5.0-dev
+    $ sudo add-apt-repository --remove "deb http://apt.llvm.org/`lsb_release -sc`/ llvm-toolchain-`lsb_release -sc`-5.0 main"
+    $ sudo apt remove -f clang-5.0 clang-5.0-doc libclang-common-5.0-dev libclang-5.0-dev libclang1-5.0 libclang1-5.0-dbg libllvm-5.0-ocaml-dev libllvm5.0 libllvm5.0-dbg lldb-5.0 llvm-5.0 llvm-5.0-dev llvm-5.0-doc llvm-5.0-examples llvm-5.0-runtime clang-format-5.0 python-clang-5.0 libfuzzer-5.0-dev
 
 ..  WARNING:: If you're using an operating system based on a version of
     Ubuntu before 16.04, you may not be able to compile our code with GCC.
