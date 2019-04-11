@@ -238,6 +238,30 @@ You can now connect to the server via SSH.
 
 `SOURCE: How to Use SSH To Connect To A Remote Server (Digital Ocean) <https://www.digitalocean.com/community/tutorials/how-to-use-ssh-to-connect-to-a-remote-server-in-ubuntu>`_
 
+MySQL
+-----------------------------------------
+
+By default, we can only have 100 simultaneous connections to the MySQL database.
+That may seem like a lot, but considering how many services we'll be running,
+it's actually quite small.
+
+We need to edit the following file...
+
+..  code-block:: bash
+
+    $ sudo vim /etc/mysql/mysql.conf.d/mysqld.conf
+
+Look for the following line, uncomment it (remove the leading :code:`#`), and
+edit it to match the value shown here::
+
+    max_connections = 1000
+
+Save and close, and then restart the MySQL service.
+
+..  code-block:: bash
+
+    $ sudo systemctl restart mysql
+
 Java
 -----------------------------------------
 
