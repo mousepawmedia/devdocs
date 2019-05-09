@@ -33,11 +33,8 @@ We officially support the following operating systems for development work:
 Developing on Windows
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-..  WARNING:: Employees of MousePaw Media are ***strictly forbidden*** from
-    using Windows for company work.
-
-While we do not directly support the Windows operating systems, there are four
-ways you can develop on that operating system:
+While we do not directly support the Windows operating systems (none of us use it),
+there are four ways you can develop on that operating system:
 
 * If you're using Windows 10, you may use the `Windows Subsystem for Linux <https://docs.microsoft.com/en-us/windows/wsl/install-win10>`_. (Recommended)
 * You may use `MinGW <http://mingw.org/>`_ for C++ compiling.
