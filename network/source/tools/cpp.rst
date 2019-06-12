@@ -33,10 +33,16 @@ LLVM/Clang repository.
     $ sudo add-apt-repository "deb http://apt.llvm.org/`lsb_release -sc`/ llvm-toolchain-`lsb_release -sc` main"
     $ wget -O - http://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
     $ sudo apt update
-    $ sudo apt install python-lldb-6.0
-    $ sudo apt install clang-6.0 clang-6.0-doc libclang-common-6.0-dev libclang-6.0-dev libclang1-6.0 libclang1-6.0-dbg libllvm6.0 libllvm6.0-dbg lldb-6.0 llvm-6.0 llvm-6.0-dev llvm-6.0-doc llvm-6.0-examples llvm-6.0-runtime clang-format-6.0 python-clang-6.0 libfuzzer-6.0-dev
-    $ sudo ln -sf /usr/bin/llvm-symbolizer-6.0 /usr/bin/llvm-symbolizer
-    $ sudo ln -sf /usr/bin/lldb-server-6.0 /usr/lib/llvm-6.0/bin/lldb-server-6.0.0
+    $ sudo apt install python-lldb-7
+    $ sudo apt install libllvm-7-ocaml-dev libllvm7 llvm-7 llvm-7-dev llvm-7-doc llvm-7-examples llvm-7-runtime clang-7 clang-tools-7 clang-7-doc libclang-common-7-dev libclang-7-dev libclang1-7 clang-format-7 libfuzzer-7-dev lldb-7 lld-7 libc++-7-dev libc++abi-7-dev libomp-7-dev
+    $ sudo ln -sf /usr/bin/llvm-symbolizer-7 /usr/bin/llvm-symbolizer
+    $ sudo ln -sf /usr/bin/lldb-server-7 /usr/lib/llvm-7/bin/lldb-server-7.0.0
+
+If you are upgrading from 6.0, be sure to run...
+
+..  code-block:: bash
+
+    sudo apt remove -f clang-6.0 clang-6.0-doc libclang-common-6.0-dev libclang-6.0-dev libclang1-6.0 libclang1-6.0-dbg libllvm6.0 libllvm6.0-dbg lldb-6.0 llvm-6.0 llvm-6.0-dev llvm-6.0-doc llvm-6.0-examples llvm-6.0-runtime clang-format-6.0 python-clang-6.0 libfuzzer-6.0-dev
 
 If you are upgrading from 5.0, be sure to run...
 
@@ -51,20 +57,18 @@ If you are upgrading from 5.0, be sure to run...
     prevented our code from compiling.
 
 We also try to ensure our code builds on GCC. Although GCC is available through
-the core repositories, we like using the latest stable compiler builds. You can
-install those via...
+the core repositories, we like using the latest stable compiler builds.
 
 ..  code-block:: bash
 
-    $ sudo add-apt-repository ppa:ubuntu-toolchain-r/test
     $ sudo apt update
-    $ sudo apt install gcc g++ gcc-8 g++-8 gcc-8-doc
+    $ sudo apt install gcc g++ gcc-doc
 
 If you're on a 64-bit system, you'll need some additional packages...
 
 ..  code-block:: bash
 
-    $ sudo apt-get install gcc-8-multilib g++-8-multilib libc6-dev-i386
+    $ sudo apt-get install gcc-multilib g++-multilib libc6-dev-i386
 
 Once you have everything installed, configure Ubuntu to allow you to switch
 between GCC and Clang.
@@ -83,12 +87,10 @@ and configure this tool using the following commands.
 ..  code-block:: bash
 
     $ sudo update-alternatives --remove-all cc
-    $ sudo update-alternatives --install /usr/bin/cc cc /usr/bin/clang-6.0 30
-    $ sudo update-alternatives --install /usr/bin/cc cc /usr/bin/gcc-8 20
+    $ sudo update-alternatives --install /usr/bin/cc cc /usr/bin/clang-7 30
     $ sudo update-alternatives --install /usr/bin/cc cc /usr/bin/gcc 10
     $ sudo update-alternatives --remove-all c++
-    $ sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-6.0 30
-    $ sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++-8 20
+    $ sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-7 30
     $ sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++ 10
 
 Once you've set all that up, you can easily switch between options using the
