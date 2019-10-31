@@ -82,13 +82,13 @@ Our network is spread across two servers.
 Visit **staff.mousepawmedia.com** for our 24/7 staff portal, with links to
 Webmail, Jitsi, and DevNet. The DevNet landing has links to everything else.
 
-.. _gstaff_network_webmail:
+.. _gstaff_network_email:
 
-Webmail
+Email
 ------------------------------------------
 
-..  NOTE:: Webmail is hosted on our Fremont, California servers, and thus is
-    available 24/7!
+..  NOTE:: Email is hosted on Webster, and thus is
+    unaffected by the status of Hawksnest.
 
 Email is one of our primary ways of communicating at MousePaw Media. You have
 a company email address issued to you.
@@ -96,9 +96,18 @@ a company email address issued to you.
 ..  WARNING:: Be sure to check your company email every single day, and
     respond in a timely fashion!
 
-You can check your email through the web client, SquirrelMail. This is useful
-if you don't want to configure an external client, or need to check your
-email without access to your usual device.
+You can check your email through the web clients: SquirrelMail and Rainloop.
+This is useful if you don't want to configure an external client, or need
+to check your email without access to your usual device.
+
+.. _gstaff_network_email_squirrelmail
+
+SquirrelMail
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+SquirrelMail is a simple, HTML-based webmail client. It lacks many modern
+features, focusing instead on being fast, clean, and simple. It is on
+Webster, and thus is unaffected by Hawksnest outages.
 
 1.  Go to webmail.mousepawmedia.com. Sign in using your full company email
     address and your password.
@@ -116,7 +125,7 @@ email without access to your usual device.
         Position, MousePaw Media
 
         Visit Us Online: MousePawMedia.com
-        Call Us: 208-557-GAME
+        Call Us: 208-719-0347
 
 3.  Reading email will be easier and more visually pleasing by displaying
     messages in HTML. This is off by default; to turn it on, click
@@ -124,7 +133,38 @@ email without access to your usual device.
     :guilabel:`Display Preferences`, and check the box for
     :guilabel:`Show HTML Version by Default`. Click :guilabel:`Submit`.
 
-..  IMPORTANT:: Access your company email through the webmail client.
+..  IMPORTANT:: Access your company email through the SquirrelMail client.
+
+.. _gstaff_network_email_rainloop
+
+Rainloop
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+1. Go to nextcloud.mousepawmedia.net. Sign in using your company username
+   and password. Click the Email icon on the top toolbar.
+
+2. Login using your company email and password.
+
+3. Set up your signature. Click the silhouette icon in the upper-right
+   corner, and select Settings. In the middle, click on your email
+   address next to :guilabel:`Identity`. Enter your signature.
+
+   Here's the example signature::
+
+   Your Name Here
+   Position, MousePaw Media
+
+   Visit Us Online: MousePawMedia.com
+   Call Us:208-719-0347
+
+4. Click :guilabel:`Update`.
+
+..  IMPORTANT:: Access your company email through the Rainloop client.
+
+.. _gstaff_network_email_imap
+
+IMAP Access
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 You can also connect your account to an external email client, such as
 Thunderbird or your mobile device. Here are the server settings:
@@ -166,7 +206,9 @@ Thunderbird or your mobile device. Here are the server settings:
 ..  IMPORTANT:: Connect your company email to an email client, such as
     Thunderbird or your smartphone.
 
-Regular Webmail Tasks
+.. _gstaff_network_email_tasks
+
+Regular Email Tasks
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 * Correspond with co-workers. Read and respond to messages in a timely fashion.
@@ -187,9 +229,6 @@ Regular Webmail Tasks
 
 eHour
 -----------------------------------
-
-..  NOTE:: eHour is on our development server, meaning it is subject to the
-    DevNet (Hawksnest) server hours.
 
 eHour is where we track time. You are responsible for reporting your time
 **every day**. Each day's time sheets are locked the next morning at 10am.
@@ -220,9 +259,6 @@ Regular eHour Tasks
 
 Phabricator
 --------------------------------------
-
-..  NOTE:: Phabricator is on our development server, meaning it is subject to
-    the DevNet (Hawksnest) server hours.
 
 Phabricator is where most of our development work takes place. It hosts our
 repositories, task tracker, knowledge base, and wiki.
