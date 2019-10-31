@@ -406,6 +406,7 @@ Add or edit the following lines and save.::
     magic_quotes_gpc = Off
     mail.add_x_header = Off
     session.name = NEWSESSID
+    memory_limit = 512M
 
 Restart the Apache2 server and make sure it still works.
 
@@ -2815,6 +2816,11 @@ Save and close.
 Finally, in the Nextcloud Admin pane, go to ``Cron`` and select the ``Cron`` option.
 
 `SOURCE: Background Jobs Configuration (Nextcloud) <https://docs.nextcloud.com/server/10/admin_manual/configuration_server/background_jobs_configuration.html>`_
+
+HSTS Header
+--------------------------------
+
+To improve security, install the Nextcloud app `HSTS Header`.
 
 LDAP Authentication
 --------------------------------
