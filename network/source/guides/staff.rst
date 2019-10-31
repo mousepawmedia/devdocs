@@ -40,8 +40,8 @@ Technical Requirements
 =======================================
 
 You **must** have Linux, ideally an Ubuntu-based distro (version 18.04
-or later), installed directly on your computer. See :doc:`/setup_linux/install`.
-If you need help, contact Jason C. McDonald.
+or later), installed on your computer. See :doc:`/setup_linux/install` for
+instructions on installing it. If you need help, contact Jason C. McDonald.
 
 Although we work on Linux, you may access the Staff Network via Windows, Mac,
 iOS (Apple) mobile devices, Android mobile devices, or BSD-based operating
@@ -52,19 +52,21 @@ systems if you need to.
 Staff Network
 =======================================
 
-The Staff Network consists of six major components:
+The Staff Network consists of seven major components:
 
-* Webmail (webmail.mousepawmedia.com)
+* Email (webmail.mousepawmedia.com or IMAP)
 
 * eHour (ehour.mousepawmedia.net)
 
 * Phabricator (phabricator.mousepawmedia.net)
 
-* NextCloud (nextcloud.mousepawmedia.net)
+* Nextcloud (nextcloud.mousepawmedia.net)
 
 * Jenkins (jenkins.mousepawmedia.net)
 
 * Etherpad (pad.mousepawmedia.net)
+
+* LimeSurvey (survey.mousepawmedia.com)
 
 We also use IRC and Jitsi for regular communication, although these are
 hosted on external servers that we do not own or operate.
@@ -73,22 +75,23 @@ Our network is spread across two servers.
 
 - **Webster** is the public server hosting ``mousepawmedia.com``,
   `mousepawgames.com`, and our email servers. It is based out of
-  Fremont, CA, and is available 24/7.
+  Fremont, CA.
 
-- **Hawksnest** is our development server. It hosts DevNet, our collection
-  of development tools. Anything with a ``mousepawmedia.net`` address
-  lives on Hawksnest. it is available from 7am to 10pm Pacific, 7 days a week.
+- **Hawksnest** is our in-house development server. It hosts DevNet, our
+  collection of development tools. Anything with a ``mousepawmedia.net``
+  address lives on Hawksnest.
 
-Visit **staff.mousepawmedia.com** for our 24/7 staff portal, with links to
-Webmail, Jitsi, and DevNet. The DevNet landing has links to everything else.
+Visit **staff.mousepawmedia.com** for our main staff portal, with links to
+DevNet, Jitsi, LimeSurvey, and SquirrelMail. This page also displays the
+present status of the Hawksnest server. The DevNet landing has links to
+everything else.
 
 .. _gstaff_network_email:
 
 Email
 ------------------------------------------
 
-..  NOTE:: Email is hosted on Webster, and thus is
-    unaffected by the status of Hawksnest.
+..  NOTE:: Email is hosted on Webster, and thus is unaffected by the status of Hawksnest.
 
 Email is one of our primary ways of communicating at MousePaw Media. You have
 a company email address issued to you.
@@ -204,7 +207,7 @@ Thunderbird or your mobile device. Here are the server settings:
   - Authentication method: `Normal password`
 
 ..  IMPORTANT:: Connect your company email to an email client, such as
-    Thunderbird or your smartphone.
+    Thunderbird, Evolution, or your smartphone.
 
 .. _gstaff_network_email_tasks
 
@@ -218,7 +221,7 @@ Regular Email Tasks
   Including the Phabricator Maniphest task IDs/links for the tasks you've been
   working on. This is also a good time to ask your supervisors questions.
 
-..  IMPORTANT:: Log into your webmail and send an email to
+..  IMPORTANT:: Log into your email and send an message to
     :code:`eco@mousepawmedia.com`. State what day you would like your weekly
     check-in email to be on.
 
