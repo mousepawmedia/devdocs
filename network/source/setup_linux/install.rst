@@ -135,9 +135,8 @@ website. While you can usually download the ISO (disk image) file directly,
 you should seriously consider using the Torrent. This option reduces the load
 on the server, and it can be stopped and resumed whenever!
 
-You can download torrents on Windows using
-`µTorrent <http://www.utorrent.com/intl/en/downloads/win>`_, or on Mac/Linux
-using `Transmission <https://transmissionbt.com>`_.
+You can download torrents with `qBitTorrent <https://www.qbittorrent.org/>`_
+(Win/Mac/Linux) or `Transmission <https://transmissionbt.com>`_ (Mac/Linux).
 
 Once you've downloaded the ISO, burn it onto a blank DVD (if your computer
 has a DVD drive), or make a bootable Flash drive following
