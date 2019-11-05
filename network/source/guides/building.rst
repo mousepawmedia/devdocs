@@ -23,9 +23,9 @@ Developing for Anari
 If you plan to work on **Anari**, follow sections...
 
 1. :ref:`gbuild_sysdeps`
-1. :ref:`gbuild_libdeps` (you need CPGF, eventpp, and Eigen)
-2. :ref:`gbuild_pawlib_buildingdep`
-3. :ref:`gbuild_systems`
+2. :ref:`gbuild_libdeps` (you need CPGF, eventpp, and Eigen)
+3. :ref:`gbuild_pawlib_buildingdep`
+4. :ref:`gbuild_systems`
 
 Developing for PawLIB
 ------------------------------------
@@ -71,25 +71,25 @@ change that sooner than later.)
 
 On Ubuntu/Debian systems, these can be installed via:
 
-```bash
-sudo apt install libcairo2-dev libsdl2-dev
-```
+..  code-block:: bash
+
+    sudo apt install libcairo2-dev libsdl2-dev
 
 On Fedora:
 
-```bash
-sudo yum install cairo-devel SDL2-devel
-```
+..  code-block:: bash
+
+    sudo yum install cairo-devel SDL2-devel
 
 On Mac:
 
-```bash
-sudo port install cairo sdl2
-```
+..  code-block:: bash
 
-On Windows, you can install cairo and SDL2 with `vcpkg`. Alternatively, you may
-be able to find binaries or compile it yourself (see project sites for
-instructions.)
+    sudo port install cairo sdl2
+
+On Windows, you can install `cairo` and `SDL2` with `vcpkg`.
+Alternatively, you may be able to find binaries or compile it yourself
+(see project sites for instructions.)
 
 .. _gbuild_libdeps:
 
