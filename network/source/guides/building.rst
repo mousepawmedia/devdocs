@@ -67,27 +67,29 @@ target system, instead of being packaged in our libdeps repository. (We hope to
 change that sooner than later.)
 
 * [Cairo](https://www.cairographics.org/download/)
+* [Simple DirectMedia Layer (SDL2)](https://www.libsdl.org/)
 
 On Ubuntu/Debian systems, these can be installed via:
 
 ```bash
-sudo apt install libcairo2-dev
+sudo apt install libcairo2-dev libsdl2-dev
 ```
 
 On Fedora:
 
 ```bash
-sudo yum install cairo-devel
+sudo yum install cairo-devel SDL2-devel
 ```
 
 On Mac:
 
 ```bash
-sudo port install cairo
+sudo port install cairo sdl2
 ```
 
-On Windows, it's easiest to just install GTK from Microsoft vcpkg or MSYS2.
-[Instructions here.](https://www.gtk.org/download/windows.php)
+On Windows, you can install cairo and SDL2 with `vcpkg`. Alternatively, you may
+be able to find binaries or compile it yourself (see project sites for
+instructions.)
 
 .. _gbuild_libdeps:
 
