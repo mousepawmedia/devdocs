@@ -22,7 +22,8 @@ Developing for Anari
 
 If you plan to work on **Anari**, follow sections...
 
-1. :ref:`gbuild_libdeps` (you need CPGF and Eigen)
+1. :ref:`gbuild_sysdeps`
+1. :ref:`gbuild_libdeps` (you need CPGF, eventpp, and Eigen)
 2. :ref:`gbuild_pawlib_buildingdep`
 3. :ref:`gbuild_systems`
 
@@ -31,7 +32,7 @@ Developing for PawLIB
 
 If you plan to work on **PawLIB**, follow sections...
 
-1. :ref:`gbuild_libdeps` (you actually only need CPGF)
+1. :ref:`gbuild_libdeps` (you actually only need CPGF and eventpp)
 2. :ref:`gbuild_pawlib_buildingdev`
 3. :ref:`gbuild_systems`
 
@@ -55,6 +56,38 @@ If you plan to work on **SIMPLEXpress**, follow sections...
 
 Dependencies
 ====================================
+
+.. _gbuild_sysdeps:
+
+System Dependencies
+------------------------------------
+
+We use a few libraries which are presently easiest to install directly on the
+target system, instead of being packaged in our libdeps repository. (We hope to
+change that sooner than later.)
+
+* [Cairo](https://www.cairographics.org/download/)
+
+On Ubuntu/Debian systems, these can be installed via:
+
+```bash
+sudo apt install libcairo2-dev
+```
+
+On Fedora:
+
+```bash
+sudo yum install cairo-devel
+```
+
+On Mac:
+
+```bash
+sudo port install cairo
+```
+
+On Windows, it's easiest to just install GTK from Microsoft vcpkg or MSYS2.
+[Instructions here.](https://www.gtk.org/download/windows.php)
 
 .. _gbuild_libdeps:
 
