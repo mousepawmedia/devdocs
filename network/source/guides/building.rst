@@ -66,8 +66,8 @@ We use a few libraries which are presently easiest to install directly on the
 target system, instead of being packaged in our libdeps repository. (We hope to
 change that sooner than later.)
 
-* [Cairo](https://www.cairographics.org/download/)
-* [Simple DirectMedia Layer (SDL2)](https://www.libsdl.org/)
+* `Cairo <https://www.cairographics.org/download/>`_
+* `Simple DirectMedia Layer (SDL2) <https://www.libsdl.org/>`_
 
 On Ubuntu/Debian systems, these can be installed via:
 
