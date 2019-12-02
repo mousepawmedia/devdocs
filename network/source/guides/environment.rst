@@ -103,7 +103,6 @@ We have guides for setting up several IDEs and editors...
 * :ref:`atom`
 * :ref:`codeblocks`
 * :ref:`geany`
-* :ref:`ninjaide`
 
 General Coding Tools
 -------------------------------------

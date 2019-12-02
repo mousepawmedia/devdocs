@@ -30,6 +30,7 @@ Guides
     guides/taskfinder
     guides/taskcreate
     guides/reviewing
+    guides/livecollab
     guides/staff
 
 Network
@@ -61,7 +62,7 @@ Development Tools
 IDEs and Editors
 ---------------------------
 
-We officially support five major code editors for our projects. Each language
+We officially support four major code editors for our projects. Each language
 setup tutorial will independently discuss these options.
 
 If you can't decide on one, try :ref:`vscode`!
@@ -72,7 +73,6 @@ If you can't decide on one, try :ref:`vscode`!
     tools/atom
     tools/codeblocks
     tools/geany
-    tools/ninjaide
     tools/vscode
 
 Design Tools

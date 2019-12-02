@@ -6,7 +6,7 @@ Python3 Development Environment
 We use the latest version of Python 3 for a lot of our application
 and GUI development. PySide2 is our GUI toolkit.
 
-We recommend either VSCode, Atom, or NINJA-IDE as our main Python IDE, although
+We recommend either VSCode or Atom as our main Python IDE, although
 you can use whatever you're most comfortable with.
 
 .. _python_installing:
@@ -122,7 +122,7 @@ Choosing an IDE
 =========================
 
 There are quite a few IDEs and editors for the Python language. We personally
-recommend :ref:`vscode` or :ref:`ninjaide`. :ref:`atom` is another option.
+recommend :ref:`vscode` or :ref:`atom`.
 
 If none of these strike your fancy, there are dozens of other options,
 including PyCharm Community Edition, Brackets, EricIDE, Spyder, and PyPE.
