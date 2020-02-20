@@ -881,7 +881,7 @@ Now we'll get our certificates.
 
     $ sudo /opt/certbot/certbot-auto certonly -a webroot --webroot-path /var/www/html -d hawksnest.ddns.net
     $ sudo /opt/certbot/certbot-auto certonly -a webroot --webroot-path /var/www/html -d hawksnest.serveftp.com
-    $ sudo /opt/certbot/certbot-auto certonly -a webroot --webroot-path /var/www/html -d mousepawmedia.net -d nextcloud.mousepawmedia.net -d phabricator.mousepawmedia.net -d ehour.mousepawmedia.net -d jenkins.mousepawmedia.net -d secure.mousepawmedia.net -d files.mousepawmedia.net -d office.mousepawmedia.net -d quiz.mousepawmedia.net -d sandbox.mousepawmedia.net -d pad.mousepawmedia.net -d ajc.mousepawmedia.net
+    $ sudo /opt/certbot/certbot-auto certonly -a webroot --webroot-path /var/www/html -d mousepawmedia.net -d nextcloud.mousepawmedia.net -d phabricator.mousepawmedia.net -d ehour.mousepawmedia.net -d time.mousepawmedia.net -d jenkins.mousepawmedia.net -d registry.mousepawmedia.net -d secure.mousepawmedia.net -d files.mousepawmedia.net -d office.mousepawmedia.net -d sandbox.mousepawmedia.net -d pad.mousepawmedia.net -d ajc.mousepawmedia.net -d ibp.mousepawmedia.net
 
 Of course, we would change the ``hawksnest.ddns.net`` part to match the domain
 name we're getting the certificate for.

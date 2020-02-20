@@ -29,7 +29,9 @@ article `Running VS Code on Linux <https://code.visualstudio.com/docs/setup/linu
 Extensions
 =================================
 
-We recommend the following extensions (author name in parenthesis):
+We recommend the following extensions (author name in parenthesis). Make sure
+you read the description of each, so you understand what it does and how it
+should be configured:
 
 * C/C++ (Microsoft)
 * C/C++ Advanced Lint (Joseph Benden)
@@ -40,13 +42,17 @@ We recommend the following extensions (author name in parenthesis):
 * gitignore (CodeZombie)
 * CodeLLDB (Vadim Chugunov)
 * Live Share (Microsoft)
-* Live Share Extension Pacl (Microsoft)
+* Live Share Extension Pack (Microsoft)
 * Makefiles support for VSCode (Lilian Besson)
 * markdownlint (David Anson)
+* Phabricator (Christian Vuerings)
+* Phabriator Links (matt-good)
 * Python (Microsoft)
 * Python Test Explorer for Visual Studio Code (Little Fox Team)
 * Test Explorer UI (Holger Benl)
 * reStructuredText (LeXtudio)
+* Settings Sync (Shan Khan)
+* Table Formatter (Shuzo Iwaski)
 * XML Tools (Josh Johnson)
 
 ..  IMPORTANT:: ``C/C++ Clang Command Adapter`` makes the linter act weird.
@@ -58,19 +64,30 @@ We recommend the following extensions (author name in parenthesis):
 You may also consider the following helpful extensions. You should read the
 description of each before installing:
 
+* Apache Conf (mrminc)
 * Auto Close Tag (Jus Han)
-* Better C+ Syntax (Jeff Hykin)
+* Better C++ Syntax (Jeff Hykin)
 * Bookmarks (Alessandro Fragnani)
 * Bracket Pair Colorizer (CoenraadS)
+* Clock in status bar (Compulim)
 * Code Spell Checker (Street Side Software)
+* Comment Anchors (Exodius Studios)
 * Contextual Duplicate (Lars Fernhomberg)
+* GitHub (KnisterPeter)
 * GitLens (Eric Amodio)
+* indent-rainbow (oderwat)
 * Insert Unicode (brunnerh)
+* Markdown All in One (Yu Zhang)
 * Overtype (Adam Maras)
+* Path Intellisense (Christian Kohler)
+* Paste URL (kukushi)
 * Peacock (John Papa)
 * Phabricator Links (matt-good)
 * Reflow Paragraph (Troels Damgaard)
+* shell-format (foxundermoon)
+* Sort lines (Daniel Imms)
 * TODO Highlight (Wayou Liu)
+* Toggle Quotes (BriteSnow)
 * Unicode code point of current character (zeithaste)
 * Visual Studio IntelliCode -- Preview (Microsoft DevLabs)
 * VSCode Great Icons (Emmanuel Béziat)
