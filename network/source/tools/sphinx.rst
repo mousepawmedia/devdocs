@@ -85,37 +85,16 @@ uncommonly well. You can also use a plain text and code editor, such as
 Writing and Editing Documentation
 =========================================
 
-To get started editing documentation, open Atom and go to
-:menuselection:`File → Open Folder...`. Go to the repository you want to
-work in, and just click :guilabel:`OK`. This will tell Atom that you're working
-in that folder.
-
-The file tree on the left will show you the entire repository. If you don't see
-the file tree, click :kbd:`Ctrl + \\` to toggle it. Sphinx should have a
-dedicated folder, which is docs for most projects. The ReST (\*.rst) files can
-be found in :file:`docs/source`.
-
-By the way, Atom has some pretty fancy integration with Git. Newly added files
-appear in the file tree as green, and modified files as orange. (Those colors go
-away once you commit your changes.) On the bottom-right corner of Atom, you can
-see the branch that you're currently on.
-
-Single-click a file in the file tree to preview it (the name in the tab will be
-in italics), and double-click a file to open it. Then, just start editing!
-
-To preview how a `*.rst` would look once rendered by Sphinx, press
-:kbd:`Ctrl + Shift + E`. The preview isn't fancy, but it is sufficient to
-give you a basic idea while working.
-
-..  HINT:: Panes are resizable. I usually make the preview window just narrow
-    enough that I can see the right-hand margin line on the editing window.
+To get started editing documentation, create or open a file in the
+:file:`docs/source` directory of the repository for whatever project you're
+documenting. (Some projects may put documentation in a different outer
+directory than :file:`docs/`.
 
 Index
 --------------------------
 
-:file:`source/index.rst` is the main file in your documentation. Open the file
-in Atom. To add a file to the automatic table of contents tree, list it below
-this section::
+:file:`source/index.rst` is the main file in your documentation. To add a
+file to the automatic table of contents tree, list it below this section::
 
     .. toctree::
        :maxdepth: 2
@@ -139,9 +118,8 @@ For example, if you had the file :file:`foo.rst` in :file:`source/` and
 Adding a New File
 ----------------------------
 
-To add a new file to your documentation, in Atom, go to
-:menuselection:`File → New File`. Press :kbd:`Ctrl + S` and save the file in
-the :file:`docs/source` folder (or a subfolder thereof) with the :code:`.rst`
+To add a new file to your documentation, create a file in the
+:file:`docs/source` directory (or a subdirectory thereof) with the :code:`.rst`
 extension.
 
 A good filename should be all lowercase, with underscores where necessary. For
@@ -152,8 +130,8 @@ Documentation pages can be quite long, and that's fine. Sphinx subdivides large
 documents beautifully, so you can generally devote one single document to one
 single module, section, or topic.
 
-Once you click :guilabel:`Save`, Atom will know to treat the file as a ReST
-document.
+Once you click :guilabel:`Save`, your editor will probably know to treat the
+file as a ReST document.
 
 Rendering Final Output
 ----------------------------
@@ -247,7 +225,7 @@ Configuring
 change things like project name, author, copyright, and version, as well as
 build options and theme.
 
-If you just created this documentation directory, open this file in Atom,
+If you just created this documentation directory, open this file
 and then look for :code:`html_theme`. Change this from :code:`alabaster` to
 :code:`sphinx_rtd_theme`. The new line should look like this::
 
