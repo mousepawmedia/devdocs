@@ -282,7 +282,6 @@ Folders marked with (*) are untracked in the Git repository::
     │   ├── obj (*) ← Temporary build stuff.
     │   ├── src ← The library's implementation files (.cpp).
     │   ├── CMakeLists.txt ← The CMake build instructions for the library.
-    │   ├── library.cbp ← The CodeBlocks project for the library.
     │   └── Makefile ← The Makefile that automatically runs CMake.
     ├── library-tester ← The library tester.
     │   ├── bin (*) ← The compiled tester.
@@ -290,7 +289,6 @@ Folders marked with (*) are untracked in the Git repository::
     │   ├── include ← The tester's header files (.hpp).
     │   ├── src ← The tester's implementation files (.cpp).
     │   ├── CMakeLists.txt ← The CMake build instructions for the tester.
-    │   ├── library-tester.cbp ← The CodeBlocks project for the tester.
     │   └── Makefile ← The Makefile that automatically runs CMake.
     ├── .arcconfig ← Configuration for Phabricator Arcanist.
     ├── .arclint ← Configuration for Arcanist linters.

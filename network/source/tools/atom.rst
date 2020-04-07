@@ -8,7 +8,7 @@ While this isn't our officially recommended IDE, many of our staff members use
 it.
 
 ..  NOTE:: We have found that Atom's support for C++ leaves a lot to be
-    desired. Consider :ref:`vscode` or :ref:`codeblocks` for C++ instead.
+    desired. Consider :ref:`vscode` for C++ instead.
 
 Installing
 ===============================

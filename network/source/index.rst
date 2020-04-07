@@ -71,7 +71,6 @@ If you can't decide on one, try :ref:`vscode`!
     :maxdepth: 2
 
     tools/atom
-    tools/codeblocks
     tools/geany
     tools/vscode
 

@@ -66,7 +66,7 @@ For C/C++ development:
 
 * **C/C++ compiler and toolchain**: Clang (recommended) or GCC.
 * **CMake**
-* **A C++ IDE**: We recommend either VSCode, Code::Blocks, or Atom.
+* **A C++ IDE**: We strongly recommend VSCode.
 
 ..  NOTE:: We have **no plans** to support MSVC. Use Clang for compiling on
     Microsoft Windows.
@@ -101,7 +101,6 @@ We have guides for setting up several IDEs and editors...
 
 * :ref:`vscode` (recommended)
 * :ref:`atom`
-* :ref:`codeblocks`
 * :ref:`geany`
 
 General Coding Tools

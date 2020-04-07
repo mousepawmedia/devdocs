@@ -314,11 +314,10 @@ and fill out your profile. Follow these instructions...
     you should ensure you are *already* in the habit of checking Phabricator
     at the start of each workday.
 
-    A great way to be notified about things while you're working is to open
-    Phabricator in **Rambox**, or to leave it open in a browser tab.
-    This way, you'll get a handy popup whenever something important occurs.
-    Otherwise, you can check missed notifications from the Bell menu in the
-    upper-left corner of Phabricator.
+    A great way to be notified about things while you're working is to leave
+    Phabricator open in a browser tab. This way, you'll get a handy popup
+    whenever something important occurs. Otherwise, you can check missed
+    notifications from the Bell menu in the upper-left corner of Phabricator.
 
 11. Click :guilabel:`Email Preferences` at left. Here, you may shut off many
     email notifications by selecting the :guilabel:`Notify` option for any
@@ -391,9 +390,6 @@ doing. There are six major apps you should be making frequent use of.
 
 All of these apps (and more) are on the left side of the main page of
 Phabricator.
-
-I ***strongly recommend*** setting up :ref:`rambox` with Phabricator, so you
-can get notifications and Conpherence chat messages automatically, in real time.
 
 .. _gstaff_nextcloud:
 

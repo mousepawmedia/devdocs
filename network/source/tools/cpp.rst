@@ -204,8 +204,8 @@ Choosing an IDE
 =========================
 
 There are many IDEs available for the C++ and C languages. Personally, we
-recommend and support :ref:`vscode` or :ref:`codeblocks`. Otherwise, there
-are plenty of other options out there.
+recommend and support :ref:`vscode`. Otherwise, there are plenty of other
+options out there.
 
 Optionally, you could just use a plain text editor and a terminal to work
 with C++. (A couple of us do actually use Vim!)

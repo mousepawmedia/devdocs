@@ -144,7 +144,6 @@ Library projects have the following structure::
     │   ├── obj (*) ← Temporary build stuff.
     │   ├── src ← The library's implementation files (.cpp).
     │   ├── CMakeLists.txt ← The CMake build instructions for the library.
-    │   ├── library.cbp ← The CodeBlocks project for the library.
     │   └── Makefile ← The Makefile that automatically runs CMake.
     ├── library-tester ← The library tester.
     │   ├── bin (*) ← The compiled tester.
@@ -152,7 +151,6 @@ Library projects have the following structure::
     │   ├── include ← The tester's header files (.hpp).
     │   ├── src ← The tester's implementation files (.cpp).
     │   ├── CMakeLists.txt ← The CMake build instructions for the tester.
-    │   ├── library-tester.cbp ← The CodeBlocks project for the tester.
     │   └── Makefile ← The Makefile that automatically runs CMake.
     ├── .arcconfig ← Configuration for Phabricator Arcanist.
     ├── .arclint ← Configuration for Arcanist linters.
@@ -185,8 +183,8 @@ header files won't be accessed outside of the tester's source code. Second,
 of compiling.
 
 You will notice that both :file:`library-source` and :file:`library-tester`
-have their own :file:`Makefile`, :file:`CMakeLists.txt`, and `*.cbp`
-(CodeBlocks project) files. We'll be discussing these files later.
+have their own :file:`Makefile` and :file:`CMakeLists.txt` files.
+We'll be discussing these files later.
 
 According to company policy, all projects *must* have Sphinx documentation.
 This is placed in the :file:`docs` directory of the repository. Sphinx
@@ -227,7 +225,6 @@ to that of library projects::
     │   ├── obj (*) ← Temporary build stuff.
     │   ├── src ← The project's implementation files (.cpp).
     │   ├── CMakeLists.txt ← The CMake build instructions for the project.
-    │   ├── project.cbp ← The CodeBlocks project for the project.
     │   └── Makefile ← The Makefile that automatically runs CMake.
     ├── .arcconfig ← Configuration for Phabricator Arcanist.
     ├── .arclint ← Configuration for Arcanist linters.

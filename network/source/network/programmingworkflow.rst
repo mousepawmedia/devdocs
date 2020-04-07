@@ -153,7 +153,7 @@ Build System
 --------------------------------
 
 Our C and C++ projects use CMake for the build system. The Makefiles and
-Code::Blocks projects are configured to use the CMake system.
+Visual Studio Code projects are configured to use the CMake system.
 
 This build system *should* work out of the box, so long as you follow a few
 simple rules.
