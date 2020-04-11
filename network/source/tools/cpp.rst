@@ -12,7 +12,7 @@ languages on Linux.
 Install the Compiler
 ============================
 
-..  NOTE:: Updated 07 January 2019
+..  NOTE:: Updated 10 April 2020
 
 We use the Clang compiler primarily, and GCC secondarily. If you're not on a
 Debian-based Linux system, you'll need to find out how to install these yourself.
@@ -33,18 +33,23 @@ LLVM/Clang repository.
     $ sudo add-apt-repository "deb http://apt.llvm.org/`lsb_release -sc`/ llvm-toolchain-`lsb_release -sc` main"
     $ wget -O - http://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
     $ sudo apt update
-    $ sudo apt install python-lldb-7
-    $ sudo apt install libllvm-7-ocaml-dev libllvm7 llvm-7 llvm-7-dev llvm-7-doc llvm-7-examples llvm-7-runtime clang-7 clang-tools-7 clang-7-doc libclang-common-7-dev libclang-7-dev libclang1-7 clang-format-7 libfuzzer-7-dev lldb-7 lld-7 libc++-7-dev libc++abi-7-dev libomp-7-dev
-    $ sudo ln -sf /usr/bin/llvm-symbolizer-7 /usr/bin/llvm-symbolizer
-    $ sudo ln -sf /usr/bin/lldb-server-7 /usr/lib/llvm-7/bin/lldb-server-7.0.0
+    $ sudo apt install python-lldb-9
+    $ sudo apt install libllvm-9-ocaml-dev libllvm9 llvm-9 llvm-9-dev llvm-9-doc llvm-9-examples llvm-9-runtime clang-9 clang-tools-9 clang-9-doc libclang-common-9-dev libclang-9-dev libclang1-9 clang-format-9 libfuzzer-9-dev lldb-9 lld-9 libc++-9-dev libc++abi-9-dev libomp-9-dev
+    $ sudo ln -sf /usr/bin/llvm-symbolizer-9 /usr/bin/llvm-symbolizer
 
-If you are upgrading from 6.0, be sure to run...
+If you are upgrading from Clang 7, be sure to run...
 
 ..  code-block:: bash
 
-    sudo apt remove -f clang-6.0 clang-6.0-doc libclang-common-6.0-dev libclang-6.0-dev libclang1-6.0 libclang1-6.0-dbg libllvm6.0 libllvm6.0-dbg lldb-6.0 llvm-6.0 llvm-6.0-dev llvm-6.0-doc llvm-6.0-examples llvm-6.0-runtime clang-format-6.0 python-clang-6.0 libfuzzer-6.0-dev
+    $ sudo apt remove -f clang-7 clang-7-doc libclang-common-7-dev libclang-7-dev libclang1-7 libllvm7 libllvm7 lldb-7 llvm-7 llvm-7-dev llvm-7-doc llvm-7-examples llvm-7-runtime clang-format-7 python-clang-7 libfuzzer-7-dev
 
-If you are upgrading from 5.0, be sure to run...
+If you are upgrading from Clang 6.0, be sure to run...
+
+..  code-block:: bash
+
+    $ sudo apt remove -f clang-6.0 clang-6.0-doc libclang-common-6.0-dev libclang-6.0-dev libclang1-6.0 libclang1-6.0-dbg libllvm6.0 libllvm6.0-dbg lldb-6.0 llvm-6.0 llvm-6.0-dev llvm-6.0-doc llvm-6.0-examples llvm-6.0-runtime clang-format-6.0 python-clang-6.0 libfuzzer-6.0-dev
+
+If you are upgrading from Clang 5.0, be sure to run...
 
 ..  code-block:: bash
 
@@ -53,11 +58,11 @@ If you are upgrading from 5.0, be sure to run...
 
 ..  WARNING:: If you're using an operating system based on a version of
     Ubuntu before 16.04, you may not be able to compile our code with GCC.
-    There was a major bug in the last version of GCC5 for Ubuntu 14.04 which
+    There was a major bug in the last version of GCC 5 for Ubuntu 14.04 which
     prevented our code from compiling.
 
-We also try to ensure our code builds on GCC. Although GCC is available through
-the core repositories, we like using the latest stable compiler builds.
+We also try to ensure our code builds on GCC. You may use the version provided
+by your distribution, as long as it is GCC 7 or later.
 
 ..  code-block:: bash
 
@@ -87,10 +92,10 @@ and configure this tool using the following commands.
 ..  code-block:: bash
 
     $ sudo update-alternatives --remove-all cc
-    $ sudo update-alternatives --install /usr/bin/cc cc /usr/bin/clang-7 30
+    $ sudo update-alternatives --install /usr/bin/cc cc /usr/bin/clang-9 30
     $ sudo update-alternatives --install /usr/bin/cc cc /usr/bin/gcc 10
     $ sudo update-alternatives --remove-all c++
-    $ sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-7 30
+    $ sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-9 30
     $ sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++ 10
 
 Once you've set all that up, you can easily switch between options using the
@@ -106,10 +111,17 @@ You can generally just leave each on auto.
 Our build systems all use the ``cc`` and ``c++`` commands for compiling, so
 whatever you select for the compiler will be used.
 
+..  WARNING:: If you use any drivers that require recompiling when you update
+    the kernel, you will need to switch back to GCC before running updates!
+    ``sudo update-alternatives --config cc`` and
+    ``sudo update-alternatives --config c++``. Just be sure to switch to
+    Clang before you start working with your code again.
+
 Mac
 ----------------------------
 
-If you're on a Mac, you should install ``Command Line Tools for Xcode``,
+We don't directly suppose macOS as a development environment. If you're using
+macOS, you should install ``Command Line Tools for Xcode``,
 which has Clang onboard.
 
 Optionally, if you want to install the GCC compilers, you can do so using
@@ -119,7 +131,7 @@ Windows
 ----------------------------
 
 We don't directly support Windows as a development environment. If you're
-using Windows, you'll need to use Clang or a GCC5-compatible C++ compiler
+using Windows, you'll need to use Clang or a GCC7-compatible C++ compiler
 (such as MinGW). **We have no plans to support MSVC.**
 
 * If you're using Windows 10, you may use the `Windows Subsystem for Linux <https://docs.microsoft.com/en-us/windows/wsl/install-win10>`_. (Recommended)

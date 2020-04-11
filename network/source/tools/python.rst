@@ -3,8 +3,8 @@
 Python3 Development Environment
 ######################################
 
-We use the latest version of Python 3 for a lot of our application
-and GUI development. PySide2 is our GUI toolkit.
+We use Python 3.7 (or later) for a lot of our application and GUI development.
+PySide2 is our GUI toolkit.
 
 We recommend either VSCode or Atom as our main Python IDE, although
 you can use whatever you're most comfortable with.
@@ -17,8 +17,8 @@ Installing Python
 Installing Python on Linux
 ---------------------------------
 
-Operating systems based on Ubuntu 16.04 or later ship with Python3 by
-default. It is included in the installation command below anyway, just
+Operating systems based on Ubuntu 16.04 or later ship with Python 3.7 or later
+by default. It is included in the installation command below anyway, just
 in case you've removed it, or are on a system where it isn't installed
 by default.
 
@@ -46,11 +46,11 @@ Installing Via MacPorts
 
 ..  code-block:: bash
 
-    $ sudo port install python36 py36-pip py36-virtualenv py36-pylint
-    $ sudo port select --set python python36
-    $ sudo port select --set pip py36-pip
-    $ sudo port select --set virtualenv py36-virtualenv
-    $ sudo port select --set pylint py36-pylint
+    $ sudo port install python37 py37-pip py37-virtualenv py37-pylint
+    $ sudo port select --set python python37
+    $ sudo port select --set pip py37-pip
+    $ sudo port select --set virtualenv py37-virtualenv
+    $ sudo port select --set pylint py37-pylint
 
 Installing Via Homebrew
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -79,42 +79,51 @@ command to install the rest of what we need.
 Installing PySide2
 =============================
 
-Installing PySide2 on Linux
------------------------------
+Installing PySide2 on Linux or Mac
+------------------------------------
 
 We'll create a new virtual environment for PySide2. You can reuse these
 instructions to create a different virtual environment for any project
 you're working on using PySide2, but this provides a good general testing
 ground.
 
+In your terminal, run the following...
+
 ..  code-block:: bash
 
-    $ virtualenv --no-site-packages --python=python3 ~/pyside2-venv
+    $ python3.7 -m venv pyside2-venv
     $ source ~/pyside2-venv/bin/activate
     $ pip install pyside2
     $ deactivate
 
 Any time you want to use that virtual environment, just run
-:code:`source ~/pyside2-venv/bin/activate`. The command :code:`deactivate`
-exits the virtual environment.
+:code:`source ~/pyside2-venv/bin/activate` in the directory containing the
+virtual environment's folder. The command :code:`deactivate` exits the virtual
+environment.
 
 `SOURCE: Qt For Python/Getting Started <https://wiki.qt.io/Qt_for_Python/GettingStarted>`_
 
-Installing PySide2 on Mac
------------------------------
-
-..  code-block:: bash
-
-    $ pip install pyside2
-
 Installing PySide2 on Windows
 -------------------------------
+
+We'll create a new virtual environment for PySide2. You can reuse these
+instructions to create a different virtual environment for any project
+you're working on using PySide2, but this provides a good general testing
+ground.
 
 In your Command Prompt, run the following...
 
 ..  code-block:: batch
 
-    python -m pip install pyside2
+    python3.7 -m venv pyside2-venv
+    pyside2-venv\Scripts\activate.bat
+    pip install pyside2
+    venv\Scripts\deactivate.bat
+
+Any time you want to use that virtual environment, just run
+:code:`pyside2-venv\Scripts\activate.bat` in the directory containing the
+virtual environment's folder. The command :code:` venv\Scripts\deactivate.bat`
+exits the virtual environment.
 
 .. _python_ide:
 
@@ -122,7 +131,7 @@ Choosing an IDE
 =========================
 
 There are quite a few IDEs and editors for the Python language. We personally
-recommend :ref:`vscode` or :ref:`atom`.
+recommend :ref:`vscode`.
 
-If none of these strike your fancy, there are dozens of other options,
-including PyCharm Community Edition, Brackets, EricIDE, Spyder, and PyPE.
+If you want something else, there are dozens of other options,
+including PyCharm Community Edition, Brackets, EricIDE, and Spyder.
