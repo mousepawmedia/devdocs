@@ -2761,6 +2761,22 @@ Click ``Finish setup``.
 
 `SOURCE How To Install and Configure Nextcloud on Ubuntu 16.04 (DigitalOcean) <https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-nextcloud-on-ubuntu-16-04>`_
 
+Preventing Lockouts
+-----------------------------
+
+Due to a glitch in Nextcloud, we have to configure fail2ban to prevent lockouts.
+
+..  code-block:: bash
+
+    $ sudo vim sudo vim /etc/fail2ban/filter.d/apache-auth.conf
+
+Look for the section :code:`ignoreregex = ` and add the following entry to it::
+
+    AH01797: .+\/opt\/(nextcloud|ibp|ajc)\/config$
+
+..  NOTE:: ``nextcloud``, ``ibp``, and ``ajc`` are the three Nextcloud
+    instance directories on this server. Change these as needed.
+
 Configuring Memory Caching
 -----------------------------
 
