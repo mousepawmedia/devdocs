@@ -2579,6 +2579,315 @@ thereof, such as ``http://<serveraddress>/docs``.
     gets all addresses on that port, unless something else snatches away
     a specific address.
 
+Docker
+===========================
+
+**Docker** is used both by Jenkins for build agents, and by Collabora Office.
+
+We start by installing Docker:
+
+..  code-block:: bash
+
+    $ sudo apt-get remove docker docker-engine docker.io
+    $ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+    $ sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+    $ sudo apt update
+    $ sudo apt install docker-ce docker-compose
+
+We also add the main server user to the Docker account, so Docker instances
+can be spun up that way.
+
+..  code-block:: bash
+
+    $ sudo usermod -aG docker hawksnest
+
+Next, we set up Docker to be automatically started by systemd.
+
+..  code-block:: bash
+
+    $ sudo systemctl edit docker.service
+
+Set the contents of that file to::
+
+    [Service]
+    ExecStart=
+    ExecStart=/usr/bin/dockerd -H fd:// -H tcp://127.0.0.1:2375
+
+Save and close, and then enable and restart Docker in systemd:
+
+..  code-block:: bash
+
+    $ sudo systemctl restart docker
+    $ sudo systemctl enable docker
+
+..  NOTE:: At this point, I added the certificate for the Docker registry.
+
+Creating the Docker Registry
+-----------------------------------
+
+The Docker Registry hosts images for creating Docker containers. This speeds
+up build times significantly.
+
+I start by created a directory for the registry to live in, and then pointing
+Docker to it.
+
+..  code-block:: bash
+
+    $ sudo mkdir /opt/registry
+    $ docker run -d -p 5000:5000 \
+    --restart=always \
+    --name registry \
+    -v /opt/registry:/var/lib/registry \
+    registry:2
+
+I can now set up Apache2 to host the registry.
+
+..  code-block:: bash
+
+    $ sudo vim /etc/apache2/sites-available/registry.conf
+
+Set the contents of that file to:
+
+..  code-block:: apache
+
+    <IfModule mod_ssl.c>
+        <VirtualHost *:443>
+            ServerName registry.mousepawmedia.net
+            ServerAdmin hawksnest@mousepawmedia.com
+
+            Header add X-Forwarded-Proto "https"
+            RequestHeader add X-Forwarded-Proto "https"
+
+            ProxyPreserveHost On
+            ProxyPass         /  http://127.0.0.1:5000/
+            ProxyPassReverse  /  http://127.0.0.1:5000/
+
+            <Location />
+                Order deny,allow
+                Allow from all
+
+                #AllowOverride AuthConfig
+                AuthName "Registry Authentication"
+                AuthType basic
+                AuthBasicProvider ldap
+                AuthLDAPURL "ldap://localhost:389/ou=Users, dc=ldap, dc=mousepawmedia, dc=net"
+                Require valid-user
+            </Location>
+
+            # Allow ping and users to run unauthenticated
+            <Location /v1/_ping>
+                Satisfy any
+                Allow from all
+            </Location>
+
+            # Allow ping and users to run authenticated
+            <Location /_ping>
+                Satisfy any
+                Allow from all
+            </Location>
+
+            SSLEngine on
+            SSLCertificateFile  /etc/apache2/ssl/mousepawmedia.net/fullchain.pem
+            SSLCertificateKeyFile /etc/apache2/ssl/mousepawmedia.net/privkey.pem
+            Include /etc/letsencrypt/options-ssl-apache.conf
+        </VirtualHost>
+    </IfModule>
+
+Save and close. Now we enable the site:
+
+..  code-block:: bash
+
+    $ sudo a2ensite registry
+    $ sudo a2enmod headers
+    $ sudo systemctl restart apache2
+
+We can test it out with the following command:
+
+..  code-block:: bash
+
+    $ docker login registry.mousepawmedia.net
+    $ docker pull ubuntu:18.04
+    $ docker tag ubuntu:18.04 registry.mousepawmedia.net/mpm-bionic
+    $ docker push registry.mousepawmedia.net/mpm-bionic
+    $ docker image remove ubuntu:18.04
+    $ docker image remove registry.mousepawmedia.net/mpm-bionic
+    $ docker pull registry.mousepawmedia.net/mpm-bionic
+
+Login with valid LDAP credentials. If it succeeds, everything is correctly
+configured.
+
+We now tear down our initial test container, and switch to ``docker-compose``
+for running our registry long-term instead:
+
+..  code-block:: bash
+
+    $ docker container stop registry
+    $ docker container rm -v registry
+    $ sudo mkdir -p /opt/docker/registry
+    $ sudo vim /opt/docker/registry/docker-compose.yml
+    $ sudo chown root:docker -R /opt/docker
+    $ cd /opt/docker/registry
+    $ docker-compose up -d
+
+The registry will now automatically restart with the ``docker.service``
+managed by ``systemctl``.
+
+SOURCE: `Securing a docker registry behind Apache <https://lathonez.com/2016/docker-registry-apache-letsencrypt/>`_
+
+Setting Up Docker Login with Pass
+-----------------------------------
+
+For additional security, we want to use ``pass`` to store credentials for
+Docker registry logins.
+
+I'll start by logging out of the registry, and installing ``pass``:
+
+..  code-block:: bash
+
+    $ docker logout registry.mousepawmedia.net
+    $ sudo apt install pass
+
+Before I go any further, I need a GPG key for the main user account.
+I can create a new one with the following commands:
+
+..  code-block:: bash
+
+    gpg --gen-key
+
+Fill out the form, using defaults for everything except the name and email.
+
+After creating it, or if I already have one I want to use, I can access the
+key by running ``gpg --list-keys``, and then looking for the name associated
+with the key for this user account. (We MUST have the associated private key
+accessible on this machine as well.)
+
+For example, here's the key I want::
+
+    pub   2048R/B4B6AD7C 2020-04-14
+    uid                  MousePaw Media (Hawksnest) <hawksnest@mousepawmedia.com>
+    sub   2048R/0F2AE99F 2020-04-14
+
+I copy the public key, which is the part after the forward-slash (``/``) on the
+first line; in this case, that's ``B4B6AD7C``.
+
+I pass that to the next command, in place of ``PUBLICKEYTOUSE``:
+
+..  code-block:: bash
+
+    $ pass init PUBLICKEYTOUSE
+    $ pass git init
+
+Now I can install the ``docker-credential-helpers`` package I'll need.
+You should get the URL for the latest version from the
+`docker-credential-helpers GitHub Releases page <https://github.com/docker/docker-credential-helpers/releases>`_
+
+..  code-block:: bash
+
+    cd /tmp
+    wget https://github.com/docker/docker-credential-helpers/releases/download/v0.6.3/docker-credential-pass-v0.6.3-amd64.tar.gz
+    tar -xf docker-credential-pass-v0.6.3-amd64.tar.gz
+    chmod +x docker-credential-pass
+    sudo mv docker-credential-pass /usr/local/bin/.
+
+Test that installed correctly by running the following:]
+
+..  code-block:: bash
+
+    $ docker-credential-pass version
+
+That should print out the version of ``docker-credential-pass` that is
+installed. If it works, you should also make sure it is communicating with
+``pass`` via the following command:
+
+..  code-block:: bash
+
+    $ docker-credential-pass list
+
+If that returns ``{}`` or some other data (instead of an error or warning),
+everything is correctly installed.
+
+Finally, I'll tell Docker to use ``docker-credential-pass``:
+
+..  code-block:: bash
+
+    $ vim ~/.docker/config.json
+
+Set the ``"credsStore"`` property to ``"pass"`` (include the quotes!), and
+then save and close.
+
+You should now be able to login with Docker, which you can test via:
+
+..  code-block:: bash
+
+    $ docker login registry.mousepawmedia.net
+
+Enter valid LDAP credentials. If it works, you'll see::
+
+    Login Succeeded
+
+Configuring Jenkins to Use Nextcloud
+--------------------------------------------
+
+With Docker successfully installed, now we only need to setup Jenkins to use it.
+
+I recommend the following Jenkins plugins:
+
+* Docker API Plugin
+* Docker Commons Plugin
+* Docker Pipeline
+* Docker plugin
+
+Once those are installed from :menuselection:`Manage Jenkins --> Manage Plugins`,
+go to :menuselection:`Manage Jenkins --> Configure System`.
+
+Scroll down to :guilabel:`Global properties` and check the box
+:guilabel:`Environment variables`. Add the following variable:
+
+* :guilabel:`Name`: ``DOCKER_HOST``
+* :guilabel:`Value`: ``tcp://127.0.0.1:2375``
+
+Scroll down to :guilabel:`Declarative Pipeline (Docker)`, and set the following:
+
+* :guilabel:`Docker Label`: ``docker``
+* :guilabel:`Docker registry URL`: ``https://registry.mousepawmedia.net``
+* :guilabel:`Registry credentials`: (Add the LDAP credentials you want to use here.)
+
+Save those configuration details via the :guilabel:`Save` button at the bottom.
+
+Now go to :menuselection:`Manage Jenkins --> Manage Nodes and Clouds`. At left,
+click :guilabel:`Configure Clouds`. Add a new cloud with the following settings:
+
+* :guilabel:`Name`: (Name it whatever you want. We call ours ``mpm-bionic``)
+* :guilabel:`Docker Cloud details...`
+  * :guilabel:`Docker Host URI`: ``unix:///var/run/docker.sock``
+  * :guilabel:`Enabled`: [Checked]
+  * :guilabel:`Container Cap`: 5
+  * :guilabel:`Docker Agent Template`:
+    * :guilabel:`Labels`: ``mpm-bionic``
+    * :guilabel:`Enabled`: [Checked]
+    * :guilabel:`Docker Image`: ``registry.mousepawmedia.net/jenkins.mpm-bionic``
+    * :guilabel:`Container Settings...`
+      * :guilabel:`Volumes`: ``/opt/jenkins/workspace:/workspace``
+      * :guilabel:`Extra Hosts`: (If your router does not include NAT loopback,
+        be sure to configure this to handle routing back to other subdomains
+        on the server from inside the Docker container.
+      * :guilabel:`Remote File System Root`: ``/``
+      * :guilabel:`Usage`: ``Use this node as much as possible``
+        (change if you like)
+      * :guilabel:`Idle timeout`: ``2``
+      * :guilabel:`Connect method`: ``Attach Docker container``
+    * :guilabel:`Remove Volumes`: [Unchecked]
+    * :guilabel:`Pull stretegy`: ``Pull once and update latest``
+    * :guilabel:`Pull timeout`: ``300``
+
+Save that cloud via the :guilabel:`Save` button at the bottom of the screen.
+Now any job tagged to run on ``mpm-bionic`` will use this cloud.
+
+..  NOTE:: The ``jenkins.mpm-bionic`` image's Dockerfile is configured to
+    use the JNLP. See our ``buildenv`` repository for that Dockerfile.
+
+You can continue to configure additional clouds along this same pattern.
+
 Nextcloud
 ===========================
 
@@ -3685,169 +3994,6 @@ Save and close. Make it executable, and then run it.
     # chmod 755 verify_backup
     # exit
     $ sudo ./verify_backup
-
-Tao Testing
-=============================
-
-Installation
---------------------
-
-..  NOTE:: Tao requires a basic LAMP server. By the point, almost necessary
-    packages are already installed. See `Tao's installation instructions <https://userguide.taotesting.com/3.1/introduction/installing-tao.html>`_
-    for more information.
-
-Let's install the rest of the stuff needed for Tao.
-
-..  code-block:: bash
-
-    $ sudo apt install composer
-
-Let's start by downloading the Tao package. We'll get the URL for the latest
-version from `Tao's official download page <https://www.taotesting.com/get-tao/official-tao-packages/>`_.
-
-..  code-block:: bash
-
-    $ cd /opt
-    $ sudo wget http://releases.taotesting.com/TAO_3.1.0-RC7_build.zip
-
-Then, we unzip, rename the folder, and reconfigure permissions.
-
-..  code-block:: bash
-
-    $ sudo unzip TAO_3.1.0-RC7_build.zip
-    $ sudo mv TAO_3.1.0-RC7_build tao
-    $ sudo chown -R hawksnest /opt/tao
-    $ sudo chgrp -R www-data /opt/tao
-    $ sudo chmod -R u=rwx,g=rwx,o=rx /opt/tao
-
-Apache2 Configuration
--------------------------
-
-Next, we'll configure Apache2.
-
-..  code-block:: bash
-
-    $ sudo vim /etc/apache2/sites-available/quiz.conf
-
-Paste the following contents into that file.
-
-..  code-block:: apache
-
-    <IfModule mod_ssl.c>
-        <VirtualHost *:443>
-            ServerName quiz.mousepawmedia.net
-            ServerAdmin hawksnest@mousepawmedia.com
-
-            DocumentRoot /opt/tao
-
-            <Directory /opt/tao>
-                Options -MultiViews -Indexes
-                AllowOverride All
-            </Directory>
-
-            RewriteEngine on
-
-            ErrorLog ${APACHE_LOG_DIR}/error.log
-            CustomLog ${APACHE_LOG_DIR}/access.log combined
-
-            SSLEngine on
-            SSLCertificateFile  /etc/apache2/ssl/mousepawmedia.net/fullchain.pem
-            SSLCertificateKeyFile /etc/apache2/ssl/mousepawmedia.net/privkey.pem
-            Include /etc/letsencrypt/options-ssl-apache.conf
-
-            <FilesMatch "\.(cgi|shtml|phtml|php)$">
-                    SSLOptions +StdEnvVars
-            </FilesMatch>
-            <Directory /usr/lib/cgi-bin>
-                    SSLOptions +StdEnvVars
-            </Directory>
-
-            BrowserMatch "MSIE [2-6]" \
-                    nokeepalive ssl-unclean-shutdown \
-                    downgrade-1.0 force-response-1.0
-            # MSIE 7 and newer should be able to use keepalive
-            BrowserMatch "MSIE [17-9]" ssl-unclean-shutdown
-        </VirtualHost>
-    </IfModule>
-
-Save and quit.
-
-..  IMPORTANT:: Note that the above Apache2 configuration does not have
-    the typical hawksnest.ddns.net redirect. This is because we only added
-    Tao to the server well after the domain name migration.
-
-Next, we'll edit the core configuration of Apache2.
-
-..  code-block:: bash
-
-    $ sudo vim /etc/apache2/apache2.conf
-
-Add the following below the other ``<Directory>`` entries...
-
-..  code-block:: apache
-
-    <Directory "/opt/tao">
-        Options Indexes FollowSymLinks
-        AllowOverride All
-        Require all granted
-    </Directory>
-
-Save and close.
-
-Now, we'll enable the site and restart the server.
-
-..  code-block:: bash
-
-    $ sudo a2ensite quiz
-    $ sudo systemctl restart apache2
-
-Database Setup
------------------------------
-
-We need to create a ``tao`` database and a ``tao`` user in MySQL.
-This can be done through PHPmyadmin.
-
-Tao Configuration
--------------------------------
-
-Go to ``https://quiz.<serveraddress>/tao`` and follow the setup instructions.
-
-* Server Setup
-
-  * Host name: ``https://quiz.<serveraddress>/tao``
-
-  * Unique name: ``mousepawgames_tao``
-
-  * Time Zone: ``America/Los_Angeles``
-
-  * Mode: ``Production``
-
-* Database Configuration
-
-  * Database: ``MySQL/MariaDB``
-
-  * Host Name: ``localhost``
-
-  * Username: ``tao``
-
-  * Password: (you know what goes here)
-
-  * Database name: ``tao``
-
-  * Overwrite? Yes
-
-  * Pre-load? No
-
-Use your ``admin`` as the username for admin setup. We'll hook up to LDAP later,
-and we don't want a conflict.
-
-Finish following the wizard, and then when it says "Installation complete",
-click ``OK``.
-
-You should be automatically redirected to the Tao login page.
-
-..  IMPORTANT:: If you ever get error 500 on anything, set the owner, group,
-    and permissions on ``/opt/tao`` recursively again.
 
 Updates and Maintainance
 ==============================
