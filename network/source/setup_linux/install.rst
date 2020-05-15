@@ -9,17 +9,17 @@ Making Some Decisions
 Single Boot or Dual Boot?
 -------------------------------
 
-If you have a PC, your first decision is whether you want to keep
-Microsoft Windows™. Millions of people work exclusively on Linux,
-including a few people at MousePaw Media. However, if you rely on
-Windows-only software, such as Microsoft Office™ or software from
-Adobe or Autodesk, you may want to keep Microsoft Windows™ installed.
+If you have a PC, your first decision is whether you want to keep Microsoft
+Windows™. Millions of people work exclusively on Linux, including a few people
+at MousePaw Media. However, if you rely on Windows-only or Mac-only software,
+such as Microsoft Office™ or software from Adobe or Autodesk, you may want to
+keep Microsoft Windows™ installed.
 
 ..  NOTE:: You should consider whether you are actually dependent on the
-    Windows-only software you use, or if a Linux alternative will do just
-    as well. See :doc:`about`
+    Windows-only or Mac-only software you use, or if a Linux alternative will
+    do just as well. See :doc:`about`
 
-If you want Ubuntu Linux to be your only operating system on the computer,
+If you want Linux to be your only operating system on the computer,
 the installation process is a *lot* easier.
 
 Otherwise, if you want to have both Windows and Ubuntu Linux on your machine,
@@ -34,7 +34,8 @@ you can install them side-by-side. To do this, you must have at least
     a tech-savvy friend, coworker, or relation to help you, *especially*
     if you're dual-booting.
 
-If you're on a Mac, your best option is to install Ubuntu Linux on Parallels.
+If you're on a Mac, you could alternatively install Linux via Parallels,
+although we've found this doesn't work as well as dual-boot.
 
 Choosing a Distribution
 --------------------------------
@@ -46,8 +47,10 @@ heart, so just pick one you like.
 If you have absolutely no idea what to go for, just go with Ubuntu itself.
 I'm writing these instructions on Ubuntu anyway!
 
-If you're not sure which version to select, we recommend one of these two:
+If you're not sure which version to select, we recommend one of these three,
+especially Pop!_OS:
 
+- `Pop!_OS <https://pop.system76.com/>`_
 - `Ubuntu <https://www.ubuntu.com/desktop>`_
 - `Ubuntu MATE <https://ubuntu-mate.org/>`_
 
@@ -61,6 +64,10 @@ These are other options in the Ubuntu family:
 - `Ubuntu Budgie <https://ubuntubudgie.org/>`_
 - `Ubuntu Studio <http://ubuntustudio.org/>`_
 - `Xubuntu <http://xubuntu.org/>`_
+
+..  NOTE:: Although we primarily recommend Pop!_OS, we'll be using the term
+    "Ubuntu" throughout to avoid confusion. Pop!_OS is based on Ubuntu, and
+    can be used in the same way.
 
 Alterative Distributions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -87,7 +94,6 @@ work at MousePaw Media.
 
 Here's a few popular, non-Ubuntu varieties of Linux.
 
-- `Antergos <https://antergos.com/>`_
 - `Arch Linux <https://www.archlinux.org/>`_
 - `Debian <https://www.debian.org/>`_
 - `CentOS <https://www.centos.org/>`_
@@ -114,16 +120,6 @@ you might want to use the newest release.
     LTS release. If you use a newer version, you will be responsible for
     adjusting instructions for your release yourself.
 
-32-bit or 64-bit?
-----------------------------------
-
-You should know whether your computer is a 32-bit or a 64-bit system. In any
-version of Windows, go to Control Panel → System. On Windows 7/8/10, you may
-need to use the search box in the Control Panel to find this. Look for
-“32-bit” or “64-bit”.
-
-If you're on a modern Mac, it's 64-bit.
-
 Preparing for Installation
 ==============================
 
@@ -140,7 +136,8 @@ You can download torrents with `qBitTorrent <https://www.qbittorrent.org/>`_
 
 Once you've downloaded the ISO, burn it onto a blank DVD (if your computer
 has a DVD drive), or make a bootable Flash drive following
-`these instructions <https://www.ubuntu.com/download/desktop/create-a-usb-stick-on-windows>`_.
+`these instructions for Windows <https://www.ubuntu.com/download/desktop/create-a-usb-stick-on-windows>`_
+or `these instructions for macOS <https://ubuntu.com/tutorials/tutorial-create-a-usb-stick-on-macos>`_.
 
 Preparing For Disaster
 ---------------------------
@@ -176,8 +173,8 @@ install disks, registration info and/or keys, etc. You should probably do
 this, even if you *are* ditching Windows. You may want to set up a VirtualBox
 later!
 
-Preparing for Dual-Boot
------------------------------
+Preparing for Dual-Boot on Windows
+------------------------------------------
 
 ..  NOTE:: If you're not dual-booting with Windows, you can skip this step.
 
@@ -189,8 +186,13 @@ Windows.
 
 Right-click that partition on the chart and click `Shrink Volume...`.
 Under `Enter the amount of space to shrink in MB:`, enter the amount of
-space (in MB) you want to set aside for Linux. There are 1024 MB in 1 GB, so
-(200 GB = 204800 MB) and (250 GB = 256000 MB).
+space (in MB) you want to set aside for Linux. There are 1000 MB in 1 GB, so
+(200 GB = 200000 MB) and (250 GB = 250000 MB).
+
+Preparing for Dual-Boot on Mac
+------------------------------------------
+
+..  TODO:: Write me.
 
 Installing Linux
 =============================
@@ -299,8 +301,8 @@ and `Mount point` to `/`. Confirm.
 
 Next, we'll create the swap space, which is used as a sort of extension to
 our RAM memory. Click `free space` again and click `+`. Set the partition
-size equivalent to the amount of RAM you have (remember, 1 GB = 1024 MB).
-Select `End of this space` and set `Use as` to `swap area`. Confirm.
+size equivalent to the amount of RAM you have. Select `End of this space`
+and set `Use as` to `swap area`. Confirm.
 
 Finally, we'll use the rest of the free space for our `/home` partition. Select
 `free space` again and click `+`. Leave the size at the default, and leave
@@ -332,9 +334,9 @@ see that name every time you open the Terminal. This is also the name that
 will appear on local networks when you connect, so it's helpful to have a
 unique and identifiable name.
 
-Some computer names I've seen include `tardis`, `bagofholding`, `enigma`
-(that one's mine), `cortex`, and `sunshine`. Just pick something that makes
-you happy.
+Some computer names I've seen include `tardis` (that one's mine),
+`bagofholding`, `enigma`, `cortex`, and `sunshine`. Just pick something that
+makes you happy.
 
 Third, pick a username. This is usually your first name, but it can be anything,
 so long as it is composed only of lowercase letters and numbers, and the first

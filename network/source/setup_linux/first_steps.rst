@@ -24,6 +24,49 @@ $ in the command, and b) to use :kbd:`Ctrl+Shift+V` to paste in the Terminal.
 Intro to Ubuntu
 ================================================
 
+Pop!_OS
+------------------------------------------------
+
+You have GNOME3 by default, but if you want a different desktop environment,
+it's easy to install:
+
+For MATE, run the following in a terminal:
+
+..  code-block:: bash
+
+    $ sudo apt install mate-desktop-environment mate-desktop-environment-extras ubuntu-mate-desktop
+
+If you've installed MATE, or are sticking with GNOME3, you can follow the
+instructions from the rest of this tutorial as if you had Ubuntu MATE or
+Ubuntu respectively.
+
+For Cinnamon, run the following:
+
+..  code-block:: bash
+
+    $ sudo apt install cinnamon-desktop-environment
+
+For KDE Plasma (from Kubuntu), run:
+
+..  code-block:: bash
+
+    $ sudo apt install kde-standard
+
+For XFCE (on lightweight systems), run:
+
+..  code-block:: bash
+
+    $ sudo apt install xfce4 xfce4-goodies
+
+For LXDE (another lightweight option), run:
+
+..  code-block:: bash
+
+    $ sudo apt install lxde
+
+After installing, log out, and then at the login screen, find the option to
+switch which desktop environment you're using.
+
 Ubuntu MATE
 ------------------------------------------------
 
@@ -40,17 +83,25 @@ Early on, you should also start the ``MATE Tweak`` application, select
 - For the best of both worlds, try ``Pantheon`` (Jason McDonald's favorite).
 - If you have a very small screen, try ``Netbook``.
 
-Ubuntu (GNOME)
+Ubuntu (GNOME3)
 ------------------------------------------------
 
 You can learn how to use Ubuntu from the official
-`Ubuntu 18.04 Getting Started Guide <https://help.ubuntu.com/stable/ubuntu-help/getting-started.html.en>`_.
+`Ubuntu 20.04 Getting Started Guide <https://help.ubuntu.com/stable/ubuntu-help/getting-started.html.en>`_.
 
 You can customize many aspects of Ubuntu MATE using the ``GNOME Tweak``
 application.
 
 ..  IMPORTANT:: The rest of the instructions are universal to all varieties
     of Ubuntu 18.04.
+
+Pop!_OS
+------------------------------------------------
+
+There are several additional features of Pop!_OS you should be aware of if
+you're using that system. Take a look at the
+`official Pop!_OS documentation<https://support.system76.com/#pop>`_
+for more information.
 
 Updating System
 ================================================
@@ -64,7 +115,7 @@ use the Terminal.
 ..  code-block:: bash
 
     $ sudo apt update
-    $ sudo apt dist-upgrade
+    $ sudo apt full-upgrade
     $ sudo apt autoremove
     $ sudo apt autoclean
 
@@ -103,8 +154,7 @@ While those install, here's a quick breakdown of what those packages are for...
 - ``synaptic`` enables easier package selection and installation.
 - ``apt-xapian-index`` is needed by Synaptic.
 - ``gufw`` is for managing your firewall.
-- ``ubuntu-restricted-extras`` installs extra media codecs and tools that,
-  while free, are not FOSS.
+- ``ubuntu-restricted-extras`` installs extra media codecs and tools that, while free, are not FOSS.
 
 Before we can use synaptic, we need to run...
 
@@ -117,6 +167,52 @@ For the rest of this tutorial, you can either install packages via the
 select and install them via Synaptic. It's up to you.
 
 ..  IMPORTANT:: **Restart your computer now!**
+
+Alternative Package Sources
+---------------------------------------
+
+In addition to the `apt` package manager default to Debian-based systems
+like Ubuntu, packages can be installed via Snapcraft, Flathub, or Appimage.
+
+**Snapcraft** runs applications in containers with partial or full isolation
+from the rest of the system. It's portable, working on nearly all Linux systems.
+Your system may already be configured to use Snapcraft, but you can make sure
+by running the following:
+
+..  code-block:: bash
+
+    $ sudo apt install snapcraft snapd
+
+You may need to restart after installation before installing anything with
+Snapcraft.
+
+You can search for packages with :code:`sudo snap search <package>`, and
+install with :code:`sudo snap install <package>`.
+
+**Flathub** is a portable packaging format that works on most Linux systems.
+It installs the package onto the system itself, instead of running it in a
+container, so packages installed via Flatpak are likely to make better use of
+system resources than Snapcraft.
+
+You can install via the following:
+
+..  code-block:: bash
+
+    $ sudo apt install flatpak
+    $ flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+
+You will need to restart after installation before installing anything with
+Flatpak.
+
+Flatpak maintains a store called `Flathub <https://flathub.org/home>`_, which
+you can browse online. The installation and run commands are at the bottom of
+each package's page (although Flatpak packages will appear on your menu like
+any other program once installed.)
+
+**Appimage** is a packaging format that requires nothing else to be installed
+on your system. Just make it executable, double-click it, and go! It's a
+containerized format, much like snapcraft, but the system integration is more
+portable and lightweight.
 
 Security Stuff
 ==========================================
@@ -196,24 +292,10 @@ download ``FreeOffice for Linux`` from that page. Save the ``*.deb`` file to
 your computer, and then browse to it in your File Browser. Right-click it and
 open with "GDebi Package Installer", then click :guilabel:`Install`.
 
-WPS Office
-^^^^^^^^^^^^^^^^^
-
-Another Microsoft Office™ lookalike is the proprietary **WPS Office** from
-China-based Kingsoft. Although it's not FOSS, it is free on Linux. It can open
-Microsoft Office formats, and offers familiar replacements for Word, Excel, and
-PowerPoint. Unfortunately, WPS Office cannot work with the OpenDocument formats
-(`*.odt`, `*.ods`, etc.).
-
-You can download WPS Office from `the WPS website <https://www.wps.com/>`_.
-Save the ``*.deb`` file to your computer, and then browse to it in your File
-Browser. Right-click it and open with "GDebi Package Installer", then click
-:guilabel:`Install`.
-
 Web Browser
 ==============================
 
-Installing Chrome or Opera
+Installing Brave or Chrome
 --------------------------------
 
 **Firefox** is installed by default, and works quite well. However, there are a
@@ -281,12 +363,6 @@ In Firefox
 Go to the menu (upper right of Firefox) and click :guilabel:`Preferences`.
 Click :guilabel:`Search` on the left side, and select "DuckDuckGo" from the
 menu under "Default Search Engine".
-
-In Opera
-^^^^^^^^^^^^^^^^^^^^^^
-Go to the menu (upper left of Opera) and :guilabel:`Settings`. Select
-:guilabel:`Browser` on the left side. Under "Search", select "DuckDuckGo"
-from the drop-down list.
 
 In Vivaldi
 ^^^^^^^^^^^^^^^^^^^^^^

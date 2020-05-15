@@ -68,8 +68,7 @@ The Staff Network consists of seven major components:
 
 * LimeSurvey (survey.mousepawmedia.com)
 
-We also use IRC and Jitsi for regular communication, although these are
-hosted on external servers that we do not own or operate.
+We also use Skype for regular communication.
 
 Our network is spread across two servers.
 
@@ -513,6 +512,11 @@ There are a few more ECO forms which are accessible only to management.
 
 Next Steps
 ===========================================
+
+Previous MousePaw Media graduates have written up some tips for new interns!
+You can read those on the Phabricator Phriction wiki at the link below:
+
+..  IMPORTANT:: Read `Internship Tips <https://phabricator.mousepawmedia.net/w/resources/internship_tips/>`_
 
 You can learn more about the different parts of the Staff Network in the
 other sections of this documentation.

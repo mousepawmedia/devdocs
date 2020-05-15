@@ -21,14 +21,23 @@ own!)
 Installing on Linux
 -------------------------------
 
-If you're on Ubuntu, you can install Atom from a
-`third-party repository <http://www.webupd8.org/2014/05/install-atom-text-editor-in-ubuntu-via-ppa.html>`_.
+If you're on Ubuntu, you can install Atom from the main package repository:
 
 ..  code-block:: bash
 
-    $ sudo add-apt-repository ppa:webupd8team/atom
-    $ sudo apt update
     $ sudo apt install atom
+
+Alternatively, on most Linux systems, you can install from Snapcraft:
+
+..  code-block:: bash
+
+    $ sudo snap install atom
+
+Or, you can install from Flatpak on most Linux systems:
+
+..  code-block:: bash
+
+    $ flatpak run io.atom.Atom
 
 On other operating systems, you can install Atom from the official packages
 on `the Atom website <https://atom.io/>`_.

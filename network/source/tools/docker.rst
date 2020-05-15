@@ -50,7 +50,7 @@ distribution's package manager. On Debian-based systems, run:
 
     sudo apt install pass
 
-Download and install the latest version of ``docker-credential-pass`.
+Download and install the latest version of ``docker-credential-pass``.
 This is usually downloaded as a precompiled binary and installed in place.
 The latest version can be found on the
 `docker-credential-helpers GitHub Releases page <https://github.com/docker/docker-credential-helpers/releases>`_

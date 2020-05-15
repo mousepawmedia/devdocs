@@ -21,6 +21,18 @@ If you're on Ubuntu Linux, you can install from the official apt repository.
     $ sudo apt update
     $ sudo apt install code
 
+Alternatively, on most Linux systems, you can install from Snapcraft:
+
+..  code-block:: bash
+
+    $ sudo snap install code
+
+Or, you can install from Flatpak on most Linux systems:
+
+..  code-block:: bash
+
+    $ flatpak install flathub com.visualstudio.code
+
 For Windows and Mac, you can download and install VSCode from
 `code.visualstudio.com <https://code.visualstudio.com/>`_. If you're installing
 on another type of Linux system, you can find instructions on the official

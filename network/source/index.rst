@@ -58,6 +58,7 @@ Development Tools
     tools/python
     tools/sphinx
     tools/devtools
+    tools/docker
 
 IDEs and Editors
 ---------------------------

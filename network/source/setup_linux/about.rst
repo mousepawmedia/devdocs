@@ -40,17 +40,20 @@ and snap the pieces together. Some computer nerds like to start with just the
 Linux kernel itself and add each piece manually, but the rest of us like to
 have a starting place. That's one of the reasons we use Ubuntu-based distros.
 
-The most common distro at MousePaw Media is **Ubuntu MATE**, which can be
-customized to suit your tastes, whether you prefer the feel of Windows XP,
-macOS, Ubuntu Unity, classic GNOME, or something entirely different.
-
-Optionally, you may choose the polished, modern **Ubuntu**, which uses the
-**GNOME 3** desktop environment. It's a unique desktop environment, which can
+The most common distro at MousePaw Media is **Pop!_OS**, an Ubuntu-based distro
+with excellent driver support. It comes with the **GNOME 3** desktop environment
+by default. It's a unique desktop environment, which can
 be learned in a period of about fifteen minutes, regardless of your computer
 experience level.
 
+Alternatively, you can install the **MATE** desktop environment,
+which can be customized to suit your tastes, whether you prefer the feel of
+Windows XP, macOS, Ubuntu Unity, classic GNOME, or something entirely different.
+
 Other options include...
 
+- **Ubuntu**: The default Ubuntu flavor with the GNOME3 desktop environment.
+- **Ubuntu MATE**: An Ubuntu flavor with the MATE desktop environment.
 - **Kubuntu**: Packed with cool graphical effects and customization.
 - **Linux Mint**: A polished, easy to use option which resembles Windows 7.
 - **Lubuntu**: A lightweight option for slower machines.
@@ -152,7 +155,6 @@ examples. You can find more at `alternativeto.net <http://alternativeto.net/>`_.
 +====================+=====================+
 | Microsoft Office™  | LibreOffice         |
 |                    | FreeOffice*         |
-|                    | WPS Office*         |
 +--------------------+---------------------+
 | Evernote®          | Simplenote*         |
 |                    | Cherrytree          |
@@ -160,6 +162,7 @@ examples. You can find more at `alternativeto.net <http://alternativeto.net/>`_.
 +--------------------+---------------------+
 | Apple iTunes®      | Amarok              |
 |                    | Clementine          |
+|                    | Lollypop            |
 |                    | Rhythmbox           |
 +--------------------+---------------------+
 | Adobe Photoshop®   | GIMP                |
@@ -217,8 +220,8 @@ On the other hand, Wacom tablets, many cameras, and most printers (just to
 name a few things) work BEAUTIFULLY with Linux!
 
 ..  NOTE:: Ubuntu MATE 18.04 has no control panel for Wacom devices, while
-           Ubuntu 18.04 *does*. If you're using MATE, you can control your
-           Wacom tablet using a set of scripts written by Jason C. McDonald.
+    Ubuntu 18.04 *does*. If you're using MATE, you can control your
+    Wacom tablet using a set of scripts written by Jason C. McDonald.
 
 Ultimately, you should just do a web search to see if your device is compatible.
 
