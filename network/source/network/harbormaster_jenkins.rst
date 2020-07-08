@@ -111,7 +111,7 @@ Docs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Aside from code builds, Jenkins also rebuilds our live Sphinx documentation. As
-soon as a change is made to any documentation files on a repository's ``master``
+soon as a change is made to any documentation files on a repository's ``devel`` 
 branch, Jenkins rebuilds the documentation and publishes it to
 `mousepawmedia.net/docs <https://www.mousepawmedia.net/docs>`_ or
 `mousepawmedia.net/help <https://www.mousepawmedia.net/help>`_, as appropriate.

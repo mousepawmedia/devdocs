@@ -139,7 +139,7 @@ Once the build is done, you can find all the headers in
 look for the library files at these locations by default.
 
 ..  WARNING:: To make it easier to update ``libdeps`` later, DO NOT EVER commit
-    changes on the ``master`` or ``stable`` branches.
+    changes on the ``devel`` or ``stable`` branches.
 
 .. _gbuild_libgit_aclocal:
 
@@ -174,8 +174,8 @@ If you're working on the ``stable`` branch, run...
     $ git pull origin stable
     $ make ready
 
-..  NOTE:: If you're using the ``master`` branch, just change the second command to
-    ``git pull origin master``.
+..  NOTE:: If you're using the ``devel`` branch, just change the second command to
+    ``git pull origin devel`` 
 
 .. _gbuild_pawlib:
 
@@ -201,8 +201,8 @@ repository folder, so make sure you run...
 Building PawLIB: As Dependency
 -------------------------------------
 
-You can work on either the ``master`` or ``stable`` branches of PawLIB. When in
-doubt, use ``stable``. The repository is on ``master`` by default, so if you
+You can work on either the ``devel`` or ``stable`` branches of PawLIB. When in
+doubt, use ``stable``. The repository is on ``devel`` by default, so if you
 want to use ``stable``, run...
 
 ..  code-block:: bash
@@ -225,7 +225,7 @@ Building PawLIB: For Developing
 -----------------------------------------
 
 If you want to test PawLIB or help build it, you should start from the
-``master`` branch.
+ ``devel`` branch.
 
 ..  IMPORTANT:: Remember to create a new branch if you plan to make any changes!
 

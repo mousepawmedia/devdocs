@@ -913,7 +913,7 @@ Revision.
 * **Repository**: The repository that the Revision belongs to. Make sure
   this is correct, or weird things can happen.
 
-* **Branch**: The branch we're working on. This should *never* be ``master``
+* **Branch**: The branch we're working on. This should *never* be `` devel ``
   or ``stable``.
 
 * **Lint**: If we have linters (static code checkers) configured for the
@@ -994,7 +994,7 @@ Method 1: Arcanist
 
 ..  sidebar:: The Ten Commandments of Git
 
-    #I-X: NEVER WORK ON THE MASTER OR STABLE BRANCH!
+    #I-X: NEVER WORK ON THE DEVEL OR STABLE BRANCH!
 
 The easiest and most common is to use **Arcanist** in your command line. (See
 :ref:`gitarc`). Revisions are tied to a Git branch, so you simply create a
@@ -1019,7 +1019,7 @@ Method 2: Uploading a Patch
 If you don't have access to Arcanist, you can still upload your changes
 to a Revision via a patch file.
 
-You should still work on a separate branch from ``master``. Create a patch
+You should still work on a separate branch from `` devel ``. Create a patch
 via...
 
 ..  code-block:: bash
@@ -1473,7 +1473,7 @@ On the **Details** pane, we see the following:
 * **Tasks**: The Maniphest Tasks that this commit is linked to.
 
 * **References**: The Git reference to this commit, if any. For example, the
-  latest `master` commit will have the reference `HEAD -> master`.
+  latest  `devel`  commit will have the reference `HEAD -> devel`.
 
 Below the Details box is the complete commit history, including build reports
 and comments.

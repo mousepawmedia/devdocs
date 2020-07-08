@@ -262,8 +262,8 @@ Every Revision must...
     [In some cases, the feature itself may be dropped, and only bugfixes and/or
     optimizations landed instead.]
 
-(2) Have merged all changes from `master` into itself, and all conflicts
-    resolved. (:code:`$ git pull origin master`)
+(2) Have merged all changes from  `devel`  into itself, and all conflicts
+    resolved. (:code:`$ git pull origin devel `)
 
 (3) Have binaries and unnecessary cruft untracked and removed. (Keep an eye on
     `.gitignore`!)

@@ -33,7 +33,6 @@ LLVM/Clang repository.
     $ sudo add-apt-repository "deb http://apt.llvm.org/`lsb_release -sc`/ llvm-toolchain-`lsb_release -sc` main"
     $ wget -O - http://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
     $ sudo apt update
-    $ sudo apt install python-lldb-9
     $ sudo apt install libllvm-9-ocaml-dev libllvm9 llvm-9 llvm-9-dev llvm-9-doc llvm-9-examples llvm-9-runtime clang-9 clang-tools-9 clang-9-doc libclang-common-9-dev libclang-9-dev libclang1-9 clang-format-9 libfuzzer-9-dev lldb-9 lld-9 libc++-9-dev libc++abi-9-dev libomp-9-dev
     $ sudo ln -sf /usr/bin/llvm-symbolizer-9 /usr/bin/llvm-symbolizer
 

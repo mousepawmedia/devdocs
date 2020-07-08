@@ -26,10 +26,10 @@ out on Phabricator Maniphest before starting.
 
 ..  sidebar:: The Ten Commandments of Git
 
-    #I-X: NEVER WORK ON THE MASTER OR STABLE BRANCH!
+    #I-X: NEVER WORK ON THE DEVEL, FRESH, OR STABLE BRANCH!
 
 Before you make any changes, you should create a new branch on your local
-copy of the repository. You should **never** work on ``master``. To create
+copy of the repository. You should **never** work on ` `devel` `. To create
 a new branch, run...
 
 ..  code-block:: bash
@@ -37,7 +37,7 @@ a new branch, run...
     $ git checkout -b newbranchname
 
 ...where *newbranchname* is the name of the branch you're creating. You can
-call it absolutely anything (except "master" or "stable").
+call it absolutely anything (except "devel" or "stable").
 
 .. _grevision_changes:
 
@@ -83,7 +83,7 @@ Landing Changes
 ========================
 
 Once your Differential Revision has been approved, you can land it, meaning you
-push the changes to the ``master`` branch. In the repository, run...
+push the changes to the ` `devel` ` branch. In the repository, run...
 
 ..  code-block:: bash
 
@@ -107,12 +107,12 @@ If you want to pull down someone else's Differential Revision to your local
 repository for testing it out, or if you want to recover your lost work
 from your Differential Revision, Arcanist can do that!
 
-First, make sure you're on the master branch, and it is up-to-date.
+First, make sure you're on the devel branch, and it is up-to-date.
 
 ..  code-block:: bash
 
-    $ git checkout master
-    $ git pull origin master
+    $ git checkout devel 
+    $ git pull origin devel 
 
 Then patch the Differential Revision with...
 
