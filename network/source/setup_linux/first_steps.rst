@@ -252,9 +252,10 @@ Updating LibreOffice
 -----------------------------
 
 The version of LibreOffice that ships with Ubuntu is slightly older than the
-latest stable version. To get that stable version, you'll need to add the
+latest version. To get that "Fresh" version, you'll need to add the
 **PPA**, or "personal package archive," for LibreOffice "Fresh", so ``apt``
-can download the newer version.
+can download the newer version. Just be aware that this version can have
+some bugs...but it also means you get the latest and greatest features.
 
 Once you've added the new PPA, update the apt package lists and install all
 the now-available updates.

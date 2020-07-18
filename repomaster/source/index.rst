@@ -28,7 +28,7 @@ A Repository Master is responsible to diagnose and fix problems with the
 :abbr:`CI (continuous integration, e.g. Jenkins)` system. They are also
 responsible for ensuring compliance with policies and coding standards.
 Finally, they help minimize bugs and prevent breakages and substandard code
-in protected branches (e.g. `master` and `stable`) and release tags.
+in protected branches (``devel``, ``fresh``, and ``stable``) and release tags.
 
 Although the majority of programming staff members have proper certification,
 only one or two individuals are granted the Repository Master role at any one

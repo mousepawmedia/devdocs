@@ -68,13 +68,6 @@ instructions on using Phabricator, see :ref:`phab`.
     6:00am until 10:00pm Pacific time, seven days a week. You can see the
     current status at `mousepawmedia.com/devnet <https://mousepawmedia.com/devnet>`_
 
-Freenode IRC
--------------------------------
-
-We use IRC chat for real-time collaboration. You can find us in the
-``#mousepawmedia`` room on the Freenode network. For help setting up and
-using IRC, see :ref:`irc`.
-
 Development Environment
 ===============================
 

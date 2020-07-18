@@ -215,17 +215,22 @@ Regular Email Tasks
 
 * Correspond with co-workers. Read and respond to messages in a timely fashion.
 
-* Send your check-in email on the same day each week, detailing what you've
-  done over the past week and what you're planning to do over the upcoming week.
-  Including the Phabricator Maniphest task IDs/links for the tasks you've been
-  working on. This is also a good time to ask your supervisors questions.
+* Send your check-in email on the same day each week, detailing:
+
+  * What you've done over the past week,
+  * What you learned over the past week,
+  * What challenges you faced over the past week,
+  * What you're planning to do over the upcoming week,
+  * The Phabricator object IDs or links for anything you've worked on (inline),
+  * Any questions you have for your supervisors.
 
 ..  IMPORTANT:: Log into your email and send an message to
     :code:`eco@mousepawmedia.com`. State what day you would like your weekly
     check-in email to be on.
 
 ..  WARNING:: Your check-in email is how we track your job attendance. Be sure
-    to send it on your regular day **every single week**!
+    to send it on your regular day **every single week**! If it is not received
+    on time, your hours for the week might not be counted.
 
 .. _gstaff_network_ehour:
 

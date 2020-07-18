@@ -54,6 +54,22 @@ If you plan to work on **SIMPLEXpress**, follow sections...
 2. :ref:`gbuild_pawlib_buildingdep`
 3. :ref:`gbuild_systems`
 
+A Note On Branches
+====================================
+
+You should generally use the same primary branch for all connected repositories.
+That is, if you're working on ``devel`` for the repository you're developing on,
+you should use ``devel`` for all repositories it depends on. Similarly, if you
+are using the ``fresh`` branch of a repository, you should use the ``fresh``
+branch for all repositories it depends on.
+
+To switch branches on any repository, run the following, replacing ``devel``
+with whatever branch name you're switching to:
+
+..  code-block:: bash
+
+    $ git checkout -b devel origin/devel
+
 Dependencies
 ====================================
 
@@ -123,11 +139,6 @@ clone should be in the same directory. Then run...
 ..  code-block:: bash
 
     $ cd libdeps
-    $ git checkout -b stable origin/stable
-
-This will check out the ``stable`` remote branch of the ``libdeps`` repository.
-We recommend working on ``stable`` unless you specifically need the latest
-unstable changes.
 
 Next, we'll build the dependencies. All you need to do is run ``make
 <library>``, where ``<library>`` is the name of the library you want to build.
@@ -139,7 +150,7 @@ Once the build is done, you can find all the headers in
 look for the library files at these locations by default.
 
 ..  WARNING:: To make it easier to update ``libdeps`` later, DO NOT EVER commit
-    changes on the ``devel`` or ``stable`` branches.
+    changes on the ``devel``, ``fresh``, or ``stable`` branches directly.
 
 .. _gbuild_libgit_aclocal:
 
@@ -166,16 +177,15 @@ When changes happen in ``libdeps``, you only need to pull them in and rebuild.
 While ``make clean`` commands are provided, it's generally more effective to
 just clean up the git repository itself.
 
-If you're working on the ``stable`` branch, run...
+If you're working on the ``devel`` branch, run the following. For other
+branches, just replace ``devel`` with whatever primary branch you're
+working on (``fresh`` or ``stable``)
 
 ..  code-block:: bash
 
     $ git clean -xdff
-    $ git pull origin stable
+    $ git pull origin devel
     $ make ready
-
-..  NOTE:: If you're using the ``devel`` branch, just change the second command to
-    ``git pull origin devel`` 
 
 .. _gbuild_pawlib:
 
@@ -201,17 +211,9 @@ repository folder, so make sure you run...
 Building PawLIB: As Dependency
 -------------------------------------
 
-You can work on either the ``devel`` or ``stable`` branches of PawLIB. When in
-doubt, use ``stable``. The repository is on ``devel`` by default, so if you
-want to use ``stable``, run...
-
-..  code-block:: bash
-
-    $ git checkout -b stable origin/stable
-
-PawLIB relies on CPGF, so make sure you've
+PawLIB relies on eventpp and (decreasingly) CPGF, so make sure you've
 :ref:`built libdeps <gbuild_libgit_building>`, or otherwise
-:ref:`specified an alternate location for CPGF <gbuild_systems_conf>`
+:ref:`specified alternate locations for the libraries <gbuild_systems_conf>`
 
 Then, simply run...
 
@@ -225,7 +227,7 @@ Building PawLIB: For Developing
 -----------------------------------------
 
 If you want to test PawLIB or help build it, you should start from the
- ``devel`` branch.
+``devel`` branch.
 
 ..  IMPORTANT:: Remember to create a new branch if you plan to make any changes!
 

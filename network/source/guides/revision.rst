@@ -37,7 +37,7 @@ a new branch, run...
     $ git checkout -b newbranchname
 
 ...where *newbranchname* is the name of the branch you're creating. You can
-call it absolutely anything (except "devel" or "stable").
+call it absolutely anything (except "devel", "fresh", or "stable").
 
 .. _grevision_changes:
 
@@ -111,8 +111,8 @@ First, make sure you're on the devel branch, and it is up-to-date.
 
 ..  code-block:: bash
 
-    $ git checkout devel 
-    $ git pull origin devel 
+    $ git checkout devel
+    $ git pull origin devel
 
 Then patch the Differential Revision with...
 

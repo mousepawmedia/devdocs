@@ -913,8 +913,8 @@ Revision.
 * **Repository**: The repository that the Revision belongs to. Make sure
   this is correct, or weird things can happen.
 
-* **Branch**: The branch we're working on. This should *never* be `` devel ``
-  or ``stable``.
+* **Branch**: The branch we're working on. This should *never* be ``devel``,
+  ``fresh``, or ``stable``.
 
 * **Lint**: If we have linters (static code checkers) configured for the
   repository, this will mark whether the changes passed linting. This should

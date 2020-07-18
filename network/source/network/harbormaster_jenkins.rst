@@ -111,34 +111,15 @@ Docs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Aside from code builds, Jenkins also rebuilds our live Sphinx documentation. As
-soon as a change is made to any documentation files on a repository's ``devel`` 
+soon as a change is made to any documentation files on a repository's ``devel``
 branch, Jenkins rebuilds the documentation and publishes it to
 `mousepawmedia.net/docs <https://www.mousepawmedia.net/docs>`_ or
 `mousepawmedia.net/help <https://www.mousepawmedia.net/help>`_, as appropriate.
-
-.. _harbormasterjenkins_jenkins_buildtypes_central:
-
-Central
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Jenkins maintains separate clones of a few repositories for satisfying the
-dependencies of other builds. We call these "central" builds.
-
-Every time a commit is published to the ``stable`` branch of one of these
-repositories, the "central" copy of the repository is rebuilt.
 
 .. _harbormasterjenkins_jenkins_technical:
 
 Technical Details
 ----------------------------
 
-All C++ builds take place on a virtual machine running:
-
-* Ubuntu 16.04 LTS Server x64, updated daily.
-
-* LLVM/Clang 3.8
-
-* CMake 3.5.1
-
-* Up-to-date clones of the ``libdeps``, ``cinder``, and ``pawlib``
-  repositories, using the ``stable`` branch for each.
+All C++ builds take place on Docker images with the latest version of our
+technical stack, and up-to-date clones of dependencies.
