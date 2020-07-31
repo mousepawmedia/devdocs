@@ -81,7 +81,7 @@ The toolbar is always visible at the top of Phabricator. From left to right...
   chat box to the lower right corner of your screen. (See
   :ref:`phab_conpherence`).
 
-* The **Favorites menu** (the star) provides shortcuts for many common tasks.
+* The **Favorites menu** (the bookmark icon) provides shortcuts for many common tasks.
   You can click :guilabel:`Edit Favorites` to add more items to this menu.
 
 * The **User menu** (your profile picture) provides shortcuts to your profile,
@@ -153,7 +153,7 @@ comment box. The action (or actions) will be performed when you click the
 Remarkup
 ---------------------------------
 
-All comment boxes, as well as description fields and the wiki, using
+All comment boxes, as well as description fields and the wiki, use
 **Remarkup**. Below is a quick reference::
 
     **Bold**
@@ -289,7 +289,7 @@ Types of Projects
 
 At MousePaw Media, we use six major types of project objects. To avoid
 confusion, we will use these terms as defined below. From now on, we'll use the
-term "project object" or "subproject object" will be used to denote the actual
+term "project object" or "subproject object" to denote the actual
 object type, instead of the kind of project object.
 
 * We use the term **Project** or Master Project to refer to a particular
@@ -332,7 +332,7 @@ object type, instead of the kind of project object.
 
 * A **Team** is a group within a department. A team is generally characterized
   by a particular approach and skill set, and maintains a specific set of
-  projects (their "code territory"). We have two teams:
+  projects (their "code territory"). We have three teams:
 
   * The :code:`BSS [Team]`, or "Black Sheep Squadron", specializes in data
     storage and processing. Their "code territory" includes PawLIB,
@@ -679,7 +679,7 @@ an event type. There are three types:
   meeting room.
 
 * :guilabel:`Create Hiring Event` is only for Hiring-related events. If you
-  aren't a pare of the Hiring team, this will be hidden from you.
+  aren't a part of the Hiring team, this will be hidden from you.
 
 Then, fill out the form.
 

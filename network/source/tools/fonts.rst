@@ -18,7 +18,7 @@ All of the fonts mentioned in this document can be quickly downloaded and
 installed from Nextcloud. Even if you've already installed these fonts, you can
 reinstall the newest pack to get updates any time.
 
-In Nextcloud, download the file :file:`Design/Fonts/MPG_FONTS_BUNDLE_v3.2.zip`.
+In Nextcloud, download the file :file:`Design/Fonts/MPM_FONTS_BUNDLE_v3.2.zip`.
 Save this file to your :file:`Desktop`.
 
 In a terminal, run the following commands.
@@ -26,8 +26,8 @@ In a terminal, run the following commands.
 ..  code-block:: bash
 
     $ cd ~/Desktop
-    $ unzip MPG_FONTS_BUNDLE_v3.2.zip
-    $ cd MPG_FONTS_BUNDLE_v3.2
+    $ unzip MPM_FONTS_BUNDLE_v3.2.zip
+    $ cd MPM_FONTS_BUNDLE_v3.2
     $ ./install.sh
 
 When prompted, enter :kbd:`H` to install the fonts to your home folder,

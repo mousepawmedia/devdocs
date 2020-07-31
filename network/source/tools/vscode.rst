@@ -52,7 +52,6 @@ should be configured:
 * CodeLLDB (Vadim Chugunov)
 * Docker (Microsoft)
 * gitignore (CodeZombie)
-* CodeLLDB (Vadim Chugunov)
 * Live Share (Microsoft)
 * Live Share Extension Pack (Microsoft)
 * Makefiles support for VSCode (Lilian Besson)

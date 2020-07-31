@@ -119,7 +119,7 @@ whatever you select for the compiler will be used.
 Mac
 ----------------------------
 
-We don't directly suppose macOS as a development environment. If you're using
+We don't directly support macOS as a development environment. If you're using
 macOS, you should install ``Command Line Tools for Xcode``,
 which has Clang onboard.
 

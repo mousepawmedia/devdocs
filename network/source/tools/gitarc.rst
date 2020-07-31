@@ -179,7 +179,7 @@ On Ubuntu, you can install OpenSSH via...
 
 ..  code-block:: bash
 
-    sudo apt install openssh-client
+    $ sudo apt install openssh-client
 
 If you're on Mac, the necessary software is already installed by default.
 
@@ -297,7 +297,7 @@ the following...
 
     $ arc install-certificate
 
-Go to `this link <https://phabricator.mousepawmedia.net/conduit/login/>` and sign
+Go to `this link <https://phabricator.mousepawmedia.net/conduit/login/>`_ and sign
 in if necessary. You'll receive a validation code. Copy and paste
 (:kbd:`Ctrl+Shift+V`) the validation code into the terminal when prompted.
 
