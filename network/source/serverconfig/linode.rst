@@ -806,10 +806,15 @@ Set the contents of that file to the following.
     SSLEngine on
 
     # Intermediate configuration, tweak to your needs
-    SSLProtocol all -SSLv2 -SSLv3
-    SSLCipherSuite ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:AES:CAMELLIA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!aECDH:!EDH-DSS-DES-CBC3-SHA:!EDH-RSA-DES-CBC3-SHA:!KRB5-DES-CBC3-SHA
+    SSLProtocol all -SSLv2 -SSLv3 -TLSv1 -TLSv1.1
+    SSLCipherSuite ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:AES:DES-CBC3-SHA:!CAMELLIA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!aECDH:!EDH-DSS-DES-CBC3-SHA:!EDH-RSA-DES-CBC3-SHA:!KRB5-DES-CBC3-SHA
     SSLHonorCipherOrder on
     SSLCompression off
+
+    # OCSP Stapling, only in httpd 2.3.3 and later
+    SSLUseStapling          on
+    SSLStaplingResponderTimeout 5
+    SSLStaplingReturnResponderErrors off
 
     SSLOptions +StrictRequire
 
@@ -1355,6 +1360,12 @@ Edit the file to match the following::
     smtpd_use_tls=yes
     #smtpd_tls_session_cache_database = btree:${data_directory}/smtpd_scache
     #smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
+    smtp_tls_mandatory_protocols=!SSLv2, !SSLv3, !TLSv1, !TLSv1.1
+    smtpd_tls_mandatory_protocols=!SSLv2, !SSLv3, !TLSv1, !TLSv1.1
+    smtp_tls_protocols=!SSLv2, !SSLv3, !TLSv1, !TLSv1.1
+    smtpd_tls_protocols=!SSLv2, !SSLv3, !TLSv1, !TLSv1.1
+    smtpd_tls_security_level=may
+    smtp_tls_security_level=may
 
     # Enabling SMTP for authenticated users, and handing off authentication to Dovecot
     smtpd_sasl_type = dovecot
@@ -1370,7 +1381,7 @@ Edit the file to match the following::
     # information on enabling SSL in the smtp client.
 
     #smtpd_relay_restrictions = permit_mynetworks permit_sasl_authenticated defer_unauth_destination
-    myhostname = delavega.mousepawmedia.com
+    myhostname = mousepawmedia.com
     mydomain = mail.mousepawmedia.com
     alias_maps = hash:/etc/aliases
     alias_database = hash:/etc/aliases
@@ -1735,6 +1746,12 @@ Uncomment and change the following lines::
     ssl_cert = </etc/apache2/certs/cert.pem
     ssl_key = </etc/apache2/certs/privkey.pem
     ssl_ca = </etc/apache2/certs/chain.pem
+
+    ssl_protocols = !SSLv2 !SSLv3 !TLSv1 !TLSv1.1  # use for <= v2.2
+    # ssl_min_protocol = TLSv1.2  # use for Dovecot >= v2.3
+
+    # SSL ciphers to use
+    ssl_cipher_list = ALL:HIGH:!SSLv2:!MEDIUM:!LOW:!EXP:!RC4:!MD5:!aNULL:@STRENGTH
 
 Save and close, and then restart both Postfix and Dovecot.
 
