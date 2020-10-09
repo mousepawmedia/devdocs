@@ -221,7 +221,7 @@ testing compilation on other platforms.
 Steps in Building
 --------------------------
 
-1)  Make sure :code:` devel ` is up-to-date, and then create a new Git branch
+1)  Make sure :code:`devel` is up-to-date, and then create a new Git branch
     for your work. For example, on the root directory of the repository, on
     the devel branch...
 
@@ -235,7 +235,7 @@ Steps in Building
 3)  Add subtasks to your Maniphest task as needed, detailing other features
     and bugfixes necessary to implement the feature.
 
-4)  CSI comment as you go!
+4)  `CSI <https://standards.mousepawmedia.com/qtm.html>`_ comment as you go!
 
 5)  When practical, update the documentation as you go. It's okay to leave
     gaps in the documentation temporarily, during development.

@@ -29,7 +29,7 @@ out on Phabricator Maniphest before starting.
     #I-X: NEVER WORK ON THE DEVEL, FRESH, OR STABLE BRANCH!
 
 Before you make any changes, you should create a new branch on your local
-copy of the repository. You should **never** work on ` `devel` `. To create
+copy of the repository. You should **never** work on :code:`devel`. To create
 a new branch, run...
 
 ..  code-block:: bash
