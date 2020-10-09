@@ -811,11 +811,6 @@ Set the contents of that file to the following.
     SSLHonorCipherOrder on
     SSLCompression off
 
-    # OCSP Stapling, only in httpd 2.3.3 and later
-    SSLUseStapling          on
-    SSLStaplingResponderTimeout 5
-    SSLStaplingReturnResponderErrors off
-
     SSLOptions +StrictRequire
 
     # Add vhost name to log entries:
