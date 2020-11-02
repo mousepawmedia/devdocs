@@ -1099,7 +1099,7 @@ Now we need to adjust PHPldapadmin's configuration.
 Modify the following lines in the file.::
 
     $servers->setValue('server','name','MousePaw Media LDAP');
-    $servers->setValue('server','host','mousepawmedia.net');
+    $servers->setValue('server','host','localhost');
     $servers->setValue('server','base',array('dc=ldap,dc=mousepawmedia,dc=net'));
     $servers->setValue('login','bind_id','cn=admin,dc=ldap,dc=mousepawmedia,dc=net');
     $config->custom->appearance['hide_template_warning'] = true;
