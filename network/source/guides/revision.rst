@@ -83,13 +83,20 @@ Landing Changes
 ========================
 
 Once your Differential Revision has been approved, you can land it, meaning you
-push the changes to the ` `devel` ` branch. In the repository, run...
+push the changes to the `devel` branch. In the repository, run...
 
 ..  code-block:: bash
 
-    $ arc land yourbranchname
+    $ arc land yourbranchname --onto devel
 
 ...where *yourbranchname* is the name of the branch you've been working in.
+
+..  sidebar:: **Having trouble landing?**
+
+    First make sure you're landing to `devel`. Arcanist defaults to `master`, 
+    which MousePaw doesn't use.  If you're receiving a permissions error, make 
+    sure to go to the :guilabel:`Project` you're contributing to, click 
+    :guilabel:`Members`, then :guilabel:`Join`.
 
 Be sure to keep your Maniphest tasks up-to-date, marking them as complete or
 updating them as appropriate.
