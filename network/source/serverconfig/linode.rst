@@ -1566,7 +1566,7 @@ Save and close, and then open the next config file...
 
 ..  code-block:: bash
 
-    $ sudo vim sudo vim /etc/dovecot/conf.d/10-mail.conf
+    $ sudo vim /etc/dovecot/conf.d/10-mail.conf
 
 Search for and modify the following lines (they're not together in the file)::
 

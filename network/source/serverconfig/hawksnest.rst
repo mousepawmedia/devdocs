@@ -3077,11 +3077,11 @@ Due to a glitch in Nextcloud, we have to configure fail2ban to prevent lockouts.
 
 ..  code-block:: bash
 
-    $ sudo vim sudo vim /etc/fail2ban/filter.d/apache-auth.conf
+    $ sudo vim /etc/fail2ban/filter.d/apache-auth.conf
 
 Look for the section :code:`ignoreregex = ` and add the following entry to it::
 
-    AH01797: .+\/opt\/(nextcloud|ibp|ajc)\/config$
+    ^%(_apache_error_client)s (AH01797: )?client denied by server configuration: \/opt\/(nextcloud|ibp|ajc)\/config$
 
 ..  NOTE:: ``nextcloud``, ``ibp``, and ``ajc`` are the three Nextcloud
     instance directories on this server. Change these as needed.
@@ -3197,22 +3197,13 @@ The settings are automatically saved. Log in as an LDAP user to test.
 Collabora Office Online
 --------------------------------
 
-First, we install the necessary packages.
-
-..  code-block:: bash
-
-    $ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-    $ sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-    $ sudo apt update
-    $ sudo apt install docker-ce
+Make sure Docker is installed (see earlier section).
 
 Next, we'll pull in the Docker container for Collabora Office online.
 
 ..  code-block:: bash
 
-    $ sudo mkdir /opt/collabora
-    $ cd /opt/collabora
-    $ sudo docker pull collabora/code
+    $ docker pull collabora/code
 
 This download will take a while, so sit back and wait.
 
@@ -3221,7 +3212,7 @@ in on the ``password`` option.
 
 ..  code-block:: bash
 
-    $ sudo docker run -t -d -p 127.0.0.1:9980:9980 -e 'domain=nextcloud\\.mousepawmedia\\.net' -e 'user=admin' -e 'password=ThePasswordForCollabora' --restart always --cap-add MKNOD collabora/code
+    $ docker run --privileged -t -d -p 127.0.0.1:9980:9980 -e 'domain=nextcloud\\.mousepawmedia\\.net|ajc\\.mousepawmedia\\.net|ibp\\.mousepawmedia\\.net' -e 'username=admin' -e 'password=CollaboraPassword' --restart always --cap-add MKNOD collabora/code
 
 Next, we will set up Apache to proxy to Collabora Office.
 
@@ -3263,6 +3254,11 @@ Set the contents of that file to the following...
         # WOPI discovery URL
         ProxyPass           /hosting/discovery https://127.0.0.1:9980/hosting/discovery retry=0
         ProxyPassReverse    /hosting/discovery https://127.0.0.1:9980/hosting/discovery
+
+        # Capabilities
+        ProxyPass           /hosting/capabilities https://127.0.0.1:9980/hosting/capabilities retry=0
+        ProxyPassReverse    /hosting/capabilities https://127.0.0.1:9980/hosting/capabilities
+
 
         # Main websocket
         ProxyPassMatch "/lool/(.*)/ws$" wss://127.0.0.1:9980/lool/$1/ws nocanon
@@ -4003,13 +3999,13 @@ Updating Collabora
 
 ..  code-block:: bash
 
-    $ sudo docker pull collabora/code
-    $ sudo docker ps
+    $ docker pull collabora/code
+    $ docker ps
     # Find the processid from the preceeding.
-    $ sudo docker stop processid
-    $ sudo docker rm processid
+    $ docker stop processid
+    $ docker rm processid
     # Be sure to subtitute the password you want for Collabora!
-    $ $ sudo docker run -t -d -p 127.0.0.1:9980:9980 -e 'domain=nextcloud\\.mousepawmedia\\.net' -e 'user=admin' -e 'password=ThePasswordForCollabora' --restart always --cap-add MKNOD collabora/code
+    $ docker run --privileged -t -d -p 127.0.0.1:9980:9980 -e 'domain=nextcloud\\.mousepawmedia\\.net|ajc\\.mousepawmedia\\.net|ibp\\.mousepawmedia\\.net' -e 'username=admin' -e 'password=CollaboraPassword' --restart always --cap-add MKNOD collabora/code
 
 Cleaning Cruft
 -------------------------------
