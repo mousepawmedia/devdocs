@@ -257,7 +257,7 @@ Step Three: Landing
 Revision Checklist
 --------------------------
 
-The Revision Checklist {P1}, which is also described below, lists the
+The `Revision Checklist (P1) <https://phabricator.mousepawmedia.net/P1>`__, which is also described below, lists the
 expectations for a completed Differential Revision.
 
 Before landing, each Revision should...
@@ -266,10 +266,10 @@ Before landing, each Revision should...
     the feature itself may be dropped, and only bugfixes and/or optimizations
     landed instead.]
 
-2)  Have merged all changes from :code:` devel ` into itself, and all conflicts
-    resolved. (:code:`$ git pull origin  devel `).
+2)  Have merged all changes from :code:`devel` into itself, and all conflicts
+    resolved. (:code:`$ git pull origin devel`).
 
-3)  Have binaries and unnecessary crust untracked and removed. (Keep an eye on
+3)  Have binaries and unnecessary cruft untracked and removed. (Keep an eye on
     .gitignore!)
 
 4)  Compile and run properly - this should be confirmed via Harbormaster/Jenkins
