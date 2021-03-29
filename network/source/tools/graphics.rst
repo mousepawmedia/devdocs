@@ -120,7 +120,6 @@ Alternative, it's available for Windows, macOS and also as an Appimage.
 See their website for more downloads: https://glimpse-editor.org/downloads/
 
 * Official Website: `<https://glimpse-editor.org/>`_
-* Official Documentation: `<https://getglimpse.readthedocs.io/en/latest/>`_
 
 Gpick (v0.2.6 or later)
 =====================================
