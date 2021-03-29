@@ -102,13 +102,7 @@ Glimpse is a feature-rich graphics editing tool, largely analogous to Adobe
 Photoshop®. It is forked from the GNU Image Manipulation Program for ethical
 reasons.
 
-It can be installed in one of several ways (select ONE):
-
-It's available from the main repositories on Debian-based systems:
-
-..  code-block:: bash
-
-    $ sudo apt install glimpse
+It can be installed in one of two ways (select ONE):
 
 It's available via Snapcraft:
 
