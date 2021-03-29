@@ -165,7 +165,7 @@ examples. You can find more at `alternativeto.net <http://alternativeto.net/>`_.
 |                    | Lollypop            |
 |                    | Rhythmbox           |
 +--------------------+---------------------+
-| Adobe Photoshop®   | GIMP                |
+| Adobe Photoshop®   | Glimpse             |
 |                    | Krita               |
 +--------------------+---------------------+
 | Adobe Lightroom®   | Darktable           |

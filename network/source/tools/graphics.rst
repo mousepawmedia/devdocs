@@ -95,11 +95,12 @@ Or, install via Flatpak from Flathub:
 * Official Documentation: `<https://www.darktable.org/usermanual/en/>`_
 * Tutorials: `<https://www.youtube.com/playlist?list=PLmvlUro_Up1NBX7VK8UUuyWo1B468zEA0>`_
 
-GIMP (v2.10 or later)
+Glimpse (v0.2 or later)
 =====================================
 
-The GNU Image Manipulation Program, or **GIMP**, is a feature-rich graphics
-editing tool, largely analogous to Adobe Photoshop®.
+Glimpse is a feature-rich graphics editing tool, largely analogous to Adobe
+Photoshop®. It is forked from the GNU Image Manipulation Program for ethical
+reasons.
 
 It can be installed in one of several ways (select ONE):
 
@@ -107,34 +108,31 @@ It's available from the main repositories on Debian-based systems:
 
 ..  code-block:: bash
 
-    $ sudo apt install gimp
+    $ sudo apt install glimpse
 
 It's available via Snapcraft:
 
 ..  code-block:: bash
 
-    $ sudo snap install gimp
+    $ sudo snap install glimpse-editor
 
 Or, install via Flatpak from Flathub:
 
 ..  code-block:: bash
 
-    $ flatpak install flathub org.gimp.GIMP
+    $ flatpak install flathub org.glimpse_editor.Glimpse
 
-Upon first launch, you may notice that GIMP has three windows, like the
-classic Adobe Photoshop®. We **strongly** recommend switching to single-window
-mode. Click the :guilabel:`Windows` menu and select
-:guilabel:`Single-Window Mode`.
+Alternative, it's available for Windows, macOS and also as an Appimage.
+See their website for more downloads: https://glimpse-editor.org/downloads/
 
-* Official Website: `<https://www.gimp.org/>`_
-* Official Documentation: `<https://docs.gimp.org/2.10/en/>`_
-* Tutorials: `<https://www.gimp.org/tutorials/>`_
+* Official Website: `<https://glimpse-editor.org/>`_
+* Official Documentation: `<https://getglimpse.readthedocs.io/en/latest/>`_
 
 Gpick (v0.2.6 or later)
 =====================================
 
 Gpick is a color picker and palette editor, which can import and export in
-multiple formats, including the :code:`*.gpl` palette format that GIMP and
+multiple formats, including the :code:`*.gpl` palette format that Glimpse and
 Inkscape use.
 
 Gpick can be installed on Debian-based systems from the official repositories:

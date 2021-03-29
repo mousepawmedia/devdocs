@@ -216,7 +216,7 @@ We use the following graphics design tools:
 * **Birdfont**
 * **Blender**
 * **Darktable**
-* **GIMP**
+* **Glimpse**
 * **Gpick**
 * **Inkscape**
 * **Krita**
