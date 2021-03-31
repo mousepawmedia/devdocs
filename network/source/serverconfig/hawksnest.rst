@@ -163,38 +163,30 @@ Set ``EMAIL`` to ``"hawksnest@localhost"``. Save and close.
 LAMP Server
 ===================================================
 
-PHP7.2
+PHP7.4
 ----------------------------------------------------
-
-We'll be using PHP 7.2. We are using the ``ondrej`` PPA.
 
 ..  code-block:: bash
 
-    # Remove php7 from the system
-    $ sudo apt purge `dpkg -l | grep php| awk '{print $2}' |tr "\n " "`
+    $ sudo apt install php7.4
 
-    $ sudo add-apt-repository ppa:ondrej/php
-    $ sudo apt update
-    $ sudo apt dist-upgrade
-    $ sudo apt install php7.2
-
-    # Verify that PHP is on version 7.2
+    # Verify that PHP is on version 7.4
     $ sudo php -v
 
     # Install the libapache module.
-    $ sudo apt install libapache2-mod-php7.2
+    $ sudo apt install libapache2-mod-php7.4
 
     # Install the needed PHP packages.
-    $ sudo apt install php7.2-cli php7.2-common php7.2-curl php7.2-dev php7.2-gd php-gettext php7.2-json php7.2-mbstring php7.2-mysql php7.2-opcache php7.2-readline php7.2-xml
+    $ sudo apt install php7.4-cli php7.4-common php7.4-curl php7.4-dev php7.4-gd php-gettext php7.4-json php7.4-mbstring php7.4-mysql php7.4-opcache php7.4-readline php7.4-xml
 
     # Finally, update the alternatives.
     $ sudo update-alternatives --config php
-    # Select the option for php7.2
+    # Select the option for php7.4
 
 `SOURCE: How Do I Install Different PHP Version? (Ask Ubuntu) <http://askubuntu.com/a/109544/23786>`_
 
-..  NOTE:: We are not installing APC because it is not supported on PHP7.2
-    or above. ``php7.2-opcache`` handles that now.
+..  NOTE:: We are not installing APC because it is not supported on PHP 7.4
+    or above. ``php7.4-opcache`` handles that now.
 
 SSH
 ------------------------------------------
@@ -335,37 +327,22 @@ Edit the file, uncommenting or adding the following lines.::
     net.ipv4.conf.all.rp_filter = 1
     net.ipv4.conf.default.rp_filter = 1
 
-    # Ignore ICMP broadcast requests
-    net.ipv4.icmp_echo_ignore_broadcasts = 1
-
     # Disable source packet routing
     net.ipv4.conf.all.accept_source_route = 0
     net.ipv6.conf.all.accept_source_route = 0
-    net.ipv4.conf.default.accept_source_route = 0
-    net.ipv6.conf.default.accept_source_route = 0
 
     # Ignore send redirects
     net.ipv4.conf.all.send_redirects = 0
-    net.ipv4.conf.default.send_redirects = 0
 
     # Block SYN attacks
     net.ipv4.tcp_syncookies = 1
-    net.ipv4.tcp_max_syn_backlog = 2048
-    net.ipv4.tcp_synack_retries = 2
-    net.ipv4.tcp_syn_retries = 5
 
     # Log Martians
     net.ipv4.conf.all.log_martians = 1
-    net.ipv4.icmp_ignore_bogus_error_responses = 1
 
     # Ignore ICMP redirects
     net.ipv4.conf.all.accept_redirects = 0
     net.ipv6.conf.all.accept_redirects = 0
-    net.ipv4.conf.default.accept_redirects = 0
-    net.ipv6.conf.default.accept_redirects = 0
-
-    # Ignore Directed pings
-    net.ipv4.icmp_echo_ignore_all = 1
 
 Finally, reload ``sysctl``. If there are any errors, fix the associated lines.
 
@@ -382,19 +359,18 @@ To prevent IP spoofing, we edit ``/etc/hosts``.
 
     $ sudo vim /etc/host.conf
 
-Add or edit the following lines.
+Add or edit the following line.
 
 ..  code-block:: apache
 
-    order bind,hosts
-    nospoof on
+    order bind,host
 
 Harden PHP
 ---------------------------------------------
 
 ..  code-block:: bash
 
-    $ sudo vim /etc/php/7.2/apache2/php.ini
+    $ sudo vim /etc/php/7.4/apache2/php.ini
 
 Add or edit the following lines and save.::
 
@@ -405,7 +381,7 @@ Add or edit the following lines and save.::
     html_errors = Off
     magic_quotes_gpc = Off
     mail.add_x_header = Off
-    session.name = NEWSESSID
+    session.name = MPMSESSID
     memory_limit = 512M
 
 Restart the Apache2 server and make sure it still works.
@@ -650,8 +626,36 @@ Setup PSAD
     $ sudo apt install psad
     $ sudo vim /etc/psad/psad.conf
 
-Change "EMAIL_ADDRESS" to ``hawksnest@localhost`` and "HOSTNAME" to
-``hawksnest-server``.
+Change the following lines in that file
+(they probably aren't all next to each other):
+
+..  code-block::
+
+    EMAIL_ADDRESSES             hawksnest@localhost;
+
+    HOSTNAME                    hawksnest-server;
+
+    HOME_NET                    192.168.0/24;;
+    EXTERNAL_NET                any;
+
+    ENABLE_SYSLOG_FILE          Y;
+    IPT_WRITE_FWDATA            Y;
+    IPT_SYSLOG_FILE             /var/log/syslog;
+
+    ENABLE_AUTO_IDS Y;
+
+Save and close.
+
+In Ubuntu 20.04, there's a bug that must be corrected with this:
+
+..  code-block:: bash
+
+    $ sudo ln -s /usr/sbin/iptables /sbin/iptables
+    $ sudo ln -s /usr/sbin/ip6tables /sbin/ip6tables
+
+`SOURCE: github.com/mrash/psad/issues/76 <https://github.com/mrash/psad/issues/76>`_
+
+Then run...
 
 ..  code-block:: bash
 
@@ -659,13 +663,15 @@ Change "EMAIL_ADDRESS" to ``hawksnest@localhost`` and "HOSTNAME" to
     $ sudo iptables -A FORWARD -j LOG
     $ sudo ip6tables -A INPUT -j LOG
     $ sudo ip6tables -A FORWARD -j LOG
-    $ sudo psad -R
-    $ sudo psad --sig-update
     $ sudo psad -H
+    $ sudo psad --sig-update
+    $ sudo psad -R
     $ sudo psad --Status
 
 When you run that last command, it may whine about not finding a pidfile.
 It appears we can ignore that error.
+
+`SOURCE: How to install and use PSAD IDS on Ubuntu Linux (Rapid7 Blog) <https://blog.rapid7.com/2017/06/24/how-to-install-and-use-psad-ids-on-ubuntu-linux/>`_
 
 We also need to tweak Fail2Ban so that it doesn't start up before ``psad`` does.
 Otherwise, ``psad`` won't be able to log correctly.
@@ -779,7 +785,7 @@ Now enable one necessary PHP module and restart Apache2.
     $ sudo phpenmod mbstring
     $ sudo systemctl restart apache2
 
-..  NOTE:: This previously required mcrypt, which is lacking in PHP7.2.
+..  NOTE:: This previously required mcrypt, which is lacking in PHP7.4.
     However, it appears to be operating as expected without it.
 
 Test Apache2 again, as always.
@@ -796,14 +802,14 @@ Adjust the ``<Directory /usr/share/phpmyadmin>`` section to look like this.
 
 ..  code-block:: apache
 
-    Options FollowSymLinks
+    Options SymLinksIfOwnerMatch
     DirectoryIndex index.php
     AllowOverride none
 
     Order deny,allow
-    Deny from all # Deny from everyone!!!!
-    Allow from 127.0.0.1 # Allow from localhost
-    Allow from 192.168.1.0/24 # Allow from local network
+    Deny from all
+    Allow from 127.0.0.1
+    Allow from 192.168.1.0/24
 
 Restart the Apache2 server...
 
@@ -1214,7 +1220,7 @@ Now we can start up Tomcat.
     $ sudo systemctl daemon-reload
     $ sudo systemctl enable tomcat
     $ sudo systemctl start tomcat
-    $ sudo systemctl tomcat status
+    $ sudo systemctl status tomcat
 
 If the status shows up all right, we're good!
 
@@ -1449,11 +1455,33 @@ Save and close. Then, enable the needed mods and the site, and restart Apache2.
 
     $ sudo a2enmod proxy
     $ sudo a2enmod proxy_http
-    $ sudo a2enmod ehour
+    $ sudo a2ensite ehour
     $ sudo systemctl apache2 restart
 
 Test to ensure ``http://ehour.<serveraddress>/`` and
 ``https://ehour.<serveraddress>/`` work.
+
+Kimai
+===========================================
+
+We install Kimai like this:
+
+..  code-block:: bash
+
+    cd /opt
+    sudo git clone -b 1.13 --depth 1 https://github.com/kevinpapst/kimai2.git
+    cd kimai2/
+    sudo chown -R hawksnest:www-data .
+    composer install --no-dev --optimize-autoloader
+    sudo chmod -R g+r .
+    sudo chmod -R g+rw var/
+    sudo chmod -R g+rw public/avatars/
+    composer require laminas/laminas-ldap --optimize-autoloader
+
+
+
+
+    sudo -u www-data bin/console kimai:reload --env=prod
 
 Phabricator
 ===========================================
@@ -1632,7 +1660,7 @@ Save and close the file. Finally, load them up.
 
     $ sudo a2ensite phab
     $ sudo a2enmod ssl
-    $ sudo a2enmod php-7.2
+    $ sudo a2enmod php7.4
     $ sudo a2enmod rewrite
     $ sudo ufw allow 8446
     $ sudo systemctl restart apache2
@@ -1646,7 +1674,7 @@ Next, we need to make some modifications to ``php.ini`` for Phabricator to work.
 
 ..  code-block:: bash
 
-    $ sudo vim /etc/php/7.2/apache2/php.ini
+    $ sudo vim /etc/php/7.4/apache2/php.ini
 
 Make these changes...
 
@@ -1663,6 +1691,23 @@ configuration to access the database.
     $ ./bin/config set mysql.host localhost
     $ ./bin/config set mysql.user phab
     $ ./bin/config set mysql.pass thepasswordyouset
+
+We also need to change some settings for MySQL:
+
+..  code-block:: bash
+
+    $ sudo vim /etc/mysql/my.cnf
+
+Add or change the following lines in the ``[mysqld]`` section::
+
+    sql_mode=STRICT_ALL_TABLES
+    innodb_buffer_pool_size=1600M
+
+Save and close, and then restart MySQL:
+
+..  code-block:: bash
+
+    $ sudo systemctl restart mysql.service
 
 Set Log Locations
 ---------------------------------------------------
@@ -1694,7 +1739,7 @@ you can see these at ``https://<serveraddress>:8446/config/issues``.
 
 View each and fix as prescribed. Here are a few fixes we did...
 
-- We made a few changes to ``/etc/php/7.2/apache2/php.ini``.
+- We made a few changes to ``/etc/php/7.4/apache2/php.ini``.
 - We had to make several changes to the MySQL configuration. If you're looking
   for the MySQL configuration file, it's spread out across multiple ``.cnf``
   files in ``/etc/mysql``. Chances are, you want
@@ -2899,7 +2944,7 @@ probably already installed, but we're putting them here to be certain.
 
 ..  code-block:: bash
 
-    $ sudo apt install php7.2-bz2 php7.2-intl php7.2-xml php7.2-zip php7.2-curl php7.2-gd php-imagick php7.2-mbstring php7.2-ldap
+    $ sudo apt install php7.4-bz2 php7.4-intl php7.4-xml php7.4-zip php7.4-curl php7.4-gd php-imagick php7.4-mbstring php7.4-ldap
 
 Now we can install Nextcloud itself.
 
@@ -3079,9 +3124,9 @@ Due to a glitch in Nextcloud, we have to configure fail2ban to prevent lockouts.
 
     $ sudo vim /etc/fail2ban/filter.d/apache-auth.conf
 
-Look for the section :code:`ignoreregex = ` and add the following entry to it::
+Change the following line:
 
-    ^%(_apache_error_client)s (AH01797: )?client denied by server configuration: \/opt\/(nextcloud|ibp|ajc)\/config$
+    ignoreregex = [nextcloud|ajc|ibp]/[data/.ocdata|config]
 
 ..  NOTE:: ``nextcloud``, ``ibp``, and ``ajc`` are the three Nextcloud
     instance directories on this server. Change these as needed.
@@ -3090,7 +3135,7 @@ Configuring Memory Caching
 -----------------------------
 
 To improve performance, we'll enable memory caching. We are using APCu (since
-we're using PHP 7.2), so we simply need to enable this for Nextcloud.
+we're using PHP 7.4), so we simply need to enable this for Nextcloud.
 
 ..  code-block:: bash
 
@@ -3109,7 +3154,7 @@ Nextcloud recommends a few tweaks to php.ini. Run...
 
 .. code-block:: bash
 
-    $ sudo vim /etc/php/7.2/apache2/php.ini
+    $ sudo vim /etc/php/7.4/apache2/php.ini
 
 Find and edit the following lines::
 
@@ -3900,7 +3945,7 @@ incremental backup cron script.
 
     # chmod 700 /root/.passphrase
     # cd /etc/cron.daily
-    # vim duplicity.inc
+    # vim duplicity_inc
 
 Set the contents of that file to...
 
@@ -3922,7 +3967,7 @@ a cron script to run a weekly full backup.
 
     # chmod 755 duplicity.inc
     # cd /etc/cron.weekly/
-    # vim duplicity.full
+    # vim duplicity_full
 
 Set the contents of the weekly file to...
 
@@ -3945,14 +3990,14 @@ Save and close, and fix that file's permissions.
 
 ..  code-block:: bash
 
-    # chmod 755 duplicity.full
+    # chmod 755 duplicity_full
 
 You will want to test both by running...
 
 ..  code-block:: bash
 
-    # /etc/cron.daily/duplicity.inc
-    # /etc/cron.weekly/duplicity.full
+    # /etc/cron.daily/duplicity_inc
+    # /etc/cron.weekly/duplicity_full
 
 `SOURCE: How To Use Duplicity With GPG (DigitalOcean) <https://www.digitalocean.com/community/tutorials/how-to-use-duplicity-with-gpg-to-securely-automate-backups-on-ubuntu>`_
 
