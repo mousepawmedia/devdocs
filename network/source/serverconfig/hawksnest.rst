@@ -6,7 +6,11 @@ This documentation outlines how the Hawksnest server was built.
 Initial Installation
 ================================================
 
-Installed Ubuntu 16.04 LTS x64 Server from DVD.
+Installed Ubuntu 20.04 LTS x64 Server.
+
+..  NOTE: Originally installed Ubuntu 16.04, upgraded via do-release-upgrade.
+    We've attempted to document all changes, but there may still be some
+    discrepancies.
 
 * Hostname: ``hawksnest-server``
 
@@ -232,6 +236,9 @@ You can now connect to the server via SSH.
 
 MySQL
 -----------------------------------------
+
+..  NOTE: We originally used MySQL 5, but now *must* use MySQL 8 to remain
+    compatible with some updated applications.
 
 By default, we can only have 100 simultaneous connections to the MySQL database.
 That may seem like a lot, but considering how many services we'll be running,
@@ -590,12 +597,6 @@ of jails we enabled:
 - apache-fakegooglebot
 - apache-modsecurity
 - apache-shellshock
-
-Under `[apache-auth]`, you also need to add the following line, to prevent
-Nextcloud admin users from being automatically banned because of a bug::
-
-    # ignore intentional auth failures from nextcloud admin page
-    ignoreregex = nextcloud/data/.ocdata
 
 Save and close.
 
@@ -1079,7 +1080,7 @@ Installation
 
 ..  code-block:: bash
 
-    $ sudo apt install slapd ldap-utils phpldapadmin
+    $ sudo apt install slapd ldap-utils ldap-account-manager
     $ sudo dpkg-reconfigure slapd
 
 During the configuration, use these settings:
@@ -1093,395 +1094,407 @@ During the configuration, use these settings:
 - Move old database? Yes
 - Allow LDAPv2 protocol? No
 
-PHPldapadmin Config
+`SOURCE: How To Install and Configure A Basic LDAP Server (DigitalOcean) <https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-a-basic-ldap-server-on-an-ubuntu-12-04-vps>`_
+
+LDAP Account Manager Config
 -----------------------------------
 
-Now we need to adjust PHPldapadmin's configuration.
+Now we need to adjust LDAP Account Manager's configuration. Go to
+https://mousepawmedia.net/lam and click ``LAM Configuration`` in the upper-right
+corner.
 
-..  code-block:: bash
+Click ``General settings``. If this is your first time logging in, the Master
+Password is ``lam``.
 
-    $ sudo vim /etc/phpldapadmin/config.php
+On the page that appears, enter a new master password. Be sure not to lose it!
 
-Modify the following lines in the file.::
+You can adjust other settings here as needed, but the defaults should be fine.
 
-    $servers->setValue('server','name','MousePaw Media LDAP');
-    $servers->setValue('server','host','localhost');
-    $servers->setValue('server','base',array('dc=ldap,dc=mousepawmedia,dc=net'));
-    $servers->setValue('login','bind_id','cn=admin,dc=ldap,dc=mousepawmedia,dc=net');
-    $config->custom->appearance['hide_template_warning'] = true;
+Click ``Ok``.
 
-..  NOTE:: Genius moment alert. Make sure you modified the actual versions of
-    the second and third lines, not a comment thereof. As to the fourth line,
-    uncomment it and THEN make the changes.
+Now go to ``LAM Configuration`` and ``Edit server profiles``. Click ``Manage
+server profiles`` and rename the profile to ``admin``. Click ``OK``.
 
-Secure PHPldapadmin
------------------------------------------------------------
+Now go to ``LAM Configuration`` and ``Edit server profiles``. Log in.
 
-Now, open up the Apache configuration for PHPldapadmin...
+Ensure the following settings on the General settings tab:
 
-..  code-block:: bash
+* Server address: ``ldap://localhost:389``
+* Activate TLS: no
+* Tree suffix: ``dc=ldap,dc=mousepawmedia,dc=net``
+* Advanced options > Display name: ``PawID``
 
-    $ sudo vim /etc/apache2/conf-available/phpldapadmin.conf
+Scroll down to Security settings. Set the Login method to Fixed list, and then
+set ``List of valid users`` to ``cn=admin,dc=ldap,dc=mousepawmedia,dc=net``.
 
-Adjust the ``<Directory /usr/share/phpldapadmin/htdocs/>`` section to look like
-this.
-
-..  code-block:: apache
-
-    DirectoryIndex index.php
-    Options +FollowSymLinks
-    AllowOverride none
-
-    Order deny,allow
-    Deny from all # Deny from everyone!!!!
-    Allow from 127.0.0.1 # Allow from localhost
-    Allow from 192.168.1.0/24 # Allow from local network
-
-Restart Apache (you geniuses should know how to do that by now) and check
-``http://<serveraddress>/phpldapadmin``.
-
-`SOURCE: How To Install and Configure A Basic LDAP Server (DigitalOcean) <https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-a-basic-ldap-server-on-an-ubuntu-12-04-vps>`_
+Click ``Save``.
 
 Configuring LDAP Schema
 --------------------------------
 
-We will create two Organisational Units: ``Groups`` and ``Users``. Under ``Groups``,
-add a ``staff`` and an ``admin`` Posix Group.
-
-Next, add each staff member under ``Users``. Remember to include the ``Email``
-field, and use ``cn`` for their MousePaw Media username.
-
-
-eHour
-=================================================
-
-Installing Tomcat
--------------------------------------------------
-
-..  code-block:: bash
-
-    $ sudo groupadd tomcat
-    $ sudo useradd -s /bin/false -g tomcat -d /opt/tomcat tomcat
-    $ cd /tmp
-    $ curl -O http://apache.mirrors.ionfish.org/tomcat/tomcat-8/v8.5.5/bin/apache-tomcat-8.5.5.tar.gz
-    $ sudo mkdir /opt/tomcat
-    $ sudo tar xzvf apache-tomcat-8*tar.gz -C /opt/tomcat --strip-components=1
-    $ cd /opt/tomcat
-    $ sudo chgrp -R tomcat /opt/tomcat
-    $ sudo chmod -R g+r conf
-    $ sudo chmod g+x conf
-    $ sudo chown -R tomcat webapps/ work/ temp/ logs/
-    $ sudo update-java-alternatives -l
-
-..  NOTE:: For those of you following along at home, the JAVA_HOME is
-    ``/usr/lib/jvm/java-1.8.0-openjdk-amd64/jre``!
-
-Configuring Tomcat
-------------------------------------------------------
-
-We have to create the service file for Tomcat manually.
-
-..  code-block:: bash
-
-    $ sudo vim /etc/systemd/system/tomcat.service
-
-Enter the following into the file::
-
-    [Unit]
-    Description=Apache Tomcat Web Application Container
-    After=network.target
-
-    [Service]
-    Type=forking
-
-    Environment=JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre
-    Environment=CATALINA_PID=/opt/tomcat/temp/tomcat.pid
-    Environment=CATALINA_HOME=/opt/tomcat
-    Environment=CATALINA_BASE=/opt/tomcat
-    Environment='CATALINA_OPTS=-Xms512M -Xmx1024M -server -XX:+UseParallelGC'
-    Environment='JAVA_OPTS=-Djava.awt.headless=true -Djava.security.egd=file:/dev/./urandom'
-
-    ExecStart=/opt/tomcat/bin/startup.sh
-    ExecStop=/opt/tomcat/bin/shutdown.sh
-
-    User=tomcat
-    Group=tomcat
-    UMask=0007
-    RestartSec=10
-    Restart=always
-
-    [Install]
-    WantedBy=multi-user.target
-
-Now we can start up Tomcat.
-
-..  code-block:: bash
-
-    $ sudo systemctl daemon-reload
-    $ sudo systemctl enable tomcat
-    $ sudo systemctl start tomcat
-    $ sudo systemctl status tomcat
-
-If the status shows up all right, we're good!
-
-Adjust Tomcat Port
----------------------------------------------------
-
-We don't want to run Tomcat on 8080, but rather 8441. To change this...
-
-..  code-block:: bash
-
-    $ sudo vim /opt/tomcat/conf/server.xml
-
-Find the connector for port="8080", and replace it with::
-
-    <!--
-    <Connector port="8080" protocol="HTTP/1.1"
-               connectionTimeout="20000"
-               redirectPort="8443" />
-    -->
-    <!-- Define a SSL Coyote HTTP/1.1 Connector on port 8443 -->
-    <Connector
-           protocol="org.apache.coyote.http11.Http11NioProtocol"
-           port="8441" maxThreads="200"
-           scheme="https" secure="true" SSLEnabled="true"
-           keystoreFile="/etc/apache2/ssl/mousepawmedia.net/keys.jks" keystorePass="thepassword"
-           clientAuth="false" sslProtocol="TLS"/>
-
-Make sure the password matches the one specified in the ``renewcert_post`` script
-we defined earlier.
-
-Save and close. Restart Tomcat, and open the appropriate port in the firewall!
-
-..  code-block:: bash
-
-    $ sudo ufw allow 8441
-    $ sudo systemctl restart tomcat
-
-Test Tomcat by going to ``http://<serveraddress>:8441``.
-
-Add Control Panel Users
---------------------------------------
-
-Add users by editing this file...
-
-..  code-block:: bash
-
-    $ sudo vim /opt/tomcat/conf/tomcat-users.xml
-
-Add the following lines to the file where appropriate.::
-
-    <user username="admin" password="password" roles="manager-gui,admin-gui"/>
-
-(Obviously, you should have replaced password with something intelligent.)
-
-Next, modify each of the following two files with the same changes listed
-below...
-
-..  code-block:: bash
-
-    $ sudo vim /opt/tomcat/webapps/manager/META-INF/context.xml
-    $ sudo vim /opt/tomcat/webapps/host-manager/META-INF/context.xml
-
-The change should be::
-
-    <Context antiResourceLocking="false" privileged="true" >
-      <!--<Valve className="org.apache.catalina.valves.RemoteAddrValve"
-             allow="192\.168\.254\.\d+|::1|0:0:0:0:0:0:0:1" />-->
-    </Context>
-
-This locks the control panel to only be accessible from the local network.
-
-Shutting Off Excess Stuff
-------------------------------------------
-
-There are a number of default Tomcat applications (\*.war files) that we don't
-want running. Also, we want to replace the landing page.
-
-..  code-block:: bash
-
-    $ cd /opt/tomcat
-    $ sudo su
-    # mkdir webapps-disabled
-    # mv webapps/docs webapps-disabled/
-    # mv webapps/examples webapps-disabled/
-    # mv webapps/ROOT webapps-disabled
-    # exit
-
-We'll be putting eHour in place of the Tomcat root.
-
-Installing eHour
-------------------------------------
-
-If you're performing a fresh installation of eHour, download the ``.war`` from
-their website. However, since we're coming from a previous installation on
-another machine, we'll just copy over the ``.war`` file and ``$EHOUR_HOME``
-directory.
-
-In our case, the ``$EHOUR_HOME`` directory is ``/opt/ehour-dist``.
-
-Next, we need to create the database.
-
-..  code-block:: bash
-
-    $ sudo mysqladmin create ehour -u root -p
-
-Enter the password for the MySQL root.
-
-Next, we can either create a new, fresh eHour database, or import our old one
-(which was exported to ``ehour.sql`` file on the old server and saved to the
-``IMPORTED`` folder on the new server's home directory.).
-
-Both steps are shown below. Choose the one you want.
-
-..  code-block:: bash
-
-    # Create a new database...
-    $ sudo mysql ehour -u root -p < /opt/ehour-dist/sql/mysql/install/fresh.mysql.sql
-    #
-    # OR
-    #
-    # Import old database...
-    $ sudo mysql ehour -u root -p < /home/hawksnest/IMPORTED/ehour.sql
-
-Now we'll configure Apache Tomcat to work with eHour.
-
-..  NOTE:: On this server, the Tomcat ``bin`` directory is at ``/opt/tomcat/bin``.
-
-..  code-block:: bash
-
-    $ sudo su
-    # cd /opt/tomcat/bin
-    # vim setenv.sh
-
-Add the contents::
-
-    export EHOUR_HOME="/opt/ehour"
-
-Save and close. Then we'll make that file executable.
-
-..  code-block:: bash
-
-    # chmod +x setenv.sh
-    # exit
-
-Next, we create a new user account for ``ehour`` on PHPMyAdmin. Give this
-user privileges on the ``ehour`` database.
-
-Next, we modify the configuration file for eHour.
-
-..  code-block:: bash
-
-    $ sudo vim ~/ehour-dist/conf/ehour.properties
-
-Uncomment and modify the following lines as necessary::
-
-    # for mysql uncomment the following lines (and make sure postgresql lines below are commented out)
-    ehour.database.driver=com.mysql.jdbc.Driver
-    ehour.database.url=jdbc:mysql://127.0.0.1:3306/ehour?zeroDateTimeBehavior=convertToNull&useOldAliasMetadataBehavior=true
-    ehour.database.username=ehour
-    ehour.database.password=thepasswordforehour
-
-Save and close.
-
-Finally, copy the ``.war`` file from ``/home/hawksnest/IMPORTED`` where we first
-put it, to ``/opt/tomcat/webapps``, changing the file name to ``ehour.war`` so our
-web address is prettier.
-
-..  code-block:: bash
-
-    $ sudo cp /home/hawksnest/IMPORTED/ehour-1.4.3.war /opt/tomcat/webapps/ROOT.war
-
-Navigate to ``http://<serveraddress>:8441/`` to test the installation.
-
-Apache2 Proxy
----------------------------------------
-
-Let's set up a nice little proxy, so we can access port 8441 via port 443 or
-port 80 on the eHour subdomain.
-
-..  code-block:: bash
-
-    $ sudo vim /etc/apache2/sites-available/ehour.conf
-
-Set the contents of that file to...
-
-..  code-block:: apache
-
-    <IfModule mod_ssl.c>
-        <VirtualHost *:443>
-            ServerName ehour.mousepawmedia.net
-            ServerAdmin hawksnest@mousepawmedia.com
-
-            SSLProxyEngine on
-            ProxyPreserveHost On
-            ProxyPass         /  https://ehour.<serveraddress>:8441/
-            ProxyPassReverse  /  https://ehour.<serveraddress>:8441/
-            ProxyRequests     Off
-            AllowEncodedSlashes NoDecode
-
-            SSLEngine on
-            SSLCertificateFile  /etc/apache2/ssl/mousepawmedia.net/fullchain.pem
-            SSLCertificateKeyFile /etc/apache2/ssl/mousepawmedia.net/privkey.pem
-            Include /etc/letsencrypt/options-ssl-apache.conf
-        </VirtualHost>
-
-        <VirtualHost *:80>
-            Servername ehour.mousepawmedia.net
-            ServerAdmin hawksnest@mousepawmedia.com
-
-            ErrorLog ${APACHE_LOG_DIR}/error.log
-            CustomLog ${APACHE_LOG_DIR}/access.log combined
-
-            RewriteEngine On
-            RewriteCond %{HTTPS} off
-            RewriteRule ^/(.*)$ https://ehour.<serveraddress>/$1
-        </VirtualHost>
-
-        <VirtualHost *:8441>
-            ServerName hawksnest.ddns.net
-            RedirectMatch ^/(.*)$ https://ehour.<serveraddress>/$1
-
-            SSLEngine on
-            SSLCertificateFile /etc/apache2/ssl/hawksnest/fullchain.pem
-            SSLCertificateKeyFile /etc/apache2/ssl/hawksnest/privkey.pem
-            Include /etc/letsencrypt/options-ssl-apache.conf
-        </VirtualHost>
-    </IfModule>
-
-Save and close. Then, enable the needed mods and the site, and restart Apache2.
-
-..  code-block:: bash
-
-    $ sudo a2enmod proxy
-    $ sudo a2enmod proxy_http
-    $ sudo a2ensite ehour
-    $ sudo systemctl apache2 restart
-
-Test to ensure ``http://ehour.<serveraddress>/`` and
-``https://ehour.<serveraddress>/`` work.
+Go to ``LAM Configuration`` and ``Edit server profiles``. Log in.
+
+Then, go to the Account types tab. Create two account types:
+
+* Users
+    * LDAP suffix: ``ou=Users,dc=ldap,dc=mousepawmedia,dc=net``
+    * List attributes: ``#uid;#cn;#mail;#uidNumber;#gidNumber``
+* Groups
+    * LDAP suffix: ``ou=Groups,dc=ldap,dc=mousepawmedia,dc=net``
+    * List attributes: ``#cn;#gidNumber;#memberUID;#description``
+
+Go to the Modules tab. For Users, select these modules:
+
+* Personal (inetOrgPerson)(*)
+* Unix (posixAccount)
+* Shadow (shadowAccount)
+
+For Groups, select these modules:
+
+* Unix (posixGroup)(*)
+
+On the Module settings, you can hide some options. Customize this as you like.
+
+Then, click ``Save``.
+
+Login on the main page with the ``admin`` LDAP account.
+
+Click the Groups tab and create the groups you want. Here are ours:
+
+* user
+* admin
+* alumni
+* community
+* contentdev
+* designproduction
+* former
+* hiring
+* management
+* masscomm
+* programming
+* repomaster
+* staff
+
+The ``user`` group will be the base group for everyone, while the others will
+be used by other applications for permissions and group membership.
+
+Now click ``Users`` and create the user accounts, with the following
+fields at minimum. (Notes about the fields are in parentheses below.)
+
+* RDN identifier: uid
+* Personal
+    * First name
+    * Last name
+    * Email address
+* Unix
+    * Username
+    * Common name (full name with middle initial)
+    * Primary group (always set to ``user``)
+    * Additional groups (set as desired for user)
+
+Now click ``Save`` and ``Edit again``. Click ``Set password`` at the top to
+set the user password.
+
+..  NOTE: If you set the RDN identifier wrong, you can use ``Tree view`` to
+    ``Rename`` from ``cn=name,ou=Users,dc=ldap,dc=mousepawmedia,dc=net`` to
+    ``uid=name,ou=Users,dc=ldap,dc=mousepawmedia,dc=net``.
 
 Kimai
 ===========================================
+
+Installing Composer
+------------------------------------
+
+First, we need to install the lastest Composer:
+
+..  code-block:: bash
+
+    $ sudo apt install php-cli unzip
+    $ cd /tmp
+    $ curl -sS https://getcomposer.org/installer -o composer-setup.php
+    $ HASH=`curl -sS https://composer.github.io/installer.sig`
+    $ php -r "if (hash_file('SHA384', 'composer-setup.php') === '$HASH') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+
+You should see "Installer verified". If so, we can install.
+
+..  code-block:: bash
+
+    $ sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+    $ composer
+
+If that works, we can move on to installing Kimai.
+
+`SOURCE: How to Install Composer on Ubuntu 20.04 (DigitalOcean) <https://www.digitalocean.com/community/tutorials/how-to-install-composer-on-ubuntu-20-04-quickstart>`_
+
+Installing Kimai
+------------------------------------
+
+Next, in MyPHPAdmin, create a user and a database called `kimai2`. You'll
+need the password for that user shortly.
 
 We install Kimai like this:
 
 ..  code-block:: bash
 
-    cd /opt
-    sudo git clone -b 1.13 --depth 1 https://github.com/kevinpapst/kimai2.git
-    cd kimai2/
-    sudo chown -R hawksnest:www-data .
-    composer install --no-dev --optimize-autoloader
-    sudo chmod -R g+r .
-    sudo chmod -R g+rw var/
-    sudo chmod -R g+rw public/avatars/
-    composer require laminas/laminas-ldap --optimize-autoloader
+    $ cd /tmp
+    $ git clone -b 1.13 --depth 1 https://github.com/kevinpapst/kimai2.git
+    $ sudo mv kimai2 /opt/kimai2
+    $ cd /opt/kimai2/
+    $ composer install --no-dev --optimize-autoloader
+    $ vim .env
 
+Now edit that file so it contains something like the following, changing the
+values `CHANGE_ME` (two places below) as appropriate.
 
+..  code-block:: env
 
+    # This file is a "template" of which env vars need to be defined for your application
+    # Copy this file to .env file for development, create environment variables when deploying to production
+    # https://symfony.com/doc/current/best_practices/configuration.html#infrastructure-related-configuration
+
+    ###> symfony/framework-bundle ###
+    APP_ENV=prod
+    APP_SECRET=CHANGE_ME
+    #TRUSTED_PROXIES=127.0.0.1,127.0.0.2
+    #TRUSTED_HOSTS=localhost,example.com
+    ###< symfony/framework-bundle ###
+
+    ###> doctrine/doctrine-bundle ###
+    # Format described at http://docs.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/configuration.html#connecting-using-a-url
+    # For a MySQL database, use: "mysql://db_user:db_password@127.0.0.1:3306/db_name?serverVersion=10.2.12&charset=utf8"
+    # For a MariaDB database, use: "mysql://db_user:db_password@127.0.0.1:3306/db_name?serverVersion=mariadb-10.2.12"
+    # For an SQLite database, use: "sqlite:///%kernel.project_dir%/var/data/kimai.sqlite"
+    # IMPORTANT: You MUST configure your server version, either here or in config/packages/doctrine.yaml
+    DATABASE_URL=mysql://kimai2:CHANGE_ME@127.0.0.1:3306/kimai2
+    #DATABASE_URL=sqlite:///%kernel.project_dir%/var/data/kimai.sqlite
+    ###< doctrine/doctrine-bundle ###
+
+    ###> nelmio/cors-bundle ###
+    CORS_ALLOW_ORIGIN=^https?://localhost(:[0-9]+)?$
+    ###< nelmio/cors-bundle ###
+
+    ### Email configuration
+    # SMTP: smtp://localhost:25?encryption=&auth_mode=
+    # Google: gmail://username:password@default
+    # Amazon: ses://ACCESS_KEY:SECRET_KEY@default?region=eu-west-1
+    # Mailchimp: mandrill://KEY@default
+    # Mailgun: mailgun://KEY:DOMAIN@default
+    # Postmark: postmark://ID@default
+    # Sendgrid: sendgrid://KEY@default
+    # Disable emails: null://null
+    MAILER_URL=null://null
+    MAILER_FROM=hawksnest@mousepawmedia.com
+
+Save and close, and then run the following:
+
+..  code-block:: bash
+
+    $ bin/console kimai:install -n
+    $ sudo chown -R hawksnest:www-data .
+    $ chmod -R g+r .
+    $ chmod -R g+rw var/
+    $ chmod -R g+rw public/avatars/
+
+Kimai itself is now installed.
+
+`SOURCE: Installation (Kimai Docs) <https://www.kimai.org/documentation/installation.html>`_
+
+Setting Up Apache2 for Kimai
+------------------------------------
+
+    Then, to setup Apache, run the following:
+
+    ..  code-block:: bash
+
+        $ sudo vim /etc/apache2/sites_available/kimai.conf
+
+    Set the contents of that file to:
+
+    ..  code-block:: apache
+
+        <IfModule mod_ssl.c>
+            <VirtualHost *:443>
+                ServerName time.mousepawmedia.net
+                DocumentRoot /opt/kimai2/public
+
+                SSLEngine on
+                SSLCertificateFile     /etc/apache2/ssl/mousepawmedia.net/fullchain.pem
+                SSLCertificateKeyFile /etc/apache2/ssl/mousepawmedia.net/privkey.pem
+                Include /etc/letsencrypt/options-ssl-apache.conf
+
+                ErrorLog ${APACHE_LOG_DIR}/error.log
+                CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+                <Directory "/opt/kimai2/public">
+                    Options +FollowSymLinks
+                    AllowOverride All
+
+                    <IfModule mod_dave.c>
+                        Dav off
+                    </IfModule>
+
+                    Require all granted
+
+                    FallbackResource /index.php
+                </Directory>
+
+                <Directory /opt/kimai2>
+                    Options FollowSymLinks
+                </Directory>
+
+                <Directory /opt/kimai2/public/bundles>
+                    FallbackResource disabled
+                </Directory>
+
+                BrowserMatch "MSIE [2-6]" \
+                nokeepalive ssl-unclean-shutdown \
+                downgrade-1.0 force-response-1.0
+                # MSIE 7 and newer should be able to use keepalive
+                BrowserMatch "MSIE [17-9]" ssl-unclean-shutdown
+            </VirtualHost>
+        </IfModule>
+
+    Save and close, and then run this:
+
+    ..  code-block:: bash
+
+        sudo vim /etc/apache2/apache2.conf
+
+    Add the following section:
+
+    ..  code-block:: apache
+
+        <Directory "/opt/kimai2">
+            Options FollowSymLinks
+            AllowOverride All
+            Require all granted
+        </Directory>
+
+    Save and close, and then enable the site and restart Apache2:
+
+    ..  code-block:: bash
+
+        $ sudo a2ensite kimai
+        $ sudo systemctl restart apache2
+
+Now go to ``https://time.<serveraddress>`` and verify that everything works so far.
+
+`SOURCE: Webserver configuration (Kimai Docs) <https://www.kimai.org/documentation/webserver-configuration.html#apache>`_
+
+LDAP for Kimai
+------------------------------------
+
+Let's set up LDAP for Kimai.
+
+,.  code-block:: bash
+
+    $ cd /opt/kimai2
+    $ composer update
+    $ composer require laminas/laminas-ldap --update-no-dev --optimize-autoloader
+    $ vim /opt/kimai2/config/packages/local.yaml
+
+Set the contents of that file to this:
+
+..  code-block:: yaml
+
+    kimai:
+        user:
+            registration: false
+            password_reset: false
+        permissions:
+            roles:
+                ROLE_USER: ['!password_own_profile']
+                ROLE_TEAMLEAD: ['!password_own_profile']
+                ROLE_ADMIN: ['!password_own_profile']
+        ldap:
+            connection:
+                host: 127.0.0.1
+                #port: 389
+                #bindRequiresDn: true
+            user:
+                baseDn: ou=Users, dc=ldap, dc=mousepawmedia, dc=net
+                usernameAttribute: uid
+                filter: (&(objectClass=inetOrgPerson))
+                attributes:
+                    - { ldap_attr: "usernameAttribute", user_method: setUsername }
+                    - { ldap_attr: mail, user_method: setEmail }
+                    - { ldap_attr: cn, user_method: setAlias }
+            role:
+                baseDn: ou=Groups, dc=ldap, dc=mousepawmedia, dc=net
+                filter: (&(objectClass=posixGroup)(|(cn=management)(cn=admin)))
+                usernameAttribute: uid
+                userDnAttribute: memberUid
+                nameAttribute: cn
+                groups:
+                    - { ldap_value: management, role: ROLE_TEAMLEAD }
+                    - { ldap_value: admin, role: ROLE_SUPER_ADMIN }
+    security:
+        providers:
+            chain_provider:
+                chain:
+                    providers: [kimai_ldap]
+        firewalls:
+            secured_area:
+                kimai_ldap: ~
+
+Save and close. Finally, reload Kimai.
+
+..  code-block:: bash
 
     sudo -u www-data bin/console kimai:reload --env=prod
+
+
+`SOURCE: LDAP (Kimai Docs) <https://www.kimai.org/documentation/ldap.html>`_
+
+Reload/Repair Script
+--------------------------------------------
+
+Kimai is particularly vulnerable to getting its permissions messed up.
+This script will (usually hopefully) fix that:
+
+..  code-block:: bash
+
+    $ vim /opt/kimai2/cache.sh
+
+Set the contents of that file to this:
+
+..  code-block:: bash
+
+    #!/bin/bash
+
+    cd /opt/kimai2
+
+    if [[ ! -d "var/" || ! -d "var/cache/prod/" ]];
+    then
+    echo "Cache directory does not exist at: var/cache/prod/"
+    exit 1
+    fi
+
+    if [[ ! -f "bin/console" ]];
+    then
+    echo "Kimai console does not exist at: bin/console"
+    exit 1
+    fi
+
+    sudo rm -rf var/cache/prod/*
+    sudo -u www-data bin/console kimai:reload --env=prod
+    sudo chown -R hawksnest:www-data .
+    chmod -R g+r .
+    chmod -R 775 var/
+    chmod -R g+rw public/avatars/
+
+Save and close, and then make that script executable.
+
+..  code-block:: bash
+
+    $ chmod +x /opt/kimai2/cache.sh
+
+Finally, run the script.
+
+..  code-block:: bash
+
+    $ /opt/kimai2/cache.sh
+
 
 Phabricator
 ===========================================
@@ -2190,6 +2203,28 @@ Migrating Domain Names
 Then, revisit the other steps to ensure everything's working on the correct
 domain names.
 
+LDAP
+-------------------------------------------------
+
+I want to allow logging in with LDAP. In the terminal, run the following:
+
+..  code-block:: bash
+
+    $ cd /opt/phab/phabricator
+    $ bin/auth unlock
+
+Then, in Phabricator itself, go to the Auth app (``/auth``).
+
+Add the ``LDAP`` provider. Use the following settings:
+
+* LDAP Hostname: ``localhost``
+* LDAP Port: ``389``
+* Base Distinguished Name: ``ou=Users, dc=ldap, dc=mousepawmedia, dc=net``
+* Search Attributes: ``uid cn mail`` (note: put each of those on a separate line)
+* Always Search: Yes
+* Username Attribute: ``uid``
+* Realname Attributes: ``cn``
+* LDAP Version: ``3``
 
 Jenkins
 =================================================
@@ -2395,6 +2430,49 @@ version of Jenkins (proxy 8449).
 
 Test to ensure ``http://jenkins.<serveraddress>:8459/`` still works over HTTP,
 without redirecting.
+
+LDAP Integration
+---------------------------------------------------
+
+All logins and permissions will be handled by LDAP.
+
+You will first need to install the "LDAP Plugin" and
+"Role-based Authorization Stragegy" plugins.
+
+Go to ``Manage Jenkins`` and ``Configure Global Security``. Under Security Realm,
+select ``LDAP`` and fill in the following details. (You may need to click
+``Advanced Server Configuration...``
+
+* Server: ``localhost:389``
+* root DN: ``dc=ldap,dc=mousepawmedia,dc=net``
+* User search base: ``ou=Users``
+* User search filter: ``uid={0}``
+* Group search base: ``ou=Groups``
+* Group search filter: ``(& (cn={0}) (objectclass=posixGroup))``
+* Group membership: Search for LDAP groups containing user
+* Group membership filter: ``(memberUid={1})``
+* Display Name LDAP attribute: ``cn``
+* Email Address LDAP attribute: ``mail``
+
+Click ``Test LDAP settings`` to make sure it works correctly. Login with an LDAP
+account when prompted, and you should see the groups that user is a member of
+in LDAP.
+
+Also scroll down to Authroization and select ``Role-Based Strategy``.
+
+Press ``Save``.
+
+Now go to ``Manage and Assign Roles``. In ``Manage Roles``, create or modify
+the roles "admin", "anonymous", "repomaster", and "staff", setting permissions
+as appropriate.
+
+Now to go ``Manage Jenkins``, ``Manage and Assign Roles``, and ``Assign Roles``.
+
+Add the groups ``admin``, ``community``, ``repomaster``, and ``staff``. Grant
+them roles as appropriate. (For us, both ``staff`` and ``community`` are
+granted the ``staff`` role.)
+
+Scroll down and click ``Save``.
 
 HTML Landing Page
 ===================================================
@@ -2870,7 +2948,7 @@ Enter valid LDAP credentials. If it works, you'll see::
 
     Login Succeeded
 
-Configuring Jenkins to Use Nextcloud
+Configuring Jenkins to Use Docker
 --------------------------------------------
 
 With Docker successfully installed, now we only need to setup Jenkins to use it.
@@ -3124,8 +3202,9 @@ Due to a glitch in Nextcloud, we have to configure fail2ban to prevent lockouts.
 
     $ sudo vim /etc/fail2ban/filter.d/apache-auth.conf
 
-Change the following line:
+Change or add the following lines::
 
+    # ignore intentional auth failures from nextcloud admin page
     ignoreregex = [nextcloud|ajc|ibp]/[data/.ocdata|config]
 
 ..  NOTE:: ``nextcloud``, ``ibp``, and ``ajc`` are the three Nextcloud
@@ -3217,9 +3296,9 @@ Check ``LDAP/AD Username`` and ``LDAP/AD Email Address``, and then click
 
 * Directory Settings
 
-    * User Display Name Field: ``cn``
+    * User Display Name Field: ``uid``
 
-    * 2nd User Display Name Field: ``sn``
+    * 2nd User Display Name Field: ``cn``
 
     * Base User Tree: ``ou=Users, dc=ldap, dc=mousepawmedia, dc=net``
 
@@ -3227,9 +3306,14 @@ Check ``LDAP/AD Username`` and ``LDAP/AD Email Address``, and then click
 
     * Base Group Tree: ``ou=Groups, dc=ldap, dc=mousepawmedia, dc=net``
 
+    * Group-Member association: ``memberUid``
+
 * Special Attributes
 
     * Email field: ``mail``
+
+Also, click the Groups tag and select all the Groups that you want to use
+in Nextcloud. We use all but ``users`` and ``disabled``.
 
 Click ``Test Configuration``.
 
@@ -3946,6 +4030,8 @@ incremental backup cron script.
     # chmod 700 /root/.passphrase
     # cd /etc/cron.daily
     # vim duplicity_inc
+
+..  NOTE: The filename must only contain letters and underscores, or it will never run!
 
 Set the contents of that file to...
 
