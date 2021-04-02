@@ -856,7 +856,7 @@ the sites you do not have. Be sure to uncomment them later!
 
     #!/bin/bash
 
-    a2dissite mousepawgames.net 000-mousepawmedia.com mousepawgames.com standards indeliblebluepen.com squirrelmail
+    a2dissite mousepawgames.net 000-mousepawmedia.com mousepawgames.com standards docs indeliblebluepen.com codemouse92.com roundcube staff survey
     a2ensite 000-default
     systemctl reload apache2
 
@@ -883,7 +883,7 @@ the sites you do not have. Be sure to uncomment them later!
 
     # Restore the sites and restart critical services which use this.
     a2dissite 000-default
-    a2ensite mousepawgames.net 000-mousepawmedia.com mousepawgames.com standards indeliblebluepen.com squirrelmail
+    a2ensite mousepawgames.net 000-mousepawmedia.com mousepawgames.com standards docs indeliblebluepen.com codemouse92.com roundcube staff survey
     systemctl restart apache2
 
 Save and close. Change the script permissions so it can only be read, accessed,
@@ -2580,15 +2580,81 @@ If that works, all is humming along as it should!
 Mail Clients
 -----------------------
 
-We'll be installing the web client SquirrelMail.
+We'll be installing the web client Roundcube.
+
+We start with the dependencies, including the latest version of Composer:
 
 ..  code-block:: bash
 
-    $ sudo apt install squirrelmail
-    $ sudo cp /etc/squirrelmail/apache.conf /etc/apache2/sites-available/squirrelmail.conf
-    $ sudo vim /etc/apache2/sites-available/squirrelmail.conf
+    $ sudo apt install php-cli php-xml php-mbstring php-intl php-imagick php-zip php-pear zip unzip git
+    $ cd /tmp
+    $ curl -sS https://getcomposer.org/installer -o composer-setup.php
+    $ HASH=`curl -sS https://composer.github.io/installer.sig`
+    $ php -r "if (hash_file('SHA384', 'composer-setup.php') === '$HASH') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
 
-Set the contents to the following...
+You should see “Installer verified”. If so, we can install.
+
+..  code-block:: bash
+
+    $ sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+    $ composer
+
+Composer should show its help info.
+
+We also need to enable some PHP extensions:
+
+..  code-block:: bash
+
+    $ sudo nano /etc/php/7.0/apache2/php.ini
+
+Uncomment the following lines:
+
+..  code-block:: ini
+
+    extension=php_mbstring.dll
+    extension=php_xmlrpc.dll
+
+Add the following uncommented lines after the commented line shown here:
+
+..  code-block:: ini
+
+    ;extension=php_xsl.dll
+    extension=dom.so
+    extension=imagick.so
+
+Uncomment and/or update the following lines as seen here:
+
+..  code-block:: ini
+
+    date.timezone = "America/Los_Angeles"
+
+    upload_max_filesize = 12M
+
+    post_max_size = 18M
+
+    mbstring.func_overload = 0
+
+Save and close.
+
+Now we can download the latest version of Roundcube. Go to the
+`Roundcube download page <https://roundcube.net/download/>`_, find the latest
+Stable version, and right-click :guilabel:`Download` next to :guilabel:`Complete`.
+Copy the link address.
+
+Use that URL (and the accompanying version) in place of the URL and version
+in the commands below:
+
+,.  code-block:: bash
+
+    $ cd /tmp
+    $ wget https://github.com/roundcube/roundcubemail/releases/download/1.4.11/roundcubemail-1.4.11-complete.tar.gz
+    $ tar -xvzf roundcubemail-1.4.11-complete.tar.gz
+    $ sudo mv roundcubemail-1.4.11 /opt/roundcube
+    $ sudo chown -R www-data:www-data /opt/roundcube
+    $ sudo chmod 775 /opt/roundcube/temp/ /opt/roundcube/logs/
+    $ sudo vim /etc/apache2/sites-available/roundcube.conf
+
+Set the contents of that file to:
 
 ..  code-block:: apache
 
@@ -2597,27 +2663,19 @@ Set the contents to the following...
             ServerName webmail.mousepawmedia.com
 
             ServerAdmin webmaster@mousepawmedia.com
-            DocumentRoot /usr/share/squirrelmail
+            DocumentRoot /opt/roundcube
 
-            ErrorLog ${APACHE_LOG_DIR}/error.log
-            CustomLog ${APACHE_LOG_DIR}/access.log combined
+            ErrorLog ${APACHE_LOG_DIR}/roundcube-error.log
+            CustomLog ${APACHE_LOG_DIR}/roundcube-access.log combined
 
-            <Directory /usr/share/squirrelmail>
-                Options FollowSymLinks
-                <IfModule mod_php.c>
-                    php_flag register_globals off
-                    </IfModule>
-                <IfModule mod_dir.c>
-                    DirectoryIndex index.php
-                </IfModule>
+            <Directory /opt/roundcube>
+            Options -Indexes +FollowSymLinks +MultiViews
+            AllowOverride All
+            Require all granted
+        </Directory>
 
-                # access to configtest is limited by default to prevent information leak
-                <Files configtest.php>
-                    order deny,allow
-                    deny from all
-                    allow from 127.0.0.1
-            	</Files>
-            </Directory>
+            # prevent iframing this site
+            Header always append X-Frame-Options SAMEORIGIN
 
             # SSL
             SSLEngine on
@@ -2642,211 +2700,109 @@ Set the contents to the following...
         RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI}
     </VirtualHost>
 
-Save and close, and then enable the site and restart Apache2.
 
-..  code-block:: bash
+Save and close.
 
-    $ sudo a2ensite squirrelmail
-    $ sudo systemctl restart apache2
-
-Edit your DNS A/AAAA records to add the new `webmail` subdomain. If you're
-impatient waiting for the DNS to update, you can edit your local computer's
-`/etc/hosts` to point the subdomain to the server IP.
-
-Before we can use SquirrelMail, however, we must configure it.
-
-..  code-block:: bash
-
-    $ sudo squirrelmail-configure
-
-This program allows you to set up SquirrelMail. Press ``2`` to edit server
-settings, and then set the following:
-
-- IMAP Settings
-  - IMAP Server: mail.mousepawmedia.com
-  - IMAP Port: 993
-  - Authentication type: login
-  - Secure IMAP: true
-  - Server software: dovecot
-- SMTP Settings
-  - SMTP Server: mail.mousepawmedia.com
-  - SMTP Port: 465
-  - POP before SMTP: false
-  - SMTP Authentication: login (with IMAP username and password)
-  - Secure SMTP (TLS): true
-
-Be sure to press ``S`` and ``Enter`` to save your settings, and then exit
-or change the other settings you're interested in.
-
-..  NOTE:: We had to change the folders to NOT be the ``INBOX.`` variants.
-
-When you're done, be sure to save, and then press ``Q`` to quit.
-
-You can check your configuration from ``http://webmail.mousepawmedia.com/src/configtest.php``,
-although you may need to edit ``/etc/apache2/sites-available/squirrelmail.conf``
-and comment out the following section first...
-
-..  code-block:: apache
-
-    # access to configtest is limited by default to prevent information leak
-    #<Files configtest.php>
-    #    order deny,allow
-    #    deny from all
-    #    allow from 127.0.0.1
-
-After confirming your configuration, uncomment that section again.
-
-That's it! You're now good to go.
-
-`SOURCE: Install SquirrelMail on Ubuntu 16.04 or Debian 8 (Linode) <https://www.linode.com/docs/email/clients/install-squirrelmail-on-ubuntu-16-04-or-debian-8>`_
-
-WordPress (Migration)
-===================================
-
-MySQL Database
----------------------------
-
-We start by setting up the database for WordPress.
+Now we need to set up the database.
 
 ..  code-block:: bash
 
     $ mysql -u root -p
 
-Run the following MySQL commands, where ``password`` is the password for the
-new ``wpuser`` user.
+In the MySQL terminal, run the following, changing ``password`` to a new,
+secure password.
 
+..  code-block:: mysql
 
-..  code-block:: sql
+    CREATE DATABASE roundcubemail /*!40101 CHARACTER SET utf8 COLLATE utf8_general_ci */;
+    CREATE USER 'roundcube'@'localhost' IDENTIFIED BY 'password';
+    GRANT ALL PRIVILEGES ON roundcubemail.* to 'roundcube'@'localhost';
+    FLUSH PRIVILEGES;
+    EXIT;
 
-    CREATE DATABASE wordpress;
-    CREATE USER 'wpuser' IDENTIFIED BY 'password';
-    GRANT ALL PRIVILEGES ON wordpress.* TO 'wpuser';
-    quit
-
-Since I'm migrating and have an exported database, you can now open up
-PHPMyAdmin and import that exported database into the empty ``wordpress``
-database.
-
-Otherwise, the database would be set up by the Wordpress setup wizard during
-a new install.
-
-Migrated Installation
------------------------------
-
-Let's set up the new directories for our migrated install.
+Then we load the default database in with the terminal command...
 
 ..  code-block:: bash
 
-    $ sudo mkdir -p /opt/html/indeliblebluepen.com
-    $ sudo chown -R webster:www-data /opt/html/indeliblebluepen.com/
+    $ mysql -u roundcube -p roundcubemail < /opt/roundcube/SQL/mysql.initial.sql
 
-Note that we're allowing our regular user to own that folder, to facilitate
-uploading over rsync.
+Enter the password from the previous step when prompted.
 
-Upload the directory you downloaded from your old installation to
-``/opt/html/indeliblebluepen.com/``, and then readjust the permissions using...
+Now we can configure. Go to ``https://webmail.<serveraddress>/installer/``.
+Ensure everything is marked ``OK`` (except the databases not being used;
+only ``MySQL`` needs to be ``OK`` there.) Click :guilabel:`NEXT`.
 
-..  code-block:: bash
+Under :guilabel:`General Configuration`, fill out the settings as you like.
 
-    $ sudo chown -R www-data:www-data /opt/html/indeliblebluepen.com/
+Under :guilabel:`Logging & Debugging`If you're not sure about something,
+use the default.
 
-We also need to edit the Wordpress configuration to point to our database.
+For :guilabel:`Database setup`, the defaults are probably correct, but
+**be sure to enter the database password!
 
-..  code-block:: bash
+For :guilabel:`IMAP Settings`, we use the following:
 
-    $ sudo vim /opt/html/indeliblebluepen.com/wp-config.php
+* :guilabel:`default_host`: ``ssl://mail.mousepawmedia.com``
+* :guilabel:`default_port`: `993`
+* :guilabel:`auto_create_user`: Yes
+* :guilabel:`sent_mbox`: ``Sent``
+* :guilabel:`trash_mbox`: ``Trash``
+* :guilabel:`drafts_mbox`: ``Drafts``
+* :guilabel:`junk_mbox`: ``Junk``
 
-Change the following values, replacing ``password`` with the password you
-specified earlier for ``wpuser``...
+For :guilabel:`SMTP Settings`, we use the following:
 
-..  code-block:: php
+* :guilabel:`smtp_server`: ``tls://mail.mousepawmedia.com``
+* :guilabel:`smtp_port`: ``587``
+* :guilabel:`smtp_user`: ``%u``
+* :guilabel:`smtp_pass`: ``%p``
+* :guilabel:`Use the current IMAP username and password for SMTP authentication`: Yes
+* :guilabel:`smtp_log`: Yes
 
-    // ** MySQL settings - You can get this info from your web host ** //
-    /** The name of the database for WordPress */
-    define('DB_NAME', 'wordpress');
+Set the options under :guilabel:`Display settings & user prefs` as desired.
+We have also chosen to enable the following plugins on our system:
 
-    /** MySQL database username */
-    define('DB_USER', 'wpuser');
+* archive
+* attachment_reminder
+* emoticons
+* filesystem_attachments
+* help
+* hide_blockquote
+* jqueryui
+* markasjunk
+* new_user_dialog
+* newmail_notifier
+* zipdownload
 
-    /** MySQL database password */
-    define('DB_PASSWORD', 'password');
+Finally, click :guilabel:`CREATE CONFIG`, and then :guilabel:`CONTINUE`.
 
-    /** MySQL hostname */
-    define('DB_HOST', 'localhost');
+On the next screen, test both IMAP and SMTP to ensure they work.
 
-Save and close.
-
-Apache2 Configuration
------------------------------
-
-Let's set up the virtual host. Remember, you'll also need to set up the DNS
-and the Let's Encrypt certificates for the domain or subdomain you choose!
-
-..  code-block:: bash
-
-    $ sudo vim /etc/apache2/sites-available/indeliblebluepen.com.conf
-
-Set the contents of that file to...
-
-..  code-block:: apache
-
-    <IfModule mod_ssl.c>
-        <VirtualHost *:443>
-            ServerName indeliblebluepen.com
-
-            ServerAdmin webmaster@indeliblebluepen.com
-            DocumentRoot /opt/html/indeliblebluepen.com
-
-            ErrorLog ${APACHE_LOG_DIR}/error.log
-            CustomLog ${APACHE_LOG_DIR}/access.log combined
-
-            <Directory /opt/html/indeliblebluepen.com>
-                    Options -MultiViews -Indexes
-                    AllowOverride All
-            </Directory>
-
-            # SSL
-            SSLEngine on
-            SSLCertificateFile      /etc/apache2/certs/fullchain.pem
-            SSLCertificateKeyFile   /etc/apache2/certs/privkey.pem
-
-            Include /etc/letsencrypt/options-ssl-apache.conf
-
-            <FilesMatch "\.(cgi|shtml|phtml|php)$">
-                    SSLOptions +StdEnvVars
-            </FilesMatch>
-            <Directory /usr/lib/cgi-bin>
-                    SSLOptions +StdEnvVars
-            </Directory>
-        </VirtualHost>
-    </IfModule>
-    <VirtualHost *:80>
-        ServerName indeliblebluepen.com
-
-        RewriteEngine On
-        RewriteCond %{HTTPS} off
-        RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI}
-    </VirtualHost>
-
-..  NOTE:: You may need to set this to use only port 80 until you migrate,
-    as you will have to change indeliblebluepen.com's Wordpress settings to
-    work with HTTPS.
-
-Save and close, and then enable the new site.
+If they do, close out of the webpage. In the terminal, run the following:
 
 ..  code-block:: bash
 
-    $ sudo a2ensite indeliblebluepen.com
+    $ sudo rm -rf /opt/roundcube/installer
+    $ sudo vim /etc/apache2/sites-available/roundcube.conf
 
-Make the necessary changes to DNS and your certificates.
+Change ``DocumentRoot`` to ``/opt/roundcube/public_html``, then save and close.
+This will improve security for Roundcube.
 
-..  NOTE:: If you're impatient to wait for the DNS changes to propegate, you
-    can also edit your local machine's ``/etc/hosts`` to point to the new
-    server.
+Finally, run:
 
-`SOURCE: Moving WordPress (WordPress Codex) <https://codex.wordpress.org/Moving_WordPress>`_
+..  code-block:: bash
 
-`SOURCE: Install WordPress on Ubuntu 16.04 (Linode) <https://www.linode.com/docs/websites/cms/install-wordpress-on-ubuntu-16-04>`_
+$ sudo systemctl restart apache2
+
+
+Now you can go to ``https://webmail.<serveraddress>`` and log in using your
+full email and your password.
+
+That's it! You're now good to go.
+
+`SOURCE: Roundcube Installation (roundcube Wiki) <https://github.com/roundcube/roundcubemail/wiki/Installation#protect-your-installation>`_
+
+`SOURCE: How to Install Your Own Webmail Client with Roundcube on Ubuntu 16.04 (DigitalOcean) <https://www.digitalocean.com/community/tutorials/how-to-install-your-own-webmail-client-with-roundcube-on-ubuntu-16-04>`_
 
 AWStats
 =============================

@@ -81,8 +81,8 @@ Our network is spread across two servers.
   address lives on Hawksnest.
 
 Visit **staff.mousepawmedia.com** for our main staff portal, with links to
-DevNet and LimeSurvey. This page also displays the present status of the
-Hawksnest server. The DevNet landing has links to everything else.
+DevNet, Roundcube, and LimeSurvey. This page also displays the present status
+of the DevNet (Hawksnest) server. The DevNet landing has links to everything else.
 
 .. _gstaff_network_email:
 
@@ -97,31 +97,61 @@ a company email address issued to you.
 ..  WARNING:: Be sure to check your company email every single day, and
     respond in a timely fashion!
 
-You can check your email through the Rainloop web client.
+You can check your email through the Roundcube or Rainloop web clients.
 This is useful if you don't want to configure an external client, or need
 to check your email without access to your usual device.
+
+.. _gstaff_network_email_roundcube
+
+Roundcube
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Roundcube is a modern web client with many useful features. It is on
+Webster, and thus is unaffected by Hawksnest/DevNet outages.
+
+1.  Go to webmail.mousepawmedia.com. Sign in using your full company email
+    address and your password.
+
+2.  The first time you log in, you'll be prompted to create your user identity.
+    Fill in your Display Name (full name with middle initial preferred),
+    set your Organization to ``MousePaw Media``, and add a default signature.
+
+    We recommend this template for your signature::
+
+        Your Name Here
+        Position, MousePaw Media
+
+        Visit Us Online: MousePawMedia.com
+        Twitter: @mousepawmedia
+
+That's all! Now you can begin browsing your email.
+
+..  IMPORTANT:: Access your company email through the Roundcube client.
 
 .. _gstaff_network_email_rainloop
 
 Rainloop
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-1. Go to nextcloud.mousepawmedia.net. Sign in using your company username
-   and password. Click the Email icon on the top toolbar.
+If you find yourself using Nextcloud a lot, you may prefer to use the
+integrated Rainloop client.
+
+1.  Go to nextcloud.mousepawmedia.net. Sign in using your company username
+    and password. Click the Email icon on the top toolbar.
 
 2. Login using your company email and password.
 
-3. Set up your signature. Click the silhouette icon in the upper-right
-   corner, and select Settings. In the middle, click on your email
-   address next to :guilabel:`Identity`. Enter your signature.
+3.  Set up your signature. Click the silhouette icon in the upper-right
+    corner, and select Settings. In the middle, click on your email
+    address next to :guilabel:`Identity`. Enter your signature.
 
-   Here's the example signature::
+    Here's the example signature::
 
-   Your Name Here
-   Position, MousePaw Media
+        Your Name Here
+        Position, MousePaw Media
 
-   Visit Us Online: MousePawMedia.com
-   Call Us:208-719-0347
+        Visit Us Online: MousePawMedia.com
+        Twitter: @mousepawmedia
 
 4. Click :guilabel:`Update`.
 
