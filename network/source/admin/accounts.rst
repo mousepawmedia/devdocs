@@ -11,13 +11,12 @@ Employee Account Creation
 ===========================================
 
 All company accounts are managed (primarily) from our LDAP server, with
-three notable exceptions.
+two notable exceptions.
 
 * Postfix manages email accounts, so we can create additional addresses.
 
-* eHour manages its own accounts, allowing certain volunteers to log time.
-
-* Tao Testing manages its own accounts, allowing volunteers to access quizzes.
+* LimeSurvey is on the remote server (mousepawmedia.com), without access to
+  the LDAP.
 
 The following instructions will create a new staff account.
 
@@ -76,29 +75,6 @@ Select :menuselection:`Virtual List --> Add Mailbox`. Fill out the following:
 
 After you've filled out all these fields, click :guilabel:`Add Mailbox`.
 
-Next, we need to create an Alias, so emails to the equivalent
-:code:`@mousepawgames.com` address will automatically forward. To create
-this, select :menuselection:`Virtual List --> Add Alias`. Fill out the
-following:
-
-* :guilabel:`Alias`: This should match the username on the email account we just
-  created. Select the :code:`mousepawgames.com` domain name from the drop-down
-  menu below this field.
-
-* :guilabel:`To`: This is a list of the addresses to forward email to, one
-  address per line. We only need one, so enter the equivalent
-  :code:`@mousepawmedia.com` email address.
-
-* :guilabel:`Active`: Make sure this is *checked*.
-
-Click :guilabel:`Add Alias` to create the alias.
-
-You should also review your settings in
-:menuselection:`Virtual List --> Virtual List`. Select the correct domain
-from the drop-down box to view all email addresses and aliases. Ensure the
-new mailbox exists under :code:`mousepawmedia.com`, and the corresponding
-alias under :code:`mousepawgames.com`.
-
 In a new tab, make sure you can log into webmail at
 `webmail.mousepawmedia.com <https://webmail.mousepawmedia.com/src/login.php>`_
 using the new email address and password.
@@ -114,46 +90,47 @@ Be sure to have IT disable the control panel via...
 
 ..  _admin_accounts_new_ldap:
 
-Creating LDAP Account
+Creating PawID (LDAP Account)
 -------------------------------------------
 
-..  WARNING:: The LDAP control panel can only be accessed from the same local
-    network as the server.
-
 To create a new LDAP account, go to the LDAP control panel on Hawksnest:
-`phpLDAPadmin <https://mousepawmedia.net/phpldapadmin/>`_. Login using the
+`LDAP Account Manager <https://mousepawmedia.net/lam/>`_. Login using the
 LDAP management password.
 
-On the left tree, expand the sole top level entry. Expand :guilabel:`ou=Users`
-and select :guilabel:`Create new entry here` from the subtree.
+On the :guilabel:`Users` tab, select :guilabel:`New user`:
 
-On the main pane, select :guilabel:`Generic: User Account`. Fill out the
-following fields *in the order listed*. Leave all others blank.
+Toward the upper section, set :guilabel:`RDN identifier` to `uid`.
 
-* :guilabel:`GID Number`: :code:`staff`
+..  NOTE: If you get this wrong when you first create the user, go to
+    :guilabel:`Tree view` and rename the item manually from ``cn=whatever,``
+    to ``uid=whatever,``
 
-* :guilabel:`Last name`: The full name - first name, middle initial, last name.
+On the :guilabel:`Personal` tab, fill out the following fields at minimum:
 
-* :guilabel:`Common Name`: The company username.
+* :guilabel:`First name`
+* :guilabel:`Last name`
+* :guilabel:`Email address`
 
-* :guilabel:`Password`: The password for the user. Be sure to confirm it.
+On the :guilabel:`Unix` tab, fill out the following fields, leaving the others
+as their defaults (or blank):
 
-* :guilabel:`User ID`: The company username (yes, again).
+* :guilabel:`User name`: The company username.
+* :guilabel:`Common name`: The full name - first name, middle initial, last name.
+* :guilabel:`Primary group`: ``user``
 
-Press the :guilabel:`Create Object` button. On the next screen, make sure the
-fields you specified are accurate, and then click :guilabel:`Commit`.
+Click ``Edit groups`` and add the appropriate groups. At minimum, be sure
+to add either ``staff`` or ``community`` and the department name. Then click
+``Back``.
 
-On the tree at left, select the new account. On the main pane, click
-:guilabel:`Add new attribute`. On the drop-down menu that appears, select
-:guilabel:`Email` (the entries aren't sorted alphabetically). Enter
-the user's company email address, as created in the prior step. Then scroll
-to the bottom of the page and click :guilabel:`Update Object`.
+Verify all the details entered, and then click :guilabel:`Save` at the top, and
+then click :guilabel:`Edit again`.
 
-Double check the change on the new screen, and then click
-:guilabel:`Update Object` to save your changes.
+Select :guilabel:`Set password` toward the top of the page. Set the password.
 
-The account is created, and can be used immediately. We can now close out
-of phpLDAPadmin.
+Click :guilabel:`Save` at the top.
+
+The account is immediately active.
+
 
 ..  _admin_accounts_new_phab:
 
@@ -175,51 +152,6 @@ Click :guilabel:`Register Account`. Once the Community Rules displays,
 
 ..  IMPORTANT:: You should **NEVER** accept the Community Rules on behalf of
     the new user!
-
-We still need to modify the account, but we can do this by temporarily
-designating it a "bot" account, giving an administrator full control over
-the profile.
-
-A company IT with root SSH access to Hawksnest should run the following...
-
-..  code-block:: bash
-
-    cd /opt/phab/phabricator/bin
-    sudo ./accountadmin
-
-On that program, they must enter the username for the account we're wanting
-to modify. When asked if we're modifying the existing account, have them
-confirm :code:`Y`. Press :kbd:`ENTER` for each field to use the current
-values, *except*, have them answer :guilabel:`Is this user a bot? [y/N]` with
-:code:`y`. Finally, confirm that we want to save changes.
-
-A Phabricator administrator may now access the People application through
-Phabricator's web interface, and select the newly created account.
-On the left, click :guilabel:`Manage`.
-
-On that page, click :guilabel:`Edit Profile`. Change the title to the user's
-appropriate title (i.e. "Junior Developer" or "Apprentice Designer"). You may
-also want to specify the School, since we use this for reference. Leave
-the rest of the fields at their defaults, so the user can set up their own
-profile. Scroll to the bottom of the page and click :guilabel:`Save Profile`.
-
-Next, select :guilabel:`Edit Profile Picture` and set the user's picture.
-We always crop profile pictures to 300x300 PNG images.
-
-Finally, select :guilabel:`Edit Settings`. Change the :guilabel:`Pronoun` to
-the appropriate value and click :guilabel:`Save Changes`.
-
-We're now done changing the user profile. Have the company IT run...
-
-..  code-block:: bash
-
-    cd /opt/phab/phabricator/bin
-    sudo ./accountadmin
-
-As before, they should specify the username, and keep all values as they
-are, *except* now changing :guilabel:`Is this user a bot? [y/N]` to
-:code:`n`. Confirm that we want to save changes. The account is now back
-to default.
 
 ..  _admin_accounts_new_phabaccess:
 
@@ -260,88 +192,6 @@ The user account we just created must be added to the following:
     good practice to add new users to their expected projects.
 
 The user can now log in and access everything they're supposed to.
-
-..  _admin_accounts_new_ehour:
-
-New eHour Account
--------------------------------------------
-
-To create a new account on eHour, you must log in with an eHour manager
-account. Go to :menuselection:`Manage --> Users`. Click :guilabel:`Add User`
-towards the top middle of the page. Fill out the following fields:
-
-* :guilabel:`Username`: The company username for the new user.
-
-* :guilabel:`First name`: The first name and middle initial (e.g. "Jason C.").
-
-* :guilabel:`Last name`: The last name (e.g. "McDonald").
-
-* :guilabel:`E-Mail`: The new user's company email address.
-
-* :guilabel:`Password`: The new user's company password.
-
-* :guilabel:`Confirm password`: Confirm the password (obviously).
-
-* :guilabel:`Department`: Select :code:`Staff`.
-
-* :guilabel:`User roles`: By default, users should only have the :code:`User`
-  role. The other three are only for management.
-
-..  NOTE:: All users with the :code:`User` role can report their own time,
-    and can view their own time records.
-
-* :guilabel:`Active`: Be sure this is *checked*.
-
-* :guilabel:`Assign to project after save?`: This should be *checked*.
-
-Click :guilabel:`Save`.
-
-On the next screen, the user will automatically be assigned to the only
-project in our system. We don't need to do anything else here.
-
-We should test out the account by signing into eHour with the new username
-and password. If that works, we're done here!
-
-..  _admin_accounts_new_tao:
-
-New Tao Testing Account
--------------------------------------------
-
-Finally, we must add a new account on Tao Testing, so the new user can take
-quizzes and tests.
-
-Log into Tao Testing at
-`quiz.mousepawmedia.net <https://quiz.mousepawmedia.net/tao/Main/login>`_
-with an administrator account. When prompted, click
-:guilabel:`Enter TAO Back Office`.
-
-On the top menu, click :guilabel:`Test-takers`. On the left pane, click
-:guilabel:`New test-taker`. Fill out the following values:
-
-* :guilabel:`Label*`: The company username for the new user.
-
-* :guilabel:`First Name`: The first name and middle initial for the new user
-  (e.g. "Jason C.").
-
-* :guilabel:`Last Name`: The last name for the new user (e.g. "McDonald").
-
-* :guilabel:`Mail`: The company email for the new user.
-
-* :guilabel:`Interface Language*`: "English" is required for all users, as
-  the tests are only in this language.
-
-* :guilabel:`Login*`: The company username for the new user.
-
-* :guilabel:`Password*`: The company password for the user.
-
-* :guilabel:`Repeat password*`: Confirm the password (obviously).
-
-Click :guilabel:`Save` below the form.
-
-Select the new user in the left pane. On the right pane, check the "TestTakers"
-group, and click :guilabel:`Save`.
-
-At this point, you should test the Tao login. If it works, we're done here.
 
 Wrapping Up
 -------------------------------------------
@@ -406,6 +256,52 @@ anywhere on our servers.
 
 Employee Account Suspension
 ===========================================
+
+To lock an employee account, go to the LDAP control panel on Hawksnest:
+`LDAP Account Manager <https://mousepawmedia.net/lam/>`_. Login using the
+LDAP management password.
+
+On the :guilabel:`Users` tab, look for the account you want to suspend.
+Click the :guilabel:`Edit` icon (the pencil) toward the left of the row.
+
+On the :guilabel:`Unix` tab, click :guilabel:`Lock password`.
+
+Click :guilabel:`Edit groups` and remove all groups from the user. Add the
+``former`` group, and click :guilabel:`Back`.
+
+Then click :guilabel:`Save`. This will immediately lock down the account,
+shutting off most access privileges and preventing access.
+
+..  NOTE: You may need to unlock the password temporarily to access the account
+    if you need to inspect as part of an investigation. If this is a
+    possibility, consider changing the password as well.
+
+On Phabricator, go to the user profile and :guilabel:`Manage`, and then
+click :guilabel:`Disable User`.
+
+On Nextcloud, click your profile picture in the upper-right corner and click
+:guilabel:`Users`. Find the user you want to deactivate, and click the three
+dots to the far right of the row. **Be certain you are acting on the right
+user!!** Select :guilabel:`Wipe all devices` and confirm the unique ID number
+against that near the username on the same screen. Click :guilabel:`Wipe` when
+you are sure.
+
+Click the three dots again, and click :guilabel:`Disable user`.
+
+We also need to disable email from Postfix Admin.
+(See :ref:`admin_accounts_new_email` to learn how to access that.)
+Log in with your company account.
+
+Under :guilabel:`Virtual List` select :guilabel:`Virtual List`. From the
+drop-down box at the top, select :guilabel:`mousepawmedia.com`. Scroll down
+to the list of email accounts, and look for the one you want to deactivate.
+Click :guilabel:`Edit`.
+
+Uncheck the :guilabel:`Active` box and click :guilabel:`Save changes`.
+
+..  NOTE: You may need to reactivate the email account temporarily if you need
+    to inspect as part of an investigation. If this is a possibility, consider
+    changing the password as well.
 
 External Accounts
 ===========================================

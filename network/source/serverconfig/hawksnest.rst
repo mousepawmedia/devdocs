@@ -550,9 +550,6 @@ Enable the modules and restart Apache2, ensuring that it still works.
     $ sudo a2enmod evasive
     $ sudo systemctl restart apache2
 
-..  NOTE:: With DOSPageCount 2 and local network NOT whitelisted, Evasive
-    locked out when I used PHPldapadmin.
-
 `Read the Docs <https://www.linode.com/docs/websites/apache-tips-and-tricks/modevasive-on-apache/>`_
 
 Setup DenyHosts
@@ -957,7 +954,7 @@ the sites you do not have. Be sure to uncomment them later!
 
     #!/bin/bash
 
-    a2dissite 000-redirect ajc ehour jenkins nextcloud office pad phab phabfile protected quiz sandbox
+    a2dissite 000-redirect ajc ibp jenkins kimai nextcloud office pad phab phabfile protected registry sandbox
     a2ensite 000-default
     systemctl restart apache2
 
@@ -999,7 +996,7 @@ the sites you do not have. Be sure to uncomment them later!
 
     # Restart critical services which use this.
     a2dissite 000-default
-    a2ensite 000-redirect ajc ehour jenkins nextcloud office pad phab phabfile protected quiz sandbox
+    a2ensite 000-redirect ajc ibp jenkins kimai nextcloud office pad phab phabfile protected registry sandbox
     systemctl restart apache2
     #systemctl restart jenkins
     #systemctl restart tomcat

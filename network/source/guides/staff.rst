@@ -56,7 +56,7 @@ The Staff Network consists of seven major components:
 
 * Email (webmail.mousepawmedia.com or IMAP)
 
-* eHour (ehour.mousepawmedia.net)
+* Kimai (kimai.mousepawmedia.net)
 
 * Phabricator (phabricator.mousepawmedia.net)
 
@@ -232,30 +232,66 @@ Regular Email Tasks
     to send it on your regular day **every single week**! If it is not received
     on time, your hours for the week might not be counted.
 
-.. _gstaff_network_ehour:
+.. _gstaff_network_kimai:
 
-eHour
+Kimai
 -----------------------------------
 
-eHour is where we track time. You are responsible for reporting your time
-**every day**. Each day's time sheets are locked the next morning at 10am.
+Kimai is where we track time. You are responsible for reporting your time
+**every day**. Each day's time sheets are locked automatically the next morning
+at 10 am.
 
-..  WARNING:: If you forget to log your time, you will not be reminded.
-    Contact your supervisor if you missed the deadline.
+..  WARNING:: If you forget to log your time, you will NOT be reminded.
+    Contact ``eco@mousepawmedia.net`` if you forget, and report your time
+    that way.
 
-To log your time, go to eHour. Login using your company username and password.
-You will be on the :guilabel:`Your Hours` section by default, with the current
-week highlighted.
+To log your time, go to ``https://time.mousepawmedia.net``. Login using your
+company username and password.
 
-Enter your time (in hours) on the appropriate box for each day. You must also
-include notes on each day (by clicking the pencil), listing the
-Phabricator objects you worked on (Tasks, Revisions, wiki pages, etc.)
+You will be on the :guilabel:`My times` section by default.
+
+**We recommend creating separate entries for each major task you work on.**
+This will make it easier for you to see how you use your time.
+
+To add time, click the large Play button in the upper-right corner of the page.
+Fill out the following fields:
+
+* :guilabel:`From`: select the start date and time for your entry.
+  You may estimate the start the time if you can't remember it.
+
+  * :guilabel:`Duration`: Enter the duration in ``H:MM`` format.
+
+* :guilabel:`Project`: Select ``Internal``.
+
+* :guilabel:`Activity`: Select the project you were working on.
+
+  * Most MousePaw Media projects have an entry here. If you don't see the one
+    you need, use ``General`` and contact your supervisor.
+
+  * Use ``Research`` for general-purpose research and training.
+
+  * Use ``General`` for meetings, internship assignments, and anything not
+    covered by another category.
+
+  * Use ``DevOps/IT`` for repository master, build system, and server work.
+
+  * Use ``Operations`` for management, administrative, and standards board tasks.
+
+  * Use ``Hiring`` for hiring-related tasks.
+
+* :guilabel:`Description`: You **must** include appropriate Phabricator object
+  codes, including Maniphest Tasks, Differential Revisions, Calendar Events,
+  Ponder Questions, wiki pages, and the like.
 
 ..  WARNING:: These notes are not a replacement for your check-in email.
 
-Finally, click :guilabel:`Store` in the lower-right corner to store the hours.
+Finally, click :guilabel:`Save` in the lower-left corner to store the hours.
 
-Regular eHour Tasks
+While you're here, take a look at the :guilabel:`Dashboard`,
+:guilabel:`Calendar` and :guilabel:`Reporting` tabs. These give you detailed
+breakdowns of your hours, including what you worked on and when you worked.
+
+Regular Kimai Tasks
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 * Log your hours *every day you work*.

@@ -42,7 +42,7 @@ and solving problems.
   CSS, server configuration.
 - avivey (#phabricator): Phabricator and SSL troubleshooting.
 - big_t (#ubuntu-offtopic): Referred us to Linode.
-- csutherl (#tomcat): eHour & Tomcat setup.
+- csutherl (#tomcat): eHour & Tomcat setup. (No longer in use.)
 - kerframil (#bash): A critical piece of Perl code for the OpenDKIM renewal
   script.
 - noteirak (#vbox): Jenkins VM build agent setup, Apache troubleshooting.
