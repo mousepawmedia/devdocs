@@ -81,9 +81,8 @@ Our network is spread across two servers.
   address lives on Hawksnest.
 
 Visit **staff.mousepawmedia.com** for our main staff portal, with links to
-DevNet, Jitsi, LimeSurvey, and SquirrelMail. This page also displays the
-present status of the Hawksnest server. The DevNet landing has links to
-everything else.
+DevNet and LimeSurvey. This page also displays the present status of the
+Hawksnest server. The DevNet landing has links to everything else.
 
 .. _gstaff_network_email:
 
@@ -98,44 +97,9 @@ a company email address issued to you.
 ..  WARNING:: Be sure to check your company email every single day, and
     respond in a timely fashion!
 
-You can check your email through the web clients: SquirrelMail and Rainloop.
+You can check your email through the Rainloop web client.
 This is useful if you don't want to configure an external client, or need
 to check your email without access to your usual device.
-
-.. _gstaff_network_email_squirrelmail
-
-SquirrelMail
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-SquirrelMail is a simple, HTML-based webmail client. It lacks many modern
-features, focusing instead on being fast, clean, and simple. It is on
-Webster, and thus is unaffected by Hawksnest outages.
-
-1.  Go to webmail.mousepawmedia.com. Sign in using your full company email
-    address and your password.
-
-2.  Set up your signature. Click :guilabel:`Options` at the top of the window
-    and select :guilabel:`Personal Information`. Enter your full name
-    (including middle initial), and then add a signature. If you're not sure
-    what to use for this, consider the example below. Make sure you check
-    the boxes for :guilabel:`Use Signature` and :guilabel:`Prefix Signature
-    with '--' Line`, and then click :guilabel:`Submit`
-
-    Here's the example signature::
-
-        Your Name Here
-        Position, MousePaw Media
-
-        Visit Us Online: MousePawMedia.com
-        Call Us: 208-719-0347
-
-3.  Reading email will be easier and more visually pleasing by displaying
-    messages in HTML. This is off by default; to turn it on, click
-    :guilabel:`Options` at the top of the window. Select
-    :guilabel:`Display Preferences`, and check the box for
-    :guilabel:`Show HTML Version by Default`. Click :guilabel:`Submit`.
-
-..  IMPORTANT:: Access your company email through the SquirrelMail client.
 
 .. _gstaff_network_email_rainloop
 
@@ -259,7 +223,7 @@ Fill out the following fields:
 * :guilabel:`From`: select the start date and time for your entry.
   You may estimate the start the time if you can't remember it.
 
-  * :guilabel:`Duration`: Enter the duration in ``H:MM`` format.
+* :guilabel:`Duration`: Enter the duration in ``H:MM`` format.
 
 * :guilabel:`Project`: Select ``Internal``.
 
@@ -290,6 +254,10 @@ Finally, click :guilabel:`Save` in the lower-left corner to store the hours.
 While you're here, take a look at the :guilabel:`Dashboard`,
 :guilabel:`Calendar` and :guilabel:`Reporting` tabs. These give you detailed
 breakdowns of your hours, including what you worked on and when you worked.
+
+If you need a tool to help you track your time, check out the
+`Timecard <https://codemouse92.github.io/Timecard/>`_ application, created by
+Jason C. McDonald.
 
 Regular Kimai Tasks
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
