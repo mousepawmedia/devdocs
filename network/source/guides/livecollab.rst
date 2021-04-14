@@ -11,9 +11,9 @@ programming.
   create one now.
 * You should have headphones and a microphone for voice chat (ideally).
 
-..  NOTE:: In our experience, Live Share works well even on 200 Kbps internet
+..  note:: In our experience, Live Share works well even on 200 Kbps internet
     connections.
-    
+
 The first time you start or join a session with Live Share, you will be
 prompted to login to GitHub. Follow the prompts to do so.
 
@@ -145,7 +145,7 @@ Every line which has a comment will show a dot to the right of the line
 number. Click the dot to view the comment. (Don't confuse this with breakpoints,
 which are red dots to the *left* of the line numbers).
 
-..  WARNING:: All of the inline comments will be deleted as soon as the
+..  warning:: All of the inline comments will be deleted as soon as the
     session ends! Any comments you want to keep should be written as actual
     code comments in the file itself, *not* as Inline Comments.
 

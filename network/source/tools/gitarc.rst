@@ -8,7 +8,7 @@ don't know, Git is a :abbr:`VCS (version control software)`, which means it
 keeps track of every change that is made. Using Git enables us to collaborate
 on the code and merge all of our changes together cleanly.
 
-..  NOTE:: There is a difference between Git and GitHub. GitHub is an online
+..  note:: There is a difference between Git and GitHub. GitHub is an online
     service that offers free and paid Git repositories. We have "mirrors" of our
     code on GitHub, meaning the code is copied directly over from our own
     repositories, but we do not use GitHub itself for development work.
@@ -43,7 +43,7 @@ If the help list shows up, that's it! You're ready to go.
 Installing on Linux, Alternate
 --------------------------------
 
-..  WARNING:: If the above worked, do NOT follow this version of the
+..  warning:: If the above worked, do NOT follow this version of the
     instructions. Just skip to next section, ``Configuring Git``.
 
 If you're on a Debian-based Linux OS, you can follow these instructions to
@@ -92,7 +92,7 @@ Save and close pluma. Then, restart your computer. To test it out, run...
 
     $ arc help
 
-..  WARNING:: If you installed it wrong, you'll see a suggestion to install the
+..  warning:: If you installed it wrong, you'll see a suggestion to install the
     package "arc". DON'T DO IT! That is a completely different program.
 
 Arcanist may ask you to install additional PHP packages via apt. If you set
@@ -125,7 +125,7 @@ Configuring Git
 
 Register yourself with Git, so you'll be credited for commits.
 
-..  NOTE:: If you only want the given name and/or email for the current
+..  note:: If you only want the given name and/or email for the current
     repository, omit the ``--global`` flag.
 
 Run the following commands, **substituting in your own information.**
@@ -196,7 +196,7 @@ You'll see a message that the key pair is being generated. When prompted, press
 Finally, enter a password used for unlocking the SSH key. You'll find the
 new keypair at :file:`~/.ssh/{id_rsa}.pub`.
 
-..  WARNING:: Your public key is the part you share. **NEVER EVER EVER share
+..  warning:: Your public key is the part you share. **NEVER EVER EVER share
     your private key** (the part ending in `.rsa`)!
 
 Creating a Keypair (Windows)

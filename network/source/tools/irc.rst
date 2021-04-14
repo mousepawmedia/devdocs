@@ -16,7 +16,7 @@ communication among programmers. Most open-source organizations maintain
 an IRC channel, including `#ubuntu`, `#synfig`, `#opus`, `#blender`, and so
 forth. Of course, `#python` lives on that network too.
 
-..  WARNING:: The `##c++` channel is infamously unfriendly. Avoid it. We're trying
+..  warning:: The `##c++` channel is infamously unfriendly. Avoid it. We're trying
     to start the ##c++-friendly room, so please consider lurking there.
 
 .. _irc_setup:
@@ -32,7 +32,7 @@ Installing HexChat
 To use IRC, you need an IRC client. There are quite a few to choose from, many
 of them FOSS.
 
-..  NOTE:: While you can also access many IRC networks through a browser-based
+..  note:: While you can also access many IRC networks through a browser-based
     client, it isn't recommended, as many useful IRC tools don't work on those.
 
 For Linux, one of the most popular IRC clients is **HexChat**, which we will
@@ -81,7 +81,7 @@ When you first start HexChat, it will bring up the Network List.
 
 8)  Click :guilabel:`Connect`.
 
-..  IMPORTANT:: If you come back to this dialog box later, you do NOT need to
+..  important:: If you come back to this dialog box later, you do NOT need to
     click :guilabel:`Connect` again. Instead, if you're already connected to
     Freenode, just click :guilabel:`Close`.
 
@@ -94,7 +94,7 @@ The first time (and ONLY the first time) you connect to Freenode, you must
 register your nickname. Go to the default "channel" marked `freenode`, which is
 where you'll type the following commands as needed.
 
-..  WARNING:: This is your personal account. DO NOT use your company email
+..  warning:: This is your personal account. DO NOT use your company email
     for the email address!
 
 If you see a message that says "This nickname is registered. Please choose a
@@ -158,7 +158,7 @@ nickname(s) under `Second choice` and `Third choice`. You can always swap out
 the order in this list, depending on your preferences. Click `Close` when you're
 done.
 
-..  IMPORTANT:: It is NOT recommended practice to have "status nicks", such as
+..  important:: It is NOT recommended practice to have "status nicks", such as
     "MyNick | Away". The nick changes sometimes spam channels you're in and
     drive the other participants crazy, so much so that a few channels have
     actually banned them. See the `Away Status` section below.
@@ -195,7 +195,7 @@ If you followed the above steps, you are now using the Freenode IRC network.
 There are actually *many* IRC networks. You can manage your connections to
 each on the `Network List` window of HexChat.
 
-..  IMPORTANT:: You will need to register your nicks on each network you use.
+..  important:: You will need to register your nicks on each network you use.
 
 .. _irc_using_channels:
 
@@ -231,10 +231,10 @@ You can leave a channel by typing::
 :guilabel:`Close`. (You can also just close the channel without :code:`/part`,
 but it's a little more abrupt.)
 
-..  NOTE:: You can auto-join favorite channels in HexChat by right-clicking
+..  note:: You can auto-join favorite channels in HexChat by right-clicking
     the channel name and checking :guilabel:`Autojoin`.
 
-..  NOTE:: If you get sick of seeing notifications about users joining and
+..  note:: If you get sick of seeing notifications about users joining and
     parting,, right-click the channel name and check
     :menuselection:`Settings --> Hide Join/Part Messages`.
 
@@ -366,7 +366,7 @@ A good, quick check on your choice of phrase is to ask "does this assume
 something about the other person?" Keep phrasing generic until you know
 more about the person.
 
-..  NOTE:: I have personally chatted with amazing people from all over the
+..  note:: I have personally chatted with amazing people from all over the
     world - France, Spain, Germany, Scotland, Isle of Man, Mexico, Canada,
     Cyprus, Russia...and the list goes on! Most people enjoy talking about
     their country and culture, so there's never any harm in asking "where

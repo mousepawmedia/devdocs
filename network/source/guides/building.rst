@@ -103,7 +103,7 @@ On Mac:
 
     sudo port install cairo sdl2
 
-On Windows, you can install `cairo` and `SDL2` with `vcpkg`.
+On Windows, you can install ``cairo`` and ``SDL2`` with ``vcpkg``.
 Alternatively, you may be able to find binaries or compile it yourself
 (see project sites for instructions.)
 
@@ -149,7 +149,7 @@ Once the build is done, you can find all the headers in
 :file:`libdeps/libs/lib`. The build systems in all of our other repositories
 look for the library files at these locations by default.
 
-..  WARNING:: To make it easier to update ``libdeps`` later, DO NOT EVER commit
+..  warning:: To make it easier to update ``libdeps`` later, DO NOT EVER commit
     changes on the ``devel``, ``fresh``, or ``stable`` branches directly.
 
 .. _gbuild_libgit_aclocal:
@@ -229,7 +229,7 @@ Building PawLIB: For Developing
 If you want to test PawLIB or help build it, you should start from the
 ``devel`` branch.
 
-..  IMPORTANT:: Remember to create a new branch if you plan to make any changes!
+..  important:: Remember to create a new branch if you plan to make any changes!
 
 We have a tester built in to PawLIB, so you can run Goldilocks tests and
 benchmarks on the fly. To build that, run...
@@ -263,11 +263,13 @@ File Structure
 ---------------------------------------
 
 All C++ project repositories have the same basic directory structure,
-demonstrated below. Non-library projects would effectively have a `project`
-folder instead of `library-tester`, and would lack the `library-source`
+demonstrated below. Non-library projects would effectively have a ``project``
+folder instead of ``library-tester``, and would lack the ``library-source``
 folder.
 
-Folders marked with (*) are untracked in the Git repository::
+Folders marked with (*) are untracked in the Git repository:
+
+..  code-block:: text
 
     Repository
     ├── docs ← Sphinx documentation.
@@ -326,7 +328,9 @@ To add a new file to a project build, you need to edit that project's
 section, where all the project files are listed. Add your file paths
 (relative to the location of :file:`CMakeLists.txt`) to that list.
 
-For example, some project's ``add_executable`` command might look like this::
+For example, some project's ``add_executable`` command might look like this:
+
+..  code-block:: text
 
     add_executable(${TARGET_NAME}
         include/someproject/classA.hpp
@@ -339,7 +343,7 @@ For example, some project's ``add_executable`` command might look like this::
         src/classC.cpp
     )
 
-..  NOTE:: Please be sure to list files in alphabetical order, in two groups:
+..  note:: Please be sure to list files in alphabetical order, in two groups:
     header files and source files. Keep this section clean!
 
 Switching Dependency Locations
@@ -364,7 +368,7 @@ that directory, and save it with another name ending in ``.config``. Then,
 modify the file following the instructions to specify alternative paths to the
 dependency libraries.
 
-..  IMPORTANT:: You **must** save the ``.config`` file in the root of the repository.
+..  important:: You **must** save the ``.config`` file in the root of the repository.
     All levels of the build system will look for it there.
 
 Finally, tell the build system to use your new config file, using the
@@ -402,6 +406,6 @@ If your system is configured for cross-compiling, you can ask the compiler to
 build for an x86 (32-bit) or x64 (64-bit) system by including the ``ARCH=32`` or
 ``ARCH=64`` arguments, respectively.
 
-..  WARNING:: Our dependency libraries (``libdeps``) are not
+..  warning:: Our dependency libraries (``libdeps``) are not
     currently configured to switch architectures. You will need to manually
     compile these and point to them using a ``.config`` file.

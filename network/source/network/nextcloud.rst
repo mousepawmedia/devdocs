@@ -104,7 +104,7 @@ top bar.
 
 * :guilabel:`Tasks` is your personal task list. (Not collaborative.)
 
-..  NOTE:: You should still be using Phabricator Maniphest for project tasks,
+..  note:: You should still be using Phabricator Maniphest for project tasks,
     so your teammates can see them. The Nextcloud Tasks app is only for personal
     work tasks, such as "Read 'Dreaming in Code'" or "Clean desk".
 
@@ -173,7 +173,7 @@ You can upload nearly any kind of file to Nextcloud.
 
 * Many video files can be viewed directly via the built-in Video player.
 
-..  IMPORTANT:: You should keep an eye on your file space quota.
+..  important:: You should keep an eye on your file space quota.
     See :ref:`nextcloud_quota`.
 
 ..  _nextcloud_files_managing:
@@ -220,14 +220,14 @@ You can share any item with other users from the :guilabel:`Sharing` tab
 in the right pane. If you don't see it, you can open it by tapping the
 Sharing icon on an item row in the center pane.
 
-..  NOTE:: When sharing a lot of related files, it is usually better to
+..  note:: When sharing a lot of related files, it is usually better to
     put them all in one folder, and then share the folder itself.
 
 To share an item, start typing a username (i.e. "jcmcdonald") or group name
 (i.e. "Content Developers") in the :guilabel:`Share with users or groups...`
 box. Tap the name when it appears in the autocomplete list.
 
-..  NOTE:: You *must* search users by their username. You presently cannot
+..  note:: You *must* search users by their username. You presently cannot
     search by their real name.
 
 After selecting a user or group, they will appear in the sharing list below
@@ -240,7 +240,7 @@ the search box. You can control sharing permissions from here.
 
 * The trash can icon un-shares the item with the user/group.
 
-..  IMPORTANT:: For Design+Production or Content Development, it is usually
+..  important:: For Design+Production or Content Development, it is usually
     most convenient to place uploaded work into a folder and share it with
     your entire department, using the department's group name.
 
@@ -260,7 +260,7 @@ a new tag name and press :kbd:`Enter` to create one.
 
 The :guilabel:`Activities` tab shows the history of the file.
 
-..  NOTE:: Any action attributed to "remote user" is due to a bug in the
+..  note:: Any action attributed to "remote user" is due to a bug in the
     Office app. You can view more revision information in that app.
 
 The :guilabel:`Comments` section allows you to discuss the item with other
@@ -345,7 +345,7 @@ typing, applying changes, or seeing the collaborative changes of others. In the
 worst case, you might not be able to make any changes because they're getting
 lost between your computer and the server.
 
-..  NOTE:: If you *see* your changes on the document, you can rest assured
+..  note:: If you *see* your changes on the document, you can rest assured
     that they are indeed there.
 
 If you are experiencing such issues, you may need to wait on using Collabora
@@ -412,7 +412,7 @@ Edit Menu
   only possible to cut/copy/paste plain, unformatted text between Collabora
   Office and other programs.
 
-..  NOTE:: If you use PrivacyBadger, you may need to disable it on this site
+..  note:: If you use PrivacyBadger, you may need to disable it on this site
     before you can use Cut/Copy/Paste.
 
 * :guilabel:`Select all` selects everything in the document.
@@ -441,7 +441,7 @@ View Menu
   control the zoom on the document. You can also use the zoom controls on the
   lower-right corner of the interface.
 
-..  NOTE:: Your web browser's default zoom controls will only scale the
+..  note:: Your web browser's default zoom controls will only scale the
     interface, not the document.
 
 * :guilabel:`Formatting Marks` toggles the visibility of various otherwise
@@ -683,7 +683,7 @@ When editing Spreadsheets, a few additional controls are available.
 The second upper toolbar is where you type cell contents. The Sum and Function
 buttons can help with creating the two most common kinds of formulas.
 
-..  NOTE:: To my knowledge, all LibreOffice spreadsheet formulas and functions
+..  note:: To my knowledge, all LibreOffice spreadsheet formulas and functions
     work, but you will have to manually type most of them.
 
 The second to bottom toolbar visible when editing Spreadsheets allows you to

@@ -7,7 +7,7 @@ You can use the Atom text and code editor with many MousePaw Media projects.
 While this isn't our officially recommended IDE, many of our staff members use
 it.
 
-..  NOTE:: We have found that Atom's support for C++ leaves a lot to be
+..  note:: We have found that Atom's support for C++ leaves a lot to be
     desired. Consider :ref:`vscode` for C++ instead.
 
 Installing

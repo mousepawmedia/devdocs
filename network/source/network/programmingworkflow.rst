@@ -30,7 +30,7 @@ Step One: Planning
 Before coding anything, you should map out all of the major features and
 improvements you have planned for your patch or new version.
 
-..  IMPORTANT:: Should you create a task, or no? Here's the general rule: If the
+..  important:: Should you create a task, or no? Here's the general rule: If the
     task will take less than 10 minutes, and you're going to do it right now,
     you do NOT have to create a task. Otherwise, *create a task*!
 
@@ -324,7 +324,7 @@ result is reported back to the Revision or Commit.
 Our C++ projects use the Goldilocks library for testing and benchmarking.
 Our Jenkins instance is configured to use these Goldilocks tests.
 
-..  NOTE:: To learn more about setting up and using Goldilocks, see the
+..  note:: To learn more about setting up and using Goldilocks, see the
     `PawLIB Goldilocks documentation <https://mousepawmedia.net/docs/pawlib/goldilocks/goldilocks.html>`_.
 
 If a build or test suite fails, Jenkins will report the failure status and
@@ -342,6 +342,6 @@ By including the tag :code:`#nobuild` under Subscribers, all automatic builds
 will be skipped. If you only want to skip the tests, include the tag
 :code:`#notest`.
 
-..  WARNING:: Be sure to remove these tags from Subscribers *before* your final
+..  warning:: Be sure to remove these tags from Subscribers *before* your final
     Revision update, to ensure the appropriate builds and tests are run.
     You can't land the Revision until they are!

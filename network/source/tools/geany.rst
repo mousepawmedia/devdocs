@@ -39,7 +39,7 @@ You can download the official Windows installer for Geany and its plugins from
 Adding Themes to Geany
 ===============================
 
-..  NOTE:: These instructions only work on Mac and Linux.
+..  note:: These instructions only work on Mac and Linux.
 
 I don't know about you, but I hate working with black-text-on-white-background.
 Thankfully, with Geany, you don't have to!

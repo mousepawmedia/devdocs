@@ -4,7 +4,7 @@ Ubuntu Setup: Installing
 Making Some Decisions
 ==============================
 
-..  NOTE:: You should read the :doc:`/setup_linux/about` section before continuing.
+..  note:: You should read the :doc:`/setup_linux/about` section before continuing.
 
 Single Boot or Dual Boot?
 -------------------------------
@@ -15,7 +15,7 @@ at MousePaw Media. However, if you rely on Windows-only or Mac-only software,
 such as Microsoft Office™ or software from Adobe or Autodesk, you may want to
 keep Microsoft Windows™ installed.
 
-..  NOTE:: You should consider whether you are actually dependent on the
+..  note:: You should consider whether you are actually dependent on the
     Windows-only or Mac-only software you use, or if a Linux alternative will
     do just as well. See :doc:`about`
 
@@ -26,11 +26,11 @@ Otherwise, if you want to have both Windows and Ubuntu Linux on your machine,
 you can install them side-by-side. To do this, you must have at least
 200 GB of free space on your hard drive.
 
-..  WARNING:: Whether you're single-booting or dual-booting, backup all of your
+..  warning:: Whether you're single-booting or dual-booting, backup all of your
     files to external removable media**, such as an external hard drive or a
     flash drive! If something goes wrong (which it can), you'll need that backup.
 
-..  NOTE:: If you're a little intimidated by all of this, consider seeking out
+..  note:: If you're a little intimidated by all of this, consider seeking out
     a tech-savvy friend, coworker, or relation to help you, *especially*
     if you're dual-booting.
 
@@ -65,7 +65,7 @@ These are other options in the Ubuntu family:
 - `Ubuntu Studio <http://ubuntustudio.org/>`_
 - `Xubuntu <http://xubuntu.org/>`_
 
-..  NOTE:: Although we primarily recommend Pop!_OS, we'll be using the term
+..  note:: Although we primarily recommend Pop!_OS, we'll be using the term
     "Ubuntu" throughout to avoid confusion. Pop!_OS is based on Ubuntu, and
     can be used in the same way.
 
@@ -116,7 +116,7 @@ new features, I'd recommend this option.
 However, if you're tech-savvy and love experimenting with the latest features,
 you might want to use the newest release.
 
-..  IMPORTANT:: Our instructions and build environment are all based on the
+..  important:: Our instructions and build environment are all based on the
     LTS release. If you use a newer version, you will be responsible for
     adjusting instructions for your release yourself.
 
@@ -149,7 +149,7 @@ computers is. You should have a backup plan in case something goes haywire.
 removable device, such as an external hard drive or a flash drive (or set of
 flash drives).
 
-..  NOTE:: If you're ditching Windows forever, congrats! You can skip
+..  note:: If you're ditching Windows forever, congrats! You can skip
     steps 2-3.
 
 2) **Find your Microsoft Windows™ recovery disk or flash drive.** If you want
@@ -176,7 +176,7 @@ later!
 Preparing for Dual-Boot on Windows
 ------------------------------------------
 
-..  NOTE:: If you're not dual-booting with Windows, you can skip this step.
+..  note:: If you're not dual-booting with Windows, you can skip this step.
 
 In Windows, open up "Disk Management". On the table, find the disk and
 partition (disk section) that has at least 200GB of free space. It is
@@ -203,7 +203,7 @@ Turn Off Secure Boot
 If you have a PC running Windows 8 or later, you may need to turn off Secure Boot
 before you can install Linux.
 
-..  NOTE:: It is not possible to install Linux on Microsoft-branded computers,
+..  note:: It is not possible to install Linux on Microsoft-branded computers,
     such as the Surface Pro.
 
 To do this, go to the Power menu (where you shut down from), hold down SHIFT,
@@ -214,7 +214,7 @@ This will bring up the UEFI Settings control panel, which is independent of
 the operating system. Every brand of computer has its own such control panel,
 and they all tend to look a little different.
 
-..  WARNING:: Be very careful in here.
+..  warning:: Be very careful in here.
 
 Search through the options for "Secure Boot" and disable it.
 **If you're dual-booting, do NOT turn off UEFI altogether!** Also, search
@@ -223,7 +223,7 @@ for "Fast Boot" (if the option is present) and disable that.
 Change Boot Order
 -----------------------------
 
-..  NOTE:: If you are on a PC running Windows 7 or earlier, you probably have
+..  note:: If you are on a PC running Windows 7 or earlier, you probably have
     BIOS instead of UEFI. To get to that, restart your computer. As the
     computer brand flashes on your screen at the beginning of startup, look
     for the key to press for "Setup". If you miss the chance to press it, just
@@ -244,7 +244,7 @@ You will be given the option to "Try" the Linux operating system you selected.
 This is called the "Live" version. **You should always run this first,** to
 make sure it will work on your computer.
 
-..  NOTE:: Give it some time - it is actually loading the entire operating
+..  note:: Give it some time - it is actually loading the entire operating
     system from the DVD or flash drive into RAM, so it will be very slow.
     The final installed operating system will be much faster.
 
@@ -263,7 +263,7 @@ The first screen will ensure you are connected to the internet and have enough
 hard drive space for the installation. Check `Download updates while installing`
 and `Install this third-party software`. Click `Continue`.
 
-..  WARNING:: Be **very** careful what you select on the next screen!
+..  warning:: Be **very** careful what you select on the next screen!
 
 For Single-Boot
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -286,7 +286,7 @@ rest as a separate `/home` partition. You can find more information about
 setting up partitions on
 `this page <https://help.ubuntu.com/community/DiskSpace>`_.
 
-..  NOTE:: As of Ubuntu 18.04, it is no longer necessary to set up a separate
+..  note:: As of Ubuntu 18.04, it is no longer necessary to set up a separate
     ``swap`` partition.
 
 For Dual-Boot
@@ -309,7 +309,7 @@ Finally, we'll use the rest of the free space for our `/home` partition. Select
 `Primary` and `Beginning of this space` selected. Set `Use as` to `ext4` and
 `Mount point` to `/home`. Confirm.
 
-..  IMPORTANT:: On the table, ensure that the checkmark under the `Format`
+..  important:: On the table, ensure that the checkmark under the `Format`
     column is only checked on those three partitions you just made! **DO NOT
     FORMAT ANY OTHER PARTITIONS!**
 

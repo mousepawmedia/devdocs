@@ -19,7 +19,7 @@ Docker is fairly easy to install on most major operating systems. Installation
 instructions for Windows, macOS, and the major Linux distributions can be
 found on the `Docker Engine overview | Docker Documentation <https://docs.docker.com/install/>`_
 
-..  NOTE:: Linux users should be sure to follow the guides for
+..  note:: Linux users should be sure to follow the guides for
     ``Manage Docker as a non-root user`` and
     ``Configure Docker to start on boot`` outlined on the
     `Post-installation steps for Linux | Docker Documentation <https://docs.docker.com/install/linux/linux-postinstall/>`_.

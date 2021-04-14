@@ -3,7 +3,7 @@
 Account Management
 ##########################################
 
-..  NOTE:: Section coming soon.
+..  note:: Section coming soon.
 
 ..  _admin_accounts_new:
 
@@ -26,7 +26,7 @@ Generating Login
 -------------------------------------------
 
 Before we begin, we must first create the username and password. Usernames
-are composed of first and middle intitials and last name.
+are composed of first and middle initials and last name.
 
 Passwords should be ranked as strong on both
 `GRC Haystack <https://www.grc.com/haystack.htm>`_ and
@@ -99,7 +99,7 @@ LDAP management password.
 
 On the :guilabel:`Users` tab, select :guilabel:`New user`:
 
-Toward the upper section, set :guilabel:`RDN identifier` to `uid`.
+Toward the upper section, set :guilabel:`RDN identifier` to ``uid``.
 
 ..  NOTE: If you get this wrong when you first create the user, go to
     :guilabel:`Tree view` and rename the item manually from ``cn=whatever,``
@@ -150,7 +150,7 @@ be pulled from the LDAP database.
 Click :guilabel:`Register Account`. Once the Community Rules displays,
 **immediately close out of the window**!
 
-..  IMPORTANT:: You should **NEVER** accept the Community Rules on behalf of
+..  important:: You should **NEVER** accept the Community Rules on behalf of
     the new user!
 
 ..  _admin_accounts_new_phabaccess:
@@ -167,7 +167,7 @@ As you may know, this is handled through **Projects** on Phabricator. You
 can add a user to a group by going to the Project, selecting
 :guilabel:`Members` on the left, and clicking :guilabel:`Add Members`.
 
-..  NOTE:: If you aren't allowed to add a member to a project, check whether
+..  note:: If you aren't allowed to add a member to a project, check whether
     the project has *subprojects*, and add the member to the appropriate
     subprojects.
 
@@ -187,7 +187,7 @@ The user account we just created must be added to the following:
   to be working on. Technically, they can join these later, but being members
   automatically can save a lot of time and confusion.
 
-..  NOTE:: It can be confusing for a new user to be blocked from accessing a
+..  note:: It can be confusing for a new user to be blocked from accessing a
     repository because they aren't a project member. In general, it's just
     good practice to add new users to their expected projects.
 
@@ -204,7 +204,9 @@ You should send the username and password to the new user. Ideally, this should
 be done in person, for maximum security. In that situation, cover the password
 policies as described in the template email below.
 
-If you need to send the password via email, use the following template::
+If you need to send the password via email, use the following template:
+
+..  code-block:: text
 
     Welcome to MousePaw Media!
 
@@ -250,8 +252,8 @@ Send this email to the user's personal email address, and then
 **delete it from Sent Mail and Trash**! Ensure the email is *not* retained
 anywhere on our servers.
 
-..  NOTE:: You should encourage the new user not to use their browser's
-    "save this password" feature. By typing their password reguarly, they
+..  note:: You should encourage the new user not to use their browser's
+    "save this password" feature. By typing their password regularly, they
     will be able to remember it better more quickly.
 
 Employee Account Suspension

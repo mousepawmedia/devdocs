@@ -27,7 +27,7 @@ We officially support the following operating systems for development work:
 * macOS
 * FreeBSD
 
-..  NOTE:: We do not provide technical support for third-party development
+..  note:: We do not provide technical support for third-party development
     tools on non-Debian systems.
 
 Developing on Windows
@@ -45,7 +45,7 @@ our instructions for Ubuntu Linux. We've also included Windows setup
 instructions throughout this guide, although we offer no technical support
 or guarantees for these instructions.
 
-..  NOTE:: If you use the Windows Subsystem for Linux, you can also run some
+..  note:: If you use the Windows Subsystem for Linux, you can also run some
     graphical Linux applications, by following `this guide from HowToGeek <https://www.howtogeek.com/261575/how-to-run-graphical-linux-desktop-applications-from-windows-10s-bash-shell/>`_.
 
 Git and Arcanist
@@ -68,7 +68,7 @@ For C/C++ development:
 * **CMake**
 * **A C++ IDE**: We strongly recommend VSCode.
 
-..  NOTE:: We have **no plans** to support MSVC. Use Clang for compiling on
+..  note:: We have **no plans** to support MSVC. Use Clang for compiling on
     Microsoft Windows.
 
 For setup instructions, see :ref:`cpp`.
@@ -126,7 +126,7 @@ web design, user interface design, graphics design, and official documents.
 These fonts are all 100% free and open source, so they're great additions to
 your font collection anyhow!
 
-..  NOTE:: The font ``Hack`` is included, which we highly recommend for use
+..  note:: The font ``Hack`` is included, which we highly recommend for use
     in your editor or IDE!
 
 For instructions, see :ref:`fonts`.
@@ -147,7 +147,7 @@ work:
 * Other Linux
 * FreeBSD
 
-..  NOTE:: We do not provide technical support for third-party development
+..  note:: We do not provide technical support for third-party development
     tools on non-Debian systems.
 
 Git and Arcanist
@@ -206,7 +206,7 @@ work:
 * Other Linux
 * FreeBSD
 
-..  NOTE:: We do not offer help with third-party tools on non-Debian systems.
+..  note:: We do not offer help with third-party tools on non-Debian systems.
 
 Graphics Tools
 ------------------------------------

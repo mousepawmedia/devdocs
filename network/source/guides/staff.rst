@@ -10,9 +10,9 @@ your internship supervisor.
 This tutorial will also get you started as a MousePaw Media employee.
 Read through it in order. Watch out for...
 
-..  IMPORTANT:: These are things you should do now.
+..  important:: These are things you should do now.
 
-..  WARNING:: These are things you need to watch out for.
+..  warning:: These are things you need to watch out for.
 
 .. _gstaff_policies:
 
@@ -27,7 +27,7 @@ We publish the latest version of the Employee Handbook at
 `mousepawmedia.net/eco <https://mousepawmedia.net/eco>`_. Click
 :guilabel:`Employee Handbook` to view or download.
 
-..  IMPORTANT:: Download the latest copy of the Employee Handbook from
+..  important:: Download the latest copy of the Employee Handbook from
     that link, and save it to your work computer for quick reference.
     Read it through now.
 
@@ -40,7 +40,7 @@ Technical Requirements
 =======================================
 
 You **must** have Linux, ideally an Ubuntu-based distro (version 18.04
-or later), installed on your computer. See :doc:`/setup_linux/install` for
+or later), installed on your computer. See :doc:`../setup_linux/install` for
 instructions on installing it. If you need help, contact Jason C. McDonald.
 
 Although we work on Linux, you may access the Staff Network via Windows, Mac,
@@ -73,7 +73,7 @@ We also use Skype for regular communication.
 Our network is spread across two servers.
 
 - **Webster** is the public server hosting ``mousepawmedia.com``,
-  `mousepawgames.com`, and our email servers. It is based out of
+  ``mousepawgames.com``, and our email servers. It is based out of
   Fremont, CA.
 
 - **Hawksnest** is our in-house development server. It hosts DevNet, our
@@ -89,19 +89,19 @@ of the DevNet (Hawksnest) server. The DevNet landing has links to everything els
 Email
 ------------------------------------------
 
-..  NOTE:: Email is hosted on Webster, and thus is unaffected by the status of Hawksnest.
+..  note:: Email is hosted on Webster, and thus is unaffected by the status of Hawksnest.
 
 Email is one of our primary ways of communicating at MousePaw Media. You have
 a company email address issued to you.
 
-..  WARNING:: Be sure to check your company email every single day, and
+..  warning:: Be sure to check your company email every single day, and
     respond in a timely fashion!
 
 You can check your email through the Roundcube or Rainloop web clients.
 This is useful if you don't want to configure an external client, or need
 to check your email without access to your usual device.
 
-.. _gstaff_network_email_roundcube
+.. _gstaff_network_email_roundcube:
 
 Roundcube
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -116,7 +116,9 @@ Webster, and thus is unaffected by Hawksnest/DevNet outages.
     Fill in your Display Name (full name with middle initial preferred),
     set your Organization to ``MousePaw Media``, and add a default signature.
 
-    We recommend this template for your signature::
+    We recommend this template for your signature:
+
+..  code-block:: text
 
         Your Name Here
         Position, MousePaw Media
@@ -126,9 +128,9 @@ Webster, and thus is unaffected by Hawksnest/DevNet outages.
 
 That's all! Now you can begin browsing your email.
 
-..  IMPORTANT:: Access your company email through the Roundcube client.
+..  important:: Access your company email through the Roundcube client.
 
-.. _gstaff_network_email_rainloop
+.. _gstaff_network_email_rainloop:
 
 Rainloop
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -145,7 +147,9 @@ integrated Rainloop client.
     corner, and select Settings. In the middle, click on your email
     address next to :guilabel:`Identity`. Enter your signature.
 
-    Here's the example signature::
+    Here's the example signature:
+
+..  code-block:: text
 
         Your Name Here
         Position, MousePaw Media
@@ -155,9 +159,9 @@ integrated Rainloop client.
 
 4. Click :guilabel:`Update`.
 
-..  IMPORTANT:: Access your company email through the Rainloop client.
+..  important:: Access your company email through the Rainloop client.
 
-.. _gstaff_network_email_imap
+.. _gstaff_network_email_imap:
 
 IMAP Access
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -171,38 +175,38 @@ Thunderbird or your mobile device. Here are the server settings:
 
 - Incoming Mail: IMAP (recommended)
 
-  - Server Name: `mail.mousepawmedia.com`
+  - Server Name: ``mail.mousepawmedia.com``
 
-  - Port: `993`
+  - Port: ``993``
 
-  - Connection security: `SSL/TLS`
+  - Connection security: ``SSL/TLS``
 
-  - Authentication method: `Normal password`
+  - Authentication method: ``Normal password``
 
 - Incoming Mail: POP3
 
-  - Server Name: `mail.mousepawmedia.com`
+  - Server Name: ``mail.mousepawmedia.com``
 
-  - Port: `995`
+  - Port: ``995``
 
-  - Connection security: `SSL/TLS`
+  - Connection security: ``SSL/TLS``
 
-  - Authentication method: `Normal password`
+  - Authentication method: ``Normal password``
 
 - Outgoing Mail: SMTP
 
-  - Server Name: `mail.mousepawmedia.com`
+  - Server Name: ``mail.mousepawmedia.com``
 
-  - Port: `465` (recommended) or `587`.
+  - Port: ``465`` (recommended) or ``587``.
 
-  - Connection security: `SSL/TLS`
+  - Connection security: ``SSL/TLS``
 
-  - Authentication method: `Normal password`
+  - Authentication method: ``Normal password``
 
-..  IMPORTANT:: Connect your company email to an email client, such as
+..  important:: Connect your company email to an email client, such as
     Thunderbird, Evolution, or your smartphone.
 
-.. _gstaff_network_email_tasks
+.. _gstaff_network_email_tasks:
 
 Regular Email Tasks
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -218,11 +222,11 @@ Regular Email Tasks
   * The Phabricator object IDs or links for anything you've worked on (inline),
   * Any questions you have for your supervisors.
 
-..  IMPORTANT:: Log into your email and send an message to
+..  important:: Log into your email and send an message to
     :code:`eco@mousepawmedia.com`. State what day you would like your weekly
     check-in email to be on.
 
-..  WARNING:: Your check-in email is how we track your job attendance. Be sure
+..  warning:: Your check-in email is how we track your job attendance. Be sure
     to send it on your regular day **every single week**! If it is not received
     on time, your hours for the week might not be counted.
 
@@ -235,7 +239,7 @@ Kimai is where we track time. You are responsible for reporting your time
 **every day**. Each day's time sheets are locked automatically the next morning
 at 10 am.
 
-..  WARNING:: If you forget to log your time, you will NOT be reminded.
+..  warning:: If you forget to log your time, you will NOT be reminded.
     Contact ``eco@mousepawmedia.net`` if you forget, and report your time
     that way.
 
@@ -277,7 +281,7 @@ Fill out the following fields:
   codes, including Maniphest Tasks, Differential Revisions, Calendar Events,
   Ponder Questions, wiki pages, and the like.
 
-..  WARNING:: These notes are not a replacement for your check-in email.
+..  warning:: These notes are not a replacement for your check-in email.
 
 Finally, click :guilabel:`Save` in the lower-left corner to store the hours.
 
@@ -318,7 +322,7 @@ and fill out your profile. Follow these instructions...
 
 4.  Fill out as much of the profile as you want/can. Have fun with this!
 
-..  NOTE:: Please fill out at least five "Fun Stuff" fields, as this is what
+..  note:: Please fill out at least five "Fun Stuff" fields, as this is what
     we will use to craft your profile on the MousePaw Media website.
 
 5.  Click :guilabel:`Save Profile` at the bottom.
@@ -338,7 +342,7 @@ and fill out your profile. Follow these instructions...
 9. Click :guilabel:`External Accounts` at left. Add your GitHub account.
     Click :guilabel:`Save Changes`.
 
-..  IMPORTANT:: You should also add your company email address to your GitHub
+..  important:: You should also add your company email address to your GitHub
     account, so you can get public credit for your contributions to our
     repositories.
 
@@ -362,7 +366,7 @@ and fill out your profile. Follow these instructions...
     given item. Recommended defaults are provided, but you can adjust these
     to your needs.
 
-..  WARNING:: Do NOT select "Ignore" for any notifications! All notifications
+..  warning:: Do NOT select "Ignore" for any notifications! All notifications
     are ultimately controlled by whether you're "Subscribed" to an object.
 
 12. Take a few minutes to go through the rest of the settings independently.
@@ -511,7 +515,7 @@ All the ECO forms you'll need are stored on Nextcloud, in the *ECO* folder.
     *your legal signature*.
 
 All forms must be filled out, signed *by hand*, scanned in (see sidebar),
-and emailed to `eco@mousepawmedia.com`.
+and emailed to ``eco@mousepawmedia.com``.
 
 * **Formal Grievance**: If you are unable to resolve a conflict with a co-worker
   via informal discussions, you may file this form within 15 days of the
@@ -555,7 +559,7 @@ Next Steps
 Previous MousePaw Media graduates have written up some tips for new interns!
 You can read those on the Phabricator Phriction wiki at the link below:
 
-..  IMPORTANT:: Read `Internship Tips <https://phabricator.mousepawmedia.net/w/resources/internship_tips/>`_
+..  important:: Read `Internship Tips <https://phabricator.mousepawmedia.net/w/resources/internship_tips/>`_
 
 You can learn more about the different parts of the Staff Network in the
 other sections of this documentation.

@@ -24,7 +24,7 @@ located at `phabricator.mousepawmedia.net <https://phabricator.mousepawmedia.net
    and click the :guilabel:`Log In or Register (GitHub)` button towards the
    bottom of the screen.
 
-..  NOTE:: The LDAP username and password are for staff only. Don't worry
+..  note:: The LDAP username and password are for staff only. Don't worry
     about that.
 
 3. Read through and sign the **Community Rules**.
@@ -64,7 +64,7 @@ located at `phabricator.mousepawmedia.net <https://phabricator.mousepawmedia.net
 That's it! You're now set up to use DevNet Phabricator! For complete
 instructions on using Phabricator, see :ref:`phab`.
 
-..  WARNING:: DevNet (anything at ``mousepawmedia.net``) is only online from
+..  warning:: DevNet (anything at ``mousepawmedia.net``) is only online from
     6:00am until 10:00pm Pacific time, seven days a week. You can see the
     current status at `mousepawmedia.com/devnet <https://mousepawmedia.com/devnet>`_
 

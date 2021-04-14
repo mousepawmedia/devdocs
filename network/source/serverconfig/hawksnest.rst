@@ -30,15 +30,15 @@ Installed Ubuntu 20.04 LTS x64 Server.
 
 * Selected the following default packages:
 
-    * ``OpenSSH Server``
+  * ``OpenSSH Server``
 
-    * ``LAMP server``
+  * ``LAMP server``
 
-    * ``Manual package selection``
+  * ``Manual package selection``
 
 * Install GRUB bootloader? ``Yes``
 
-..  NOTE:: Set passwords for both the ``hawksnest`` user and the MySQL root user.
+..  note:: Set passwords for both the ``hawksnest`` user and the MySQL root user.
 
 Updates
 ===================================================
@@ -88,7 +88,9 @@ mounts will be performed at startup.
     $ sudo vim /etc/fstab
 
 Add the following lines, substituting the values from the earlier ``mount``
-commands as appropirate::
+commands as appropriate:
+
+..  code-block:: text
 
     /dev/sda5 /mnt/stash ext4 defaults 0 2
     /dev/sdc1 /mnt/backup ext4 defaults 0 2
@@ -136,7 +138,7 @@ We need to install a couple of packages for managing updates automatically.
 By default, only the system and security updates will be automatically
 installed. We can uncomment additional changes here as well.
 
-..  IMPORTANT:: Those are variables in the file. Don't hard-code the
+..  important:: Those are variables in the file. Don't hard-code the
     distro_id and distro_codename.
 
 Once you're happy with that file, save and close. Next, we'll configure
@@ -146,7 +148,9 @@ the schedule.
 
     $ sudo vim /etc/apt/apt.conf.d/10periodic
 
-Set the contents of that file::
+Set the contents of that file:
+
+..  code-block:: text
 
     APT::Periodic::Update-Package-Lists "1";
     APT::Periodic::Download-Upgradeable-Packages "1";
@@ -189,13 +193,13 @@ PHP7.4
 
 `SOURCE: How Do I Install Different PHP Version? (Ask Ubuntu) <http://askubuntu.com/a/109544/23786>`_
 
-..  NOTE:: We are not installing APC because it is not supported on PHP 7.4
+..  note:: We are not installing APC because it is not supported on PHP 7.4
     or above. ``php7.4-opcache`` handles that now.
 
 SSH
 ------------------------------------------
 
-..  NOTE:: For security reasons, the SSH port we changed to has been
+..  note:: For security reasons, the SSH port we changed to has been
     scrubbed to ``123``.
 
 The necessary packages for SSH were installed on installation. We need to
@@ -228,7 +232,7 @@ On the **remote machine** (the computer you're connecting *from*), run...
 
 ..  code-block:: bash
 
-    ssh-copy-id hawksnest.ddns.net -p 123
+    ssh-copy-id mousepawmedia.net -p 123
 
 You can now connect to the server via SSH.
 
@@ -251,7 +255,9 @@ We need to edit the following file...
     $ sudo vim /etc/mysql/mysql.conf.d/mysqld.conf
 
 Look for the following line, uncomment it (remove the leading :code:`#`), and
-edit it to match the value shown here::
+edit it to match the value shown here:
+
+..  code-block:: text
 
     max_connections = 1000
 
@@ -303,7 +309,9 @@ Secure Shared Memory
 
     $ sudo vim /etc/fstab
 
-At the bottom of the file, add the lines::
+At the bottom of the file, add the lines:
+
+..  code-block:: text
 
     # Secure shared memory
     tmpfs /run/shm tmpfs defaults,noexec,nosuid 0 0
@@ -328,7 +336,9 @@ Harden Network with ``sysctl`` Settings
 
     $ sudo vi /etc/sysctl.conf
 
-Edit the file, uncommenting or adding the following lines.::
+Edit the file, uncommenting or adding the following lines:
+
+..  code-block:: text
 
     # IP Spoofing protection
     net.ipv4.conf.all.rp_filter = 1
@@ -379,7 +389,9 @@ Harden PHP
 
     $ sudo vim /etc/php/7.4/apache2/php.ini
 
-Add or edit the following lines and save.::
+Add or edit the following lines and save:
+
+..  code-block:: text
 
     register_globals = Off
     expose_php = Off
@@ -406,7 +418,9 @@ Edit the Apache2 security configuration file...
 
     $ sudo vim /etc/apache2/conf-available/security.conf
 
-Change or add the following lines::
+Change or add the following lines:
+
+..  code-block:: text
 
     ServerTokens Prod
     ServerSignature Off
@@ -439,7 +453,9 @@ Now we'll copy the default configuration and edit it.
     $ sudo mv /etc/modsecurity/modsecurity.conf-recommended /etc/modsecurity/modsecurity.conf
     $ sudo vim /etc/modsecurity/modsecurity.conf
 
-Add and edit the lines::
+Add and edit the lines:
+
+..  code-block:: text
 
     SecRuleEngine On
     SecServerSignature FreeOSHTTP
@@ -488,7 +504,7 @@ Enable the modules and restart Apache2, ensuring that it still works.
     $ sudo a2enmod security2
     $ sudo systemctl restart apache2
 
-..  WARNING:: While we followed the above to set this up, these instructions
+..  warning:: While we followed the above to set this up, these instructions
     no longer work. See the Linode server configuration for a working (as of
     writing) version.
 
@@ -562,7 +578,9 @@ DenyHosts blocks SSH attacks and tracks suspicious IPs.
     $ sudo apt install denyhosts
     $ sudo vim /etc/denyhosts.conf
 
-Edit the following lines.::
+Edit the following lines:
+
+..  code-block:: text
 
     ADMIN_EMAIL = hawksnest@localhost
     SMTP_FROM = DenyHosts
@@ -679,7 +697,9 @@ Otherwise, ``psad`` won't be able to log correctly.
     $ sudo vim /lib/systemd/system/fail2ban.service
 
 In that file, add ``ufw.service`` and ``psad.service`` to the ``After=`` directive,
-so it looks something like this::
+so it looks something like this:
+
+..  code-block:: text
 
     After=network.target iptables.service firewalld.service ufw.service psad.service
 
@@ -697,7 +717,9 @@ Now we need to adjust the UFW settings.
     $ sudo ufw logging high
     $ sudo vim /etc/ufw/before.rules
 
-Add the following lines before the final commit message.::
+Add the following lines before the final commit message:
+
+..  code-block:: text
 
     -A INPUT -j LOG
     -A FORWARD -j LOG
@@ -783,7 +805,7 @@ Now enable one necessary PHP module and restart Apache2.
     $ sudo phpenmod mbstring
     $ sudo systemctl restart apache2
 
-..  NOTE:: This previously required mcrypt, which is lacking in PHP7.4.
+..  note:: This previously required mcrypt, which is lacking in PHP7.4.
     However, it appears to be operating as expected without it.
 
 Test Apache2 again, as always.
@@ -817,7 +839,7 @@ Restart the Apache2 server...
 
 And then validate that you can ``http://<serveraddress>/phpmyadmin``.
 
-..  WARNING:: You may need to disable the Apache2 module ``security2``
+..  warning:: You may need to disable the Apache2 module ``security2``
     before you can access PHPMyAdmin. Otherwise, it throws an internal 404.
     We're not sure why. To fix the problem, run ``sudo a2dismod security2`` and
     restart the Apache2 service.
@@ -833,7 +855,9 @@ be using later.
     $ sudo apt-get install iptraf ddclient screen
     $ sudo vim /etc/ddclient.conf
 
-In the DDClient configuration file we just opened, set the following lines.::
+In the DDClient configuration file we just opened, set the following lines.:
+
+..  code-block:: text
 
     use=web. web='http://ip1.dynupdate.no-ip.com/8245/'
     protocol=noip
@@ -841,9 +865,11 @@ In the DDClient configuration file we just opened, set the following lines.::
     login='theemailaddressfornoip@example.com'
     password='youknowwhatgoesherewiseguy'
 
-Also, at the end of the file, add::
+Also, at the end of the file, add:
 
-    mousepawmedia.net,hawksnest.ddns.net,hawksnest.serveftp.com,sparrowsgate.serveminecraft.net
+..  code-block:: text
+
+    mousepawmedia.net,sparrowsgate.serveminecraft.net
 
 Save and close. Next, we need to change how ``ddclient`` runs.
 
@@ -851,7 +877,9 @@ Save and close. Next, we need to change how ``ddclient`` runs.
 
     $ sudo vim /etc/default/ddclient
 
-Change the following settings to match the following::
+Change the following settings to match the following:
+
+..  code-block:: text
 
     run_dhclient="true"
     run_ipup="true"
@@ -883,19 +911,17 @@ Now we'll get our certificates.
 
 ..  code-block:: bash
 
-    $ sudo /opt/certbot/certbot-auto certonly -a webroot --webroot-path /var/www/html -d hawksnest.ddns.net
-    $ sudo /opt/certbot/certbot-auto certonly -a webroot --webroot-path /var/www/html -d hawksnest.serveftp.com
     $ sudo /opt/certbot/certbot-auto certonly -a webroot --webroot-path /var/www/html -d mousepawmedia.net -d nextcloud.mousepawmedia.net -d phabricator.mousepawmedia.net -d ehour.mousepawmedia.net -d time.mousepawmedia.net -d jenkins.mousepawmedia.net -d registry.mousepawmedia.net -d secure.mousepawmedia.net -d files.mousepawmedia.net -d office.mousepawmedia.net -d sandbox.mousepawmedia.net -d pad.mousepawmedia.net -d ajc.mousepawmedia.net -d ibp.mousepawmedia.net
 
-Of course, we would change the ``hawksnest.ddns.net`` part to match the domain
-name we're getting the certificate for.
+Of course, we would change that the domain name(s) we're getting the
+certificate(s) for.
 
-..  NOTE:: If you're needing to add a subdomain from a certificate,
+..  note:: If you're needing to add a subdomain from a certificate,
     use the appropriate command above, and include the :code:`--expand` flag.
 
 Follow the instructions on the screen to complete the process of getting the
 certificates. If successful, they can be found (visible only as root) in
-:file:`/etc/letsencrypt/live/hawksnest.ddns.net` (change the folder name to
+:file:`/etc/letsencrypt/live/mousepawmedia.net` (change the folder name to
 match the domain, of course).
 
 Next, we need to create symbolic links to the certificates so Apache can see
@@ -911,14 +937,10 @@ do something else for the main ``mousepawmedia.net`` certificate
     $ sudo su
     # cd /etc/apache2/ssl
     # mkdir /etc/apache2/ssl/filecert
-    # ln -s /etc/letsencrypt/live/hawksnest.ddns.net/cert.pem hawksnest/cert.pem
-    # ln -s /etc/letsencrypt/live/hawksnest.ddns.net/chain.pem hawksnest/chain.pem
-    # ln -s /etc/letsencrypt/live/hawksnest.ddns.net/fullchain.pem hawksnest/fullchain.pem
-    # ln -s /etc/letsencrypt/live/hawksnest.ddns.net/privkey.pem hawksnest/privkey.pem
-    # ln -s /etc/letsencrypt/live/hawksnest.serveftp.com/cert.pem filecert/cert.pem
-    # ln -s /etc/letsencrypt/live/hawksnest.serveftp.com/chain.pem filecert/chain.pem
-    # ln -s /etc/letsencrypt/live/hawksnest.serveftp.com/fullchain.pem filecert/fullchain.pem
-    # ln -s /etc/letsencrypt/live/hawksnest.serveftp.com/privkey.pem filecert/privkey.pem
+    # ln -s /etc/letsencrypt/live/mousepawmedia.net/cert.pem mousepawmedia.net/cert.pem
+    # ln -s /etc/letsencrypt/live/mousepawmedia.net/chain.pem mousepawmedia.net/chain.pem
+    # ln -s /etc/letsencrypt/live/mousepawmedia.net/fullchain.pem mousepawmedia.net/fullchain.pem
+    # ln -s /etc/letsencrypt/live/mousepawmedia.net/privkey.pem mousepawmedia.net/privkey.pem
     # exit
 
 The links I just created do indeed work for Apache, even though we cannot
@@ -971,7 +993,7 @@ the sites you do not have. Be sure to uncomment them later!
 
     #!/bin/bash
 
-    # Work out of the Hawksnest SSL working directory.
+    # Work out of the Apache2 SSL working directory.
     cd /etc/apache2/ssl/mousepawmedia.net
 
     # Copy the certificates over and update their permissions.
@@ -1024,7 +1046,9 @@ Now we need to schedule the autorenewal task.
 
     $ sudo crontab -e
 
-Add the following line to the end.::
+Add the following line to the end:
+
+..  code-block:: text
 
     57 6 * * * /opt/certbot/certbot-auto renew --pre-hook "/etc/apache2/ssl/mousepawmedia.net/renewcert_pre" --post-hook "/etc/apache2/ssl/mousepawmedia.net/renewcert_post"
 
@@ -1226,7 +1250,7 @@ If that works, we can move on to installing Kimai.
 Installing Kimai
 ------------------------------------
 
-Next, in MyPHPAdmin, create a user and a database called `kimai2`. You'll
+Next, in MyPHPAdmin, create a user and a database called ``kimai2``. You'll
 need the password for that user shortly.
 
 We install Kimai like this:
@@ -1241,7 +1265,7 @@ We install Kimai like this:
     $ vim .env
 
 Now edit that file so it contains something like the following, changing the
-values `CHANGE_ME` (two places below) as appropriate.
+values ``CHANGE_ME`` (two places below) as appropriate.
 
 ..  code-block:: env
 
@@ -1299,80 +1323,80 @@ Kimai itself is now installed.
 Setting Up Apache2 for Kimai
 ------------------------------------
 
-    Then, to setup Apache, run the following:
+To setup Apache, run the following:
 
-    ..  code-block:: bash
+..  code-block:: bash
 
-        $ sudo vim /etc/apache2/sites_available/kimai.conf
+    $ sudo vim /etc/apache2/sites_available/kimai.conf
 
-    Set the contents of that file to:
+Set the contents of that file to:
 
-    ..  code-block:: apache
+..  code-block:: apache
 
-        <IfModule mod_ssl.c>
-            <VirtualHost *:443>
-                ServerName time.mousepawmedia.net
-                DocumentRoot /opt/kimai2/public
+    <IfModule mod_ssl.c>
+        <VirtualHost *:443>
+            ServerName time.mousepawmedia.net
+            DocumentRoot /opt/kimai2/public
 
-                SSLEngine on
-                SSLCertificateFile     /etc/apache2/ssl/mousepawmedia.net/fullchain.pem
-                SSLCertificateKeyFile /etc/apache2/ssl/mousepawmedia.net/privkey.pem
-                Include /etc/letsencrypt/options-ssl-apache.conf
+            SSLEngine on
+            SSLCertificateFile     /etc/apache2/ssl/mousepawmedia.net/fullchain.pem
+            SSLCertificateKeyFile /etc/apache2/ssl/mousepawmedia.net/privkey.pem
+            Include /etc/letsencrypt/options-ssl-apache.conf
 
-                ErrorLog ${APACHE_LOG_DIR}/error.log
-                CustomLog ${APACHE_LOG_DIR}/access.log combined
+            ErrorLog ${APACHE_LOG_DIR}/error.log
+            CustomLog ${APACHE_LOG_DIR}/access.log combined
 
-                <Directory "/opt/kimai2/public">
-                    Options +FollowSymLinks
-                    AllowOverride All
+            <Directory "/opt/kimai2/public">
+                Options +FollowSymLinks
+                AllowOverride All
 
-                    <IfModule mod_dave.c>
-                        Dav off
-                    </IfModule>
+                <IfModule mod_dave.c>
+                    Dav off
+                </IfModule>
 
-                    Require all granted
+                Require all granted
 
-                    FallbackResource /index.php
-                </Directory>
+                FallbackResource /index.php
+            </Directory>
 
-                <Directory /opt/kimai2>
-                    Options FollowSymLinks
-                </Directory>
+            <Directory /opt/kimai2>
+                Options FollowSymLinks
+            </Directory>
 
-                <Directory /opt/kimai2/public/bundles>
-                    FallbackResource disabled
-                </Directory>
+            <Directory /opt/kimai2/public/bundles>
+                FallbackResource disabled
+            </Directory>
 
-                BrowserMatch "MSIE [2-6]" \
-                nokeepalive ssl-unclean-shutdown \
-                downgrade-1.0 force-response-1.0
-                # MSIE 7 and newer should be able to use keepalive
-                BrowserMatch "MSIE [17-9]" ssl-unclean-shutdown
-            </VirtualHost>
-        </IfModule>
+            BrowserMatch "MSIE [2-6]" \
+            nokeepalive ssl-unclean-shutdown \
+            downgrade-1.0 force-response-1.0
+            # MSIE 7 and newer should be able to use keepalive
+            BrowserMatch "MSIE [17-9]" ssl-unclean-shutdown
+        </VirtualHost>
+    </IfModule>
 
-    Save and close, and then run this:
+Save and close, and then run this:
 
-    ..  code-block:: bash
+..  code-block:: bash
 
-        sudo vim /etc/apache2/apache2.conf
+    sudo vim /etc/apache2/apache2.conf
 
-    Add the following section:
+Add the following section:
 
-    ..  code-block:: apache
+..  code-block:: apache
 
-        <Directory "/opt/kimai2">
-            Options FollowSymLinks
-            AllowOverride All
-            Require all granted
-        </Directory>
+    <Directory "/opt/kimai2">
+        Options FollowSymLinks
+        AllowOverride All
+        Require all granted
+    </Directory>
 
-    Save and close, and then enable the site and restart Apache2:
+Save and close, and then enable the site and restart Apache2:
 
-    ..  code-block:: bash
+..  code-block:: bash
 
-        $ sudo a2ensite kimai
-        $ sudo systemctl restart apache2
+    $ sudo a2ensite kimai
+    $ sudo systemctl restart apache2
 
 Now go to ``https://time.<serveraddress>`` and verify that everything works so far.
 
@@ -1383,7 +1407,7 @@ LDAP for Kimai
 
 Let's set up LDAP for Kimai.
 
-,.  code-block:: bash
+..  code-block:: bash
 
     $ cd /opt/kimai2
     $ composer update
@@ -1549,7 +1573,7 @@ Once you've moved the folders over, change their permissions as follows...
     $ sudo chmod u=rwx,g=rwx,o=rx -R phabrepo
     $ /opt/phab/phabricator/bin/repository move-paths --from /home/hawksnest/phabrepo --to /opt/phabrepo
 
-..  NOTE:: That last command migrates where repositories look for files.
+..  note:: That last command migrates where repositories look for files.
 
 We also exported the Phabricator database on the *old* server using...
 
@@ -1652,16 +1676,6 @@ Copy and paste the following into that file.
                 # MSIE 7 and newer should be able to use keepalive
                 BrowserMatch "MSIE [17-9]" ssl-unclean-shutdown
         </VirtualHost>
-
-        <VirtualHost *:8446>
-            ServerName hawksnest.ddns.net
-            RedirectMatch ^/(.*)$ https://phabricator.<serveraddress>/$1
-
-            SSLEngine on
-            SSLCertificateFile /etc/apache2/ssl/hawksnest/fullchain.pem
-            SSLCertificateKeyFile /etc/apache2/ssl/hawksnest/privkey.pem
-            Include /etc/letsencrypt/options-ssl-apache.conf
-        </VirtualHost>
     </IfModule>
 
 Save and close the file. Finally, load them up.
@@ -1708,7 +1722,9 @@ We also need to change some settings for MySQL:
 
     $ sudo vim /etc/mysql/my.cnf
 
-Add or change the following lines in the ``[mysqld]`` section::
+Add or change the following lines in the ``[mysqld]`` section:
+
+..  code-block:: text
 
     sql_mode=STRICT_ALL_TABLES
     innodb_buffer_pool_size=1600M
@@ -1726,7 +1742,7 @@ We need to set up the location for logging. We'll create a special folder
 in ``/opt`` for this purpose, set its permissions, and tell Phabricator where
 to find it.
 
-..  WARNING:: This is critical! If you forget this, you'll have a plethora of
+..  warning:: This is critical! If you forget this, you'll have a plethora of
     ``500 Internal Server Error`` messages, an unhandled exception at the bottom
     of all pages, and some missing stuff.
 
@@ -1776,11 +1792,8 @@ from that website.
 Setting Up Alternative File Domain
 -------------------------------------------------
 
-Our DNS service and certificates are already set up to provide a second
-domain name - ``hawksnest.serveftp.com`` - which we can use as Phabricator's
-Alternative File Domain.
-
-We must now configure Apache2 to serve files as expected.
+We also need to set up Phabricator's Alternative File Domain for improved
+security. We'll configure Apache2 to serve files as expected.
 
 We can copy and tweak the configuration file we used for Phabricator in Apache2.
 
@@ -1798,7 +1811,6 @@ Set the contents to the following...
         <VirtualHost *:443>
             ServerName files.mousepawmedia.net
             ServerAdmin hawksnest@mousepawmedia.com
-            #ServerName hawksnest.serveftp.com:8446
 
             DocumentRoot /opt/phab/phabricator/webroot
 
@@ -1887,13 +1899,15 @@ Now, add this script to the crontab.
 
     $ sudo crontab -e
 
-At the bottom, add the line::
+At the bottom, add the line:
+
+..  code-block:: text
 
     @reboot sleep 60; /opt/scripts/phab/phd_start
 
 Save and close.
 
-..  NOTE:: It is vital that we sleep for 60 seconds before running, as the
+..  note:: It is vital that we sleep for 60 seconds before running, as the
     script fails out of the gate otherwise. (Not sure why.)
 
 Finally, update Phabricator's configuration to expect this user to run
@@ -1909,7 +1923,7 @@ Of course, we can run this to start the Phabricator daemons right now...
 
     $ sudo /opt/scripts/phab/phd_start
 
-..  NOTE:: If it complains about not being able to modify a path starting with
+..  note:: If it complains about not being able to modify a path starting with
     ``/var/tmp/phd``, just CAREFULLY run ``sudo rm -r /var/tmp/phd``.
 
 Phabricator Aphlict Notification Server
@@ -1943,7 +1957,9 @@ Now we need to adjust the Aphlict configuration, or it won't start.
     $ cp aphlict.default.json aphlict.custom.json
     $ vim aphlict.custom.json
 
-The file should look like this::
+The file should look like this:
+
+..  code-block:: text
 
     {
       "servers": [
@@ -1985,7 +2001,9 @@ steps.
 
 Finally, we need to tell Phabricator to use Aphlict. In Phabricator, go to
 Config→All Settings (``https://<serveraddress>:8446/config/all``). Look for
-``notification.servers``. Enter the following in the field::
+``notification.servers``. Enter the following in the field:
+
+..  code-block:: json
 
     [
       {
@@ -2035,13 +2053,15 @@ user, and then give these users appropriate sudo permissions.
     $ /opt/phab/phabricator/bin/config set diffusion.ssh-user git
     $ sudo visudo
 
-Add these lines to that file::
+Add these lines to that file:
+
+..  code-block:: text
 
     # Configuration for Phabricator VCS
     www-data ALL=(phabdaemon) SETENV: NOPASSWD: /usr/bin/git, /usr/lib/git-core/git-http-backend
     git ALL=(phabdaemon) SETENV: NOPASSWD: /usr/bin/git, /usr/bin/git-upload-pack, /usr/bin/git-receive-pack
 
-..  NOTE:: We had to comment out the recommended version for ``git`` and put in
+..  note:: We had to comment out the recommended version for ``git`` and put in
     the second version, in order for SSH to work with our repositories. We need
     to find out what all binaries ``git`` is needing to use, and add them to the
     first path. When this is acheved, be sure to swap the comments...do NOT
@@ -2124,7 +2144,9 @@ Save and close. Now we need to set up SSHD's configuration.
     $ sudo cp /opt/phab/phabricator/resources/sshd/sshd_config.phabricator.example /etc/ssh/sshd_config.phabricator
     $ sudo vim /etc/ssh/sshd_config.phabricator
 
-In that file, set the following lines::
+In that file, set the following lines:
+
+..  code-block:: text
 
     AuthorizedKeysCommand /opt/scripts/root_scripts/phabricator-ssh-hook
     AuthorizedKeysCommandUser git
@@ -2153,7 +2175,7 @@ on the guest computer you use for SSH, run...
 After all is said and done, it should print out something like
 ``{"result":"hawksnest-server","error_code":null,"error_info":null}``.
 
-..  NOTE:: If it gives the message "Could not chdir to home directory
+..  note:: If it gives the message "Could not chdir to home directory
     /home/git: No such file or directory", that means you didn't create
     the ``git`` user with a home directory. If that's the case, you can add
     one by running ``$ sudo mkhomedir_helper git`` (on the server).
@@ -2177,7 +2199,9 @@ If it works, then all's well! Add the sshd start command to the system cron.
 
     $ sudo crontab -e
 
-On that file, add the line::
+On that file, add the line:
+
+..  code-block:: text
 
     @reboot /usr/sbin/sshd -f /etc/ssh/sshd_config.phabricator
 
@@ -2186,7 +2210,7 @@ Save and close.
 Migrating Domain Names
 -----------------------------------------------
 
-..  WARNING:: I did this after the initial setup of Phabricator using the old
+..  warning:: I did this after the initial setup of Phabricator using the old
     domain names. If you're recreating again, DO NOT USE THIS unless you're
     actually changing domain names, and consider setting up with the old
     domain names first before following this.
@@ -2271,7 +2295,7 @@ We copied the old ``$JENKINS_HOME`` folder to the new server, via...
     $ sudo chgrp -R jenkins /opt/jenkins
     $ sudo ln -s /opt/jenkins /var/libjenkins
 
-..  NOTE:: I originally couldn't start Jenkins, until I realized that
+..  note:: I originally couldn't start Jenkins, until I realized that
     I hadn't updated the owner and group.
 
 This means that Jenkins' HOME folder is actually in /opt/jenkins, but we have a
@@ -2327,7 +2351,9 @@ We need to add that command to our Hawksnest user crontab (NOT the root crontab!
 
     crontab -e
 
-Add the following line::
+Add the following line:
+
+..  code-block:: text
 
     @reboot VBoxManage startvm LittleXenial --type headless > /opt/log/vm.log
 
@@ -2341,7 +2367,9 @@ Next, we need to modify Jenkins' configuration.
     $ sudo vim /etc/default/jenkins
 
 Change ``HTTP_PORT=8080`` to ``HTTP_PORT=8449``. Then, place the following
-at the bottom of the file, replacing the last line.::
+at the bottom of the file, replacing the last line:
+
+..  code-block:: text
 
     # Old HTTP mode (turned off)
     #JENKINS_ARGS="--webroot=/var/cache/$NAME/war --httpPort=$HTTP_PORT"
@@ -2350,7 +2378,7 @@ at the bottom of the file, replacing the last line.::
     # We also open port 8459 for HTTP, to allow Phabricator in. Have everyone use 8449 instead.
     JENKINS_ARGS="--webroot=/var/cache/$NAME/war --httpsPort=$HTTP_PORT --httpPort=8459 --httpsKeyStore=/etc/apache2/ssl/mousepawmedia.net/keys.jks --httpsKeyStorePassword=a674dRnZ15A6a4ByQ"
 
-..  NOTE:: The password specified on the last line, by the
+..  note:: The password specified on the last line, by the
     ``--httpsKeyStorePassword=``, must MATCH the password supplied when we
     set up the ``renewcert_post`` script under the Let's Encrypt section.
 
@@ -2581,11 +2609,6 @@ This file should look like this...
             # MSIE 7 and newer should be able to use keepalive
             BrowserMatch "MSIE [17-9]" ssl-unclean-shutdown
         </VirtualHost>
-
-        <VirtualHost *:443>
-            ServerName hawksnest.ddns.net
-            RedirectMatch ^/(.*)$ https://<serveraddress>/$1
-        </VirtualHost>
     </IfModule>
 
 
@@ -2630,17 +2653,6 @@ This file should look like this...
                             downgrade-1.0 force-response-1.0
             # MSIE 7 and newer should be able to use keepalive
             BrowserMatch "MSIE [17-9]" ssl-unclean-shutdown
-        </VirtualHost>
-
-        <VirtualHost *:8442>
-            ServerName hawksnest.ddns.net
-
-            SSLEngine on
-            SSLCertificateFile /etc/apache2/ssl/hawksnest/fullchain.pem
-            SSLCertificateKeyFile /etc/apache2/ssl/hawksnest/privkey.pem
-            Include /etc/letsencrypt/options-ssl-apache.conf
-
-            RedirectMatch ^/(.*)$ https://secure.<serveraddress>/$1
         </VirtualHost>
     </IfModule>
 
@@ -2694,7 +2706,7 @@ Navigating to ``http://<serveraddress>`` should now redirect properly to
 Navigate to ``https://<serveraddress>``. The same will apply for any subdirectory
 thereof, such as ``http://<serveraddress>/docs``.
 
-..  NOTE:: Apache2 sites are loaded in alphabetical order. Addresses and ports
+..  note:: Apache2 sites are loaded in alphabetical order. Addresses and ports
     are first come, first served, so the first site that defines on a port
     gets all addresses on that port, unless something else snatches away
     a specific address.
@@ -2727,7 +2739,9 @@ Next, we set up Docker to be automatically started by systemd.
 
     $ sudo systemctl edit docker.service
 
-Set the contents of that file to::
+Set the contents of that file to:
+
+..  code-block:: text
 
     [Service]
     ExecStart=
@@ -2740,7 +2754,7 @@ Save and close, and then enable and restart Docker in systemd:
     $ sudo systemctl restart docker
     $ sudo systemctl enable docker
 
-..  NOTE:: At this point, I added the certificate for the Docker registry.
+..  note:: At this point, I added the certificate for the Docker registry.
 
 Creating the Docker Registry
 -----------------------------------
@@ -2881,7 +2895,9 @@ key by running ``gpg --list-keys``, and then looking for the name associated
 with the key for this user account. (We MUST have the associated private key
 accessible on this machine as well.)
 
-For example, here's the key I want::
+For example, here's the key I want:
+
+..  code-block:: text
 
     pub   2048R/B4B6AD7C 2020-04-14
     uid                  MousePaw Media (Hawksnest) <hawksnest@mousepawmedia.com>
@@ -2941,7 +2957,9 @@ You should now be able to login with Docker, which you can test via:
 
     $ docker login registry.mousepawmedia.net
 
-Enter valid LDAP credentials. If it works, you'll see::
+Enter valid LDAP credentials. If it works, you'll see:
+
+..  code-block:: text
 
     Login Succeeded
 
@@ -2978,32 +2996,50 @@ Now go to :menuselection:`Manage Jenkins --> Manage Nodes and Clouds`. At left,
 click :guilabel:`Configure Clouds`. Add a new cloud with the following settings:
 
 * :guilabel:`Name`: (Name it whatever you want. We call ours ``mpm-bionic``)
+
 * :guilabel:`Docker Cloud details...`
-  * :guilabel:`Docker Host URI`: ``unix:///var/run/docker.sock``
+
+* :guilabel:`Docker Host URI`: ``unix:///var/run/docker.sock``
+
   * :guilabel:`Enabled`: [Checked]
+
   * :guilabel:`Container Cap`: 5
+
   * :guilabel:`Docker Agent Template`:
+
     * :guilabel:`Labels`: ``mpm-bionic``
+
     * :guilabel:`Enabled`: [Checked]
+
     * :guilabel:`Docker Image`: ``registry.mousepawmedia.net/jenkins.mpm-bionic``
+
     * :guilabel:`Container Settings...`
+
       * :guilabel:`Volumes`: ``/opt/jenkins/workspace:/workspace``
+
       * :guilabel:`Extra Hosts`: (If your router does not include NAT loopback,
         be sure to configure this to handle routing back to other subdomains
         on the server from inside the Docker container.
+
       * :guilabel:`Remote File System Root`: ``/``
+
       * :guilabel:`Usage`: ``Use this node as much as possible``
         (change if you like)
+
       * :guilabel:`Idle timeout`: ``2``
+
       * :guilabel:`Connect method`: ``Attach Docker container``
+
     * :guilabel:`Remove Volumes`: [Unchecked]
+
     * :guilabel:`Pull stretegy`: ``Pull once and update latest``
+
     * :guilabel:`Pull timeout`: ``300``
 
 Save that cloud via the :guilabel:`Save` button at the bottom of the screen.
 Now any job tagged to run on ``mpm-bionic`` will use this cloud.
 
-..  NOTE:: The ``jenkins.mpm-bionic`` image's Dockerfile is configured to
+..  note:: The ``jenkins.mpm-bionic`` image's Dockerfile is configured to
     use the JNLP. See our ``buildenv`` repository for that Dockerfile.
 
 You can continue to configure additional clouds along this same pattern.
@@ -3023,7 +3059,7 @@ probably already installed, but we're putting them here to be certain.
 
 Now we can install Nextcloud itself.
 
-..  NOTE:: While we are installing 10.0.1 below, Nextcloud has been upgraded
+..  note:: While we are installing 10.0.1 below, Nextcloud has been upgraded
     many times since; as of this, the latest is 15.0.5. Adjust commands below
     according to the latest stable version of Nextcloud.
 
@@ -3184,7 +3220,7 @@ and database name. The fourth field should be ``localhost``.
 
 Click ``Finish setup``.
 
-..  NOTE:: If you have problems logging into the database on this screen,
+..  note:: If you have problems logging into the database on this screen,
     check PHPmyadmin → ``nextcloud`` (database) → Privileges. The ``nextcloud``
     user should be listed, with ``Grant Yes``.
 
@@ -3199,12 +3235,14 @@ Due to a glitch in Nextcloud, we have to configure fail2ban to prevent lockouts.
 
     $ sudo vim /etc/fail2ban/filter.d/apache-auth.conf
 
-Change or add the following lines::
+Change or add the following lines:
+
+..  code-block:: text
 
     # ignore intentional auth failures from nextcloud admin page
     ignoreregex = [nextcloud|ajc|ibp]/[data/.ocdata|config]
 
-..  NOTE:: ``nextcloud``, ``ibp``, and ``ajc`` are the three Nextcloud
+..  note:: ``nextcloud``, ``ibp``, and ``ajc`` are the three Nextcloud
     instance directories on this server. Change these as needed.
 
 Configuring Memory Caching
@@ -3217,7 +3255,9 @@ we're using PHP 7.4), so we simply need to enable this for Nextcloud.
 
     $ sudo vim /opt/nextcloud/config/config.php
 
-Add the following line before the end::
+Add the following line before the end:
+
+..  code-block:: text
 
     'memcache.local' => '\OC\Memcache\APCu',
 
@@ -3232,7 +3272,9 @@ Nextcloud recommends a few tweaks to php.ini. Run...
 
     $ sudo vim /etc/php/7.4/apache2/php.ini
 
-Find and edit the following lines::
+Find and edit the following lines:
+
+..  code-block:: text
 
     opcache.enable=1
     opcache.enable_cli=1
@@ -3253,7 +3295,9 @@ It is recommended to use Cron for background tasks. We will set this up now.
 
     $ sudo crontab -u www-data -e
 
-Add the following line::
+Add the following line:
+
+..  code-block:: text
 
     */15  *  *  *  * php -f /opt/nextcloud/cron.php
 
@@ -3266,7 +3310,7 @@ Finally, in the Nextcloud Admin pane, go to ``Cron`` and select the ``Cron`` opt
 HSTS Header
 --------------------------------
 
-To improve security, install the Nextcloud app `HSTS Header`.
+To improve security, install the Nextcloud app ``HSTS Header``.
 
 LDAP Authentication
 --------------------------------
@@ -3277,11 +3321,11 @@ Set the following options:
 
 * Server
 
-    * Host: ``localhost``
+  * Host: ``localhost``
 
-    * Port: ``389``
+  * Port: ``389``
 
-    * Base DN: ``ou=Users, dc=ldap, dc=mousepawmedia, dc=net``
+  * Base DN: ``ou=Users, dc=ldap, dc=mousepawmedia, dc=net``
 
 Click ``Test Base DN``, and then ``Continue``.
 
@@ -3293,21 +3337,21 @@ Check ``LDAP/AD Username`` and ``LDAP/AD Email Address``, and then click
 
 * Directory Settings
 
-    * User Display Name Field: ``uid``
+  * User Display Name Field: ``uid``
 
-    * 2nd User Display Name Field: ``cn``
+  * 2nd User Display Name Field: ``cn``
 
-    * Base User Tree: ``ou=Users, dc=ldap, dc=mousepawmedia, dc=net``
+  * Base User Tree: ``ou=Users, dc=ldap, dc=mousepawmedia, dc=net``
 
-    * Group Display Name Field: ``cn``
+  * Group Display Name Field: ``cn``
 
-    * Base Group Tree: ``ou=Groups, dc=ldap, dc=mousepawmedia, dc=net``
+  * Base Group Tree: ``ou=Groups, dc=ldap, dc=mousepawmedia, dc=net``
 
-    * Group-Member association: ``memberUid``
+  * Group-Member association: ``memberUid``
 
 * Special Attributes
 
-    * Email field: ``mail``
+  * Email field: ``mail``
 
 Also, click the Groups tag and select all the Groups that you want to use
 in Nextcloud. We use all but ``users`` and ``disabled``.
@@ -3316,7 +3360,7 @@ Click ``Test Configuration``.
 
 The settings are automatically saved. Log in as an LDAP user to test.
 
-..  TODO:: Set up LDAP Avatar Integration.
+..  todo:: Set up LDAP Avatar Integration.
 
 `SOURCE: User Auth with LDAP (Nextcloud) <https://docs.nextcloud.com/server/9/admin_manual/configuration_user/user_auth_ldap.html>`_
 
@@ -3399,7 +3443,7 @@ Set the contents of that file to the following...
 
 Save and close.
 
-..  IMPORTANT:: The above Apache2 configuration is for `CODE 2.0 updates 2 <https://www.collaboraoffice.com/community-en/code-2-0-updates-2/>`_
+..  important:: The above Apache2 configuration is for `CODE 2.0 updates 2 <https://www.collaboraoffice.com/community-en/code-2-0-updates-2/>`_
     and onward. Using the old configuration will break things.
 
 Then, enable the site and restart Apache2.
@@ -3429,7 +3473,9 @@ CollaboraOffice.
 
     $ sudo nano /etc/fail2ban/filter.d/nextcloud.conf
 
-Set the contents of that file to::
+Set the contents of that file to:
+
+..  code-block:: text
 
     [Definition]
     failregex={"reqId":".*","remoteAddr":".*","app":"core","message":"Login failed: '.*' \(Remote IP: '<host>'\)","level":2,"time":".*"}
@@ -3441,7 +3487,9 @@ Save and close. Then, run...
 
     $ sudo vim /etc/fail2ban/jail.local
 
-Set the contents of that file to::
+Set the contents of that file to:
+
+..  code-block:: text
 
     [nextcloud]
     enabled = true # set to false to disable
@@ -3687,7 +3735,9 @@ crontab.
     $ chmod +x start_etherpad
     $ crontab -e
 
-Add the following to the bottom of your crontab, save, and close::
+Add the following to the bottom of your crontab, save, and close:
+
+..  code-block:: text
 
     @reboot /opt/scripts/other/start_etherpad
 
@@ -3803,7 +3853,7 @@ We are enabling the following plugins:
 EtherDraw
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-..  NOTE:: This isn't currently working - we're waiting on a fix.
+..  note:: This isn't currently working - we're waiting on a fix.
 
 We'll set up Etherdraw for integration with Etherpad.
 
@@ -3865,7 +3915,7 @@ We'll run Etherdraw, to make sure it works...
 Give it a minute to set up its dependencies, and then navigate to
 ``https://<serveraddress>:9002`` to make sure it works.
 
-..  NOTE:: We only got this far due to a bug. Once it works, we'll need to
+..  note:: We only got this far due to a bug. Once it works, we'll need to
     add this to the autostart script for Etherpad.
 
 Backups
@@ -3874,7 +3924,7 @@ Backups
 With everything set up, we now need to configure regular backups to our
 external drive ``/mnt/backup``.
 
-..  NOTE:: The way we have configured everything, if this drive is absent
+..  note:: The way we have configured everything, if this drive is absent
     for any reason, the system will refuse to boot until it is either attached
     or removed from fstab.
 
@@ -3903,7 +3953,9 @@ Now we need to adjust the settings for ``automysqlbackup``.
 
     $ sudo vim /etc/default/automysqlbackup
 
-Change the following values::
+Change the following values:
+
+..  code-block:: text
 
     BACKUPDIR="/mnt/backup/sqlbackup"
     DOWEEKLY=4
@@ -3957,13 +4009,15 @@ Finally, we'll add the backup process to our cronjob.
 
     $ sudo crontab -e
 
-We'll add the following line::
+We'll add the following line:
+
+..  code-block:: text
 
     45 6 * * * /usr/sbin/automysqlbackup
 
 This will run the backup every 6:35am. Save and close.
 
-..  NOTE:: Make sure the server is set to auto-boot at 6:30am.
+..  note:: Make sure the server is configured to be on at 6:30 am.
 
 We can now test the configuration. Note that this may take a few minutes.
 
@@ -3972,7 +4026,7 @@ We can now test the configuration. Note that this may take a few minutes.
     $ sudo automysqlbackup
 
 As ``root``, navigate to ``/mnt/backup/sqlbackup`` to verify that the backup
-completed (it's probably in `daily`).
+completed (it's probably in ``daily``).
 
 Configuring Duplicity
 --------------------------------
@@ -4000,6 +4054,7 @@ passphrase.
 ..  code-block:: bash
 
     # PASSPHRASE='thepasswordforgpg' duplicity --encrypt-key PUBLICKEY /opt file:///mnt/backup/xenial_backup/
+    # PASSPHRASE='thepasswordforgpg' duplicity --encrypt-key PUBLICKEY /etc file:///mnt/backup/etc_backup/
     # PASSPHRASE='thepasswordforgpg' duplicity --encrypt-key PUBLICKEY /mnt/stash file:///mnt/backup/stash_backup/
 
 Give those commands some time to run. They're creating a full backups for the
@@ -4015,7 +4070,9 @@ running as root.
 
 In that file, put the passphrase we use for Duplicity, using the same format
 as in the command. This enables us to avoid putting the password directly
-in our cron.::
+in our cron:
+
+..  code-block:: text
 
     PASSPHRASE='thepasswordforgpg'
 
@@ -4041,7 +4098,10 @@ Set the contents of that file to...
 
     export PASSPHRASE
     $(which duplicity) --encrypt-key PUBLICKEY /opt file:///mnt/backup/xenial_backup/
+    $(which duplicity) --encrypt-key PUBLICKEY /etc file:///mnt/backup/etc_backup/
     $(which duplicity) --encrypt-key PUBLICKEY /mnt/stash file:///mnt/backup/stash_backup/
+
+    echo "Daily backup finished at $(date)" >> /root/cron.log
 
 Save and close, and then make the script executable. After that, we'll create
 a cron script to run a weekly full backup.
@@ -4063,11 +4123,16 @@ Set the contents of the weekly file to...
 
     export PASSPHRASE
     $(which duplicity) full --encrypt-key PUBLICKEY /opt file:///mnt/backup/xenial_backup/
+    $(which duplicity) full --encrypt-key PUBLICKEY /etc file:///mnt/backup/etc_backup/
     $(which duplicity) full --encrypt-key PUBLICKEY /mnt/stash file:///mnt/backup/stash_backup/
 
     #Clear old backups.
-    $(which duplicity) remove-all-but-n-full 3 file:///mnt/backup/xenial_backup/
-    $(which duplicity) remove-all-but-n-full 3 file:///mnt/backup/stash_backup/
+    $(which duplicity) remove-all-but-n-full 2 --force file:///mnt/backup/xenial_backup/
+    $(which duplicity) remove-all-but-n-full 2 --force file:///mnt/backup/etc_backup/
+    $(which duplicity) remove-all-but-n-full 2 --force file:///mnt/backup/stash_backup/
+
+    echo "Weekly backup finished at $(date)" >> /root/cron.log
+
 
 Save and close, and fix that file's permissions.
 
@@ -4084,13 +4149,60 @@ You will want to test both by running...
 
 `SOURCE: How To Use Duplicity With GPG (DigitalOcean) <https://www.digitalocean.com/community/tutorials/how-to-use-duplicity-with-gpg-to-securely-automate-backups-on-ubuntu>`_
 
+Manual Backup Scripts
+--------------------------------
+
+It'll be helpful to have a script for running a backup directly. This is almost
+the same as the weekly cron script, except it runs in debug verbosity so we
+can see on the terminal that it's running.
+
+..  code-block:: bash
+
+    # vim /opt/scripts/root_scripts/backup
+
+Set the contents of that file to this:
+
+..  code-block:: bash
+
+    #!/bin/sh
+
+    test -x $(which duplicity) || exit 0
+    . /root/.passphrase
+
+    export PASSPHRASE
+    $(which duplicity) full --verbosity debug --encrypt-key 3658D0DC /opt file:///mnt/backup/xenial_backup/
+    $(which duplicity) full --verbosity debug --encrypt-key 3658D0DC /etc file:///mnt/backup/etc_backup/
+    $(which duplicity) full --verbosity debug --encrypt-key 3658D0DC /mnt/stash file:///mnt/backup/stash_backup/
+
+    #Clear old backups.
+    $(which duplicity) remove-all-but-n-full 2 --force file:///mnt/backup/xenial_backup/
+    $(which duplicity) remove-all-but-n-full 2 --force file:///mnt/backup/etc_backup/
+    $(which duplicity) remove-all-but-n-full 2 --force file:///mnt/backup/stash_backup/
+
+    echo "Manual backup finished at $(date)"
+
+Save and close, and then fix permissions:
+
+..  code-block:: bash
+
+    # chmod 750 /opt/scripts/root_scripts/backup
+    # chmod +x /opt/scripts/root_scripts/backup
+
+..  warning:: To run this, we *must* be logged in as root, not just ``sudo``,
+    otherwise it won't be possible to access the GPG keys.
+
+As root, we can run it like this:
+
+..  code-block:: bash
+
+    # /opt/scripts/root_scripts/backup
+
 Finally, let's create a script for verifying our backups, which we should do
 fairly frequently.
 
 ..  code-block:: bash
 
-    # cp /opt/scripts/root_scripts
-    # vim verify_backup
+    $ sudo vim /opt/scripts/root_scripts/verify_backup
 
 To ensure verification works, this will first perform an incremental backup,
 and then use the verify command to ensure the source and backup match.
@@ -4115,9 +4227,9 @@ Save and close. Make it executable, and then run it.
 
 ..  code-block:: bash
 
-    # chmod 755 verify_backup
-    # exit
-    $ sudo ./verify_backup
+    # chmod 750 /opt/scripts/root_scripts/verify_backup
+    # chmod +x /opt/scripts/root_scripts/verify_backup
+    # /opt/scripts/root_scripts/verify_backup
 
 Updates and Maintainance
 ==============================

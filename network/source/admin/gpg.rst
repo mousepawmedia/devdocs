@@ -3,4 +3,4 @@
 Encrypted Records
 ##########################################
 
-..  NOTE:: Section coming soon.
+..  note:: Section coming soon.

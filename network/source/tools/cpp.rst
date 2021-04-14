@@ -12,7 +12,7 @@ languages on Linux.
 Install the Compiler
 ============================
 
-..  NOTE:: Updated 10 April 2020
+..  note:: Updated 10 April 2020
 
 We use the Clang compiler primarily, and GCC secondarily. If you're not on a
 Debian-based Linux system, you'll need to find out how to install these yourself.
@@ -55,7 +55,7 @@ If you are upgrading from Clang 5.0, be sure to run...
     $ sudo add-apt-repository --remove "deb http://apt.llvm.org/`lsb_release -sc`/ llvm-toolchain-`lsb_release -sc`-5.0 main"
     $ sudo apt remove -f clang-5.0 clang-5.0-doc libclang-common-5.0-dev libclang-5.0-dev libclang1-5.0 libclang1-5.0-dbg libllvm-5.0-ocaml-dev libllvm5.0 libllvm5.0-dbg lldb-5.0 llvm-5.0 llvm-5.0-dev llvm-5.0-doc llvm-5.0-examples llvm-5.0-runtime clang-format-5.0 python-clang-5.0 libfuzzer-5.0-dev
 
-..  WARNING:: If you're using an operating system based on a version of
+..  warning:: If you're using an operating system based on a version of
     Ubuntu before 16.04, you may not be able to compile our code with GCC.
     There was a major bug in the last version of GCC 5 for Ubuntu 14.04 which
     prevented our code from compiling.
@@ -77,14 +77,14 @@ If you're on a 64-bit system, you'll need some additional packages...
 Once you have everything installed, configure Ubuntu to allow you to switch
 between GCC and Clang.
 
-..  IMPORTANT:: If you already have this configured and know what you're doing,
+..  important:: If you already have this configured and know what you're doing,
     you should modify your `update-alternatives` yourself to better fit your
     own workflow.
 
 If you aren't familiar with `update-alternatives`, we can *completely reset*
 and configure this tool using the following commands.
 
-..  WARNING:: The following will remove any existing `update-alternatives`
+..  warning:: The following will remove any existing `update-alternatives`
     configuration for `cc` and `c++`. This is **strongly** recommended if you
     followed this guide before.
 
@@ -110,7 +110,7 @@ You can generally just leave each on auto.
 Our build systems all use the ``cc`` and ``c++`` commands for compiling, so
 whatever you select for the compiler will be used.
 
-..  WARNING:: If you use any drivers that require recompiling when you update
+..  warning:: If you use any drivers that require recompiling when you update
     the kernel, you will need to switch back to GCC before running updates!
     ``sudo update-alternatives --config cc`` and
     ``sudo update-alternatives --config c++``. Just be sure to switch to

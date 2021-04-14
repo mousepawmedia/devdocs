@@ -4,7 +4,7 @@ IRC Bot
 The :code:`#mousepawmedia` and :code:`#mousepawmedia-design` Freenode IRC
 chatrooms are patrolled by our bot, **LukeDMouse**.
 
-..  NOTE:: You may remember the prior bot, Hawksnest. That bot was run by the
+..  note:: You may remember the prior bot, Hawksnest. That bot was run by the
     Phabricator chatbot software, which has been discontinued due to a
     security flaw.
 

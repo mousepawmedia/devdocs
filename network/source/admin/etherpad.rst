@@ -1,4 +1,4 @@
 Etherpad Management
 ##########################################
 
-..  NOTE:: Section coming soon.
+..  note:: Section coming soon.

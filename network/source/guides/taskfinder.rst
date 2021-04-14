@@ -26,7 +26,7 @@ are also considered appropriate for outside contributors. These tasks have
 varying difficulty, dependencies, and requirements, but any of them may be
 picked up and worked on by anyone at any time.
 
-..  NOTE:: Help Wanted does not include "Low-Hanging Fruit"
+..  note:: Help Wanted does not include "Low-Hanging Fruit"
     (see :ref:`gtaskfinder_lhf`).
 
 The Task Finder displays the ten highest priority ``Help Wanted`` tasks. You can
@@ -45,7 +45,7 @@ easy or straight-forward. Of course, it is impossible to know how simple
 something actually *is* until one starts working on it, but the LHF section
 at least narrows the search.
 
-..  WARNING:: Basically, we just mark something as Low-Hanging Fruit if it seems
+..  warning:: Basically, we just mark something as Low-Hanging Fruit if it seems
     to be simple or straight-forward *to someone who has the appropriate skills
     and knowledge.* You should review the task's description, required skills,
     and comments before you decide it is right for you.

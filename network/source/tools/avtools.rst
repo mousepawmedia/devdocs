@@ -6,7 +6,7 @@ Audio/Video Tools
 We use a carefully-selected collection of open source tools and applications
 for our audio/video production work at MousePaw Media.
 
-..  WARNING:: These exact programs must be used for internal company work --
+..  warning:: These exact programs must be used for internal company work --
     no substitutions are permitted without written approval from the
     department lead.
 
@@ -173,7 +173,7 @@ Optional Software
 If you're going to be doing heavy-duty music or audio production, and need
 something more powerful than Audacity, check out these applications.
 
-..  NOTE:: If you have no need for these tools, just skip this section.
+..  note:: If you have no need for these tools, just skip this section.
 
 .. _avtools_op_ardour:
 
@@ -217,7 +217,7 @@ of its settings in ``Setup...``; the defaults work on Ubuntu 20.04. You can
 route audio between your different inputs and outputs using the ``Connect``
 option, and then you can start JACK with ``Start``.
 
-..  NOTE:: Your normal system sound will stop while JACK is running, as it will
+..  note:: Your normal system sound will stop while JACK is running, as it will
     take over sound playback from PulseAudio, the system default sound server.
 
 **Ardour**
@@ -296,7 +296,7 @@ PulseAudio under ordinary circumstances. To do this, start Hydrogen. Go to
 :menuselection:`Tools --> Preferences`. Select :guilabel:`Audio System`
 and set it to ``PulseAudio`` for ordinary use.
 
-..  NOTE:: You can also select ``Jack`` if you want to route the output
+..  note:: You can also select ``Jack`` if you want to route the output
     directly into Ardour, although this is rarely useful.
 
 * Official Website: `<http://hydrogen-music.org/>`_

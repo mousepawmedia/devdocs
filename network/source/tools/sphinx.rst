@@ -111,7 +111,7 @@ For example, if you had the file :file:`foo.rst` in :file:`source/` and
        foo
        bar/baz
 
-..  IMPORTANT::  Note that I lined everything up, so both of my new entries have
+..  important::  Note that I lined everything up, so both of my new entries have
     the same number of leading spaces as :code:`:maxdepth: 2`. ReST is VERY
     finicky! You should line things up exactly.
 
@@ -165,7 +165,7 @@ in your favorite web browser.
 Setting Up Documentation
 =====================================
 
-..  WARNING:: **If your project already has documentation, skip this section!**
+..  warning:: **If your project already has documentation, skip this section!**
 
 In the repository for the project that you want to create the documentation for,
 run...
@@ -209,7 +209,7 @@ it. Then, run...
 
 * **Use defaults for the rest of the options.**
 
-..  NOTE:: You can change most of those options again later.
+..  note:: You can change most of those options again later.
 
 Before continuing, you should also edit your :file:`.gitignore` file, adding
 the line::

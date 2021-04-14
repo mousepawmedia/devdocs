@@ -1,4 +1,4 @@
 Nextcloud Administration
 ##########################################
 
-..  NOTE:: Section coming soon.
+..  note:: Section coming soon.

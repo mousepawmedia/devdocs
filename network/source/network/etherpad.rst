@@ -139,7 +139,7 @@ modified from the :guilabel:`Settings` button on the toolbar.
   It is "British English" by default, but you can select "English" just below
   that option to switch to the American variation.
 
-..  NOTE:: If you ever make a mistake and select the wrong language, just know
+..  note:: If you ever make a mistake and select the wrong language, just know
     that the Language menu is always the last item on the Settings screen.
 
 .. _etherpad_usage_timeslider:

@@ -67,7 +67,7 @@ Repository Master. This exam covers the following topics:
 
 * VCS policies
 
-..  NOTE:: The RMCE only covers relevent topics in such vast areas as Git,
+..  note:: The RMCE only covers relevent topics in such vast areas as Git,
     Jenkins, CMake, and Clang. Further independent study is encouraged.
 
 The exam is open-book, and will focus primarily on your ability to recognize

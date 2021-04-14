@@ -187,7 +187,7 @@ Adding Sites
 We'll set up a new VirtualHost, so we can get started. You'll repeat this
 process for every unique domain.
 
-..  NOTE:: Since we're transferring a live site from another shared hosting
+..  note:: Since we're transferring a live site from another shared hosting
     service, we need to start with a domain that isn't actively used for
     much. We'll transfer each as we get things set up.
 
@@ -782,7 +782,7 @@ Now we’ll get our certificates.
 Of course, we would change the ``mousepawgames.net`` part to match the domain
 name we're getting the certificate for.
 
-..  NOTE:: If you're needing to add a domain or subdomain to an existing
+..  note:: If you're needing to add a domain or subdomain to an existing
     certificate, use the command above, and include the :code:`--expand` flag
     as the first argument after ``certonly``.
 
@@ -900,7 +900,7 @@ Finally, we'll test the configuration.
 
     $ sudo /opt/certbot/certbot-auto renew --dry-run --pre-hook "/etc/apache2/certs/renewcert_pre" --post-hook "/etc/apache2/certs/renewcert_post"
 
-..  NOTE:: The expansion script is below.
+..  note:: The expansion script is below.
 
 ..  code-block:: bash
 
@@ -1081,7 +1081,7 @@ Now enable two necessary PHP modules and restart Apache2.
 
 Validate that you can ``https://<serveraddress>/phpmyadmin``.
 
-..  WARNING:: You may need to disable the Apache2 module ``security2``
+..  warning:: You may need to disable the Apache2 module ``security2``
     before you can access PHPMyAdmin. Otherwise, it throws an internal 404.
     We're not sure why. To fix the problem, run ``sudo a2dismod security2`` and
     restart the Apache2 service.
@@ -1767,7 +1767,7 @@ Now we need to open the firewall to allow email to pass through.
     $ sudo ufw allow 993
     $ sudo ufw allow 995
 
-..  NOTE:: By this point, the email system should be 100% functional, sending
+..  note:: By this point, the email system should be 100% functional, sending
     and receiving email and serving it to clients over POPS3, IMAPS, and
     SMTPS. Test this out before continuing! Note the debugging instructions
     below.
@@ -1862,7 +1862,7 @@ Also add the following line to the bottom::
 
 Save and close, and then restart Postfix.
 
-..  WARNING:: Be *very* careful with your configurations! Continue to test
+..  warning:: Be *very* careful with your configurations! Continue to test
     your email send/receive periodically, to make sure nothing breaks.
     Some email can actually get lost or be eaten if your settings are wrong,
     and you don't want important messages going into a black hole.
@@ -2106,7 +2106,7 @@ restarted separately, so OpenDKIM sets up the proper socket for Postfix.
 To test it out, send an email to ``check-auth@verifier.port25.com``. The
 report should return ``DKIM check: pass``.
 
-..  NOTE:: Special thanks for SCHAPiE for fixing this for us!
+..  note:: Special thanks for SCHAPiE for fixing this for us!
 
 DMARC and ADSP
 ----------------------------
@@ -2198,7 +2198,7 @@ Find and uncomment the following lines::
     bayes_ignore_header X-Spam-Flag
     bayes_ignore_header X-Spam-Status
 
-..  NOTE:: This is enabling the Bayes system for SpamAssassin. You *will*
+..  note:: This is enabling the Bayes system for SpamAssassin. You *will*
     need to regularly train this system.
 
 Save and close.
@@ -2363,7 +2363,7 @@ type 'quit' and press :kbd:`Enter`.
 To test everything out, send a message to your email server, and check it
 for the spam and virus scan headers.
 
-..  NOTE:: mailbox folders must be recursively set as owner ``vmail:vmail``, with
+..  note:: mailbox folders must be recursively set as owner ``vmail:vmail``, with
     recursively-applied permissions ``700`` and ``g+s``.
 
 `SOURCE: Mail Filtering (Ubuntu) <https://help.ubuntu.com/lts/serverguide/mail-filtering.html>`_
@@ -2453,7 +2453,7 @@ Training SpamAssassin
 We want SpamAssassin to automatically train itself based on the Inbox, Junk,
 and Archive folders.
 
-..  NOTE:: This requires all users to monitor their own mailboxes, to ensure
+..  note:: This requires all users to monitor their own mailboxes, to ensure
     that Junk is filled only with spam, and none slips past in the Inbox.
 
 Edit the root crontab...
@@ -2525,7 +2525,7 @@ line of our example. (We obviously don't want to block all of Gmail!)
 After each domain or email address, we include the argument :code:`REJECT`,
 optionally followed by a comment or description thereof.
 
-..  NOTE:: The first pair is only on this list for *testing* purposes. Be
+..  note:: The first pair is only on this list for *testing* purposes. Be
     sure to unblock guerrillamail.com when we're done!
 
 Save and close the file, and run...
@@ -2898,7 +2898,7 @@ Download and unzip the latest version to our :code:`/opt` directory. Be sure
 to replace the URL and filename with the one appropriate for your download.
 We'll also set our permissions here.
 
-..  NOTE:: If you're paranoid like me about unzipping directly in an important
+..  note:: If you're paranoid like me about unzipping directly in an important
     directory like ``/opt/html``, you can always unzip it in another folder and
     move the ``limesurvey`` folder to ``/opt/html``.
 

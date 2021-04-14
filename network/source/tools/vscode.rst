@@ -66,10 +66,10 @@ should be configured:
 * Table Formatter (Shuzo Iwaski)
 * XML Tools (Josh Johnson)
 
-..  IMPORTANT:: ``C/C++ Clang Command Adapter`` makes the linter act weird.
+..  important:: ``C/C++ Clang Command Adapter`` makes the linter act weird.
     Do not install it.
 
-..  NOTE:: ``cppcheck`` has extremely high CPU usage, so we use
+..  note:: ``cppcheck`` has extremely high CPU usage, so we use
     ``C/C++ Advanced Linter`` instead.
 
 You may also consider the following helpful extensions. You should read the

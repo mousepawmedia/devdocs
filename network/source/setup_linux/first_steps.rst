@@ -92,7 +92,7 @@ You can learn how to use Ubuntu from the official
 You can customize many aspects of Ubuntu MATE using the ``GNOME Tweak``
 application.
 
-..  IMPORTANT:: The rest of the instructions are universal to all varieties
+..  important:: The rest of the instructions are universal to all varieties
     of Ubuntu 18.04.
 
 Pop!_OS
@@ -124,7 +124,7 @@ and manages packages on your system. The ``update`` command fetches the
 latest list of packages available for installation. ``dist-upgrade``
 installs all available upgrades, including new versions of software.
 
-..  NOTE:: There is a minor debate about whether one should update via
+..  note:: There is a minor debate about whether one should update via
     ``apt upgrade`` or ``apt dist-upgrade``. The former doesn't upgrade to a new
     major version of software, meaning things are less likely to break.
     However, many bugfixes and security fixes are addressed in new versions
@@ -135,7 +135,7 @@ Next, we run ``autoremove`` to have apt get rid of any unnecessary packages,
 and ``autoclean`` to remove old installation data and other cruft (garbage).
 You should run these regularly.
 
-..  NOTE:: The Software Updater program doesn't run ``autoremove`` and ``autoclean``
+..  note:: The Software Updater program doesn't run ``autoremove`` and ``autoclean``
     automatically - you'll need to do that yourself.
 
 Installing Essential Packages
@@ -166,7 +166,7 @@ For the rest of this tutorial, you can either install packages via the
 `sudo apt install <packagename>` command given, or you can
 select and install them via Synaptic. It's up to you.
 
-..  IMPORTANT:: **Restart your computer now!**
+..  important:: **Restart your computer now!**
 
 Alternative Package Sources
 ---------------------------------------
@@ -227,7 +227,7 @@ in your System Settings.
 Once you bring up Firewall Configuration, set the :guilabel:`Status` switch
 to "On". You can open and close extra ports as needed on this window as well.
 
-..  NOTE:: Unfortunately, the firewall does not change profiles automatically
+..  note:: Unfortunately, the firewall does not change profiles automatically
     based on what network you connect to. Bear that in mind.
 
 Virus Scanning
@@ -375,7 +375,7 @@ and check the boxes :guilabel:`Set as Default Search` and
 DVD Playback
 ====================================
 
-..  WARNING:: Under the DMCA, it is technically *illegal* to play any disc with
+..  warning:: Under the DMCA, it is technically *illegal* to play any disc with
     copy protection on Linux (unless you use the non-free Fluendo DVD Player
     application). DVDs with copy protection have a label indicating it on the
     case, usually on the bottom of the back of the case. To date, there has
@@ -390,7 +390,7 @@ Want to play DVDs? Yes, Ubuntu can do that, but you have to set it up first.
     $ sudo apt install libdvd-pkg
     $ sudo dpkg-reconfigure libdvd-pkg
 
-..  NOTE:: In my experience, mpv Media Player (package ``mpv``) provides the
+..  note:: In my experience, mpv Media Player (package ``mpv``) provides the
     best video and DVD playback experience.
 
 Helpful Settings
@@ -421,7 +421,7 @@ or :code:`mate-system-monitor` on Ubuntu MATE. Press :guilabel:`Apply`.
 Finally, double-click ``Disabled`` on the "System Monitor" row in the list and press
 :kbd:`Ctrl+Alt+Delete`.
 
-..  NOTE:: If you're on Linux Mint, :kbd:`Ctrl+Alt+Delete` is already used for
+..  note:: If you're on Linux Mint, :kbd:`Ctrl+Alt+Delete` is already used for
     restarting the system. You can probably shut this off in Startup Applications.
 
 Compose Key

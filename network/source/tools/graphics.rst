@@ -6,7 +6,7 @@ Graphics Design Tools
 We use a carefully-selected collection of open source tools and applications
 for our graphics design work at MousePaw Media.
 
-..  WARNING:: These exact programs must be used for internal company work --
+..  warning:: These exact programs must be used for internal company work --
     no substitutions are permitted without written approval from the
     department lead.
 

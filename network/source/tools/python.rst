@@ -22,7 +22,7 @@ by default. It is included in the installation command below anyway, just
 in case you've removed it, or are on a system where it isn't installed
 by default.
 
-..  IMPORTANT:: If you type in the following commands, make sure you scroll and
+..  important:: If you type in the following commands, make sure you scroll and
     get the entire command. If you prefer to copy and paste, triple-click the third
     command so you get the whole thing.
 
@@ -33,7 +33,7 @@ We'll also install the libraries and development tools we use for Python3.
     $ sudo apt update
     $ sudo apt install python3 python3-pip python3-virtualenv pylint3 python-dev python3-dev virtualenv
 
-..  WARNING:: Do not **ever** use :code:`sudo pip`. If you want to install
+..  warning:: Do not **ever** use :code:`sudo pip`. If you want to install
     packages via pip, use a virtual environment.
 
 Installing Python on Mac

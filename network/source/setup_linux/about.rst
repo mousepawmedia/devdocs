@@ -219,7 +219,7 @@ working with Linux, but it'll be a while.
 On the other hand, Wacom tablets, many cameras, and most printers (just to
 name a few things) work BEAUTIFULLY with Linux!
 
-..  NOTE:: Ubuntu MATE 18.04 has no control panel for Wacom devices, while
+..  note:: Ubuntu MATE 18.04 has no control panel for Wacom devices, while
     Ubuntu 18.04 *does*. If you're using MATE, you can control your
     Wacom tablet using a set of scripts written by Jason C. McDonald.
 

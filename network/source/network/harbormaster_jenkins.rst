@@ -33,7 +33,7 @@ to a single library or feature within that library.
 When a revision is made to a particular Package, through either a new
 Revision or Commit, the related build will be triggered (if applicable).
 
-..  NOTE:: A particular file may belong to more than one Package, and thus may trigger
+..  note:: A particular file may belong to more than one Package, and thus may trigger
     more than one build.
 
 .. _harbormasterjenkins_phab_control:
@@ -45,7 +45,7 @@ Sometimes you may not want to run builds and/or tests on a particular
 Revision yet. If you add the tags ``#nobuild`` and/or ``#notest`` to the
 Subscribers field of the Revision, the build will not be triggered.
 
-..  IMPORTANT:: Be aware that you *cannot* land a Revision until the tests have
+..  important:: Be aware that you *cannot* land a Revision until the tests have
     run. Thus, you'll want to ensure that you remove ``#nobuild`` and
     ``#notest`` from the Revision before your last update.
 
@@ -65,7 +65,7 @@ A Repository Master can...
 
 * Push to repositories without an accepted Revision.
 
-..  NOTE:: We do not accept requests to become a Repository Master, so don't ask.
+..  note:: We do not accept requests to become a Repository Master, so don't ask.
 
 .. _harbormasterjenkins_jenkins:
 
@@ -88,7 +88,7 @@ Masters can edit build configurations.
 If you're a staff member, and you are having trouble logging in with your LDAP
 credentials, contact IT to have your password reset.
 
-..  IMPORTANT:: We do not issue LDAP credentials to non-staff under
+..  important:: We do not issue LDAP credentials to non-staff under
     any circumstances.
 
 .. _harbormasterjenkins_jenkins_buildtypes:

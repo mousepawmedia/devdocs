@@ -27,7 +27,7 @@ Login with Github
 After you've registered with your Github account, you may log into Phabricator
 anytime by clicking the :guilabel:`Login or Register Github` button.
 
-..  IMPORTANT:: We do not store any login details for you - validation and
+..  important:: We do not store any login details for you - validation and
     authorization takes place entirely via Github. You are fully responsible
     for maintaining proper Github account security - we have no role in that.
 
@@ -42,7 +42,7 @@ MousePaw Media staff may log into Phabricator using their LDAP credentials
 If you're a staff member, and you are having trouble logging in with your
 LDAP credentials, contact IT to have your password reset.
 
-..  IMPORTANT:: We do not issue LDAP credentials to non-staff under
+..  important:: We do not issue LDAP credentials to non-staff under
     any circumstances.
 
 General Structure
@@ -216,7 +216,7 @@ We have a number of memes, known as **Macros**, built in. Most of them are
 just plain images, so you can add your own text. To do this, tap the meme
 button (the smirking face on the comment box toolbar) and fill out the form.
 
-..  NOTE:: I use a special system for organizing our Macros. All macro names
+..  note:: I use a special system for organizing our Macros. All macro names
     start and end with a single underscore (:code:`_`). Macros that already
     have text on them start with an underscore and a colon (:code:`_:`).
 
@@ -410,7 +410,7 @@ for example, you would want to join the ``Ubuntu [Label]`` project. In turn,
 if you needed help with pugixml, you could look at the members of the
 ``pugixml [Label]`` project.
 
-..  NOTE:: While it is not possible to join some Labels directly because they
+..  note:: While it is not possible to join some Labels directly because they
     have subprojects (i.e. "Linux"), you can join them by joining one of their
     subprojects (i.e. "Ubuntu", "Debian", or "Fedora").
 
@@ -421,7 +421,7 @@ Any Trusted user can create a Label, so if you don't see one you need, just
 add it! The fastest way to do this is to click :guilabel:`Create Project` in the
 upper-right corner of the Projects app, and select :guilabel:`Create Label`.
 
-..  WARNING:: Labels should cover BROAD subject areas. Don't create labels
+..  warning:: Labels should cover BROAD subject areas. Don't create labels
     for things like "Compiling C on Mac" or "Ubuntu 16.04".
 
 ..  _phab_projects_workboard:
@@ -434,7 +434,7 @@ and Milestone. Using the Master Project or Subproject's workboard is usually
 best, as columns for each Milestone are automatically generated. You can
 drag-and-drop tasks to move them between milestones.
 
-..  NOTE:: A task will NOT appear on the workboards for both its Project and
+..  note:: A task will NOT appear on the workboards for both its Project and
     Subproject. If it is tagged with a Subproject, it will appear on that
     workboard. Thus, it is prudent to ensure each Subproject has Milestones.
 
@@ -455,7 +455,7 @@ Spaces
 The quickest way to set an object's permissions is to set its **Space**. We
 provide four.
 
-..  NOTE:: The ID numbers are out of order because of when we created the Space.
+..  note:: The ID numbers are out of order because of when we created the Space.
     It's unfortunate, but we can't change these without an inordinate amount
     of hassle and risk.
 
@@ -550,7 +550,7 @@ the upper-right corner, and selecting the task type.
   only matter to you, and might even overlap a similar task for another user
   if made public.
 
-..  WARNING:: DO NOT use Private Task for *any* project-related task!
+..  warning:: DO NOT use Private Task for *any* project-related task!
 
 More detail about creating tasks, bug reports, and feature requests can
 be found at :ref:`gtaskcreate`.
@@ -637,7 +637,7 @@ on your permissions.)
 Calendar
 ==================================
 
-..  NOTE:: The Calendar tool is only accessible to staff.
+..  note:: The Calendar tool is only accessible to staff.
 
 Meetings, events, vacations, and deadlines are posted on the
 `Calendar <https://phabricator.mousepawmedia.net/calendar>`_ application.
@@ -846,7 +846,7 @@ before being accepted to the main repository.
 A collection of changes for review is called a **Revision** - a single update to
 a Revision is called a **Diff**.
 
-..  NOTE:: You'll often hear us referring to Revisions as "Diffs" in
+..  note:: You'll often hear us referring to Revisions as "Diffs" in
     conversation, such as "Did you Diff the code?", "What's the Diff?" or
     "Did we land that Diff?" On occasion, we may also call a Revision a
     "Differential," referring to the app. Just remember - colloquially,
@@ -964,7 +964,7 @@ The Diff
 Most of the rest of the Revision screen is devoted to showing the changes
 themselves.
 
-..  NOTE:: How Revisions are displayed depends on your Diff Preferences.
+..  note:: How Revisions are displayed depends on your Diff Preferences.
     To change these, click your Profile picture, select :guilabel:`Settings`,
     and :guilabel:`Diff Preferences`.
 
@@ -1152,7 +1152,7 @@ Diffusion is our repository viewer, functioning very much like GitHub in many
 respects. It allows you to view the complete history of a repository -
 files, commits, and all!
 
-..  NOTE:: The Commit Details browser is technically part of Diffusion,
+..  note:: The Commit Details browser is technically part of Diffusion,
     but it is important to the post-commit review workflow that Audit is
     used for, so we'll discuss it there. See :ref:`phab_audit_commit`
 
@@ -1215,7 +1215,7 @@ menu switches between repository branches.
 Perhaps the single most important button here is :guilabel:`Clone`, which
 provides the URIs for the repository, as used in the :code:`git clone` command.
 
-..  IMPORTANT:: Be sure you select the correct URI! The one beginning in
+..  important:: Be sure you select the correct URI! The one beginning in
     :code:`ssh://` is recommended, as it uses your SSH keys to authenticate.
     See :ref:`gitarc_importrepos`.
 
@@ -1292,7 +1292,7 @@ When viewing a file, you'll see four or five buttons:
 
 * :guilabel:`History` displays the complete commit history for the file.
 
-..  NOTE:: You can click on a line number to highlight it. Then, when you
+..  note:: You can click on a line number to highlight it. Then, when you
     provide the URL to another person, their browser will jump to and
     highlight that line.
 
@@ -1434,7 +1434,7 @@ Anatomy of a Commit
 When you view a Commit, there is a lot of additional information, as well as
 several actions you can take on it.
 
-..  NOTE:: This is technically part of Diffusion, but we cover it here because
+..  note:: This is technically part of Diffusion, but we cover it here because
     it is highly relevant to the Audit workflow.
 
 .. _phab_audit_commit_details:
@@ -1458,7 +1458,7 @@ On the **Details** pane, we see the following:
 
 * **Committed**: Who created the commit, and when.
 
-* **Pushed**: Who pushed the commit to the repository (`git push`), and when.
+* **Pushed**: Who pushed the commit to the repository (``git push``), and when.
 
 * **Reviewer**: Who reviewed the related Revision, if anyone.
 
@@ -1473,7 +1473,7 @@ On the **Details** pane, we see the following:
 * **Tasks**: The Maniphest Tasks that this commit is linked to.
 
 * **References**: The Git reference to this commit, if any. For example, the
-  latest  `devel`  commit will have the reference `HEAD -> devel`.
+  latest  ``devel``  commit will have the reference ``HEAD -> devel``.
 
 Below the Details box is the complete commit history, including build reports
 and comments.
@@ -1483,7 +1483,7 @@ and comments.
 Actions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-..  NOTE:: The concept of Auditing is discussed in more detail in
+..  note:: The concept of Auditing is discussed in more detail in
     :ref:`phab_audit`.
 
 On the right, there are several actions you can take, depending on permissions.
@@ -1689,7 +1689,7 @@ Each Mock should be tagged with a **category**:
 * The :code:`UI Design [Dept]` tag is for anything related to user interface
   (UI) design, including activity design.
 
-..  NOTE:: If you have not already added a :code:`[Dept]` tag to the Mock,
+..  note:: If you have not already added a :code:`[Dept]` tag to the Mock,
     you should include either the :code:`Graphics Design [Dept]` or
     :code:`Mass Communication [Dept]` tag.
 
@@ -1759,7 +1759,7 @@ as a new revision within the Mock**. This is designed to allow us to track
 and view how a design changes over time, but you should bear this in mind before
 clicking :guilabel:`Save`.
 
-..  IMPORTANT:: There is no way to change or remove a particular revision - a
+..  important:: There is no way to change or remove a particular revision - a
     new one will always be created.
 
 .. _phab_pholio_review:
@@ -1779,7 +1779,7 @@ full-size image view to draw a selection box. A **New Inline Comment** box will
 appear, and you can leave a comment. Click :guilabel:`Save Draft` to save your
 comment.
 
-..  IMPORTANT:: Your Inline Comments will not be published until you click
+..  important:: Your Inline Comments will not be published until you click
     :guilabel:`Add Comment` towards the bottom of the page.
 
 Each draft inline comment will appear as a yellow speech bubble when you hover
@@ -1796,7 +1796,7 @@ the bottom of the page.
 Once you click :guilabel:`Add Comment`, all your comments and inline comments
 will be published for everyone to see.
 
-..  WARNING:: Once you've published your inline comments, you cannot edit them!
+..  warning:: Once you've published your inline comments, you cannot edit them!
 
 .. _phab_paste:
 
@@ -1875,13 +1875,13 @@ details page. Both forms look and act the same.
   automatically based on the filename in Title; otherwise, it will fall back on
   `Plain Text`.
 
-..  NOTE:: This uses Pygments, so not all possible languages are present.
+..  note:: This uses Pygments, so not all possible languages are present.
     Ratscript is absent right now, although we *will* be adding it at a later
     date.
 
 * :guilabel:`Text` is the actual text of the Paste.
 
-..  NOTE:: Line wrapping is always automatically applied when the Paste is
+..  note:: Line wrapping is always automatically applied when the Paste is
     displayed, although it will not modify the raw file.
 
 * :guilabel:`Visible To` allows you to set the visibility on your Paste.
@@ -1892,7 +1892,7 @@ details page. Both forms look and act the same.
   may be useful if you're concerned about important information being changed
   or removed accidentally (or maliciously).
 
-..  NOTE:: Remember, all changes to the Paste will be tracked, so you can
+..  note:: Remember, all changes to the Paste will be tracked, so you can
     always revert unwanted modifications.
 
 * :guilabel:`Tags` is useful for tagging the related departments, projects,
