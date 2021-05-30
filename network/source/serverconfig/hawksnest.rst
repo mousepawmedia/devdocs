@@ -2250,42 +2250,44 @@ Add the ``LDAP`` provider. Use the following settings:
 Jenkins
 =================================================
 
+User Creation
+----------------------------------------------------
+
+At MousePaw Media, we set the ``jenkins`` user and group to have the uid/gid
+of ``888``, to aid with providing consistent file permissions when sharing
+volumes with Docker images.
+
+Before getting started, create the ``jenkins`` user and group like this:
+
+..  code-block:: bash
+
+    sudo groupadd -g 888 jenkins
+    sudo useradd -u 888 -g jenkins jenkins
+
+If the user and/or group already exist, you can change the UID/GID following
+this guide: `How to (Correctly) Change the UID and GID of a user/group in Linux (The Geek Diary) <https://www.thegeekdiary.com/how-to-correctly-change-the-uid-and-gid-of-a-user-group-in-linux/>`_
+
+
 Installation
 ----------------------------------------------------
 
-We first need to install Jenkins and VirtualBox, both of which must be
-ready to go before we can migrate the old Jenkins installation over.
+We first need to install Jenkins, which must be ready before we migrated
+any old Jenkins installation over.
 
 ..  code-block:: bash
 
     $ sudo su
     # wget -q -O - http://pkg.jenkins-ci.org/debian/jenkins-ci.org.key | apt-key add -
     # echo deb http://pkg.jenkins-ci.org/debian binary/ > /etc/apt/sources.list.d/jenkins.list
-    # wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add -
-    # echo deb http://download.virtualbox.org/virtualbox/debian xenial contrib > /etc/apt/sources.list.d/virtualbox.list
     # exit
     $ sudo apt update
-    $ sudo apt install jenkins virtualbox-5.1
-
-Wait for the installation to complete. Next, we need to download the Extension
-Pack. Find the latest download link from `their download page <https://www.virtualbox.org/wiki/Downloads>`_.
-
-..  code-block:: bash
-
-    $ cd /tmp
-    $ sudo wget http://download.virtualbox.org/virtualbox/5.1.8/Oracle_VM_VirtualBox_Extension_Pack-5.1.8-111374.vbox-extpack
-    $ sudo vboxmanage extpack install --replace *.vbox-extpack
-    $ sudo rm *.vbox-extpack
-
-Now we're ready for migrating the old install.
-
-If you're setting up Jenkins fresh, follow `this tutorial <http://www.indeliblebluepen.com/?p=901>`_
-to get Jenkins and VirtualBox working together.
+    $ sudo apt install jenkins
 
 Migration
 ---------------------------------------------------
 
-We copied the old ``$JENKINS_HOME`` folder to the new server, via...
+Now we're ready for migrating the old install (if needed). We copied the
+old ``$JENKINS_HOME`` folder to the new server, via...
 
 ..  code-block:: bash
 
@@ -2301,61 +2303,6 @@ We copied the old ``$JENKINS_HOME`` folder to the new server, via...
 This means that Jenkins' HOME folder is actually in /opt/jenkins, but we have a
 symbolic link to it in /var/lib/jenkins, where Jenkins will be looking for it.
 This makes life easier when we do backups.
-
-Next, we'll put the VirtualBox in ``/opt``.
-
-..  code-block:: bash
-
-    $ sudo mkdir /opt/virtualbox
-    $ cd /opt/virtualbox
-    $ sudo cp -r /mnt/stash/home/hawksnest/VirtualBox\ VMs/LittleXenial ./LittleXenial
-    $ sudo chown hawksnest LittleXenial
-    $ sudo chgrp hawksnest LittleXenial
-    $ cd LittleXenial
-    $ cp /mnt/stash/home/hawksnest/LittleXenial/LittleXenial.vdi ./
-
-That last copy will take a while, so sit back and relax.
-
-Once all that's done, we need to update our permissions one more time.
-
-..  code-block:: bash
-
-    $ sudo chown -R hawksnest /opt/virtualbox/LittleXenial
-    $ sudo chgrp -R hawksnest /opt/virtualbox/LittleXenial
-
-Next, we need to register the LittleXenial VM with VirtualBox, and change
-where it looks for it's virtual hard drive (``.vdi``).
-
-..  code-block:: bash
-
-    $ VBoxManage registervm /opt/virtualbox/LittleXenial/LittleXenial.vbox
-    $ VBoxManage list hdds
-
-Get the UUID of the HDD you want to remove, and then substitute it for ``UUID``
-in the next command.
-
-..  code-block:: bash
-
-    $ VBoxManage closemedium UUID
-    $ VBoxManage storageattach LittleXenial --storagectl "IDE Controller" --port 0 --device 0 --type hdd --medium /opt/virtualbox/LittleXenial/LittleXenial.vdi
-
-Once all this is done, we'll start LittleXenial.
-
-..  code-block:: bash
-
-    VBoxManage startvm LittleXenial --type headless
-
-We need to add that command to our Hawksnest user crontab (NOT the root crontab!)
-
-..  code-block:: bash
-
-    crontab -e
-
-Add the following line:
-
-..  code-block:: text
-
-    @reboot VBoxManage startvm LittleXenial --type headless > /opt/log/vm.log
 
 Configuration
 --------------------------------------------------
@@ -2375,8 +2322,7 @@ at the bottom of the file, replacing the last line:
     #JENKINS_ARGS="--webroot=/var/cache/$NAME/war --httpPort=$HTTP_PORT"
 
     # HTTPS mode. Make sure the password matches the PASS arg defined in /etc/apache2/ssl/mousepawmedia.net/renewcert_post
-    # We also open port 8459 for HTTP, to allow Phabricator in. Have everyone use 8449 instead.
-    JENKINS_ARGS="--webroot=/var/cache/$NAME/war --httpsPort=$HTTP_PORT --httpPort=8459 --httpsKeyStore=/etc/apache2/ssl/mousepawmedia.net/keys.jks --httpsKeyStorePassword=a674dRnZ15A6a4ByQ"
+    JENKINS_ARGS="--webroot=/var/cache/$NAME/war --httpsPort=$HTTP_PORT --httpsKeyStore=/etc/apache2/ssl/mousepawmedia.net/keys.jks --httpsKeyStorePassword=a674dRnZ15A6a4ByQ"
 
 ..  note:: The password specified on the last line, by the
     ``--httpsKeyStorePassword=``, must MATCH the password supplied when we
@@ -2387,17 +2333,15 @@ Finally, open the port for Jenkins...
 ..  code-block:: bash
 
     $ sudo ufw allow 8449
-    $ sudo ufw allow 8459
 
 Navigate to the Jenkins HTTPS URL on the server (``https://<serveraddress>:8449/``)
-to test it out. Also, check the HTTP version that Phabricator uses
-(``http://<serveraddress>:8459/``).
+to test it out.
 
 Apache2 Proxy
 ---------------------------------------------------
 
 While we won't make any sort of effort to prevent access of Jenkins through
-the usual ports (8449 and 8459), it would be helpful to redirect requests sent
+the usual port (8449), it would be helpful to redirect requests sent
 to 80 and 443 for the Jenkins subdomain via a proxy. Let's set this up.
 
 ..  code-block:: bash
@@ -2452,9 +2396,6 @@ and restart Apache2.
 Navigate to ``http://jenkins.<serveraddress>/`` and
 ``https://jenkins.<serveraddress>/``. It should quietly proxy over to the HTTPS
 version of Jenkins (proxy 8449).
-
-Test to ensure ``http://jenkins.<serveraddress>:8459/`` still works over HTTP,
-without redirecting.
 
 LDAP Integration
 ---------------------------------------------------
@@ -2726,13 +2667,6 @@ We start by installing Docker:
     $ sudo apt update
     $ sudo apt install docker-ce docker-compose
 
-We also add the main server user to the Docker account, so Docker instances
-can be spun up that way.
-
-..  code-block:: bash
-
-    $ sudo usermod -aG docker hawksnest
-
 Next, we set up Docker to be automatically started by systemd.
 
 ..  code-block:: bash
@@ -2745,7 +2679,7 @@ Set the contents of that file to:
 
     [Service]
     ExecStart=
-    ExecStart=/usr/bin/dockerd -H fd:// -H tcp://127.0.0.1:2375
+    ExecStart=/usr/bin/dockerd -H fd:// -H unix:///var/run/docker.sock
 
 Save and close, and then enable and restart Docker in systemd:
 
@@ -2755,6 +2689,32 @@ Save and close, and then enable and restart Docker in systemd:
     $ sudo systemctl enable docker
 
 ..  note:: At this point, I added the certificate for the Docker registry.
+
+..  warning:: DO NOT add ``hawksnest`` to the ``docker`` group. You want to
+    really strictly limit control of Docker.
+
+We also need to adjust the operating system to allow limiting the swap
+memory of Docker containers:
+
+..  code-block:: bash
+
+    $ sudo nano /etc/default/grub
+
+Edit the following line to match the following:
+
+..  code-block:: text
+
+    GRUB_CMDLINE_LINUX="cgroup_enable=memory swapaccount=1"
+
+Be **absolutely certain** you have that line correct!
+
+Save and close, and then run the following:
+
+..  code-block:: bash
+
+    $ sudo update-grub
+
+Restart the computer.
 
 Creating the Docker Registry
 -----------------------------------
@@ -2768,11 +2728,13 @@ Docker to it.
 ..  code-block:: bash
 
     $ sudo mkdir /opt/registry
-    $ docker run -d -p 5000:5000 \
+    $ sudo docker run -d -p 5000:5000 \
     --restart=always \
     --name registry \
     -v /opt/registry:/var/lib/registry \
     registry:2
+
+..  warning:: Do not run Docker containers as ``--privileged``. Ever.
 
 I can now set up Apache2 to host the registry.
 
@@ -2839,13 +2801,13 @@ We can test it out with the following command:
 
 ..  code-block:: bash
 
-    $ docker login registry.mousepawmedia.net
-    $ docker pull ubuntu:18.04
-    $ docker tag ubuntu:18.04 registry.mousepawmedia.net/mpm-bionic
-    $ docker push registry.mousepawmedia.net/mpm-bionic
-    $ docker image remove ubuntu:18.04
-    $ docker image remove registry.mousepawmedia.net/mpm-bionic
-    $ docker pull registry.mousepawmedia.net/mpm-bionic
+    $ sudo docker login registry.mousepawmedia.net
+    $ sudo docker pull ubuntu:18.04
+    $ sudo docker tag ubuntu:18.04 registry.mousepawmedia.net/mpm-bionic
+    $ sudo docker push registry.mousepawmedia.net/mpm-bionic
+    $ sudo docker image remove ubuntu:18.04
+    $ sudo docker image remove registry.mousepawmedia.net/mpm-bionic
+    $ sudo docker pull registry.mousepawmedia.net/mpm-bionic
 
 Login with valid LDAP credentials. If it succeeds, everything is correctly
 configured.
@@ -2855,13 +2817,13 @@ for running our registry long-term instead:
 
 ..  code-block:: bash
 
-    $ docker container stop registry
-    $ docker container rm -v registry
+    $ sudo docker container stop registry
+    $ sudo docker container rm -v registry
     $ sudo mkdir -p /opt/docker/registry
     $ sudo vim /opt/docker/registry/docker-compose.yml
     $ sudo chown root:docker -R /opt/docker
     $ cd /opt/docker/registry
-    $ docker-compose up -d
+    $ sudo docker-compose up -d
 
 The registry will now automatically restart with the ``docker.service``
 managed by ``systemctl``.
@@ -2878,7 +2840,7 @@ I'll start by logging out of the registry, and installing ``pass``:
 
 ..  code-block:: bash
 
-    $ docker logout registry.mousepawmedia.net
+    $ sudo docker logout registry.mousepawmedia.net
     $ sudo apt install pass
 
 Before I go any further, I need a GPG key for the main user account.
@@ -2929,7 +2891,7 @@ Test that installed correctly by running the following:]
 
 ..  code-block:: bash
 
-    $ docker-credential-pass version
+    $ sudo docker-credential-pass version
 
 That should print out the version of ``docker-credential-pass` that is
 installed. If it works, you should also make sure it is communicating with
@@ -2937,7 +2899,7 @@ installed. If it works, you should also make sure it is communicating with
 
 ..  code-block:: bash
 
-    $ docker-credential-pass list
+    $ sudo docker-credential-pass list
 
 If that returns ``{}`` or some other data (instead of an error or warning),
 everything is correctly installed.
@@ -2955,7 +2917,7 @@ You should now be able to login with Docker, which you can test via:
 
 ..  code-block:: bash
 
-    $ docker login registry.mousepawmedia.net
+    $ sudo docker login registry.mousepawmedia.net
 
 Enter valid LDAP credentials. If it works, you'll see:
 
@@ -2975,14 +2937,15 @@ I recommend the following Jenkins plugins:
 * Docker Pipeline
 * Docker plugin
 
-Once those are installed from :menuselection:`Manage Jenkins --> Manage Plugins`,
-go to :menuselection:`Manage Jenkins --> Configure System`.
+Once those are installed from :guilabel:`Manage Jenkins` -->
+:guilabel:`Manage Plugins`, go to :guilabel:`Manage Jenkins` -->
+:guilabel:`Configure System`.
 
 Scroll down to :guilabel:`Global properties` and check the box
 :guilabel:`Environment variables`. Add the following variable:
 
 * :guilabel:`Name`: ``DOCKER_HOST``
-* :guilabel:`Value`: ``tcp://127.0.0.1:2375``
+* :guilabel:`Value`: ``unix:///var/run/docker.sock``
 
 Scroll down to :guilabel:`Declarative Pipeline (Docker)`, and set the following:
 
@@ -2992,8 +2955,9 @@ Scroll down to :guilabel:`Declarative Pipeline (Docker)`, and set the following:
 
 Save those configuration details via the :guilabel:`Save` button at the bottom.
 
-Now go to :menuselection:`Manage Jenkins --> Manage Nodes and Clouds`. At left,
-click :guilabel:`Configure Clouds`. Add a new cloud with the following settings:
+Now go to :guilabel:`Manage Jenkins` --> :guilabel:`Manage Nodes and Clouds`.
+At left, click :guilabel:`Configure Clouds`. Add a new cloud with the
+following settings:
 
 * :guilabel:`Name`: (Name it whatever you want. We call ours ``mpm-bionic``)
 
@@ -3197,11 +3161,8 @@ Then, enable the site and restart Apache2.
 ..  code-block:: bash
 
     $ sudo a2ensite nextcloud
+    $ sudo a2enmod headers
     $ sudo systemctl restart apache2
-
-..  WARNING: We are intentionally ignoring the recommendation to enable
-    the Headers mod. At this time, doing so forces use of Jenkins over HTTPS,
-    which prevents Phabricator from interfacing with it.
 
 Database Setup
 -------------------------------------
@@ -3373,7 +3334,7 @@ Next, we'll pull in the Docker container for Collabora Office online.
 
 ..  code-block:: bash
 
-    $ docker pull collabora/code
+    $ sudo docker pull collabora/code
 
 This download will take a while, so sit back and wait.
 
@@ -3382,7 +3343,9 @@ in on the ``password`` option.
 
 ..  code-block:: bash
 
-    $ docker run --privileged -t -d -p 127.0.0.1:9980:9980 -e 'domain=nextcloud\\.mousepawmedia\\.net|ajc\\.mousepawmedia\\.net|ibp\\.mousepawmedia\\.net' -e 'username=admin' -e 'password=CollaboraPassword' --restart always --cap-add MKNOD collabora/code
+    $ sudo docker run -t -d -p 127.0.0.1:9980:9980 -e 'domain=nextcloud\\.mousepawmedia\\.net|ajc\\.mousepawmedia\\.net|ibp\\.mousepawmedia\\.net' -e 'username=admin' -e 'password=CollaboraPassword' --restart always --cap-add MKNOD collabora/code
+
+..  warning:: Do not run Docker containers as ``--privileged``. Ever.
 
 Next, we will set up Apache to proxy to Collabora Office.
 
@@ -3456,8 +3419,8 @@ Then, enable the site and restart Apache2.
 You can see stats and admin options at ``https://office.<serveraddress>/loleaflet/dist/admin/admin.html``.
 
 Next, go to Nextcloud. Click the menu, and go to
-:menuselection:`Apps --> Productivity`. Install the "Collabora Online connector".
-Then, go to :menuselection:`Admin --> Additional settings --> Collabora Online`.
+:guilabel:`Apps --> Productivity`. Install the "Collabora Online connector".
+Then, go to :guilabel:`Admin --> Additional settings --> Collabora Online`.
 
 Set :guilabel:`Collabora Online server` to :code:`https://office.mousepawmedia.net/`
 and click :guilabel:`Apply`.
@@ -4239,13 +4202,13 @@ Updating Collabora
 
 ..  code-block:: bash
 
-    $ docker pull collabora/code
-    $ docker ps
+    $ sudo docker pull collabora/code
+    $ sudo docker ps
     # Find the processid from the preceeding.
-    $ docker stop processid
-    $ docker rm processid
+    $ sudo docker stop processid
+    $ sudo docker rm processid
     # Be sure to subtitute the password you want for Collabora!
-    $ docker run --privileged -t -d -p 127.0.0.1:9980:9980 -e 'domain=nextcloud\\.mousepawmedia\\.net|ajc\\.mousepawmedia\\.net|ibp\\.mousepawmedia\\.net' -e 'username=admin' -e 'password=CollaboraPassword' --restart always --cap-add MKNOD collabora/code
+    $ sudo docker run -t -d -p 127.0.0.1:9980:9980 -e 'domain=nextcloud\\.mousepawmedia\\.net|ajc\\.mousepawmedia\\.net|ibp\\.mousepawmedia\\.net' -e 'username=admin' -e 'password=CollaboraPassword' --restart always --cap-add MKNOD collabora/code
 
 Cleaning Cruft
 -------------------------------

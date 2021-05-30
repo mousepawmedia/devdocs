@@ -243,7 +243,9 @@ We'll be using PHP 7, which is the default in Ubuntu 16.04, for this server.
     $ sudo apt install php7.0 php-pear libapache2-mod-php7.0 php7.0-mysql
     $ sudo vim /etc/php/7.0/apache2/php.ini
 
-Edit the contents of that file so the following lines match the given values::
+Edit the contents of that file so the following lines match the given values:
+
+..  code-block:: text
 
     max_input_time = 30
     error_reporting = E_COMPILE_ERROR | E_RECOVERABLE_ERROR | E_ERROR | E_CORE_ERROR
@@ -290,7 +292,9 @@ We need to lock down SSH for further security.
 
     $ sudo vim /etc/ssh/sshd_config
 
-Edit the file so the following lines have the given settings::
+Edit the file so the following lines have the given settings:
+
+..  code-block:: text
 
     PermitRootLogin no
     PasswordAuthentication no
@@ -309,7 +313,9 @@ Secure Shared Memory
 
     $ sudo vim /etc/fstab
 
-At the bottom of the file, add the lines::
+At the bottom of the file, add the lines:
+
+..  code-block:: text
 
     # Secure shared memory
     tmpfs /run/shm tmpfs defaults,noexec,nosuid 0 0
@@ -334,7 +340,9 @@ Harden Network with ``sysctl`` Settings
 
     $ sudo vi /etc/sysctl.conf
 
-Edit the file, uncommenting or adding the following lines.::
+Edit the file, uncommenting or adding the following lines:
+
+..  code-block:: text
 
     # IP Spoofing protection
     net.ipv4.conf.all.rp_filter = 1
@@ -401,7 +409,9 @@ Harden PHP
 
     $ sudo vim /etc/php/5.6/apache2/php.ini
 
-Add or edit the following lines and save.::
+Add or edit the following lines and save:
+
+..  code-block:: text
 
     disable_functions = exec,system,shell_exec,passthru
     register_globals = Off
@@ -428,7 +438,9 @@ Edit the Apache2 security configuration file...
 
     $ sudo vim /etc/apache2/conf-available/security.conf
 
-Change or add the following lines::
+Change or add the following lines:
+
+..  code-block:: text
 
     ServerTokens Prod
     ServerSignature Off
@@ -461,7 +473,9 @@ Now we'll copy the default configuration and edit it.
     $ sudo mv /etc/modsecurity/modsecurity.conf-recommended /etc/modsecurity/modsecurity.conf
     $ sudo vim /etc/modsecurity/modsecurity.conf
 
-Add and edit the lines::
+Add and edit the lines:
+
+..  code-block:: text
 
     SecRuleEngine On
     SecServerSignature FreeOSHTTP
@@ -583,7 +597,9 @@ DenyHosts blocks SSH attacks and tracks suspicious IPs.
     $ sudo apt install denyhosts
     $ sudo vim /etc/denyhosts.conf
 
-Edit the following lines.::
+Edit the following lines:
+
+..  code-block:: text
 
     ADMIN_EMAIL = hawksnest@localhost
     SMTP_FROM = DenyHosts
@@ -667,7 +683,9 @@ Otherwise, ``psad`` won't be able to log correctly.
     $ sudo vim /lib/systemd/system/fail2ban.service
 
 In that file, add ``ufw.service`` and ``psad.service`` to the ``After=`` directive,
-so it looks something like this::
+so it looks something like this:
+
+..  code-block:: text
 
     After=network.target iptables.service firewalld.service ufw.service psad.service
 
@@ -685,7 +703,9 @@ Now we need to adjust the UFW settings.
     $ sudo ufw logging high
     $ sudo vim /etc/ufw/before.rules
 
-Add the following lines before the final commit message.::
+Add the following lines before the final commit message:
+
+..  code-block:: text
 
     -A INPUT -j LOG
     -A FORWARD -j LOG
@@ -935,7 +955,9 @@ Save and close. Then run...
     $ exit
     $ sudo crontab -e
 
-Add the following line to the end::
+Add the following line to the end:
+
+..  code-block:: text
 
     41 5 * * * /opt/scripts/root_scripts/renewcerts
 
@@ -1015,7 +1037,9 @@ We'll start by installing ``vsftpd`` and updating its configuration.
     $ sudo vim /etc/vsftpd.conf
 
 Change the following settings to match what's shown here, uncommenting the
-line if necessary::
+line if necessary:
+
+..  code-block:: text
 
     anonymous_enable=NO
     local_enable=YES
@@ -1327,7 +1351,9 @@ file, and then start making our edits.
     $ sudo cp /etc/postfix/main.cf /etc/postfix/main.cf.orig
     $ sudo vim /etc/postfix/main.cf
 
-Edit the file to match the following::
+Edit the file to match the following:
+
+..  code-block:: text
 
     # See /usr/share/postfix/main.cf.dist for a commented, more complete version
 
@@ -1409,7 +1435,9 @@ earlier.
 
     $ sudo vim /etc/postfix/mysql-virtual-mailbox-domains.cf
 
-Set the contents to::
+Set the contents to:
+
+..  code-block:: text
 
     user = postmaster
     password = mailuserpass
@@ -1423,7 +1451,9 @@ Save and close, then run...
 
     $ sudo vim /etc/postfix/mysql-virtual-mailbox-maps.cf
 
-Set the contents to::
+Set the contents to:
+
+..  code-block:: text
 
     user = postmaster
     password = mailuserpass
@@ -1437,7 +1467,9 @@ Save and close, then run...
 
     $ sudo vim /etc/postfix/mysql-virtual-alias-maps.cf
 
-Set the contents to::
+Set the contents to:
+
+..  code-block:: text
 
     user = postmaster
     password = mailuserpass
@@ -1451,7 +1483,9 @@ Save and close, then run...
 
     $ sudo vim /etc/postfix/mysql-virtual-email2email.cf
 
-Set the contents to::
+Set the contents to:
+
+..  code-block:: text
 
     user = postmaster
     password = mailuserpass
@@ -1482,7 +1516,9 @@ configuration file.
 
 Uncomment the two lines starting with ``submission`` and ``smtps``, as well as
 the block of lines starting with ``-o`` after each. Thus, the first part of
-that file should look like this::
+that file should look like this:
+
+..  code-block:: text
 
     #
     # Postfix master process configuration file.  For details on the format
@@ -1538,7 +1574,9 @@ in case.
     $ sudo vim /etc/dovecot/dovecot.conf
 
 Edit that file, adding the last line in the sample below in the indicated
-position::
+position:
+
+..  code-block:: text
 
     ## Dovecot configuration file
 
@@ -1568,7 +1606,9 @@ Save and close, and then open the next config file...
 
     $ sudo vim /etc/dovecot/conf.d/10-mail.conf
 
-Search for and modify the following lines (they're not together in the file)::
+Search for and modify the following lines (they're not together in the file):
+
+..  code-block:: text
 
     mail_location = maildir:/var/mail/vhosts/%d/%n
     mail_privileged_group = mail
@@ -1579,7 +1619,9 @@ Save and close. Next, we need to verify some permissions, so run...
 
     $ ls -ld /var/mail
 
-Ensure the output is::
+Ensure the output is:
+
+..  code-block:: text
 
     drwxrwsr-x 2 root mail 4096 Mar  6 15:08 /var/mail
 
@@ -1614,7 +1656,9 @@ Now we edit another configuration.
     $ sudo vim /etc/dovecot/conf.d/10-auth.conf
 
 Change or add the following lines. Notice that the last two
-are just being commented or uncommented::
+are just being commented or uncommented:
+
+..  code-block:: text
 
     auth_mechanisms = plain login
     disable_plaintext_auth = yes
@@ -1628,7 +1672,9 @@ Save and close. Then, run...
 
     $ sudo vim /etc/dovecot/conf.d/auth-sql.conf.ext
 
-Ensure the following lines match and are uncommented::
+Ensure the following lines match and are uncommented:
+
+..  code-block:: text
 
     passdb {
       driver = sql
@@ -1647,7 +1693,9 @@ Save and close. Then, run...
 
 Find, uncomment, and edit the following lines so they match, replacing
 ``userpassword`` with the actual password for the ``postmaster`` MySQL
-account::
+account:
+
+..  code-block:: text
 
     driver = mysql
     connect = host=127.0.0.1 dbname=mailserver user=postmaster password=userpassword
@@ -1668,7 +1716,9 @@ the sockets configuration file.
 We're going to disable IMAP and POP3 (the unencrypted forms)
 and instead use the secure versions (IMAPS and POP3S). Edit
 the following lines of code. Be careful of the nested code
-and brackets::
+and brackets:
+
+..  code-block:: text
 
     service imap-login {
       inet_listener imap {
@@ -1729,7 +1779,9 @@ certificate.
 
     $ sudo vim /etc/dovecot/conf.d/10-ssl.conf
 
-Uncomment and change the following lines::
+Uncomment and change the following lines:
+
+..  code-block:: text
 
     # SSL/TLS support: yes, no, required. <doc/wiki/SSL.txt>
     ssl = required
@@ -1815,7 +1867,9 @@ in our MX records to our server.
 
 Go to the Linode DNS manager for the domain in question, and add a new
 ``TXT Records``. Leave the ``Name`` blank, and set the ``Value`` to the
-following::
+following:
+
+..  code-block:: text
 
     v=spf1 mx -all
 
@@ -1825,7 +1879,9 @@ Now we need to edit our mail server to work with SPF.
 
     $ sudo vim /etc/postfix-policyd-spf-python/policyd-spf.conf
 
-Change the following lines::
+Change the following lines:
+
+..  code-block:: text
 
     HELO_reject = False
     Mail_From_reject = False
@@ -1836,7 +1892,9 @@ Save and close, then run...
 
     $ sudo vim /etc/postfix/master.cf
 
-Add the following to the bottom of that file::
+Add the following to the bottom of that file:
+
+..  code-block:: text
 
     policyd-spf  unix  -       n       n       -       0       spawn
         user=policyd-spf argv=/usr/bin/policyd-spf
@@ -1848,7 +1906,9 @@ Save and close, then run...
     $ sudo vim /etc/postfix/main.cf
 
 Edit the following section to include the last line in the example below,
-also ensuring that a comma is at the end of every line except the last one::
+also ensuring that a comma is at the end of every line except the last one:
+
+..  code-block:: text
 
     smtpd_recipient_restrictions =
         permit_sasl_authenticated,
@@ -1856,7 +1916,9 @@ also ensuring that a comma is at the end of every line except the last one::
         reject_unauth_destination,
         check_policy_service unix:private/policyd-spf
 
-Also add the following line to the bottom::
+Also add the following line to the bottom:
+
+..  code-block:: text
 
     policyd-spf_time_limit = 3600
 
@@ -1868,11 +1930,15 @@ Save and close, and then restart Postfix.
     and you don't want important messages going into a black hole.
 
 To test, send a message TO an account on your mail server, and check the
-headers. You should see a line something like this::
+headers. You should see a line something like this:
+
+..  code-block:: text
 
     Received-SPF: Pass (sender SPF authorized) identity=mailfrom; client-ip=2607:f8b0:400e:c05::22a; helo=mail-pg0-x22a.google.com; envelope-from=someemail@example.com; receiver=test@mousepawgames.net
 
-You should also see something like the following in ``/var/log/mail.log``::
+You should also see something like the following in ``/var/log/mail.log``:
+
+..  code-block:: text
 
     ubuntu policyd-spf[18663]: None; identity=helo; client-ip=2607:f8b0:400e:c00::22e; helo=mail-pf0-x22e.google.com; envelope-from=someemail@example.com; receiver=test@mousepawgames.net
     ubuntu policyd-spf[18663]: Pass; identity=mailfrom; client-ip=2607:f8b0:400e:c00::22e; helo=mail-pf0-x22e.google.com; envelope-from=someemail@example.com; receiver=test@mousepawgames.net
@@ -1890,7 +1956,9 @@ We'll start by modifying the configuration for OpenDKIM...
 
     $ sudo vim /etc/opendkim.conf
 
-Edit to make it match the following::
+Edit to make it match the following:
+
+..  code-block:: text
 
     # Log to syslog
     Syslog                  yes
@@ -1951,7 +2019,9 @@ be setting up directories for OpenDKIM.
 
 That last command will open up a file for editing, where we'll define the
 domains we're signing for. Set the contents to something like the following,
-replacing with the domains you're setting up for::
+replacing with the domains you're setting up for:
+
+..  code-block:: text
 
     *@mousepawgames.net mousepawgamesnet._domainkey.mousepawgames.net
     *@mousepawgames.com mousepawgamescom._domainkey.mousepawgames.com
@@ -1966,7 +2036,9 @@ Save and close, and then open the key table file.
 
 Set the contents to something like the following, with the short keys
 from the earlier file on the left. Also, be sure to change the date to the
-current four-digit year and two-digit month::
+current four-digit year and two-digit month:
+
+..  code-block:: text
 
     mousepawgamesnet._domainkey.mousepawgames.net mousepawgames.net:201705:/etc/opendkim/keys/mousepawgamesnet.private
     mousepawgamescom._domainkey.mousepawgames.com mousepawgames.com:201705:/etc/opendkim/keys/mousepawgamescom.private
@@ -1979,7 +2051,9 @@ Save and close, and then open the trusted hosts configuration file.
 
     $ sudo vim /etc/opendkim/trusted.hosts
 
-Set the contents of that file to::
+Set the contents of that file to:
+
+..  code-block:: text
 
     127.0.0.1
     ::1
@@ -2022,7 +2096,9 @@ script above (near the ``# CHANGE THIS`` comment.)
 
     $ sudo vim /opt/scripts/root_scripts/domains.txt
 
-Set the contents of that file to::
+Set the contents of that file to:
+
+..  code-block:: text
 
     mousepawgames.net
     mousepawgames.com
@@ -2073,7 +2149,9 @@ Once OpenDKIM is set up, we need to configure Postfix to use it.
     $ sudo chown opendkim:postfix /var/run/opendkim
     $ sudo vim /etc/default/opendkim
 
-Make sure the uncommented line matches::
+Make sure the uncommented line matches:
+
+..  code-block:: text
 
     SOCKET="inet:8891@localhost"
 
@@ -2083,7 +2161,9 @@ Save and close the file, and then edit the configuration for Postfix.
 
     sudo vim /etc/postfix/main.cf
 
-Add the following just below the ``smtpd_recipient_restrictions`` section::
+Add the following just below the ``smtpd_recipient_restrictions`` section:
+
+..  code-block:: text
 
     # Milter configuration
     # OpenDKIM
@@ -2151,7 +2231,9 @@ Make sure you allow ClamAV to work with Amavis.
 
 `SOUCE: How to fix amvavis reporting “permission denied” for clamav (AskUbuntu) <https://askubuntu.com/a/662672/23786>`_
 
-Change the following line::
+Change the following line:
+
+..  code-block:: text
 
     AllowSupplementaryGroups true
 
@@ -2167,7 +2249,9 @@ Now we need to edit SpamAssassin's configuration.
 
     $ sudo vim  /etc/default/spamassassin
 
-Change the following lines::
+Change the following lines:
+
+..  code-block:: text
 
     ENABLED=1
     CRON=1
@@ -2189,7 +2273,9 @@ Next, we'll make a copy of the default configuration file and edit that.
     $ sudo cp /etc/spamassassin/local.cf /etc/spamassassin/local.cf.orig
     $ sudo vim /etc/spamassassin/local.cf
 
-Find and uncomment the following lines::
+Find and uncomment the following lines:
+
+..  code-block:: text
 
     required_score 5.0
     use_bayes 1
@@ -2210,7 +2296,9 @@ Now we connect Amavis to ClamAV and SpamAssassin.
     $ sudo vim /etc/amavis/conf.d/15-content_filter_mode
 
 Change the file so it matches the following, simply by uncommenting the
-lines for the anti-virus and spam checking modes::
+lines for the anti-virus and spam checking modes:
+
+..  code-block:: text
 
     use strict;
 
@@ -2247,12 +2335,16 @@ Save and close, and then run...
     $ sudo vim /etc/amavis/conf.d/20-debian_defaults
 
 We want spam messages to be discarded instead of bounced, so we need to edit
-that setting here::
+that setting here:
+
+..  code-block:: text
 
     $final_spam_destiny       = D_DISCARD;
 
 Also edit the following lines so all mail is given info headers, and to
 control when the spam filters kick it to varying degrees.
+
+..  code-block:: text
 
     $sa_spam_subject_tag = ''; # shut off header rewriting, we'll Junk-bin it instead.
     $sa_tag_level_deflt  = -999;  # add spam info headers if at, or above that level
@@ -2270,7 +2362,9 @@ We also need to modify the hostname and domains Amavis works with.
 
     $ sudo vim /etc/amavis/conf.d/50-user
 
-Change or add the following lines::
+Change or add the following lines:
+
+..  code-block:: text
 
     $myhostname = 'delavega.mousepawgames.net';
     @local_domains_acl = ( "mousepawgames.net", "mousepawgames.com", "mousepawmedia.com", "indeliblebluepen.com" );
@@ -2279,7 +2373,9 @@ Save and close.
 
 We'll also want to whitelist our own domains, and a few others, given that
 the incoming message has the proper DKIM signature. Add the following items
-to the whitelist::
+to the whitelist:
+
+..  code-block:: text
 
     'mousepawgames.com'       => 'WHITELIST',
     'mousepawgames.net'       => 'WHITELIST',
@@ -2305,7 +2401,9 @@ Run the following...
     $ sudo postconf -e 'content_filter = smtp-amavis:[127.0.0.1]:10024'
     $ sudo vim /etc/postfix/master.cf
 
-Add the following to the end of the file::
+Add the following to the end of the file:
+
+..  code-block:: text
 
     smtp-amavis     unix    -       -       -       -       2       smtp
             -o smtp_data_done_timeout=1200
@@ -2333,7 +2431,9 @@ Add the following to the end of the file::
             -o smtpd_client_connection_rate_limit=0
             -o receive_override_options=no_header_body_checks,no_unknown_recipient_checks,no_milters
 
-Also add the following just below the ``pickup`` line::
+Also add the following just below the ``pickup`` line:
+
+..  code-block:: text
 
              -o content_filter=
              -o receive_override_options=no_header_body_checks
@@ -2350,7 +2450,9 @@ Ensure Amavis is running correctly with...
 
     $ telnet localhost 10024
 
-The output should be::
+The output should be:
+
+..  code-block:: text
 
     Trying ::1...
     Connected to localhost.
@@ -2379,7 +2481,9 @@ sieve.
     $ sudo apt install dovecot-sieve
     $ sudo vim /etc/dovecot/conf.d/90-sieve.conf
 
-Edit that file to comment out the line::
+Edit that file to comment out the line:
+
+..  code-block:: text
 
     #sieve = file:~/sieve;active=~/.dovecot.sieve
 
@@ -2389,7 +2493,9 @@ Save and close, and then run...
 
     $ sudo vim /etc/dovecot/conf.d/90-plugin.conf
 
-Add the following to that file::
+Add the following to that file:
+
+..  code-block:: text
 
     plugin {
         sieve = /etc/dovecot/sieve/default.sieve
@@ -2401,7 +2507,9 @@ Save and close, and run...
 
     $ sudo vim /etc/dovecot/conf.d/15-lda.conf
 
-Edit the following section so it incorporates the following::
+Edit the following section so it incorporates the following:
+
+..  code-block:: text
 
     protocol lda {
       mail_plugins = $mail_plugins sieve
@@ -2413,7 +2521,9 @@ Save and close, and then...
 
     $ sudo vim /etc/dovecot/conf.d/20-lmtp.conf
 
-As before, edit the following section so it incorporates the following::
+As before, edit the following section so it incorporates the following:
+
+..  code-block:: text
 
     protocol lmtp {
       mail_plugins = $mail_plugins sieve
@@ -2426,7 +2536,9 @@ Now we can set up the sieve itself.
     $ sudo mkdir /etc/dovecot/sieve/
     $ sudo vim /etc/dovecot/sieve/default.sieve
 
-Set the contents of that new file to::
+Set the contents of that new file to:
+
+..  code-block:: text
 
     require "fileinto";
     if header :contains "X-Spam-Flag" "YES" {
@@ -2486,7 +2598,9 @@ from a particular email address or domain name, we can blacklist it entirely.
 
     $ sudo apt vim /etc/postfix/main.cf
 
-Change the following section to match what is shown here::
+Change the following section to match what is shown here:
+
+..  code-block:: text
 
     smtpd_recipient_restrictions =
         check_sender_access hash:/etc/postfix/sender_checks,
@@ -2501,7 +2615,9 @@ Save and close. Now we create the blacklist file.
 
     $ sudo vim /etc/postfix/sender_checks
 
-We format the blacklist like this::
+We format the blacklist like this:
+
+..  code-block:: text
 
     # Restricts sender addresses this system accepts in MAIL FROM commands.
 
@@ -2546,7 +2662,9 @@ that test domain...
 
     $ sudo vim /etc/postfix/sender_checks
 
-Change that file to::
+Change that file to:
+
+..  code-block:: text
 
     # Restricts sender addresses this system accepts in MAIL FROM commands.
 
@@ -2644,7 +2762,7 @@ Copy the link address.
 Use that URL (and the accompanying version) in place of the URL and version
 in the commands below:
 
-,.  code-block:: bash
+..  code-block:: bash
 
     $ cd /tmp
     $ wget https://github.com/roundcube/roundcubemail/releases/download/1.4.11/roundcubemail-1.4.11-complete.tar.gz
@@ -2734,16 +2852,16 @@ only ``MySQL`` needs to be ``OK`` there.) Click :guilabel:`NEXT`.
 
 Under :guilabel:`General Configuration`, fill out the settings as you like.
 
-Under :guilabel:`Logging & Debugging`If you're not sure about something,
+Under :guilabel:`Logging & Debugging`. If you're not sure about something,
 use the default.
 
 For :guilabel:`Database setup`, the defaults are probably correct, but
-**be sure to enter the database password!
+**be sure to enter the database password!**
 
 For :guilabel:`IMAP Settings`, we use the following:
 
 * :guilabel:`default_host`: ``ssl://mail.mousepawmedia.com``
-* :guilabel:`default_port`: `993`
+* :guilabel:`default_port`: ``993``
 * :guilabel:`auto_create_user`: Yes
 * :guilabel:`sent_mbox`: ``Sent``
 * :guilabel:`trash_mbox`: ``Trash``
@@ -2821,7 +2939,9 @@ the following steps for each, replacing "example.com" with the domain name.
     $ sudo cp /etc/awstats/awstats.conf /etc/awstats/awstats.example.com.conf
     $ sudo vim /etc/awstats/awstats.example.com.conf
 
-Change the following::
+Change the following:
+
+..  code-block:: text
 
     SiteDomain="example.com"
     HostAliases="www.example.com"
