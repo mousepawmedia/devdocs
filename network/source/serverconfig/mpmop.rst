@@ -576,6 +576,7 @@ of jails we enabled for this server:
 - apache-shellshock
 - php-url-fopen
 - recidive
+- slapd
 - phpmyadmin-syslog
 
 I also added ``sshd-ddos`` by including this entry:
@@ -763,9 +764,7 @@ to be done the first time.
     $ sudo a2enmod ssl
     $ sudo systemctl restart apache2
 
-We start by generating a certificate for the domain being added. In this case,
-I'm creating one certificate for two domains. Ordinarily, you'd only create
-for one domain.
+We start by generating a certificate for the domain being added.
 
 The ``000-default`` Apache site is what we'll use for initially generating on
 a domain name. After generating the cert, we disable that site again so the
@@ -775,14 +774,14 @@ other sites will work.
 
     $ sudo a2ensite 000-default
     $ sudo systemctl reload apache2
-    $ sudo certbot certonly --apache -d phab.mousepawmedia.com,phabfiles.mousepawmedia.com
+    $ sudo certbot certonly --apache -d eco.mousepawmedia.com
 
 In the output for the certbot command, take note of the paths where the
 certificate and chain were saved. You'll need that in the next step.
 
 ..  code-block:: bash
 
-    $ sudo vim /etc/apache2/sites-available/phab.conf
+    $ sudo vim /etc/apache2/sites-available/eco.conf
 
 Set the contents of that file to the following, substituting the
 domain name in place for :code:`ServerName`, and fixing the paths for
@@ -793,16 +792,16 @@ Also set the :code:`DocumentRoot` to the desired directory.
 
     <IfModule mod_ssl.c>
         <VirtualHost *:443>
-            ServerName phab.mousepawmedia.com
+            ServerName eco.mousepawmedia.com
 
             ServerAdmin webmaster@mousepawmedia.com
-            DocumentRoot /opt/phab
+            DocumentRoot /opt/eco
 
             ErrorLog ${APACHE_LOG_DIR}/error.log
             CustomLog ${APACHE_LOG_DIR}/access.log combined
 
-            SSLCertificateFile /etc/letsencrypt/live/phab.mousepawmedia.com/fullchain.pem
-            SSLCertificateKeyFile /etc/letsencrypt/live/phab.mousepawmedia.com/privkey.pem
+            SSLCertificateFile /etc/letsencrypt/live/eco.mousepawmedia.com/fullchain.pem
+            SSLCertificateKeyFile /etc/letsencrypt/live/eco.mousepawmedia.com/privkey.pem
             Include /etc/letsencrypt/options-ssl-apache.conf
             Header always set Strict-Transport-Security "max-age=31536000"
             Header always set Content-Security-Policy upgrade-insecure-requests
@@ -828,9 +827,9 @@ in :code:`DocumentRoot`.
 ..  code-block:: bash
 
     $ cd /opt
-    $ sudo mkdir phab
-    $ sudo chown www-data:www-data phab
-    $ sudo chmod 775 phab
+    $ sudo mkdir eco
+    $ sudo chown www-data:www-data eco
+    $ sudo chmod 775 eco
 
 We need to tell Apache2 to read this directory.
 
@@ -842,7 +841,7 @@ Scroll down to the section with all the directories, and add these entries:
 
 ..  code-block:: apache
 
-    <Directory /opt/phab/>
+    <Directory /opt/eco/>
         Options FollowSymLinks
         AllowOverride All
         Require all granted
@@ -858,7 +857,7 @@ Now we disable the default site, enable the new site, and restart Apache2.
 ..  code-block:: bash
 
     $ sudo a2dissite 000-default
-    $ sudo a2ensite phab
+    $ sudo a2ensite eco
     $ sudo systemctl restart apache2
 
 Ensure the new domain works over http.
@@ -1005,485 +1004,54 @@ Save and close, and then make executable.
 Now you can run :code:`controls on` or :code:`controls off` to toggle
 access to PHPMyAdmin.
 
-Phabricator
-===========================================
+LDAP Server
+===============================================
 
-Prerequisites
---------------------------------------------
+In this section, I'll set up an LDAP Server which uses StartTLS for
+security. Start by following the Apache setup instructions to create
+a virtual host and certificate for ``id.mousepawmedia.com``.
 
-We need a few packages for Phabricator to work well:
-
-..  code-block:: bash
-
-    $ sudo apt install php7.4-ldap php-apcu imagemagick subversion python3-pygments python-pygments
-    $ sudo systemctl restart apache2
-
-This will also assume you've set up the two domains for Phabricator with
-Apache2 and Let's Encrypt, following the earlier instructions. For this
-example, I'm using ``phab.mousepawmedia.com`` and
-``phabfiles.mousepawmedia.com``.
-
-Setting Up System Group and Users
---------------------------------------------
-
-We'll add a group to control who can access Phabricator's stuff. For ease of
-use, we'll add our login user to this group. We will also create a new
-user called ``phabdaemon`` for Phabricator-based daemons.
+Installation
+------------------------------------
 
 ..  code-block:: bash
 
-    $ sudo groupadd phab
-    $ sudo useradd -G phab phabdaemon
-    $ sudo usermod -a -G phab mpm
-    $ sudo usermod -a -G phab www-data
+    $ sudo apt install slapd ldap-utils ldap-account-manager
+    $ sudo dpkg-reconfigure slapd
 
-Now we need to modify the ``phabdaemon`` user.
+During the configuration, use these settings:
 
-..  code-block:: bash
+- Omit OpenLDAP server configuration? No
+- DNS domain name? id.mousepawmedia.com
+- Organization name? mousepawmedia
+- Administrator password? (enter one)
+- Database backend to use? MDB
+- Remove the database when slapd is purged? No
+- Move old database? Yes
+- Allow LDAPv2 protocol? No
 
-    $ sudo vim /etc/passwd
-
-Look for the ``phabdaemon`` entry and set the last field to ``/usr/sbin/nologin``.
-Save and close. Then...
-
-..  code-block:: bash
-
-    $ sudo vim /etc/shadow
-
-Look for the ``phabdaemon`` entry again, and set the second field to ``*``.
-Save and close.
-
-Migrating
---------------------------------------------
-
-We already had the ``phab``, ``phabfiles`` and ``phabrepo`` folders on the old
-installation, so we can move those over to ``/opt``. (See Phabricator's official
-installation instructions if you're doing a fresh install.)
-
-Once you've moved the folders over, change their permissions as follows...
+Now we open the LDAP port and check that LDAP is working:
 
 ..  code-block:: bash
 
-    $ cd /opt
-    $ sudo chown -R mpm phab
-    $ sudo chown -R phabdaemon phabfiles
-    $ sudo chown -R phabdaemon phabrepo
-    $ sudo chgrp -R phab phab
-    $ sudo chgrp -R phab phabfiles
-    $ sudo chgrp -R phab phabrepo
-    $ sudo chmod u=rwx,g=rwx,o=rx -R phab
-    $ sudo chmod u=rwx,g=rwx,o=rx -R phabfiles
-    $ sudo chmod u=rwx,g=rwx,o=rx -R phabrepo
+    $ sudo ufw allow 389
+    $ ldapwhoami -H ldap:// -x
 
-..  note:: That last command migrates where repositories look for files.
+The last command should return ``anonymous``.
 
-We also exported the Phabricator database on the *old* server using...
+Now we need to set up LDAP to use the Let's Encrypt certificates we created.
 
 ..  code-block:: bash
 
-    $ cd /home/mpm/phab/phabricator
-    $ ./bin/storage dump | gzip > /home/mpm/backup.sql.gz
-
-On the *new* server, we copy that backup to our ``IMPORTED`` directory, and then
-run the following to move it into the new copy of MySQL.
-
-..  code-block:: bash
-
-    $ gunzip -c /home/mpm/IMPORTED/backup.sql.gz | sudo mysql -u root
-
-Now wait. You might take this opportunity to set up a chess board and talk
-about playing badly. Don't count on actually starting a game.
-
-You will also need to update the URLs for Phabricator if you're changing
-domain names:
-
-..  code-block:: bash
-
-    $ cd /opt/phab/phabricator
-    $ ./bin/config set phabricator.base-uri https://phab.mousepawmedia.com/
-    $ ./bin/config set phabricator.allowed-uris '["https://phab.mousepawmedia.com/"]'
-
-Configuring Apache
---------------------------------------------
-
-We need to modify a few files to get this working. First, modify ``apache2.conf``.
-
-..  code-block:: bash
-
-    $ sudo vim /etc/apache2/apache2.conf
-
-Near the other ``Directory`` sections, modify the ``/opt/phab`` Directory
-entry to the following...
-
-..  code-block:: apache
-
-    <Directory /opt/phab/phabricator/webroot>
-            Options FollowSymLinks
-            AllowOverride all
-            Require all granted
-    </Directory>
-
-Finally, add or update the following site:
-
-..  code-block:: bash
-
-    $ sudo vim /etc/apache2/sites-available/phab.conf
-
-Copy and paste the following into that file.
-
-..  code-block:: apache
-
-    <IfModule mod_ssl.c>
-        <VirtualHost *:443>
-                ServerName phabricator.mousepawmedia.net
-                ServerAdmin developers@mousepawmedia.com
-
-                DocumentRoot /opt/phab/phabricator/webroot
-
-                RewriteEngine on
-                RewriteRule ^/rsrc/(.*)     -                       [L,QSA]
-                RewriteRule ^/favicon.ico   -                       [L,QSA]
-                RewriteRule ^(.*)$          /index.php?__path__=$1  [B,L,QSA]
-
-                ErrorLog ${APACHE_LOG_DIR}/error.log
-                CustomLog ${APACHE_LOG_DIR}/access.log combined
-
-                SSLCertificateFile /etc/letsencrypt/live/phab.mousepawmedia.com/fullchain.pem
-                SSLCertificateKeyFile /etc/letsencrypt/live/phab.mousepawmedia.com/privkey.pem
-                Include /etc/letsencrypt/options-ssl-apache.conf
-                Header always set Strict-Transport-Security "max-age=31536000"
-                Header always set Content-Security-Policy upgrade-insecure-requests
-
-                <FilesMatch "\.(cgi|shtml|phtml|php)$">
-                                SSLOptions +StdEnvVars
-                </FilesMatch>
-                <Directory /usr/lib/cgi-bin>
-                                SSLOptions +StdEnvVars
-                </Directory>
-
-                BrowserMatch "MSIE [2-6]" \
-                                nokeepalive ssl-unclean-shutdown \
-                                downgrade-1.0 force-response-1.0
-                # MSIE 7 and newer should be able to use keepalive
-                BrowserMatch "MSIE [17-9]" ssl-unclean-shutdown
-        </VirtualHost>
-    </IfModule>
-
-Save and close the file. Finally, load them up.
-
-..  code-block:: bash
-
-    $ sudo a2ensite phab
-    $ sudo a2enmod ssl php7.4 rewrite
-    $ sudo systemctl restart apache2
-
-Now see if ``https://<phabricatoraddress>/`` works.
-
-Getting Phabricator Running
------------------------------------------------------
-
-Next, we need to make some modifications to ``php.ini`` for Phabricator to work.
-
-..  code-block:: bash
-
-    $ sudo vim /etc/php/7.4/apache2/php.ini
-
-Make these changes...
-
-- Comment out ``disable_functions``.
-- Change ``post_max_size`` to ``32M``.
-- Change ``date.timezone = `` to ``America/Los_Angeles``.
-- Set ``opcache.validate_timestamps`` to ``0``.
-
-Save and close, and then restart Apache:
-
-..  code-block:: bash
-
-    $ sudo systemctl restart apache2
-
-Next, we'll add a new user to MySQL and give it all privileges for the
-Phabricator databases.
-
-..  code-block:: bash
-
-    $ sudo mysql -u root
-
-Run the following:
-
-..  code-block:: mysql
-
-    CREATE USER 'phab'@'localhost' IDENTIFIED BY 'some_password';
-    GRANT ALL PRIVILEGES ON `phabricator\_%`.* TO 'phab'@'localhost' WITH GRANT OPTION;
-    GRANT REPLICATION CLIENT on *.* TO 'phab'@'localhost' WITH GRANT OPTION;
-    \q
-
-Once we have these changes made, we need to adjust Phabricator's
-configuration to access the database.
-
-..  code-block:: bash
-
-    $ /opt/phab/phabricator/bin/config set mysql.host localhost
-    $ /opt/phab/phabricator/bin/config set mysql.user phab
-    $ /opt/phab/phabricator/bin/config set mysql.pass some_password
-
-We also need to change some settings for MySQL:
-
-..  code-block:: bash
-
-    $ sudo vim /etc/mysql/mysql.conf.d/mysqld.cnf
-
-Add or change the following lines in the ``[mysqld]`` section:
-
-..  code-block:: text
-
-    sql_mode=STRICT_ALL_TABLES
-    innodb_buffer_pool_size=1600M
-
-Save and close, and then restart MySQL:
-
-..  code-block:: bash
-
-    $ sudo systemctl restart mysql
-
-Set Log Locations
----------------------------------------------------
-
-We need to set up the location for logging. We'll create a special folder
-in ``/var`` for this purpose, set its permissions, and tell Phabricator where
-to find it.
-
-..  warning:: This is critical! If you forget this, you'll have a plethora of
-    ``500 Internal Server Error`` messages, an unhandled exception at the bottom
-    of all pages, and some missing stuff.
-
-..  code-block:: bash
-
-    $ sudo mkdir /var/log/phab
-    $ sudo chown -R mpm /var/log/phab
-    $ sudo chgrp -R phab /var/log/phab
-    $ sudo chmod -R 775 /var/log/phab
-    $ cd /opt/phab/phabricator
-    $ ./bin/config set log.access.path /var/log/phab/access.log
-    $ ./bin/config set log.ssh.path /var/log/phab/ssh.log
-    $ ./bin/config set phd.log-directory /var/log/phab/phd.log
-
-Setting Up Alternative File Domain
--------------------------------------------------
-
-We also need to set up Phabricator's Alternative File Domain for improved
-security. We'll configure Apache2 to serve files as expected.
-
-We can copy and tweak the configuration file we used for Phabricator in Apache2.
-
-..  code-block:: bash
-
-    $ cd /etc/apache2/sites-available
-    $ sudo cp phab.conf phabfiles.conf
-    $ sudo vim phabfiles.conf
-
-Set the contents to the following...
-
-..  code-block:: apache
-
-    <IfModule mod_ssl.c>
-        <VirtualHost phabfiles.mousepawmedia.com:443>
-            ServerName phabfiles.mousepawmedia.com
-            ServerAdmin developers@mousepawmedia.com
-
-            DocumentRoot /opt/phab/phabricator/webroot
-
-            RewriteEngine on
-            RewriteRule ^/rsrc/(.*)     -                       [L,QSA]
-            RewriteRule ^/favicon.ico   -                       [L,QSA]
-            RewriteRule ^(.*)$          /index.php?__path__=$1  [B,L,QSA]
-
-            ErrorLog ${APACHE_LOG_DIR}/error.log
-            CustomLog ${APACHE_LOG_DIR}/access.log combined
-
-            SSLCertificateFile /etc/letsencrypt/live/phab.mousepawmedia.com/fullchain.pem
-            SSLCertificateKeyFile /etc/letsencrypt/live/phab.mousepawmedia.com/privkey.pem
-            Include /etc/letsencrypt/options-ssl-apache.conf
-            Header always set Strict-Transport-Security "max-age=31536000"
-            Header always set Content-Security-Policy upgrade-insecure-requests
-
-            <FilesMatch "\.(cgi|shtml|phtml|php)$">
-                            SSLOptions +StdEnvVars
-            </FilesMatch>
-            <Directory /usr/lib/cgi-bin>
-                            SSLOptions +StdEnvVars
-            </Directory>
-
-            BrowserMatch "MSIE [2-6]" \
-                            nokeepalive ssl-unclean-shutdown \
-                            downgrade-1.0 force-response-1.0
-            # MSIE 7 and newer should be able to use keepalive
-            BrowserMatch "MSIE [17-9]" ssl-unclean-shutdown
-        </VirtualHost>
-    </IfModule>
-
-
-Save and close. Then, run...
-
-..  code-block:: bash
-
-    $ sudo a2ensite phabfiles
-    $ sudo systemctl restart apache2
-
-Go to ``https://<filedomainname>``. You **should** see an error on the page
-saying "Unhandled Exception ("AphrontMalformedRequestException")"
-This means you're on the right track!
-
-Next, we'll configure Phabricator to use this domain name for file serving.
-
-..  code-block:: bash
-
-    $ cd /opt/phab/phabricator
-    $ ./bin/config set security.alternate-file-domain https://phabfiles.<serveraddress>/
-
-Recaptcha
--------------------------------------------------
-
-Sign up for Recaptcha on `their website <https://www.google.com/recaptcha/admin#list>`_
-(I'm using indeliblebluepen@gmail.com to admin that). Then, substitute
-``PRIVATEKEY`` and ``PUBLICKEY`` in the following commands for the keys you get
-from that website.
-
-..  code-block:: bash
-
-    $ ./bin/config set recaptcha.enabled true
-    $ ./bin/config set recaptcha.public-key PUBLICKEY
-    $ ./bin/config set recaptcha.private-key PRIVATEKEY
-
-LDAP
--------------------------------------------------
-
-I want to allow logging in with LDAP. In the terminal, run the following:
-
-..  code-block:: bash
-
-    $ sudo apt install php7.4-ldap
-    $ cd /opt/phab/phabricator
-    $ bin/auth unlock
-
-Then, in Phabricator itself, go to the Auth app (``/auth``).
-
-Add the ``LDAP`` provider. Use the following settings:
-
-* LDAP Hostname: ``id.mousepawmedia.com``
-* LDAP Port: ``389``
-* Base Distinguished Name: ``ou=Users, dc=id, dc=mousepawmedia, dc=com``
-* Search Attributes: ``uid cn mail`` (note: put each of those on a separate line)
-* Always Search: Yes
-* Username Attribute: ``uid``
-* Realname Attributes: ``cn``
-* LDAP Version: ``3``
-
-..  note:: If you cannot access the UI due to the LDAP server moving,
-    you can edit directly from the ``phabricator_audit`` database and the
-    ``auth_providerconfig`` table.
-
-Addressing Setup Issues
--------------------------------------------------
-
-Various issues may crop up on the install. Once you can access Phabricator,
-you can see these at ``https://<serveraddress>/config/issues``. All of these
-*should* be mitigated by the changes described above, but others may exist.
-Follow the instructions on each issue to resolve.
-
-Set Up Phabricator Daemons
--------------------------------------------------
-
-We need to autostart the Phabricator daemons. I wrote a special script that
-handles that.
-
-..  code-block:: bash
-
-    $ sudo mkdir /opt/scripts/phab
-    $ sudo chown mpm /opt/scripts/phab
-    $ sudo chgrp phab /opt/scripts/phab
-    $ sudo chmod 775 /opt/scripts/phab
-    $ sudo vim /opt/scripts/phab/phd_start
-
-Put the following in that file.
-
-..  code-block:: bash
-
-    #!/bin/bash
-    # Start Phabricator daemons
-    echo "STARTING PHD" > /var/log/phab/phd_start.log
-    sudo -u phabdaemon /opt/phab/phabricator/bin/phd start > /var/log/phab/phd_start.log
-
-Save and close. Then, change its permissions.
-
-..  code-block:: bash
-
-    $ sudo chmod 775 /opt/scripts/phab/phd_start
-
-Now, add this script to the crontab.
-
-..  code-block:: bash
-
-    $ sudo crontab -e
-
-At the bottom, add the line:
-
-..  code-block:: text
-
-    @reboot sleep 60; /opt/scripts/phab/phd_start
-
-Save and close.
-
-..  note:: It is vital that we sleep for 60 seconds before running, as the
-    script fails out of the gate otherwise. (Not sure why.)
-
-Finally, update Phabricator's configuration to expect this user to run
-the daemons.
-
-..  code-block:: bash
-
-    $ /opt/phab/phabricator/bin/config set phd.user phabdaemon
-
-Of course, we can run this to start the Phabricator daemons right now...
-
-..  code-block:: bash
-
-    $ sudo /opt/scripts/phab/phd_start
-
-..  note:: If it complains about not being able to modify a path starting with
-    ``/var/tmp/phd``, just CAREFULLY run ``sudo rm -r /var/tmp/phd``.
-
-Phabricator Aphlict Notification Server
--------------------------------------------------------
-
-Let's get the notification server for Phabricator running.
-
-We need Node.JS for Aphlict to work. We can install it from the main
-package repositories.
-
-..  code-block:: bash
-
-    $ sudo apt install nodejs npm
-    $ cd /opt/phab/phabricator/support/aphlict/server/
-    $ npm install ws
-
-You can safely ignore the warning messages from ``npm``.
-
-Next, we'll set things up so ``phabdaemon`` can read the SSL certificates.
-
-..  code-block:: bash
-
-    $ sudo mkdir /etc/phab/ssl
-    $ sudo chown -R phabdaemon:phab /etc/phab
-    $ sudo chmod 700 /etc/phab/ssl
     $ sudo vim /opt/scripts/root/postrenew
 
 Set the contents of that file to:
 
 ..  code-block:: bash
 
-    cp /etc/letsencrypt/live/phab.mousepawmedia.com/* /etc/phab/ssl
-    chown -R phabdaemon /etc/phab/ssl
-    chmod 700 /etc/phab/ssl
+    cp /etc/letsencrypt/live/id.mousepawmedia.com/* /etc/ldap/sasl2
+    chown -R openldap:openldap /etc/ldap/sasl2
+    chmod 700 /etc/ldap/sasl2
 
 Save and close. Then, make executable and run.
 
@@ -1508,256 +1076,166 @@ you have already specified, of course):
 
 Save and close.
 
-Now we need to adjust the Aphlict configuration, or it won't start.
+LDAP is modified through commands and scripts. We need to create an ``ldif``
+file in our current directory (e.g. home) like this:
 
 ..  code-block:: bash
 
-    $ cd /opt/phab/phabricator/conf/aphlict
-    $ cp aphlict.default.json aphlict.custom.json
-    $ vim aphlict.custom.json
+    $ sudo vim ssl.ldif
 
-The file should look like this:
+Set the contents to the following, changing the path to the certificates
+if necessary.
 
 ..  code-block:: text
 
-    {
-      "servers": [
-        {
-          "type": "client",
-          "port": 22280,
-          "listen": "0.0.0.0",
-          "ssl.key": "/etc/phab/ssl/privkey.pem",
-          "ssl.cert": "/etc/phab/ssl/fullchain.pem",
-          "ssl.chain": null
-        },
-        {
-          "type": "admin",
-          "port": 22281,
-          "listen": "127.0.0.1",
-          "ssl.key": null,
-          "ssl.cert": null,
-          "ssl.chain": null
-        }
-      ],
-      "logs": [
-        {
-          "path": "/var/log/phab/aphlict.log"
-        }
-      ],
-      "pidfile": "/var/tmp/aphlict/pid/aphlict.pid"
-    }
+    dn: cn=config
+    changetype: modify
+    add: olcTLSCACertificateFile
+    olcTLSCACertificateFile: /etc/ldap/sasl2/fullchain.pem
+    -
+    add: olcTLSCertificateKeyFile
+    olcTLSCertificateKeyFile: /etc/ldap/sasl2/privkey.pem
+    -
+    add: olcTLSCertificateFile
+    olcTLSCertificateFile: /etc/ldap/sasl2/cert.pem
 
-Finally, open the necessary port and start Aphlict via...
+Save and close, and then modify LDAP with that file.
 
 ..  code-block:: bash
 
-    $ sudo ufw allow 22280
-    $ cd /opt/phab/phabricator
-    $ sudo -u phabdaemon ./bin/aphlict start
+    $ sudo ldapmodify -Y EXTERNAL -H ldapi:/// -f /home/mpm/ssl.ldif
 
-It should start up without any issues. If there are some, check the previous
-steps.
+Check the output. If you get the infamous ``ldap_modify: Other (e.g., implementation specific) error (80)``,
+check that all of the above are correct, especially permissions.
 
-Finally, we need to tell Phabricator to use Aphlict. In Phabricator, go to
-Config→All Settings (``https://<serveraddress>/config/all``). Look for
-``notification.servers``. Enter the following in the field:
-
-..  code-block:: json
-
-    [
-        {
-        "type": "client",
-        "host": "phab.mousepawmedia.com",
-        "port": 22280,
-        "protocol": "https"
-        },
-        {
-        "type": "admin",
-        "host": "127.0.0.1",
-        "port": 22281,
-        "protocol": "http"
-        }
-    ]
-
-Navigate to the Notification Servers section of Config
-(``https://<serveraddress>/config/cluster/notifications/``) to ensure
-the system is running correctly.
-
-If all's well, let's add the Aphlict startup to our PHD start script.
+Once the command works, restart LDAP and ensure that StartTLS is working.
 
 ..  code-block:: bash
 
-    $ sudo vim /opt/scripts/phab/phd_start
+    $ sudo systemctl restart slapd
+    $ ldapwhoami -H ldap://id.mousepawmedia.com -x -ZZ
 
-Add the line...
+That should return ``anonymous`` if it's working.
 
-..  code-block:: bash
+`SOURCE: How to Configure OpenLDAP with StartTLS Mode on Ubuntu 16.04 (Medium) <https://medium.com/@stsarut/how-to-configure-openldap-with-starttls-mode-on-ubuntu-16-04-3af036b16c6c>`_
 
-    sudo -u phabdaemon /opt/phab/phabricator/bin/aphlict start > /var/log/phab/phd_start.log
+`SOURCE: OpenLDAP with TLS and LetsEncrypt on UBuntu 16.04 (Peter Hicks) <https://blog.poggs.com/2018/08/19/openldap-with-tls-and-letsencrypt-on-ubuntu-16-04/>`_
 
-Save and close.
+LDAP Account Manager Config
+-----------------------------------
 
-`SOURCE: Notifications Setup and Configuration (Phabricator) <https://secure.phabricator.com/book/phabricator/article/notifications/>`_
+Now we need to adjust LDAP Account Manager's configuration. Go to
+https://id.mousepawmedia.com/lam and click ``LAM Configuration`` in the upper-right
+corner.
 
-Phabricator Git SSH
----------------------------------------------
+Click ``General settings``. If this is your first time logging in, the Master
+Password is ``lam``.
 
-The system already has a ``www-data`` user, and we set up a ``phabdaemon`` user
-earlier. We'll use both of those for use for this. We also need to add a ``git``
-user, and then give these users appropriate sudo permissions.
+On the page that appears, enter a new master password. Be sure not to lose it!
 
-..  code-block:: bash
+You can adjust other settings here as needed, but the defaults should be fine.
 
-    $ sudo useradd -m git
-    $ /opt/phab/phabricator/bin/config set diffusion.ssh-user git
-    $ sudo visudo
+Click ``Ok``.
 
-Add these lines to that file:
+Now go to ``LAM Configuration`` and ``Edit server profiles``. Click ``Manage
+server profiles`` and rename the profile to ``admin``. Click ``OK``.
 
-..  code-block:: text
+Now go to ``LAM Configuration`` and ``Edit server profiles``. Log in.
+The first time you do so, the password is ``lam``. Be sure to change it.
 
-    # Configuration for Phabricator VCS
-    www-data ALL=(phabdaemon) SETENV: NOPASSWD: /usr/bin/git, /usr/lib/git-core/git-http-backend
-    git ALL=(phabdaemon) SETENV: NOPASSWD: /usr/bin/git, /usr/bin/git-upload-pack, /usr/bin/git-receive-pack
+Ensure the following settings on the General settings tab:
 
-..  note:: We had to comment out the recommended version for ``git`` and put in
-    the second version, in order for SSH to work with our repositories. We need
-    to find out what all binaries ``git`` is needing to use, and add them to the
-    first path. When this is acheved, be sure to swap the comments...do NOT
-    leave them both uncommented!
+* Server address: ``ldap://id.mousepawmedia.com:389``
+* Activate TLS: yes
+* Tree suffix: ``dc=id,dc=mousepawmedia,dc=com``
+* Advanced options > Display name: ``MousePaw Media ID``
+* Default language: ``English (USA)``
+* Time zone: ``America/Chicago``
 
-Also ensure that if there is the line ``Defaults    requiretty``, it is commented
-out. If it's not there, we're good.
+Scroll down to Security settings. Set the Login method to Fixed list, and then
+set ``List of valid users`` to ``cn=admin,dc=id,dc=mousepawmedia,dc=com``.
 
-Save and close.
+Click ``Save``.
 
-Now, we need to edit a couple other files.
+Configuring LDAP Schema
+--------------------------------
 
-..  code-block:: bash
+Go to ``LAM Configuration`` and ``Edit server profiles``. Log in.
 
-    $ sudo vim /etc/shadow
+Then, go to the Account types tab. Create two account types:
 
-Find the line for ``git`` and change the ``!`` in the second field to ``NP``. Save
-and close.
+* Users
+    * LDAP suffix: ``ou=Users,dc=id,dc=mousepawmedia,dc=com``
+    * List attributes: ``#uid;#cn;#mail;#uidNumber;#gidNumber``
+* Groups
+    * LDAP suffix: ``ou=Groups,dc=id,dc=mousepawmedia,dc=com``
+    * List attributes: ``#cn;#gidNumber;#memberUID;#description``
 
-Next, run...
+Go to the Modules tab. For Users, select these modules:
 
-..  code-block:: bash
+* Personal (inetOrgPerson)(*)
+* Unix (posixAccount)
+* Shadow (shadowAccount)
 
-    $ sudo vim /etc/passwd
+For Groups, select these modules:
 
-Find the line for ``git`` and set (or change) the last field to ``/bin/sh``.
-Save and close.
+* Unix (posixGroup)(*)
 
-Let's also add the ``git`` user to our ``phab`` group, so it can write to logfile
-locations.
+On the Module settings, you can hide some options. Customize this as you like.
 
-..  code-block:: bash
+Then, click ``Save``.
 
-    $ sudo usermod -a -G phab git
+Login on the main page with the ``admin`` LDAP account.
 
-Now let's configure the ports and SSH settings.
+Click the Groups tab and create the groups you want. Here are ours:
 
-..  code-block:: bash
+* user
+* admin
+* alumni
+* community
+* contentdev
+* designproduction
+* former
+* hiring
+* management
+* masscomm
+* programming
+* repomaster
+* staff
 
-    $ /opt/phab/phabricator/bin/config set diffusion.ssh-port 2222
-    $ sudo ufw allow 2222
+The ``user`` group will be the base group for everyone, while the others will
+be used by other applications for permissions and group membership.
 
-Now we need to copy the SSH hook script to our scripts directory. We will
-need to create a special subdirectory that is owned by root and has permissions
-``755``, otherwise it won't start.
+Go to ``Tools`` and ``Profile editor``. Modify the default ``Users`` group
+to have the following defaults:
 
-..  code-block:: bash
-
-    $ sudo cp /opt/phab/phabricator/resources/sshd/phabricator-ssh-hook.sh /opt/scripts/sys/phabricator-ssh-hook
-    $ sudo chmod 755 /opt/scripts/sys/phabricator-ssh-hook
-    $ sudo vim /opt/scripts/sys/phabricator-ssh-hook
-
-Edit that file so it matches the following...
-
-..  code-block:: bash
-
-    #!/bin/sh
-
-    # NOTE: Replace this with the username that you expect users to connect with.
-    VCSUSER="git"
-
-    # NOTE: Replace this with the path to your Phabricator directory.
-    ROOT="/opt/phab/phabricator"
-
-    if [ "$1" != "$VCSUSER" ];
-    then
-    exit 1
-    fi
-
-    exec "$ROOT/bin/ssh-auth" $@
-
-Save and close. Now we need to set up SSHD's configuration.
-
-..  code-block:: bash
-
-    $ sudo cp /opt/phab/phabricator/resources/sshd/sshd_config.phabricator.example /etc/ssh/sshd_config.phabricator
-    $ sudo vim /etc/ssh/sshd_config.phabricator
-
-In that file, set the following lines:
-
-..  code-block:: text
-
-    AuthorizedKeysCommand /opt/scripts/sys/phabricator-ssh-hook
-    AuthorizedKeysCommandUser git
-    AllowUsers git
-
-    # You may need to tweak these options, but mostly they just turn off everything
-    # dangerous.
-
-    Port 2222
-
-Save and close.
-
-Now we try running SSHD in debug mode first.
-
-..  code-block:: bash
-
-    $ sudo /usr/sbin/sshd -d -d -d -f /etc/ssh/sshd_config.phabricator
-
-Make sure you've added your SSH public key to your Phabricator profile. Then,
-on the guest computer you use for SSH, run...
-
-..  code-block:: bash
-
-    echo {} | ssh git@phab.mousepawmedia.com -p 2222 conduit conduit.ping
-
-After all is said and done, it should print out something like
-``{"result":"mpmdev","error_code":null,"error_info":null}``.
-
-..  note:: If it gives the message "Could not chdir to home directory
-    /home/git: No such file or directory", that means you didn't create
-    the ``git`` user with a home directory. If that's the case, you can add
-    one by running ``$ sudo mkhomedir_helper git`` (on the server).
-
-Once you're assured of this working, run...
-
-..  code-block:: bash
-
-    $ sudo /usr/sbin/sshd -f /etc/ssh/sshd_config.phabricator
-
-Double-check functionality by re-running the earlier command on the
-computer you SSH from. Run this two or three times to be certain.
-
-..  code-block:: bash
-
-    echo {} | ssh git@phabricator.mousepawmedia.net -p 2222 conduit conduit.ping
-
-If it works, then all's well! Add the sshd start command to the system cron.
-
-..  code-block:: bash
-
-    $ sudo crontab -e
-
-On that file, add the line:
-
-..  code-block:: text
-
-    @reboot /usr/sbin/sshd -f /etc/ssh/sshd_config.phabricator
-
-Save and close.
+* Profile name: ``default``
+* RDN identifier: ``uid``
+* Primary group: ``user``
+* Password warning: (empty)
+* Password expiration: (empty)
+* Minimum password age: (empty)
+* Maximum password age: (empty)
+
+Save the profile.
+
+Now click ``Users`` and create the user accounts, with the following
+fields at minimum. (Notes about the fields are in parentheses below.)
+
+* RDN identifier: uid
+* Personal
+    * First name
+    * Last name
+    * Email address
+* Unix
+    * Username
+    * Common name (full name with middle initial)
+    * Primary group (always set to ``user``)
+    * Additional groups (set as desired for user)
+
+Now click ``Save`` and ``Edit again``. Click ``Set password`` at the top to
+set the user password.
+
+..  NOTE: If you set the RDN identifier wrong, you can use ``Tree view`` to
+    ``Rename`` from ``cn=name,ou=Users,dc=id,dc=mousepawmedia,dc=com`` to
+    ``uid=name,ou=Users,dc=id,dc=mousepawmedia,dc=com``.
