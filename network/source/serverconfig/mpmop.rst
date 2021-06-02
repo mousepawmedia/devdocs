@@ -1239,3 +1239,336 @@ set the user password.
 ..  NOTE: If you set the RDN identifier wrong, you can use ``Tree view`` to
     ``Rename`` from ``cn=name,ou=Users,dc=id,dc=mousepawmedia,dc=com`` to
     ``uid=name,ou=Users,dc=id,dc=mousepawmedia,dc=com``.
+
+Kimai
+===========================================
+
+Installing Composer
+------------------------------------
+
+First, we need to install the lastest Composer:
+
+..  code-block:: bash
+
+    $ sudo apt install php7.4-cli php7.4-intl unzip
+    $ cd /tmp
+    $ curl -sS https://getcomposer.org/installer -o composer-setup.php
+    $ HASH=`curl -sS https://composer.github.io/installer.sig`
+    $ php -r "if (hash_file('SHA384', 'composer-setup.php') === '$HASH') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+
+You should see "Installer verified". If so, we can install.
+
+..  code-block:: bash
+
+    $ sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+    $ composer
+
+If that works (displaying a help menu), we can move on to installing Kimai.
+
+`SOURCE: How to Install Composer on Ubuntu 20.04 (DigitalOcean) <https://www.digitalocean.com/community/tutorials/how-to-install-composer-on-ubuntu-20-04-quickstart>`_
+
+Installing Kimai
+------------------------------------
+
+Next, in MyPHPAdmin, create a user and a database called ``kimai2``. You'll
+need the password for that user shortly.
+
+In my case, I'm importing from a prior Kimai2 database:
+
+..  code-block:: bash
+
+    gunzip -c /home/mpm/IMPORTED/backup.sql.gz | sudo mysql -u root
+
+Now I create the ``kimai2`` user and grant its permissions.
+
+..  code-block:: bash
+
+    $ sudo mysql -u root
+
+Run the following:
+
+..  code-block:: mysql
+
+    CREATE USER 'kimai2'@'localhost' IDENTIFIED BY 'some_password';
+    GRANT ALL PRIVILEGES ON `kimai2`.* TO 'kimai2'@'localhost' WITH GRANT OPTION;
+    \q
+
+We install Kimai like this:
+
+..  code-block:: bash
+
+    $ cd /tmp
+    $ git clone -b 1.13 --depth 1 https://github.com/kevinpapst/kimai2.git
+    $ sudo mv kimai2 /opt/time
+    $ cd /opt/time/
+    $ composer install --no-dev --optimize-autoloader
+    $ vim .env
+
+Now edit that file so it contains something like the following, changing the
+values ``CHANGE_ME`` (two places below) as appropriate.
+
+..  code-block:: env
+
+    # This file is a "template" of which env vars need to be defined for your application
+    # Copy this file to .env file for development, create environment variables when deploying to production
+    # https://symfony.com/doc/current/best_practices/configuration.html#infrastructure-related-configuration
+
+    ###> symfony/framework-bundle ###
+    APP_ENV=prod
+    APP_SECRET=CHANGE_ME
+    #TRUSTED_PROXIES=127.0.0.1,127.0.0.2
+    #TRUSTED_HOSTS=localhost,example.com
+    ###< symfony/framework-bundle ###
+
+    ###> doctrine/doctrine-bundle ###
+    # Format described at http://docs.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/configuration.html#connecting-using-a-url
+    # For a MySQL database, use: "mysql://db_user:db_password@127.0.0.1:3306/db_name?serverVersion=10.2.12&charset=utf8"
+    # For a MariaDB database, use: "mysql://db_user:db_password@127.0.0.1:3306/db_name?serverVersion=mariadb-10.2.12"
+    # For an SQLite database, use: "sqlite:///%kernel.project_dir%/var/data/kimai.sqlite"
+    # IMPORTANT: You MUST configure your server version, either here or in config/packages/doctrine.yaml
+    DATABASE_URL=mysql://kimai2:CHANGE_ME@127.0.0.1:3306/kimai2
+    #DATABASE_URL=sqlite:///%kernel.project_dir%/var/data/kimai.sqlite
+    ###< doctrine/doctrine-bundle ###
+
+    ###> nelmio/cors-bundle ###
+    CORS_ALLOW_ORIGIN=^https?://localhost(:[0-9]+)?$
+    ###< nelmio/cors-bundle ###
+
+    ### Email configuration
+    # SMTP: smtp://localhost:25?encryption=&auth_mode=
+    # Google: gmail://username:password@default
+    # Amazon: ses://ACCESS_KEY:SECRET_KEY@default?region=eu-west-1
+    # Mailchimp: mandrill://KEY@default
+    # Mailgun: mailgun://KEY:DOMAIN@default
+    # Postmark: postmark://ID@default
+    # Sendgrid: sendgrid://KEY@default
+    # Disable emails: null://null
+    MAILER_URL=null://null
+    MAILER_FROM=eco@mousepawmedia.com
+
+Save and close, and then run the following:
+
+..  code-block:: bash
+
+    $ bin/console kimai:install -n
+    $ sudo chown -R mpm:www-data /opt/time
+    $ chmod -R g+r /opt/time
+    $ chmod -R g+rw /opt/time/var/
+    $ chmod -R g+rw /opt/time/public/avatars/
+
+Kimai itself is now installed.
+
+`SOURCE: Installation (Kimai Docs) <https://www.kimai.org/documentation/installation.html>`_
+
+Setting Up Apache2 for Kimai
+------------------------------------
+
+To setup Apache, first follow the instructions earlier for adding a new
+domain name and Let's Encrypt certificate. Then add or modify the following
+file:
+
+..  code-block:: bash
+
+    $ sudo vim /etc/apache2/sites-available/time.conf
+
+Set the contents of that file to:
+
+..  code-block:: apache
+
+    <IfModule mod_ssl.c>
+        <VirtualHost time.mousepawmedia.com:443>
+            ServerName time.mousepawmedia.com
+            DocumentRoot /opt/time/public
+
+            SSLEngine on
+            SSLCertificateFile /etc/letsencrypt/live/time.mousepawmedia.com/fullchain.pem
+            SSLCertificateKeyFile /etc/letsencrypt/live/time.mousepawmedia.com/privkey.pem
+            Include /etc/letsencrypt/options-ssl-apache.conf
+            Header always set Strict-Transport-Security "max-age=31536000"
+            Header always set Content-Security-Policy upgrade-insecure-requests
+
+            ErrorLog ${APACHE_LOG_DIR}/error.log
+            CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+            <Directory /opt/time/public>
+                Options +FollowSymLinks
+                AllowOverride All
+
+                <IfModule mod_dave.c>
+                    Dav off
+                </IfModule>
+
+                Require all granted
+
+                FallbackResource /index.php
+            </Directory>
+
+            <Directory /opt/time>
+                Options FollowSymLinks
+            </Directory>
+
+            <Directory /opt/time/public/bundles>
+                FallbackResource disabled
+            </Directory>
+
+            BrowserMatch "MSIE [2-6]" \
+            nokeepalive ssl-unclean-shutdown \
+            downgrade-1.0 force-response-1.0
+            # MSIE 7 and newer should be able to use keepalive
+            BrowserMatch "MSIE [17-9]" ssl-unclean-shutdown
+        </VirtualHost>
+    </IfModule>
+
+Save and close, and then run this:
+
+..  code-block:: bash
+
+    $ sudo vim /etc/apache2/apache2.conf
+
+Add the following section:
+
+..  code-block:: apache
+
+    <Directory /opt/time>
+        Options FollowSymLinks
+    </Directory>
+
+    <Directory /opt/time/public>
+        Options FollowSymLinks
+        AllowOverride All
+        Require all granted
+    </Directory>
+
+Save and close, and then enable the site and restart Apache2:
+
+..  code-block:: bash
+
+    $ sudo a2ensite time
+    $ sudo systemctl restart apache2
+
+Now go to ``https://time.<serveraddress>`` and verify that everything works so far.
+
+`SOURCE: Webserver configuration (Kimai Docs) <https://www.kimai.org/documentation/webserver-configuration.html#apache>`_
+
+Reload/Repair Script
+--------------------------------------------
+
+Kimai is particularly vulnerable to getting its permissions messed up.
+This script will (usually hopefully) fix that:
+
+..  code-block:: bash
+
+    $ vim /opt/time/cache.sh
+
+Set the contents of that file to this:
+
+..  code-block:: bash
+
+    #!/bin/bash
+
+    cd /opt/time
+
+    sudo chown -R mpm:www-data .
+    chmod -R g+r .
+    chmod -R 775 var/
+    chmod -R g+rw public/avatars/
+
+    if [[ ! -d "var/" || ! -d "var/cache/prod/" ]];
+    then
+    echo "Cache directory does not exist at: var/cache/prod/"
+    exit 1
+    fi
+
+    if [[ ! -f "bin/console" ]];
+    then
+    echo "Kimai console does not exist at: bin/console"
+    exit 1
+    fi
+
+    sudo rm -rf var/cache/prod/*
+    sudo -u www-data bin/console kimai:reload --env=prod
+    sudo chown -R mpm:www-data .
+    chmod -R g+r .
+    chmod -R 775 var/
+    chmod -R g+rw public/avatars/
+
+Save and close, and then make that script executable.
+
+..  code-block:: bash
+
+    $ chmod +x /opt/time/cache.sh
+
+Finally, run the script.
+
+..  code-block:: bash
+
+    $ /opt/time/cache.sh
+
+Kimai should be working now.
+
+LDAP for Kimai
+------------------------------------
+
+Let's set up LDAP for Kimai.
+
+..  code-block:: bash
+
+    $ cd /opt/time
+    $ composer update
+    $ composer require laminas/laminas-ldap --update-no-dev --optimize-autoloader
+    $ vim /opt/time/config/packages/local.yaml
+
+Set the contents of that file to this:
+
+..  code-block:: yaml
+
+    kimai:
+        user:
+            registration: false
+            password_reset: false
+        permissions:
+            roles:
+                ROLE_USER: ['!password_own_profile']
+                ROLE_TEAMLEAD: ['!password_own_profile']
+                ROLE_ADMIN: ['!password_own_profile']
+        ldap:
+            connection:
+                host: id.mousepawmedia.com
+                port: 389
+                useStartTls: true
+                #bindRequiresDn: true
+            user:
+                baseDn: ou=Users, dc=id, dc=mousepawmedia, dc=com
+                usernameAttribute: uid
+                filter: (&(objectClass=inetOrgPerson))
+                attributes:
+                    - { ldap_attr: "usernameAttribute", user_method: setUsername }
+                    - { ldap_attr: mail, user_method: setEmail }
+                    - { ldap_attr: cn, user_method: setAlias }
+            role:
+                baseDn: ou=Groups, dc=id, dc=mousepawmedia, dc=com
+                filter: (&(objectClass=posixGroup)(|(cn=management)(cn=admin)))
+                usernameAttribute: uid
+                userDnAttribute: memberUid
+                nameAttribute: cn
+                groups:
+                    - { ldap_value: management, role: ROLE_TEAMLEAD }
+                    - { ldap_value: admin, role: ROLE_SUPER_ADMIN }
+    security:
+        providers:
+            chain_provider:
+                chain:
+                    providers: [kimai_ldap]
+        firewalls:
+            secured_area:
+                kimai_ldap: ~
+
+Save and close. Finally, reload Kimai.
+
+..  code-block:: bash
+
+    sudo -u www-data bin/console kimai:reload --env=prod
+
+Now you should be able to browse to Kimai and log in with LDAP.
+
+`SOURCE: LDAP (Kimai Docs) <https://www.kimai.org/documentation/ldap.html>`_

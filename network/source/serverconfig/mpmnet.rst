@@ -1376,6 +1376,7 @@ Add the ``LDAP`` provider. Use the following settings:
 * Always Search: Yes
 * Username Attribute: ``uid``
 * Realname Attributes: ``cn``
+* Use TLS: ``true``
 * LDAP Version: ``3``
 
 ..  note:: If you cannot access the UI due to the LDAP server moving,
