@@ -207,9 +207,15 @@ Now we will set up our database software.
 ..  code-block:: bash
 
     $ sudo apt install mysql-server
+    $ sudo mysql_secure_installation
 
-Because MySQL uses the ``auth_socket`` authentication plugin, it is not necessary
-to set up a root password.
+Validate Password is optional; you should specify the root password
+and answer ``Y`` to the following:
+
+* Remove anonymous users?
+* Disallow root login remotely?
+* Remove test database and access to it?
+* Reload privilege tables now?
 
 PHP
 ----------------
@@ -609,7 +615,11 @@ Change the following values:
 
     dbpurgeage = 648000
 
-Save and close.
+Save and close. Run the following command to ensure there are no errors:
+
+..  code-block:: bash
+
+    $ sudo fail2ban-client -x start
 
 Finally, restart the fail2ban process.
 
@@ -1192,7 +1202,7 @@ Make these changes...
 
 - Comment out ``disable_functions``.
 - Change ``post_max_size`` to ``32M``.
-- Change ``date.timezone = `` to ``America/Los_Angeles``.
+- Change ``date.timezone = `` to ``America/Chicago``.
 - Set ``opcache.validate_timestamps`` to ``0``.
 
 Save and close, and then restart Apache:

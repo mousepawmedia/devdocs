@@ -1699,10 +1699,9 @@ account:
 
     driver = mysql
     connect = host=127.0.0.1 dbname=mailserver user=postmaster password=userpassword
-    default_pass_scheme = SHA512-CRYPT
-    password_query = \
-      SELECT username as username, password \
-      FROM mailbox WHERE username = '%u'
+    default_pass_scheme = MD5-CRYPT
+    user_query = SELECT CONCAT('/var/mail/vmail/', maildir) AS home, 1001 AS uid, 1001 AS gid, CONCAT('*:bytes=', quota) AS quota_rule FROM mailbox WHERE username = '%u' AND active='1'
+    password_query = SELECT username AS user,password FROM mailbox WHERE username = '%u' AND active='1'
 
 Save and close. Then, we'll adjust a few more permissions and edit
 the sockets configuration file.
