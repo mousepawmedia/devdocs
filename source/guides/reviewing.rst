@@ -250,7 +250,7 @@ Differential Checklist
 ==============================
 
 Every Differential Revision is expected to meet all the criteria of the
-`**Differential Checklist** <https://phabricator.mousepawmedia.net/P1>`_
+`**Differential Checklist** <https://phab.mousepawmedia.com/P1>`_
 before it can be landed.
 
 Reviewers are encouraged to help ensure compliance. It doesn't matter *who*

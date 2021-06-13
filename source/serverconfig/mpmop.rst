@@ -2015,102 +2015,16 @@ all these files.
 Collabora Office Online
 --------------------------------
 
-Make sure Docker is installed (see earlier section).
+These instructions assume you've already set up Collabora Office Online
+on its own separate cloud.
 
-Next, we'll pull in the Docker container for Collabora Office online.
+To connect Collabora Office Online to Nextcloud, go to Nextcloud.
+Click the menu, and go to :guilabel:`Apps --> Productivity`. Install the
+"Collabora Online connector". Then, go to
+:guilabel:`Admin --> Additional settings --> Collabora Online`.
 
-..  code-block:: bash
-
-    $ sudo docker pull collabora/code
-
-This download will take a while, so sit back and wait.
-
-Next, we'll deploy the docker image. Make sure you substitute your value
-in on the ``password`` option.
-
-..  code-block:: bash
-
-    $ sudo docker run -t -d -p 127.0.0.1:9980:9980 -e 'domain=nextcloud\\.mousepawmedia\\.net|ajc\\.mousepawmedia\\.net|ibp\\.mousepawmedia\\.net' -e 'username=admin' -e 'password=CollaboraPassword' --restart always --cap-add MKNOD collabora/code
-
-..  warning:: Do not run Docker containers as ``--privileged``. Ever.
-
-Next, we will set up Apache to proxy to Collabora Office.
-
-..  code-block:: bash
-
-    $ sudo a2enmod proxy proxy_wstunnel proxy_http ssl
-    $ sudo systemctl restart apache2
-    $ sudo vim /etc/apache2/sites-available/office.conf
-
-Set the contents of that file to the following...
-
-..  code-block:: apache
-
-    <VirtualHost *:443>
-        ServerName office.mousepawmedia.net:443
-
-        SSLEngine on
-        SSLCertificateFile /etc/apache2/ssl/mousepawmedia.net/fullchain.pem
-        SSLCertificateKeyFile /etc/apache2/ssl/mousepawmedia.net/privkey.pem
-        Include /etc/letsencrypt/options-ssl-apache.conf
-
-        # Encoded slashes need to be allowed
-        AllowEncodedSlashes NoDecode
-
-        # Container uses a unique non-signed certificate
-        SSLProxyEngine On
-        SSLProxyVerify None
-        SSLProxyCheckPeerCN Off
-        SSLProxyCheckPeerName Off
-
-        # keep the host
-        ProxyPreserveHost On
-
-        # static html, js, images, etc. served from loolwsd
-        # loleaflet is the client part of LibreOffice Online
-        ProxyPass           /loleaflet https://127.0.0.1:9980/loleaflet retry=0
-        ProxyPassReverse    /loleaflet https://127.0.0.1:9980/loleaflet
-
-        # WOPI discovery URL
-        ProxyPass           /hosting/discovery https://127.0.0.1:9980/hosting/discovery retry=0
-        ProxyPassReverse    /hosting/discovery https://127.0.0.1:9980/hosting/discovery
-
-        # Capabilities
-        ProxyPass           /hosting/capabilities https://127.0.0.1:9980/hosting/capabilities retry=0
-        ProxyPassReverse    /hosting/capabilities https://127.0.0.1:9980/hosting/capabilities
-
-
-        # Main websocket
-        ProxyPassMatch "/lool/(.*)/ws$" wss://127.0.0.1:9980/lool/$1/ws nocanon
-
-        # Admin Console websocket
-        ProxyPass   /lool/adminws wss://127.0.0.1:9980/lool/adminws
-
-        # Download as, Fullscreen presentation and Image upload operations
-        ProxyPass           /lool https://127.0.0.1:9980/lool
-        ProxyPassReverse    /lool https://127.0.0.1:9980/lool
-    </VirtualHost>
-
-Save and close.
-
-..  important:: The above Apache2 configuration is for `CODE 2.0 updates 2 <https://www.collaboraoffice.com/community-en/code-2-0-updates-2/>`_
-    and onward. Using the old configuration will break things.
-
-Then, enable the site and restart Apache2.
-
-..  code-block:: bash
-
-    $ sudo a2ensite office
-    $ sudo systemctl restart apache2
-
-You can see stats and admin options at ``https://office.<serveraddress>/loleaflet/dist/admin/admin.html``.
-
-Next, go to Nextcloud. Click the menu, and go to
-:guilabel:`Apps --> Productivity`. Install the "Collabora Online connector".
-Then, go to :guilabel:`Admin --> Additional settings --> Collabora Online`.
-
-Set :guilabel:`Collabora Online server` to :code:`https://office.mousepawmedia.net/`
-and click :guilabel:`Apply`.
+Set :guilabel:`Collabora Online server` to :code:`https://office.mousepawmedia.com/`
+(or whatever the url is) and click :guilabel:`Apply`.
 
 Now you can go to the Office app in Nextcloud to access Collabora Office!
 
@@ -2321,7 +2235,7 @@ following is the setting for our setup.
     of the Staff Network.
 
     The best way to get started is to follow the Staff Introduction
-    (https://mousepawmedia.com/help/guides/staff.html) and all the tutorials it
+    (https://devdocs.mousepawmedia.com) and all the tutorials it
     links to, preferably in order. (If you are already running Linux on your machine,
     you can skip that section of the Introduction.)
 

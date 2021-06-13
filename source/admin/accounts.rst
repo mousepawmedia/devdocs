@@ -94,7 +94,7 @@ Creating PawID (LDAP Account)
 -------------------------------------------
 
 To create a new LDAP account, go to the LDAP control panel on Hawksnest:
-`LDAP Account Manager <https://mousepawmedia.net/lam/>`_. Login using the
+`LDAP Account Manager <https://id.mousepawmedia.com/lam/>`_. Login using the
 LDAP management password.
 
 On the :guilabel:`Users` tab, select :guilabel:`New user`:
@@ -260,7 +260,7 @@ Employee Account Suspension
 ===========================================
 
 To lock an employee account, go to the LDAP control panel on Hawksnest:
-`LDAP Account Manager <https://mousepawmedia.net/lam/>`_. Login using the
+`LDAP Account Manager <https://id.mousepawmedia.com/lam/>`_. Login using the
 LDAP management password.
 
 On the :guilabel:`Users` tab, look for the account you want to suspend.

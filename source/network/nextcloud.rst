@@ -9,7 +9,7 @@ Login
 ==========================
 
 Nextcloud is only accessible by MousePaw Media staff. To log in, navigate to
-`<https://nextcloud.mousepawmedia.net>`_ and enter your company LDAP
+`<https://cloud.mousepawmedia.com>`_ and enter your company LDAP
 credentials.
 
 If you have difficulty logging in, contact the IT department.
@@ -715,7 +715,7 @@ From the Files application, you can create a new Etherpad by clicking the
 :guilabel:`+` icon at the top center and selecting :guilabel:`Pad`.
 
 The interface for Etherpad is the same whether accessed through Nextcloud
-or directly at `pad.mousepawmedia.net`. See :ref:`etherpad_usage` for usage
+or directly at `pad.mousepawmedia.com`. See :ref:`etherpad_usage` for usage
 instructions.
 
 ..  _nextcloud_client:
@@ -759,7 +759,7 @@ Client Setup
 Once that installs, start the :guilabel:`Nextcloud desktop sync client`
 application. The setup wizard will appear the first time.
 
-Set the server address to :code:`https://nextcloud.mousepawmedia.net` and
+Set the server address to :code:`https://cloud.mousepawmedia.com` and
 click :guilabel:`Next`. Enter your company login (LDAP) credentials and
 click :guilabel:`Next` again.
 

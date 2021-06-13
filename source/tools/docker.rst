@@ -189,11 +189,11 @@ Logging Into Registry
 ---------------------------------
 
 Once ``pass`` is configured, you can log into the MousePaw Media Registry,
-which lives at `registry.mousepawmedia.net <https://registry.mousepawmedia.net>`_
+which lives at `registry.mousepawmedia.com <https://registry.mousepawmedia.com>`_
 
 ..  code-block:: bash
 
-    docker login registry.mousepawmedia.net
+    docker login registry.mousepawmedia.com
 
 At the prompt, enter your company username and password. If login is successful,
 you will see::

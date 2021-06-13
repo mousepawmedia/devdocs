@@ -79,11 +79,11 @@ They will reassign as necessary.
 You can find both the current Team Lead and the Code Territory lists on the
 each team page.
 
-`A-Team <https://phabricator.mousepawmedia.net/project/view/35/>`_: Integration
+`A-Team <https://phab.mousepawmedia.com/project/view/35/>`_: Integration
 
-`Black Sheep Squadron <https://phabricator.mousepawmedia.net/project/view/25/>`_: Data
+`Black Sheep Squadron <https://phab.mousepawmedia.com/project/view/25/>`_: Data
 
-`Impossible Missions Force <https://phabricator.mousepawmedia.net/project/view/24/>`_: Multimedia
+`Impossible Missions Force <https://phab.mousepawmedia.com/project/view/24/>`_: Multimedia
 
 See :ref:`phab_projects_types`.
 
@@ -257,7 +257,7 @@ Step Three: Landing
 Revision Checklist
 --------------------------
 
-The `Revision Checklist (P1) <https://phabricator.mousepawmedia.net/P1>`__, which is also described below, lists the
+The `Revision Checklist (P1) <https://phab.mousepawmedia.com/P1>`__, which is also described below, lists the
 expectations for a completed Differential Revision.
 
 Before landing, each Revision should...
@@ -325,7 +325,7 @@ Our C++ projects use the Goldilocks library for testing and benchmarking.
 Our Jenkins instance is configured to use these Goldilocks tests.
 
 ..  note:: To learn more about setting up and using Goldilocks, see the
-    `PawLIB Goldilocks documentation <https://mousepawmedia.net/docs/pawlib/goldilocks/goldilocks.html>`_.
+    `PawLIB Goldilocks documentation <https://docs.mousepawmedia.com/projects/goldilocks>`_.
 
 If a build or test suite fails, Jenkins will report the failure status and
 provide a link to the full build results.

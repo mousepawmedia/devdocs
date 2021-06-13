@@ -24,7 +24,7 @@ expectations for staff at MousePaw Media. You should be familiar with
 the latest version of these policies at all times.
 
 We publish the latest version of the Employee Handbook at
-`mousepawmedia.net/eco <https://mousepawmedia.net/eco>`_. Click
+`eco.mousepawmedia.com <https://eco.mousepawmedia.com>`_. Click
 :guilabel:`Employee Handbook` to view or download.
 
 ..  important:: Download the latest copy of the Employee Handbook from
@@ -56,33 +56,22 @@ The Staff Network consists of seven major components:
 
 * Email (webmail.mousepawmedia.com or IMAP)
 
-* Kimai (kimai.mousepawmedia.net)
+* Kimai (time.mousepawmedia.com)
 
-* Phabricator (phabricator.mousepawmedia.net)
+* Phabricator (phab.mousepawmedia.com)
 
-* Nextcloud (nextcloud.mousepawmedia.net)
+* Nextcloud (cloud.mousepawmedia.com)
 
-* Jenkins (jenkins.mousepawmedia.net)
+* Jenkins (ci.mousepawmedia.com)
 
-* Etherpad (pad.mousepawmedia.net)
+* Etherpad (pad.mousepawmedia.com)
 
 * LimeSurvey (survey.mousepawmedia.com)
 
 We also use Skype for regular communication.
 
-Our network is spread across two servers.
-
-- **Webster** is the public server hosting ``mousepawmedia.com``,
-  ``mousepawgames.com``, and our email servers. It is based out of
-  Fremont, CA.
-
-- **Hawksnest** is our in-house development server. It hosts DevNet, our
-  collection of development tools. Anything with a ``mousepawmedia.net``
-  address lives on Hawksnest.
-
 Visit **staff.mousepawmedia.com** for our main staff portal, with links to
-DevNet, Roundcube, and LimeSurvey. This page also displays the present status
-of the DevNet (Hawksnest) server. The DevNet landing has links to everything else.
+everything else.
 
 .. _gstaff_network_email:
 
@@ -97,7 +86,7 @@ a company email address issued to you.
 ..  warning:: Be sure to check your company email every single day, and
     respond in a timely fashion!
 
-You can check your email through the Roundcube or Rainloop web clients.
+You can check your email through the Roundcube or Nextcloud web clients.
 This is useful if you don't want to configure an external client, or need
 to check your email without access to your usual device.
 
@@ -130,22 +119,20 @@ That's all! Now you can begin browsing your email.
 
 ..  important:: Access your company email through the Roundcube client.
 
-.. _gstaff_network_email_rainloop:
+.. _gstaff_network_email_nextcloud:
 
-Rainloop
+Nextcloud
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-If you find yourself using Nextcloud a lot, you may prefer to use the
-integrated Rainloop client.
+If you find yourself using Nextcloud a lot, you may prefer to use that as
+your email client.
 
-1.  Go to nextcloud.mousepawmedia.net. Sign in using your company username
+1.  Go to cloud.mousepawmedia.com. Sign in using your company username
     and password. Click the Email icon on the top toolbar.
 
-2. Login using your company email and password.
-
-3.  Set up your signature. Click the silhouette icon in the upper-right
-    corner, and select Settings. In the middle, click on your email
-    address next to :guilabel:`Identity`. Enter your signature.
+2.  Set up your signature. Click the three dots next to your email account
+    name and click :guilabel:`Account Settings`. Under Signature, enter
+    your signature.
 
     Here's the example signature:
 
@@ -157,9 +144,11 @@ integrated Rainloop client.
         Visit Us Online: MousePawMedia.com
         Twitter: @mousepawmedia
 
-4. Click :guilabel:`Update`.
+3. Click :guilabel:`Save Signature`.
 
-..  important:: Access your company email through the Rainloop client.
+4. Adjust other settings as you see fit.
+
+..  important:: Access your company email through the Nextcloud client.
 
 .. _gstaff_network_email_imap:
 
@@ -240,10 +229,10 @@ Kimai is where we track time. You are responsible for reporting your time
 at 10 am.
 
 ..  warning:: If you forget to log your time, you will NOT be reminded.
-    Contact ``eco@mousepawmedia.net`` if you forget, and report your time
+    Contact ``eco@mousepawmedia.com`` if you forget, and report your time
     that way.
 
-To log your time, go to ``https://time.mousepawmedia.net``. Login using your
+To log your time, go to ``https://time.mousepawmedia.com``. Login using your
 company username and password.
 
 You will be on the :guilabel:`My times` section by default.
@@ -559,14 +548,14 @@ Next Steps
 Previous MousePaw Media graduates have written up some tips for new interns!
 You can read those on the Phabricator Phriction wiki at the link below:
 
-..  important:: Read `Internship Tips <https://phabricator.mousepawmedia.net/w/resources/internship_tips/>`_
+..  important:: Read `Internship Tips <https://phab.mousepawmedia.com/w/resources/internship_tips/>`_
 
 You can learn more about the different parts of the Staff Network in the
 other sections of this documentation.
 
 If you're an intern, you can find a list of all your assignments on
 the appropriate Internship Checklist at the bottom of the
-`Assignments Phriction page <https://phabricator.mousepawmedia.net/w/assignments/>`_.
+`Assignments Phriction page <https://phab.mousepawmedia.com/w/assignments/>`_.
 
 Programmers should check out these sections next:
 

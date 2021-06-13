@@ -186,6 +186,6 @@ To make the most of your next pair programming session, I recommend reading
 `7 Ways To Get The Most Out Of Pair Programming <https://dev.to/jacobherrington/7-ways-to-get-the-most-out-of-pair-programming-415h>`_
 
 Staff can check the current MousePaw Media Pair Programming schedule
-on the `Pair Programming Schedule wiki page <https://phabricator.mousepawmedia.net/w/programming/pair_schedule/>`_.
+on the `Pair Programming Schedule wiki page <https://phab.mousepawmedia.com/w/programming/pair_schedule/>`_.
 
 Happy collaborating!

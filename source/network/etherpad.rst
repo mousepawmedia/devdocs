@@ -25,7 +25,7 @@ Creating and Opening Pads
 ==============================
 
 To create a new Etherpad (outside of Nextcloud), or to open an existing pad,
-go to ``pad.mousepawmedia.net``. Enter the name of pad you wish to create
+go to ``pad.mousepawmedia.com``. Enter the name of pad you wish to create
 or open, and click :guilabel:`OK`.
 
 ..  _etherpad_deleting:

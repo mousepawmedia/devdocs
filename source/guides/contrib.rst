@@ -15,12 +15,12 @@ Phabricator
 -------------------------------
 
 Nearly all of our development work takes place on **DevNet Phabricator**,
-located at `phabricator.mousepawmedia.net <https://phabricator.mousepawmedia.net>`_.
+located at `phab.mousepawmedia.com <https://phab.mousepawmedia.com>`_.
 
 1. Log into your `GitHub <https://github.com/>`_ account. If you haven't
    already created a GitHub account, do that now.
 
-2. Go to `phabricator.mousepawmedia.net <https://phabricator.mousepawmedia.net>`_
+2. Go to `phab.mousepawmedia.com <https://phab.mousepawmedia.com>`_
    and click the :guilabel:`Log In or Register (GitHub)` button towards the
    bottom of the screen.
 
@@ -61,12 +61,8 @@ located at `phabricator.mousepawmedia.net <https://phabricator.mousepawmedia.net
    :guilabel:`Manage`. Click :guilabel:`Edit Profile` at right and fill out
    your user profile.
 
-That's it! You're now set up to use DevNet Phabricator! For complete
+That's it! You're now set up to use Phabricator! For complete
 instructions on using Phabricator, see :ref:`phab`.
-
-..  warning:: DevNet (anything at ``mousepawmedia.net``) is only online from
-    6:00am until 10:00pm Pacific time, seven days a week. You can see the
-    current status at `mousepawmedia.com/devnet <https://mousepawmedia.com/devnet>`_
 
 Development Environment
 ===============================

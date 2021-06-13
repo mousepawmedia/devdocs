@@ -132,7 +132,7 @@ For the complete list of libraries and their versions, see the
 Building libdeps
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Clone `libdeps <https://phabricator.mousepawmedia.net/source/libdeps/>`_ into
+Clone `libdeps <https://phab.mousepawmedia.com/source/libdeps/>`_ into
 your repositories folder. For best results, all MousePaw Media repositories you
 clone should be in the same directory. Then run...
 
@@ -195,7 +195,7 @@ PawLIB
 Most of our repositories rely on PawLIB, which contains many common, helpful
 utilities and features.
 
-Clone `pawlib <https://phabricator.mousepawmedia.net/source/pawlib/>`_
+Clone `pawlib <https://phab.mousepawmedia.com/source/pawlib/>`_
 into your repositories folder. For best results, all MousePaw Media repositories
 you clone should be in the same directory.
 

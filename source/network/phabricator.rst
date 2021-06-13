@@ -59,8 +59,8 @@ unique ID, such as "D123" (Differential Revision 123) or "T50"
 (*Maniphest* Task 50).
 
 This structure makes URLs very easy to guess in Phabricator. The page for the
-Maniphest application would be :code:`https://phabricator.mousepawmedia.net/maniphest`.
-Meanwhile, the page for task 50 (T50) would be :code:`https://phabricator.mousepawmedia.net/T50`.
+Maniphest application would be :code:`https://phab.mousepawmedia.com/maniphest`.
+Meanwhile, the page for task 50 (T50) would be :code:`https://phab.mousepawmedia.com/T50`.
 
 .. _phab_toolbar:
 
@@ -221,7 +221,7 @@ button (the smirking face on the comment box toolbar) and fill out the form.
     have text on them start with an underscore and a colon (:code:`_:`).
 
 If you want to browse through all of our available Macros, see the
-`Macro <https://phabricator.mousepawmedia.net/macro>`_ application.
+`Macro <https://phab.mousepawmedia.com/macro>`_ application.
 
 .. _phab_subscribing:
 
@@ -255,7 +255,7 @@ can select a flag color, and even include a note to yourself.
 To flag an object, click the :guilabel:`Flag For Later` button on the object
 page. It's usually near the top right.
 
-The `Flags <https://phabricator.mousepawmedia.net/flag>`_ application stores
+The `Flags <https://phab.mousepawmedia.com/flag>`_ application stores
 all of your flags, so you can browse and manage them later.
 
 .. _phab_tokens:
@@ -268,7 +268,7 @@ Tokens
 to the object.
 
 You can also see the token rankings on the
-`Tokens <https://phabricator.mousepawmedia.net/token>`_ application.
+`Tokens <https://phab.mousepawmedia.com/token>`_ application.
 
 .. _phab_projects:
 
@@ -280,7 +280,7 @@ other objects. A single project typically has a description and, in many cases,
 a Kanban-style "Workboard". It may also include one or more **Subprojects**.
 
 You can browse and manage projects from the
-`Projects <https://phabricator.mousepawmedia.net/project>`_ application.
+`Projects <https://phab.mousepawmedia.com/project>`_ application.
 
 .. _phab_projects_types:
 
@@ -640,7 +640,7 @@ Calendar
 ..  note:: The Calendar tool is only accessible to staff.
 
 Meetings, events, vacations, and deadlines are posted on the
-`Calendar <https://phabricator.mousepawmedia.net/calendar>`_ application.
+`Calendar <https://phab.mousepawmedia.com/calendar>`_ application.
 Events you are invited to are shown in green.
 
 Events will automatically send email reminders 15 minutes before.
@@ -733,7 +733,7 @@ Jitsi Room Reservations
 -----------------------------------
 
 The ``Jitsi Room Reservation [Control]`` tag page
-`here <https://phabricator.mousepawmedia.net/project/view/116/>`_ provides
+`here <https://phab.mousepawmedia.com/project/view/116/>`_ provides
 shortcuts to view and create reservations for the Jitsi meeting rooms, as
 well as to join the room itself. Simply select an action from the menu to the
 left of that page.

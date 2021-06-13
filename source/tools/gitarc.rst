@@ -266,7 +266,7 @@ For example, to check out the PawLIB repository with SSH, use...
 
 ..  code-block:: bash
 
-    $ git clone ssh://git@phabricator.mousepawmedia.net:2222/diffusion/P/pawlib-git.git
+    $ git clone ssh://git@phab.mousepawmedia.com:2222/diffusion/P/pawlib-git.git
 
 Switching Between SSH and VCS
 ----------------------------------
@@ -297,7 +297,7 @@ the following...
 
     $ arc install-certificate
 
-Go to `this link <https://phabricator.mousepawmedia.net/conduit/login/>`_ and sign
+Go to `this link <https://phab.mousepawmedia.com/conduit/login/>`_ and sign
 in if necessary. You'll receive a validation code. Copy and paste
 (:kbd:`Ctrl+Shift+V`) the validation code into the terminal when prompted.
 

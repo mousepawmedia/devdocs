@@ -1145,7 +1145,7 @@ Copy and paste the following into that file.
 
     <IfModule mod_ssl.c>
         <VirtualHost *:443>
-                ServerName phabricator.mousepawmedia.net
+                ServerName phab.mousepawmedia.com
                 ServerAdmin developers@mousepawmedia.com
 
                 DocumentRoot /opt/phab/phabricator/webroot
@@ -1757,7 +1757,7 @@ computer you SSH from. Run this two or three times to be certain.
 
 ..  code-block:: bash
 
-    echo {} | ssh git@phabricator.mousepawmedia.net -p 2222 conduit conduit.ping
+    echo {} | ssh git@phab.mousepawmedia.com -p 2222 conduit conduit.ping
 
 If it works, then all's well! Add the sshd start command to the system cron.
 

@@ -113,5 +113,5 @@ preferences.
 
 If you're not sure how to get started, you can use Jason C. McDonald's default
 settings, which can be found on
-`Phabricator P37 <https://phabricator.mousepawmedia.net/P37>`_. Just remove
+`Phabricator P37 <https://phab.mousepawmedia.com/P37>`_. Just remove
 the settings for any extensions you don't use.

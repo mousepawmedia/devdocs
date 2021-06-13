@@ -105,17 +105,6 @@ Most of our projects have a "build" job. These are all configured to work
 directly with Phabricator Revisions and Commits, and to run Goldilocks tests
 on demand (if the code supports them).
 
-.. _harbormasterjenkins_jenkins_buildtypes_doc:
-
-Docs
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Aside from code builds, Jenkins also rebuilds our live Sphinx documentation. As
-soon as a change is made to any documentation files on a repository's ``devel``
-branch, Jenkins rebuilds the documentation and publishes it to
-`mousepawmedia.net/docs <https://www.mousepawmedia.net/docs>`_ or
-`mousepawmedia.net/help <https://www.mousepawmedia.net/help>`_, as appropriate.
-
 .. _harbormasterjenkins_jenkins_technical:
 
 Technical Details
