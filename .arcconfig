@@ -1,4 +1,4 @@
 {
-	"phabricator.uri" : "https://phabricator.mousepawmedia.net",
-	"repository.callsign" : "DOC"
+	"phabricator.uri" : "https://phab.mousepawmedia.com",
+	"repository.callsign" : "DEVDOC"
 }
