@@ -962,7 +962,7 @@ access to all databases, run the following:
 
 Run the following commands in the MySQL shell:
 
-..  code-block:: mysql
+..  code-block:: text
 
     GRANT ALL PRIVILEGES ON *.* TO 'phpmyadmin'@'localhost' WITH GRANT OPTION;
     FLUSH PRIVILEGES;
@@ -1220,7 +1220,7 @@ Phabricator databases.
 
 Run the following:
 
-..  code-block:: mysql
+..  code-block:: text
 
     CREATE USER 'phab'@'localhost' IDENTIFIED BY 'some_password';
     GRANT ALL PRIVILEGES ON `phabricator\_%`.* TO 'phab'@'localhost' WITH GRANT OPTION;
@@ -1513,7 +1513,7 @@ update our cron job.
 Modify the crontab for certbot to the following (without changing the time
 you have already specified, of course):
 
-..  code-block:: cron
+..  code-block:: text
 
     17 3 * * * /usr/bin/certbot renew --post-hook /opt/scripts/root/postrenew
 

@@ -1267,7 +1267,7 @@ We install Kimai like this:
 Now edit that file so it contains something like the following, changing the
 values ``CHANGE_ME`` (two places below) as appropriate.
 
-..  code-block:: env
+..  code-block:: text
 
     # This file is a "template" of which env vars need to be defined for your application
     # Copy this file to .env file for development, create environment variables when deploying to production

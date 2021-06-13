@@ -1189,7 +1189,7 @@ password.
     $ mysqladmin -u root -p create mailserver
     $ mysql -u root -p mailserver
 
-..  code-block:: sql
+..  code-block:: text
 
     GRANT SELECT ON mailserver.* TO 'postmaster'@'localhost' IDENTIFIED BY 'password';
     FLUSH PRIVILEGES;
@@ -2829,7 +2829,7 @@ Now we need to set up the database.
 In the MySQL terminal, run the following, changing ``password`` to a new,
 secure password.
 
-..  code-block:: mysql
+..  code-block:: text
 
     CREATE DATABASE roundcubemail /*!40101 CHARACTER SET utf8 COLLATE utf8_general_ci */;
     CREATE USER 'roundcube'@'localhost' IDENTIFIED BY 'password';

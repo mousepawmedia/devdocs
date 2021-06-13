@@ -4,6 +4,3 @@
 
 # Required
 version: 2
-
-sphinx:
-   configuration: network/conf.py

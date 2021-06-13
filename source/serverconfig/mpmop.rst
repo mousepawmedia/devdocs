@@ -958,7 +958,7 @@ access to all databases, run the following:
 
 Run the following commands in the MySQL shell:
 
-..  code-block:: mysql
+..  code-block:: text
 
     GRANT ALL PRIVILEGES ON *.* TO 'phpmyadmin'@'localhost' WITH GRANT OPTION;
     FLUSH PRIVILEGES;
@@ -1077,7 +1077,7 @@ update our cron job.
 Modify the crontab for certbot to the following (without changing the time
 you have already specified, of course):
 
-..  code-block:: cron
+..  code-block:: text
 
     17 3 * * * /usr/bin/certbot renew --post-hook /opt/scripts/root/postrenew
 
@@ -1261,7 +1261,7 @@ Static Websites
     $ sudo mkdir /opt/html
     $ sudo chown www-data:www-data /opt/html
     $ cd /opt/html
-    
+
 
 Kimai
 ===========================================
@@ -1310,7 +1310,7 @@ Now I create the ``kimai2`` user and grant its permissions.
 
 Run the following:
 
-..  code-block:: mysql
+..  code-block:: text
 
     CREATE USER 'kimai2'@'localhost' IDENTIFIED BY 'some_password';
     GRANT ALL PRIVILEGES ON `kimai2`.* TO 'kimai2'@'localhost' WITH GRANT OPTION;
@@ -1330,7 +1330,7 @@ We install Kimai like this:
 Now edit that file so it contains something like the following, changing the
 values ``CHANGE_ME`` (two places below) as appropriate.
 
-..  code-block:: env
+..  code-block:: text
 
     # This file is a "template" of which env vars need to be defined for your application
     # Copy this file to .env file for development, create environment variables when deploying to production
@@ -1785,7 +1785,7 @@ We need to create a ``nextcloud`` database and a ``nextcloud`` user in MySQL.
 
 Run the following:
 
-..  code-block:: mysql
+..  code-block:: text
 
     CREATE USER 'nextcloud'@'localhost' IDENTIFIED BY 'some_password';
     CREATE DATABASE IF NOT EXISTS nextcloud CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
@@ -2215,7 +2215,7 @@ password.
 
     $ sudo mysql -u root
 
-..  code-block:: sql
+..  code-block:: text
 
     CREATE DATABASE mailserver;
     CREATE USER 'postmaster'@'localhost' IDENTIFIED BY 'some_password';
@@ -2245,7 +2245,7 @@ our tables.
     $ sudo chown -R www-data /opt/postfixadmin/templates_c
     $ sudo mysql -u root
 
-..  code-block:: sql
+..  code-block:: text
 
     CREATE USER 'postfixadmin'@'localhost' IDENTIFIED BY 'some_password';
     GRANT ALL PRIVILEGES ON `mailserver`.* TO 'postfixadmin'@'localhost';
@@ -2343,7 +2343,7 @@ When finished, save and close.
 Then grant the ``postfixadmin`` user full permissions over the ``mailserver``
 database, like this:
 
-..  code-block:: mysql
+..  code-block:: text
 
     CREATE USER 'postfixadmin'@'localhost' IDENTIFIED BY 'some_password';
     GRANT ALL PRIVILEGES ON `mailserver`.* TO 'postfixadmin'@'localhost' WITH GRANT OPTION;
@@ -4069,7 +4069,7 @@ Now we need to set up the database.
 In the MySQL terminal, run the following, changing ``password`` to a new,
 secure password.
 
-..  code-block:: mysql
+..  code-block:: text
 
     CREATE DATABASE roundcubemail /*!40101 CHARACTER SET utf8 COLLATE utf8_general_ci */;
     CREATE USER 'roundcube'@'localhost' IDENTIFIED BY 'password';
