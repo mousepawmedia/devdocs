@@ -234,7 +234,7 @@ option, and then you can start JACK with ``Start``.
 .. _avtools_audiorecorder:
 
 Audio Recorder (v3.1 or later)
-=============================
+===================================
 
 **Audio Recorder** is a simple tool for quickly recording audio directly from
 the audio output or microphone.
@@ -332,7 +332,7 @@ In many cases, LMMS works best with JACK. (See :ref:`avtools_op_ardour`)
 .. _avtools_op_obs:
 
 Open Broadcaster Software (25.x or later)
------------------------------------
+--------------------------------------------
 
 **Open Broadcaster Software [OBS]** is considered one of the best streaming
 and screen recording programs in existence. It has full support for webcams,

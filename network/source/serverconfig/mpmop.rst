@@ -1247,6 +1247,22 @@ set the user password.
     ``Rename`` from ``cn=name,ou=Users,dc=id,dc=mousepawmedia,dc=com`` to
     ``uid=name,ou=Users,dc=id,dc=mousepawmedia,dc=com``.
 
+Websites and Documentation
+============================================
+
+We host all our websites and documentation on public Git repositories. We can
+leverage these to easily publish websites and documentation.
+
+Static Websites
+------------------------------------
+
+..  code-block:: bash
+
+    $ sudo mkdir /opt/html
+    $ sudo chown www-data:www-data /opt/html
+    $ cd /opt/html
+    
+
 Kimai
 ===========================================
 
