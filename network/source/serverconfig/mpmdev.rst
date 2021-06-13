@@ -1,4 +1,4 @@
-Server Configuration: Linode
+Server Configuration: MPM Development Server
 ##############################################
 
 This documentation outlines how the Linode "Webster" server was built.

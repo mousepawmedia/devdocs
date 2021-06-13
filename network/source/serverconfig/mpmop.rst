@@ -1,7 +1,7 @@
-Server Configuration: Linode
+Server Configuration: MPM Operations Server
 ##############################################
 
-This documentation outlines how the Linode "Webster" server was built.
+This documentation outlines how the Linode "mpmop" server was built.
 
 Initial Setup
 ==============================================
