@@ -1247,21 +1247,39 @@ set the user password.
     ``Rename`` from ``cn=name,ou=Users,dc=id,dc=mousepawmedia,dc=com`` to
     ``uid=name,ou=Users,dc=id,dc=mousepawmedia,dc=com``.
 
-Websites and Documentation
+Static Websites
 ============================================
 
-We host all our websites and documentation on public Git repositories. We can
-leverage these to easily publish websites and documentation.
-
-Static Websites
-------------------------------------
+We host all our websites public Git repositories. We can leverage that to
+easily publish websites and documentation.
 
 ..  code-block:: bash
 
-    $ sudo mkdir /opt/html
-    $ sudo chown www-data:www-data /opt/html
-    $ cd /opt/html
+    $ sudo mkdir /opt/sources
+    $ sudo chown www-data:www-data /opt/sources
+    $ cd /opt/sources
+    $ sudo -u www-data git clone git://github.com/mousepawmedia/mpm-websites.git
+    $ sudo ln -sf /opt/sources/mpm-websites/mousepawmedia.com /opt/mpm
+    $ sudo chown www-data:www-data /opt/mpm
+    $ sudo ln -sf /opt/sources/mpm-websites/mousepawmedia.com /opt/mpg
+    $ sudo chown www-data:www-data /opt/mpg
+    $ sudo ln -sf /opt/sources/mpm-websites/eco.mousepawmedia.com /opt/eco
+    $ sudo chown www-data:www-data /opt/eco
+    $ sudo ln -sf /opt/sources/mpm-websites/id.mousepawmedia.com /opt/id
+    $ sudo chown www-data:www-data /opt/id
+    $ sudo a2enmod rewrite include
+    $ sudo vim /etc/apache2/apache2.conf
 
+Add the following:
+
+..  code-block:: apache
+
+    <Directory /opt/sources/>
+        Options FollowSymLinks
+        Require all granted
+    </Directory>
+
+Save and close.
 
 Kimai
 ===========================================
