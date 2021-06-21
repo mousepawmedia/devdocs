@@ -4422,6 +4422,7 @@ Now adjust the configuration of Synapse:
 
 ..  code-block::  bash
 
+    sudo vim /etc/matrix-synapse/homeserver.yaml
 
 Edit the following sections:
 
@@ -4430,6 +4431,7 @@ Edit the following sections:
     password_providers:
       - module: "rest_auth_provider.RestAuthProvider"
         config:
+          enabled: true
           endpoint: "http://localhost:8090"
 
 `SOURCE: ma1sd/getting-started.md <https://github.com/ma1uta/ma1sd/blob/master/docs/getting-started.md>`_
