@@ -4092,3 +4092,399 @@ That's it! You're now good to go.
 `SOURCE: Roundcube Installation (roundcube Wiki) <https://github.com/roundcube/roundcubemail/wiki/Installation#protect-your-installation>`_
 
 `SOURCE: How to Install Your Own Webmail Client with Roundcube on Ubuntu 16.04 (DigitalOcean) <https://www.digitalocean.com/community/tutorials/how-to-install-your-own-webmail-client-with-roundcube-on-ubuntu-16-04>`_
+
+Matrix Chat
+===============================
+
+Install Synapse
+-------------------------------
+
+Start by creating the certificate for the chat domain. You need to decide
+on your domain before starting the installation of Matrix Synapse.
+
+..  code-block:: bash
+
+    $ sudo a2ensite 000-default
+    $ sudo systemctrl restart apache2
+    $ sudo certbot certonly --apache -d chat.mousepawmedia.com
+    $ sudo a2dissite 000-default
+    $ sudo systemctrl restart apache2
+
+Now you can install the needed depedencies. Many of these will probably
+already be installed, but it's good to be sure.
+
+..  code-block:: bash
+
+    $ sudo apt install build-essential python3-dev libffi-dev python3-pip python3-setuptools sqlite3 libssl-dev virtualenv libjpeg-dev libxslt1-dev lsb-release wget apt-transport-https
+
+We also need PostgreSQL, as Synapse isn't meant to work with MySQL. It is okay
+to have both databases installed on the same machine.
+
+..  code-block:: bash
+
+    $ sudo apt install postgresql postgresql-contrib
+    $ sudo -i -u postgres
+    $ psql
+    CREATE USER "matrix-synapse" WITH PASSWORD 'YOURPASSWORDHERE';
+    CREATE DATABASE synapse ENCODING 'UTF8' LC_COLLATE='C' LC_CTYPE='C' template=template0 OWNER "matrix-synapse";
+    \q
+    $ exit
+    $ sudo vim /etc/postgresql/12/main/pg_hba.conf
+
+In that file, add the ``# Synapse local connection`` and ``host synapse`` lines
+in the indicated position:
+
+..  code-block:: text
+
+    # Database administrative login by Unix domain socket
+    local   all             postgres                                peer
+
+    # TYPE  DATABASE        USER            ADDRESS                 METHOD
+
+    # "local" is for Unix domain socket connections only
+    local   all             all                                     peer
+    # IPv4 local connections:
+    host    all             all             127.0.0.1/32            md5
+    # Synapse local connection:
+    host    synapse         synapse_user    ::1/128                 md5
+    # IPv6 local connections:
+    host    all             all             ::1/128                 md5
+    # Allow replication connections from localhost, by a user with the
+    # replication privilege.
+    local   replication     all                                     peer
+    host    replication     all             127.0.0.1/32            md5
+    host    replication     all             ::1/128                 md5
+
+Now we install Synapse from the official Debian packages. Do *NOT* use the
+packages from the distro's default repository; they are out of date.
+
+..  code-block:: bash
+
+    $ sudo wget -O /usr/share/keyrings/matrix-org-archive-keyring.gpg https://packages.matrix.org/debian/matrix-org-archive-keyring.gpg
+    $ echo "deb [signed-by=/usr/share/keyrings/matrix-org-archive-keyring.gpg] https://packages.matrix.org/debian/ $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/matrix-org.list
+    $ sudo apt update
+    $ sudo apt install matrix-synapse-py3
+    $ sudo systemctl enable matrix-synapse
+    $ sudo systemctl start matrix-synapse
+    $ cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1
+
+Copy the random 32-character string produced from that last step, and then
+open up the following file:
+
+..  code-block:: bash
+
+    $ sudo vim /etc/matrix-synapse/homeserver.yaml
+
+Search for the key ``registration_shared_secret`` and set the value to the
+random string you copied, wrapped in double-quotes.
+
+In that file, also modify the following sections. (They aren't necessarily
+all next to each other.)
+
+..  code-block:: text
+
+    public_baseurl: https:/chat.mousepawmedia.com
+
+    database:
+        name: psycopg2
+        args:
+            user: matrix-synapse
+            password: YOURPASSWORDHERE
+            database: synapse
+            host: localhost
+            cp_min: 5
+            cp_max: 10
+
+    presence:
+        enabled: false
+
+    email:
+        smtp_host: mail.mousepawmedia.com
+        smtp_port: 587
+        smtp_user: "noreply@mousepawmedia.com"
+        smtp_pass: "PASSWORDFOREMAILACCOUNT"
+        notif_from: "MousePaw Media <noreply@mousepawmedia.com>"
+
+Save and close.
+
+..  note:: When you run into trouble, check the logs at ``/var/log/matrix-synapse/homeserver.log``.
+
+Apache2
+-------------------------------
+
+Now we need to configure Apache2 to serve necessary files and act as a
+reverse proxy for Synapse.
+
+Run the following:
+
+..  code-block:: bash
+
+    $ sudo mkdir -p /opt/chat/.well-known/matrix/
+    $ sudo chown -R www-data:www-data /opt/chat
+    $ sudo vim /opt/chat/.well-known/matrix/server
+
+Set the contents of that file to the following:
+
+..  code-block:: json
+
+    {
+        "m.server": "chat.mousepawmedia.com:443"
+    }
+
+Save and close, and then run the following:
+
+..  code-block:: bash
+
+    $ sudo vim /opt/chat/.well-known/matrix/client
+
+Set the contents of that file to the following:
+
+..  code-block:: json
+
+    {
+        "m.homeserver": {
+            "base_url": "https://chat.mousepawmedia.com"
+        },
+        "m.identity_server": {
+            "base_url": "https://chat.mousepawmedia.com"
+        }
+    }
+
+Save and close, and then run the following:
+
+..  code-block:: bash
+
+    $ sudo vim /etc/apache2/apache2.conf
+
+Add the following directory directive:
+
+..  code-block:: apache
+
+    <Directory /opt/chat/>
+        Options FollowSymLinks
+        AllowOverride all
+        Require all granted
+    </Directory>
+
+Save and close, and then run:
+
+..  code-block:: bash
+
+    $ sudo vim /etc/apache2/sites-available/chat.conf
+
+..  code-block:: apache
+
+    <VirtualHost chat.mousepawmedia.com:443>
+        ServerName chat.mousepawmedia.com
+        DocumentRoot /opt/chat
+        ServerAdmin webmaster@mousepawmedia.com
+
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+        SSLCertificateFile /etc/letsencrypt/live/chat.mousepawmedia.com/fullchain.pem
+        SSLCertificateKeyFile /etc/letsencrypt/live/chat.mousepawmedia.com/privkey.pem
+        Include /etc/letsencrypt/options-ssl-apache.conf
+
+        RequestHeader set "X-Forwarded-Proto" expr=%{REQUEST_SCHEME}
+        AllowEncodedSlashes NoDecode
+        ProxyPreserveHost on
+        ProxyPass /_matrix http://127.0.0.1:8008/_matrix nocanon
+        ProxyPassReverse /_matrix http://127.0.0.1:8008/_matrix
+        ProxyPass /_synapse/client http://127.0.0.1:8008/_synapse/client nocanon
+        ProxyPassReverse /_synapse/client http://127.0.0.1:8008/_synapse/client
+
+        <FilesMatch "\.well-known/matrix/client$">
+            <IfModule mod_headers.c>
+                Header Set Access-Control-Allow-Origin "*"
+            </IfModule>
+        </FilesMatch>
+
+        <IfModule security2_module>
+            SecRuleEngine off
+        </IfModule>
+    </VirtualHost>
+
+    <VirtualHost *:8448>
+        ServerName chat.mousepawmedia.com
+
+        SSLCertificateFile /etc/letsencrypt/live/chat.mousepawmedia.com/fullchain.pem
+        SSLCertificateKeyFile /etc/letsencrypt/live/chat.mousepawmedia.com/privkey.pem
+        Include /etc/letsencrypt/options-ssl-apache.conf
+
+        RequestHeader set "X-Forwarded-Proto" expr=%{REQUEST_SCHEME}
+        AllowEncodedSlashes NoDecode
+        ProxyPass /_matrix http://127.0.0.1:8008/_matrix nocanon
+        ProxyPassReverse /_matrix http://127.0.0.1:8008/_matrix
+
+        <IfModule security2_module>
+            SecRuleEngine off
+        </IfModule>
+    </VirtualHost>
+
+
+Save and close, and then enable the new site and the proxy mod:
+
+..  code-block:: bash
+
+    $ sudo a2ensite chat
+    $ sudo a2enmod proxy proxy_http
+    $ sudo systemctl restart apache2
+
+Go to ``https://chat.mousepawmedia.com/.well-known/matrix/server`` and
+ensure the file you created earlier in this step is appearing.
+
+Also go to ``https://chat.mousepawmedia.com/_matrix/static/`` and ensure you
+get the page that says "It works! Synapse is running."
+
+Finally, go to ``https://federationtester.matrix.org/`` and enter the
+URL to the new chat server. Ensure the reports are happy. (View the json
+report for details if necessary.)
+
+`SOURCE: synapse/INSTALL.md (Synapse) <https://github.com/matrix-org/synapse/blob/develop/INSTALL.md>`_
+`SOURCE: Matrix Synapse (NaWiki) <https://www.natrius.eu/dokuwiki/doku.php?id=digital:server:matrixsynapse>`_
+`SOURCE: How to Install Matrix Synapse on Ubuntu 16.04 (DigitalOcean) <https://www.digitalocean.com/community/tutorials/how-to-install-matrix-synapse-on-ubuntu-16-04>`_
+`SOURCE: Setting Up a Matrix Server on Ubuntu 20.04 - Part 2 (Jonathan Bossender) <https://jonathanbossenger.com/setting-up-a-matrix-server-on-ubuntu-20-04-part-2/>`_
+
+Install ma1sd
+-------------------------------
+
+We will integrate with our LDAP server using `ma1sd <https://github.com/ma1uta/ma1sd/>`_.
+Get the download link for the latest Debian package from ``https://github.com/ma1uta/ma1sd/releases/tag/2.5.0``.
+
+..  code-block:: bash
+
+    $ wget https://github.com/ma1uta/ma1sd/releases/download/2.5.0/ma1sd_2.5.0_all.deb
+    $ sudo apt install ./ma1sd_2.5.0_all.deb
+    $ sudo /opt/venvs/matrix-synapse/bin/pip install git+https://github.com/ma1uta/matrix-synapse-rest-password-provider
+
+The ``sudo pip`` here is somewhat reasonable, as it has no dependencies.
+
+Also set up the user and database for ma1sd:
+
+..  code-block:: bash
+
+    $ sudo -i -u postgres
+    $ psql
+    CREATE USER "ma1sd" WITH PASSWORD 'YOURPASSWORDHERE';
+    CREATE DATABASE ma1sd ENCODING 'UTF8' LC_COLLATE='C' LC_CTYPE='C' template=template0 OWNER "ma1sd";
+    \q
+    $ exit
+
+Now make a copy of the default configuration for ma1sd and adapt it:
+
+..  code-block:: bash
+
+    $ sudo cp /etc/ma1sd/ma1sd.example.yaml /etc/ma1sd/ma1sd.yaml
+    $ sudo vim /etc/ma1sd/ma1sd.yaml
+
+Change or add the following sections, along with anything else you need to change:
+
+..  code-block:: text
+
+    matrix:
+        domain: 'https://chat.mousepawmedia.com'
+        v1: true
+        v2: true
+
+        storage:
+            postgresql:
+                # Wrap all string values with quotes to avoid yaml parsing mistakes
+                database: '//localhost/ma1sd' # or full variant //192.168.1.100:5432/ma1sd_database
+                username: 'ma1sd'
+                password: 'YOURDATABASEPASSWORD'
+
+        dns:
+            overwrite:
+                homeserver:
+                client:
+                    - name: 'chat.mousepawmedia.com'
+                      value: 'http://localhost:8008'
+
+Save and close. Now we'll adapt Apache's configuration to work with this:
+
+..  code-block:: bash
+
+    $ sudo vim /etc/apache2/sites-available/chat.conf
+
+Add the first two lines, in this order, *before* the (existing) last line
+under the ``:443`` VirtualHost entry. Be certain of the order!
+
+..  code-block:: apache
+
+    ProxyPass /_matrix/client/r0/user_directory/ http://127.0.0.1:8090/_matrix/client/r0/user_directory/ nocanon
+    ProxyPass /_matrix/identity http://127.0.0.1:8090/_matrix/identity nocanon
+    ProxyPass /_matrix http://127.0.0.1:8008/_matrix nocanon
+
+Save and close.
+
+Now adjust the configuration of Synapse:
+
+..  code-block::  bash
+
+
+Edit the following sections:
+
+..  code-block:: yaml
+
+    password_providers:
+      - module: "rest_auth_provider.RestAuthProvider"
+        config:
+          endpoint: "http://localhost:8090"
+
+`SOURCE: ma1sd/getting-started.md <https://github.com/ma1uta/ma1sd/blob/master/docs/getting-started.md>`_
+
+Integrate ma1sd with LDAP
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Open the configuration for ma1sd like this:
+
+..  code-block:: bash
+
+    $ sudo vim /etc/ma1sd/ma1sd.yaml
+
+Find and adapt the ``ldap:`` section like this:
+
+..  code-block:: yaml
+
+    threepid:
+        medium:
+            email:
+            identity:
+                from: "noreply@mousepawmedia.com"
+
+            connectors:
+                smtp:
+                    host: "mail.mousepawmedia.com"
+                    tls: 1
+                    port: 587
+
+                    login: "noreply@mousepawmedia.com"
+                    password: "PASSWORDFOREMAILACCOUNT"
+
+    ldap:
+        enabled: true
+        activeDirectory: false
+        connection:
+            host: 'id.mousepawmedia.com'
+            port: 389
+        baseDNs:
+            - 'ou=Users, dc=id, dc=mousepawmedia, dc=com'
+        attribute:
+            uid:
+                type: 'uid' # or mxid
+                value: 'uid'
+            name: 'cn'
+            threepid:
+                email:
+                    - 'mail'
+        identity:
+            filter: '(objectClass=inetOrgPerson)'
+
+Save and close. Now we start ma1sp.
+
+..  code-block:: bash
+
+    $ sudo systemctl start ma1sd
+
+`SOURCE: ma1sd/ldap.md <https://github.com/ma1uta/ma1sd/blob/master/docs/stores/ldap.md>`_
