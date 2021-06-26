@@ -1,6 +1,6 @@
 .. _irc:
 
-Freenode IRC
+Libera.Chat IRC
 ################################
 
 IRC (Instant Relay Chat) is one of the oldest means of internet communication.
@@ -8,16 +8,12 @@ It is still widely used by programmers and ITs, especially because it lends
 itself to "lurking": passively being in the room, occasionally glancing over to
 see what's going on, and sometimes speaking up when the inclination strikes you.
 You'd be amazed how much you can absorb from just from lurking in various
-rooms (such as `#python`), not only about the language or technology in
+rooms (such as ``#python``), not only about the language or technology in
 question, but about programming in general!
 
 IRC is one of the oldest and most widely used means of synchronous
-communication among programmers. Most open-source organizations maintain
-an IRC channel, including `#ubuntu`, `#synfig`, `#opus`, `#blender`, and so
-forth. Of course, `#python` lives on that network too.
-
-..  warning:: The `##c++` channel is infamously unfriendly. Avoid it. We're trying
-    to start the ##c++-friendly room, so please consider lurking there.
+communication among programmers. Many open-source organizations maintain
+an IRC channel, including ``#ubuntu`` and ``#python``.
 
 .. _irc_setup:
 
@@ -60,16 +56,18 @@ Choosing Your Network
 
 When you first start HexChat, it will bring up the Network List.
 
-1)  Choose a Nick name. Freenode is HUGE, so many common names are taken, but
+1)  Choose a Nick name. Libera.Chat is HUGE, so many common names are taken, but
     you can frequently think up a good nick. Put it in for
     :guilabel:`Nick name` and :guilabel:`User name`.
 
-2)  Under :guilabel:`Networks`, scroll down to `Ubuntu Servers (freenode)`
-    (it's under "f"). Click :guilabel:`Edit...`
+2)  Under :guilabel:`Networks`, scroll down to `Libera.Chat`. If you can't
+    find it, :guilabel:`Add` a new network. Click :guilabel:`Edit...`
 
-3)  Check :guilabel:`Connect to this network automatically`.
+3)  Make sure the servers point to ``irc.libera.chat/6697``, and that you've
+    checked :guilabel:`Use SSL for all the servers on this network`.
+    Also check :guilabel:`Connect to this network automatically`.
 
-4)  Under :guilabel:`Login method:`, select `Server Password (/PASS password)`.
+4)  Under :guilabel:`Login method:`, select `SASL (username + password)`.
 
 5)  Under :guilabel:`Password`, come up with a good password. Bear in mind that
     you may need to type it in plain text on occasion, so it shouldn't be
@@ -83,16 +81,16 @@ When you first start HexChat, it will bring up the Network List.
 
 ..  important:: If you come back to this dialog box later, you do NOT need to
     click :guilabel:`Connect` again. Instead, if you're already connected to
-    Freenode, just click :guilabel:`Close`.
+    Libera.Chat, just click :guilabel:`Close`.
 
 .. _irc_setup_register_nick:
 
 Registering Your Nick
 -----------------------------
 
-The first time (and ONLY the first time) you connect to Freenode, you must
-register your nickname. Go to the default "channel" marked `freenode`, which is
-where you'll type the following commands as needed.
+The first time (and ONLY the first time) you connect to Libera.Chat, you must
+register your nickname. Go to the default "channel" marked `Libera.Chat`,
+which is where you'll type the following commands as needed.
 
 ..  warning:: This is your personal account. DO NOT use your company email
     for the email address!
@@ -100,7 +98,9 @@ where you'll type the following commands as needed.
 If you see a message that says "This nickname is registered. Please choose a
 different nickname...", your chosen nickname is not available. To try another
 nickname, type the following, where `NewNick` is the new nick you want to
-try::
+try
+
+..  code-block:: text
 
     /nick NewNickname
 
@@ -110,19 +110,26 @@ Once you find one that works, make sure you change it on
 
 Once you have found a nickname that works, enter the following command.
 Replace `me@example.com` with your email address, and `password` with your
-IRC password (from the previous step)::
+IRC password (from the previous step)
+
+..  code-block:: text
 
     /msg nickserv register password me@example.com
 
 Go to the email address that you specified and follow the directions in the
-email from "Freenode" to confirm your registration. If you don't see the
+email from "Libera" to confirm your registration. If you don't see the
 email in question, check your spam.
+
+..  note:: Outlook, Live.com, and Hotmail accounts sometimes don't receieve
+    emails from Libera. If you have trouble, use a different email.
 
 Assuming everything worked correctly, we can test it out. Go ahead and quit
 Hexchat, and then start it again. It should log you in automatically.
 
 To check if you ARE logged in, type the following, where `YourNick` is your
-current nickname::
+current nickname
+
+..  code-block:: text
 
     /whois YourNick
 
@@ -140,12 +147,16 @@ very easy to do.
 First, make sure you're logged in as your main nickname
 (see :ref:`irc_setup_register_nick`). Then, switch to another nickname you want
 to register by entering the following command, where `OtherNickname` is the new
-nickname::
+nickname
+
+..  code-block:: text
 
     /nick OtherNickname
 
 Ensure that the nick is not already taken (you'll see a warning if it is). If
-the nick is free, add it to your account via::
+the nick is free, add it to your account via
+
+..  code-block:: text
 
     /msg nickserv group
 
@@ -191,7 +202,7 @@ Using IRC
 Networks
 --------------------------------
 
-If you followed the above steps, you are now using the Freenode IRC network.
+If you followed the above steps, you are now using the Libera.Chat IRC network.
 There are actually *many* IRC networks. You can manage your connections to
 each on the `Network List` window of HexChat.
 
@@ -203,10 +214,12 @@ Channels
 --------------------------------
 
 Conversations on IRC are primarily separated into Channels. There are hundreds
-of channels on Freenode alone. Each channel name starts with at least one
+of channels on Libera.Chat alone. Each channel name starts with at least one
 `#` symbol.
 
-To join our programming channel, for example, type::
+To join our programming channel, for example, type
+
+..  code-block:: text
 
     /join #mousepawmedia
 
@@ -223,7 +236,9 @@ Many channels also have **bots**, which are special computer programs that
 perform automated tasks for the channel. For example, `Hawksnest` is the
 official bot in `#mousepawmedia` and `#mousepawmedia-design`.
 
-You can leave a channel by typing::
+You can leave a channel by typing
+
+..  code-block:: text
 
     /part #mousepawmedia
 
@@ -245,9 +260,11 @@ Logging In
 
 You have already configured HexChat to log you in immediately. However, if you
 happen to use another computer or a client that you cannot configure, don't
-panic. You can log into Freenode IRC from anywhere in the world via the
+panic. You can log into Libera.Chat IRC from anywhere in the world via the
 following commands, where `YourNick` is your nickname, and `password` is your
-IRC password::
+IRC password
+
+..  code-block:: text
 
     /nick YourNick
     /msg nickserv identify password
@@ -262,7 +279,9 @@ nick to remain logged in. This can be a royal pain if you're trying to log
 back in, as you'll be assigned your secondary nick.
 
 If this happens, make sure you're logged in to IRC, and then run the following,
-where `YourNick` is the nickname you want to reclaim::
+where `YourNick` is the nickname you want to reclaim
+
+..  code-block:: text
 
     /msg nickserv ghost YourNick
 
@@ -326,7 +345,9 @@ as you follow the rules, and a chatroom is relatively sane, this should be easy
 to avoid.
 
 In the `#mousepawmedia` channel, some staff members have been given op status.
-If you're an op, you can "take op" by typing::
+If you're an op, you can "take op" by typing
+
+..  code-block:: text
 
     /msg chanserv op #mousepawmedia
 
@@ -334,7 +355,9 @@ Then, you can kick and ban using the :code:`/kick nickname` and :code:`/ban
 nickname` commands, respectively. Please use these powers wisely and
 judiciously.
 
-Once you're done with your op work, you can de-op via::
+Once you're done with your op work, you can de-op via
+
+..  code-block:: text
 
     /msg chanserv op #mousepawmedia -nick_name
 
@@ -556,7 +579,9 @@ true and/or a compliment is the best way to respond. Those who insult
 intentionally can't really work with that sort of response anyway.
 
 Here's an example from my own chat logs. The other person actually didn't mind
-my being there at all::
+my being there at all
+
+..  code-block:: text
 
     *CodeMouse92 joins.
     [User1] Oh great... it's CodeMouse92
@@ -564,7 +589,9 @@ my being there at all::
 Beware double meanings and connotations! Computer programmers and ITs
 especially like word play, so you're likely to have such a message
 intentionally misinterpreted as a joke. Play along, or politely clarify
-if necessary. For example::
+if necessary. For example
+
+..  code-block:: text
 
     [phunyguy] well, my state is actually pretty up in the air right now so I said why not
     [phunyguy] ldunn, don't say it

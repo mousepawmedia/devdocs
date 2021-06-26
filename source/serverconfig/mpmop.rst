@@ -4505,3 +4505,20 @@ Save and close. Now we start ma1sp.
     $ sudo systemctl start ma1sd
 
 `SOURCE: ma1sd/ldap.md <https://github.com/ma1uta/ma1sd/blob/master/docs/stores/ldap.md>`_
+
+Setting Admins
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Sign in as the user you want to set as admin, and then run the following
+in the terminal, replacing ``username`` with the username you logged in as.
+
+..  code-block:: bash
+
+    $ sudo -i -u postgres
+    $ psql
+    \c synapse
+    UPDATE users SET admin=1 WHERE name='@username:chat.mousepawmedia.com';
+    SELECT * from users;
+
+That last command will show the users table, and it should indicate that
+your user account is now an admin.

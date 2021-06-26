@@ -470,6 +470,111 @@ you'll especially be spending a lot of time on Nextcloud.
 When you upload files, be sure to place them in an appropriate folder and
 **share the folder with your department.**
 
+.. _gstaff_network_chat:
+
+Matrix Chat
+-----------------------------------
+
+We use Matrix for chat because it's free, decentralized, and open source.
+Some of our rooms are open to the public, particularly
+``#lobby:chat.mousepawmedia.com``, while many others are private.
+
+Some of our private channels on Matrix are actually end-to-end encrypted,
+for maximum security.
+
+.. _gstaff_network_chat_client:
+
+Selecting a Client
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+There are a number of clients to choose from. We recommend installing a
+native Linux client on your work machine, and a mobile client on your phone
+for convenience.
+
+Here are a few (of many!) options:
+
+* `Element (formerly Riot) <https://element.io/get-started>`_ [Win/macOS/Linux/Android/iOS] (RECOMMENDED!)
+* `Spectral <https://gitlab.com/spectral-im/spectral>`_ [Linux]
+* `Fractal <https://wiki.gnome.org/Apps/Fractal>`_ [Linux]
+* `NeoChat <https://invent.kde.org/network/neochat>`_ [Linux]
+* `FluffyChat <https://fluffychat.im/>`_ [Linux/Android/iOS/Browser]
+
+All of the above can be installed on Linux via Flatpak (recommended!).
+`Browse Matrix clients on Flathub <https://flathub.org/apps/search/matrix%20chat>`_.
+
+..  note:: Right now, it's not possible to log into our homeserver with
+    the browser-based versions of Element and SchildiChat. Use the desktop or
+    mobile client instead. If you want browser-based access, try FluffyChat.
+
+You can see a `full list of Matrix clients here <https://matrix.org/clients/>`_.
+
+..  important:: Install a Matrix client now. If you're not sure which one you
+    want to use, try Element.
+
+.. _gstaff_network_chat_login:
+
+Logging In
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Depending on which Matrix client you choose, your login screen will look
+slightly different. In any case, you'll need three pieces of information
+to login:
+
+* Homeserver: ``chat.mousepawmedia.com``
+* Username: (your company username)
+* Password: (your company password)
+
+..  note:: your Matrix login for our homeserver is tied to your MousePaw ID.
+
+That's all! You can now chat on our Matrix server.
+
+..  important:: Log into the MousePaw Media Matrix homeserver on your
+    installed client(s).
+
+.. _gstaff_network_chat_rooms:
+
+Joining Rooms
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+When you log in for the first time, you won't see any rooms. This is okay!
+On your Matrix client, look for the option to join a public room.
+
+..  note:: Many of our private rooms are listed as "public" for anyone logged
+    in with company credentials. Don't worry...the outside world can't see
+    most of these.
+
+Here's the most important rooms for you to join and know:
+
+**Lobby** (``#lobby``) is our public room, joinable by absolutely anyone.
+It's where general conversation with our community at large will take place.
+Be careful what you post in this room! Anyone can see it, including the
+history.
+
+If someone has a Matrix account with *any* federated homeserver, including the
+free and public ``matrix.org``, they can join this room as
+``#lobby:chat.mousepawmedia.com``. It's also bridged to our
+``#mousepawmedia`` IRC room on Libera.Chat.
+
+..  warning:: Because Lobby is bridged to IRC, deleting a message will not
+    actually delete it from the room history altogether. What you say, you
+    cannot take back.
+
+**Water Cooler** (``#staff``) is our company-wide chatroom. Anyone with a
+MousePaw ID can join this room, but no one else can see it.
+
+We also have staff rooms for each of our main departments: ``#programming``,
+``#designprod``, and ``#contentdev``. These are also only visible to users
+logged in with a MousePaw ID.
+
+You can create your own public and private rooms as well, although I
+*strongly* recommending using Element for this, as it has the best options
+for encryption and privacy. If you want a chat to be encrypted, make it
+private, and then invite the staff members you want to join.
+
+Last, but not least, you can private message anyone through Matrix.
+
+..  important:: Join the Lobby and Water Cooler rooms.
+
 .. _gstaff_eco:
 
 ECO: Employee Care and Opportunity
