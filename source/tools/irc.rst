@@ -1,6 +1,6 @@
 .. _irc:
 
-Libera.Chat IRC
+IRC
 ################################
 
 IRC (Instant Relay Chat) is one of the oldest means of internet communication.

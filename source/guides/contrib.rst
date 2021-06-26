@@ -93,7 +93,7 @@ If you prefer IRC, you can join the ``#mousepawmedia`` room on the
 ``irc.libera.chat`` IRC network.
 
 If you want to try IRC, but don't know how to get started, check out
-``https://libera.chat <https://libera.chat/>`_, or see :ref:`irc`.
+`https://libera.chat <https://libera.chat/>`_, or see our :ref:`irc` guide.
 
 Development Environment
 ===============================
