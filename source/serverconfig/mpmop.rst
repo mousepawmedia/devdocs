@@ -4198,6 +4198,8 @@ all next to each other.)
     presence:
         enabled: false
 
+    allow_public_rooms_over_federation: true
+
     email:
         smtp_host: mail.mousepawmedia.com
         smtp_port: 587
@@ -4383,23 +4385,35 @@ Change or add the following sections, along with anything else you need to chang
 ..  code-block:: text
 
     matrix:
-        domain: 'https://chat.mousepawmedia.com'
+        domain: 'chat.mousepawmedia.com'
         v1: true
         v2: true
 
         storage:
-            postgresql:
-                # Wrap all string values with quotes to avoid yaml parsing mistakes
-                database: '//localhost/ma1sd' # or full variant //192.168.1.100:5432/ma1sd_database
-                username: 'ma1sd'
-                password: 'YOURDATABASEPASSWORD'
-
+            backend: postgresql
+            provider:
+                postgresql:
+                    # Wrap all string values with quotes to avoid yaml parsing mistakes
+                    database: '//localhost/ma1sd' # or full variant //192.168.1.100:5432/ma1sd_database
+                    username: 'ma1sd'
+                    password: 'YOURDATABASEPASSWORD'
         dns:
             overwrite:
                 homeserver:
                 client:
                     - name: 'chat.mousepawmedia.com'
                       value: 'http://localhost:8008'
+
+        logging:
+            root: error      # default level for all loggers (apps and thirdparty libraries)
+            app: info        # log level only for the ma1sd
+            requests: false  # NEVER set to true in production
+
+        invite:
+            expiration:
+                enabled: true
+                after: 10080  # 10080 minutes = 7 day
+
 
 Save and close. Now we'll adapt Apache's configuration to work with this:
 
@@ -4466,6 +4480,7 @@ Find and adapt the ``ldap:`` section like this:
 
     ldap:
         enabled: true
+        lookup: true
         activeDirectory: false
         connection:
             host: 'id.mousepawmedia.com'
