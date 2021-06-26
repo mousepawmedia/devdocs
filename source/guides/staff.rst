@@ -526,10 +526,12 @@ to login:
 
 ..  note:: your Matrix login for our homeserver is tied to your MousePaw ID.
 
-That's all! You can now chat on our Matrix server.
+That's all! You can now chat on our Matrix server. You should take a moment
+to add your profile picture to your account profile, so everyone can see
+your smiling face.
 
 ..  important:: Log into the MousePaw Media Matrix homeserver on your
-    installed client(s).
+    installed client(s) and add your profile picture.
 
 .. _gstaff_network_chat_rooms:
 
