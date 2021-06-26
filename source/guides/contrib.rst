@@ -32,30 +32,28 @@ located at `phab.mousepawmedia.com <https://phab.mousepawmedia.com>`_.
 4. You should now see the home page of DevNet Phabricator. Click your profile
    picture on the top bar, towards the right, and select :guilabel:`Settings`.
    Review and change the following *at minimum*.
+
    Be sure to click :guilabel:`Save Changes` on each page!
 
-* :guilabel:`Account`: Set desired ``Pronoun``.
+   * :guilabel:`Account`: Set desired ``Pronoun``.
 
-* :guilabel:`Date and Time`: Set ``Timezone``.
+   * :guilabel:`Date and Time`: Set ``Timezone``.
 
-* :guilabel:`Conpherence`: Set ``Notifications`` to ``Send Notifications``.
+   * :guilabel:`Notifications`: We recommend setting ``Notifications`` to
+    ``Web and Desktop``, so you'll get the latest notifications as they happen
+    while you're logged onto Phabricator. You may also need to grant permission
+    for the desktop notifications to work.
 
-* :guilabel:`Notifications`: We recommend setting ``Notifications`` to
-  ``Web and Desktop``, so you'll get the latest notifications as they happen
-  while you're logged onto Phabricator. You may also need to grant permission
-  for the desktop notifications to work.
+   * :guilabel:`Email Addresses`: Ensure your desired email address is added to
+    this list, and ``Verify`` it. Verification emails come from
+    ``noreply@mousepawmedia.com``; you may need to check your spam bin if you
+    don't get it.
 
-* :guilabel:`Email Addresses`: Ensure your desired email address is added to
-  this list, and ``Verify`` it. Verification emails come from
-  ``hawksnest@mousepawmedia.com``; you may need to check your spam bin if you
-  don't get it.
-
-* :guilabel:`Email Delivery`: Set ``Self Actions`` to ``Disable``. You may also
-  choose to disable all email notifications under ``Email Notifications`` if
-  you plan to check Phabricator manually. Otherwise, if you only want *some*
-  emails, you can select which notifications to receive via email on the
-  :guilabel:`Email Preferences` pane.
-
+   * :guilabel:`Email Delivery`: Set ``Self Actions`` to ``Disable``. You may also
+     choose to disable all email notifications under ``Email Notifications`` if
+     you plan to check Phabricator manually. Otherwise, if you only want *some*
+     emails, you can select which notifications to receive via email on the
+     :guilabel:`Email Preferences` pane.
 
 5. Click your profile picture on the top bar, towards the right, and select
    :guilabel:`Manage`. Click :guilabel:`Edit Profile` at right and fill out
@@ -63,6 +61,39 @@ located at `phab.mousepawmedia.com <https://phab.mousepawmedia.com>`_.
 
 That's it! You're now set up to use Phabricator! For complete
 instructions on using Phabricator, see :ref:`phab`.
+
+Chatting With Us
+===============================
+
+You can join our chatroom via either **Matrix** or **IRC**. We highly
+recommend you join the chatroom, where you can talk with MousePaw Media
+staff and other community members.
+
+Matrix
+--------------------------------
+
+Matrix is a modern, free, decentralized chat protocol. If you already have
+a federated Matrix account somewhere, simply join the room
+``#lobby:chat.mousepawmedia.com``.
+
+If you want to join Matrix, go to ``https://element.io/get-started`` and either
+open in browser or install a client. On the login screen for the client,
+select Create account and create your free account.
+
+Towards the left, click or tap the compass icon to search public rooms,
+and then search for ``#lobby:chat.mousepawmedia.com``.
+
+There are many Matrix clients besides Element.
+`See the full list here <https://matrix.org/clients/>`_.
+
+Libera.Chat IRC
+-------------------------------
+
+If you prefer IRC, you can join the ``#mousepawmedia`` room on the
+``irc.libera.chat`` IRC network.
+
+If you want to try IRC, but don't know how to get started, check out
+``https://libera.chat <https://libera.chat/>`_, or see :ref:`irc`.
 
 Development Environment
 ===============================

@@ -76,11 +76,6 @@ The toolbar is always visible at the top of Phabricator. From left to right...
   open the object it discusses and mark it as read, or click
   :guilabel:`Mark All Read` to mark them all as read.
 
-* The **Chat menu** notifies you when there is a new message in one of the
-  Conpherence chatrooms. Checking :guilabel:`Persistent Chat` will add a
-  chat box to the lower right corner of your screen. (See
-  :ref:`phab_conpherence`).
-
 * The **Favorites menu** (the bookmark icon) provides shortcuts for many common tasks.
   You can click :guilabel:`Edit Favorites` to add more items to this menu.
 
@@ -1916,7 +1911,3 @@ Slowvote
 Owners
 ==================================
 
-.. _phab_conpherence:
-
-Conpherence
-==================================
