@@ -1772,3 +1772,213 @@ On that file, add the line:
     @reboot /usr/sbin/sshd -f /etc/ssh/sshd_config.phabricator
 
 Save and close.
+
+Jenkins
+=================================================
+
+Installation
+----------------------------------------------------
+
+We first need to install Jenkins.
+
+..  code-block:: bash
+
+    $ wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo apt-key add -
+    $ sudo sh -c 'echo deb https://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
+    $ sudo apt update
+    $ sudo apt install openjdk-11-jdk
+    $ sudo apt install jenkins
+
+`SOURCE: Linux (Jenkins) <https://www.jenkins.io/doc/book/installing/linux/#debianubuntu>`_
+
+Apache Configuration
+---------------------------------------------------
+
+Jenkins needs to be put behind a reverse proxy to run it effectively
+through HTTPS.
+
+..  code-block:: bash
+
+    $ sudo vim /etc/default/jenkins
+
+Add or edit the following lines. They will *not* necessarily be
+next to each other.
+
+..  code-block:: text
+
+    HTTP_HOST=127.0.0.1
+
+    JENKINS_ARGS="--webroot=/var/cache/$NAME/war --httpPort=$HTTP_PORT --httpListenAddress=$HTTP_HOST"
+
+Save and close. Now we set up Apache2.
+
+..  code-block:: bash
+
+    $ sudo a2enmod proxy proxy_http headers
+    $ sudo vim /etc/apache2/sites-available/ci.conf
+
+Set the contents of that file to:
+
+..  code-block:: apache
+
+    <IfModule mod_ssl.c>
+        <VirtualHost ci.mousepawmedia.com:443>
+            ServerName ci.mousepawmedia.com
+            ServerAdmin webmaster@mousepawmedia.com
+
+            ErrorLog ${APACHE_LOG_DIR}/error.log
+            CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+            SSLProxyEngine On
+            ProxyRequests Off
+            AllowEncodedSlashes NoDecode
+
+            <Proxy http://localhost:8080/*>
+                Order deny,allow
+                Allow from all
+            </Proxy>
+
+            ProxyPass / http://localhost:8080/ nocanon
+            ProxyPassReverse / http://localhost:8080/
+            ProxyPassReverse / http://ci.mousepawmedia.com
+            RequestHeader set X-Forwarded-Proto "https"
+            RequestHeader set X-Forwarded-Port "443"
+
+            SSLEngine on
+            SSLCertificateFile  /etc/letsencrypt/live/ci.mousepawmedia.com/fullchain.pem
+            SSLCertificateKeyFile /etc/letsencrypt/live/ci.mousepawmedia.com/privkey.pem
+            Include /etc/letsencrypt/options-ssl-apache.conf
+        </VirtualHost>
+    </IfModule>
+
+Save and close, and then run:
+
+..  code-block:: bash
+
+    $ sudo a2ensite ci
+    $ sudo systemctl restart apache2
+
+`SOURCE: Reverse proxy - Apache (Jenkins) <https://www.jenkins.io/doc/book/system-administration/reverse-proxy-configuration-apache/>`_
+
+Initial Jenkins Setup
+-------------------------------------
+
+Navigate to ``https://ci.<serveraddress>``. You will be prompted
+for an administrator password. You can get this with the following
+terminal command:
+
+..  code-block:: bash
+
+    $ sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+
+Be sure not to share this password!
+
+On the next screen, select the plugins to install. We selected only the
+following on this step:
+
+* Dashboard View
+* Folders
+* OWASP Markup Formatter
+* Build Name and Description Setter
+* Embeddable Build Status
+* Rebuilder
+* Warnings Next Generation
+* Pipeline
+* Pipeline: GitHub Groovy Libraries
+* Pipeline: Stage View
+* Conditional BuildStep
+* Parameterized Trigger
+* Copy Artifact
+* Git
+* Git Parameter
+* Matrix Project
+* SSH Build Agents
+* Role-based Authorization Strategy
+* Email Extension
+* Mailer
+* Publish Over SSH
+* SSH
+
+We will install a few more plguins later.
+
+We'll be setting up an admin account via LDAP, so when prompted to create
+an admin user, select :guilabel:`Skip and continue as admin`.
+
+Ensure the Jenkins URL is the correct public-facing https address, and then
+select :guilabel:`Save and Finish`.
+
+LDAP Integration
+---------------------------------------------------
+
+All logins and permissions will be handled by LDAP. This is made possible
+by the "LDAP Plugin" and "Role-based Authorization Stragegy" plugins that
+were installed.
+
+Go to ``Manage Jenkins`` and ``Configure Global Security``. Under Security Realm,
+select ``LDAP`` and fill in the following details. (You may need to click
+``Advanced Server Configuration...``
+
+* Server: ``id.mousepawmedia.com:389``
+* root DN: ``dc=id,dc=mousepawmedia,dc=com``
+* User search base: ``ou=Users``
+* User search filter: ``uid={0}``
+* Group search base: ``ou=Groups``
+* Group search filter: ``(& (cn={0}) (objectclass=posixGroup))``
+* Group membership: Search for LDAP groups containing user
+* Group membership filter: ``(memberUid={1})``
+* Display Name LDAP attribute: ``cn``
+* Email Address LDAP attribute: ``mail``
+
+Click ``Test LDAP settings`` to make sure it works correctly. Login with an LDAP
+account when prompted, and you should see the groups that user is a member of
+in LDAP.
+
+Also scroll down to Authroization and select ``Role-Based Strategy``.
+
+Press ``Save``.
+
+Now go to ``Manage and Assign Roles``. In ``Manage Roles``, create or modify
+the roles "admin", "anonymous", "repomaster", and "staff", setting permissions
+as appropriate.
+
+Now to go ``Manage Jenkins``, ``Manage and Assign Roles``, and ``Assign Roles``.
+
+Add the groups ``admin``, ``community``, ``repomaster``, and ``staff``. Grant
+them roles as appropriate. (For us, both ``staff`` and ``community`` are
+granted the ``staff`` role.)
+
+Scroll down and click ``Save``.
+
+Kubernetes
+---------------------------------------------------
+
+Go to :guilabel:`Manage Jenkins` and :guilabel:`Plugins`. Install the
+following plugins:
+
+* Kubernetes
+* Phabricator Differential
+* S3 publisher
+
+In a terminal, run the following:
+
+..  code-block:: bash
+
+    $ sudo apt update
+    $ sudo apt install -y apt-transport-https ca-certificates curl
+    $ sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    $ echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+    $ sudo apt update
+    $ sudo apt install -y kubectl
+
+In the Linode control panel, go to Kubernetes and select
+:guilabel:`Create Cluster`.
+
+* Cluster Label: ``mpmbuilds``
+* Region: (same as other servers)
+* Kubernetes Version: (same as seen in :code:`kubectl version`)
+
+I started out with three "Linode 2 GB Shared CPU" instances to the Node Pool,
+although you can change this later if needed.
+
+`SOURCE: Install and Set Up kubectl on Linux (Kubernetes) <https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/>`_
+`SOURCE: Deploy and Manage a Cluster with Linode Kubernetes Engine (Linode) <https://www.linode.com/docs/guides/deploy-and-manage-a-cluster-with-linode-kubernetes-engine-a-tutorial/>`_
