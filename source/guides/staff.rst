@@ -388,12 +388,11 @@ and fill out your profile. Follow these instructions...
     On your mobile device, install a trustworthy authenticator app like
     Microsoft Authenticator. On your work laptop, you can install
     `Authenticator <https://flathub.org/apps/details/com.belmoussaoui.Authenticator>`_.
-    (We recommend using both if you can, in case you lose access to one device
-    or the other.) On Phabricator, click :guilabel:`Add Auth Factor`.
-    Follow the instructions to link your authenticator app. Repeat for the other
-    app.
+    ONLY USE ONE! (Using both requires both.) On Phabricator, click
+    :guilabel:`Add Auth Factor`. Follow the instructions to link your
+    authenticator app. Repeat for the other app.
 
-12.  Click :guilabel:`Email Preferences` at left. Here, you may shut off many
+1.   Click :guilabel:`Email Preferences` at left. Here, you may shut off many
     email notifications by selecting the :guilabel:`Notify` option for any
     given item. Recommended defaults are provided, but you can adjust these
     to your needs.
@@ -401,10 +400,10 @@ and fill out your profile. Follow these instructions...
 ..  warning:: Do NOT select "Ignore" for any notifications! All notifications
     are ultimately controlled by whether you're "Subscribed" to an object.
 
-13. Take a few minutes to go through the rest of the settings independently.
+1.  Take a few minutes to go through the rest of the settings independently.
     Use the menu at left to see more settings.
 
-14. Click :guilabel:`Phabricator` in the upper-left corner to return to the
+2.  Click :guilabel:`Phabricator` in the upper-left corner to return to the
     main page.
 
 Regular Phabricator Tasks
