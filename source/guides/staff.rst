@@ -47,6 +47,37 @@ Although we work on Linux, you may access the Staff Network via Windows, Mac,
 iOS (Apple) mobile devices, Android mobile devices, or BSD-based operating
 systems if you need to.
 
+.. _gstaff_security:
+
+Security
+=======================================
+
+It is your responsibility to keep your MousePaw Media account secure!
+Here are some very important things to keep in mind at all times.
+
+* Never share your password with *anyone*. We won't ask for it. Period.
+* Don't leave your work devices unlocked and unattended.
+* Consider enabling full-disk encryption when you install Linux.
+* Use a secure password manager like `Bitwarden <https://bitwarden.com/>`_.
+  Never use your browser's "save password" feature.
+* Add Multi-Factor Authentication (MFA) to your Phabricator and Nextcloud accounts.
+  Instructions are included in those sections below. We strongly recommend
+  using the Microsoft Authenticator on your mobile and/or the
+  `Authenticator app <https://flathub.org/apps/details/com.belmoussaoui.Authenticator>`_
+  on Linux desktop.
+* Consider using Element for Matrix chat, and enable its optional
+  security features.
+* Be careful clicking on unusual or disguised links in emails, even if
+  the email looks like it's from within the company or from a coworker.
+  Verify URLs and SSL certificates before entering your password or other
+  information.
+* If you lose a device you've used to access your MousePaw Media account, or
+  which you use for MFA, contact us **immediately!**
+
+If you lose access to your MousePaw Media account at any point, contact
+``eco@mousepawmedia.com``. We will work with you *over video chat* (for
+authentication purposes) to restore access to your account.
+
 .. _gstaff_network:
 
 Staff Network
@@ -350,7 +381,17 @@ and fill out your profile. Follow these instructions...
     whenever something important occurs. Otherwise, you can check missed
     notifications from the Bell menu in the upper-left corner of Phabricator.
 
-11. Click :guilabel:`Email Preferences` at left. Here, you may shut off many
+10. We **strongly recommend** adding Multi-Factor Autentication to your
+    Phabricator account. Click :guilabel:`Multi-Factor Auth` at left.
+    On your mobile device, install a trustworthy authenticator app like
+    Microsoft Authenticator. On your work laptop, you can install
+    `Authenticator <https://flathub.org/apps/details/com.belmoussaoui.Authenticator>`_.
+    (We recommend using both if you can, in case you lose access to one device
+    or the other.) On Phabricator, click :guilabel:`Add Auth Factor`.
+    Follow the instructions to link your authenticator app. Repeat for the other
+    app.
+
+12.  Click :guilabel:`Email Preferences` at left. Here, you may shut off many
     email notifications by selecting the :guilabel:`Notify` option for any
     given item. Recommended defaults are provided, but you can adjust these
     to your needs.
@@ -358,10 +399,10 @@ and fill out your profile. Follow these instructions...
 ..  warning:: Do NOT select "Ignore" for any notifications! All notifications
     are ultimately controlled by whether you're "Subscribed" to an object.
 
-12. Take a few minutes to go through the rest of the settings independently.
+13. Take a few minutes to go through the rest of the settings independently.
     Use the menu at left to see more settings.
 
-13. Click :guilabel:`Phabricator` in the upper-left corner to return to the
+14. Click :guilabel:`Phabricator` in the upper-left corner to return to the
     main page.
 
 Regular Phabricator Tasks
@@ -433,21 +474,18 @@ First Steps
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 1.  When you first log into Nextcloud, click your username in the upper-right
-    corner and select :guilabel:`Personal`. This will take you to your profile
-    and settings screen.
+    corner and select :guilabel:`Settings`. This will take you to your profile
+    and settings screen. Fill out your profile.
 
-2.  If you scroll down a little, you will see buttons for downloading the Nextcloud
-    client for various platforms. Now would be a good time to set up one or more
-    up. To install the client, see :ref:`nextcloud_client`.
+2.  At left, select :guilabel:`Security`. Start by saving your backup codes in
+    case you lose your device. Then, enable both
+    :guilabel:`Nextcloud Notification` and :guilabel:`Enable TOTP`. That
+    last one will walk you through linking to *one* Authenticator app; we
+    recomemend Microsoft Authenticator on your mobile device. If you don't
+    have a mobile, use `Authenticator on your Linux machine <https://flathub.org/apps/details/com.belmoussaoui.Authenticator>`_.
 
-3.  The Activity section allows you to customize notifications. You should leave
-    most Stream options checked, so you'll know when things happen on Nextcloud.
-    However, you may want to uncheck some Mail options, to keep email to a
-    minimum.
-
-4.  Uncheck the boxes labeled :guilabel:`List your own file actions in the stream`
-    and :guilabel:`Notify about your own actions via email`, so you don't
-    receive notifications about your *own* actions.
+3.  The Activity section allows you to customize notifications. We recommend
+    leaving many Push notifications enabled.
 
 If you'll be using Nextcloud regularly, you may consider setting up the
 Nextcloud Client on your computer. See :ref:`nextcloud_client`.
