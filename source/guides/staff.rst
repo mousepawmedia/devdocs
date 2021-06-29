@@ -39,11 +39,11 @@ published.
 Technical Requirements
 =======================================
 
-You **must** have Linux, ideally an Ubuntu-based distro (version 18.04
+You **must** have Linux, ideally an Ubuntu-based distro (version 20.04
 or later), installed on your computer. See :doc:`../setup_linux/install` for
 instructions on installing it. If you need help, contact Jason C. McDonald.
 
-Although we work on Linux, you may access the Staff Network via Windows, Mac,
+Although we work on Linux, you may access the Staff Network via Windows, macOS,
 iOS (Apple) mobile devices, Android mobile devices, or BSD-based operating
 systems if you need to.
 
@@ -54,6 +54,8 @@ Security
 
 It is your responsibility to keep your MousePaw Media account secure!
 Here are some very important things to keep in mind at all times.
+
+..  warning: Read this section carefully!
 
 * Never share your password with *anyone*. We won't ask for it. Period.
 * Don't leave your work devices unlocked and unattended.
