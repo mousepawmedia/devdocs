@@ -80,6 +80,9 @@ However, we've found that :ref:`vscode` and :ref:`atom` handle ReST files
 uncommonly well. You can also use a plain text and code editor, such as
 :ref:`geany`.
 
+If you're using VSCode, make sure you install the **Esbonio** extension
+by Swyddfa.
+
 .. _sphinx_edit_docs:
 
 Writing and Editing Documentation
