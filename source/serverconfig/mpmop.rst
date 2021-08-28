@@ -1968,7 +1968,7 @@ bucket instead of on the system disk.
 
 `SOURCE: How to Configure Nextcloud to use Linode Object Storage as an External Storage Mount <https://www.linode.com/docs/guides/how-to-configure-nextcloud-to-use-linode-object-storage-as-an-external-storage-mount/>`_
 
-`SOURCE: Deploy Nextcloud with Object Storage (Scaleway)<https://www.scaleway.com/en/docs/install-and-configure-nextcloud-object-storage/>`_
+`SOURCE: Deploy Nextcloud with Object Storage (Scaleway) <https://www.scaleway.com/en/docs/install-and-configure-nextcloud-object-storage/>`_
 
 LDAP Authentication
 --------------------------------
@@ -4522,3 +4522,266 @@ in the terminal, replacing ``username`` with the username you logged in as.
 
 That last command will show the users table, and it should indicate that
 your user account is now an admin.
+
+Video Chat with Coturn
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+..  note:: Not working yet.
+
+Video and voice chat works over Matrix via Coturn. We'll install and
+configure that now.
+
+..  code-block:: bash
+
+    $ sudo apt install coturn
+    $ sudo vim /etc/turnserver.conf
+
+Add, uncomment, and/or edit the following lines (which are not necessarily
+next to each other or appearing in this order:
+
+..  code-block:: text
+
+    use-auth-secret
+    static-auth-secret=SOMERANDOMKEYHERE
+    realm=voip.mousepawmedia.com
+    syslog
+
+    no-tcp-relay
+    denied-peer-ip=10.0.0.0-10.255.255.255
+    denied-peer-ip=192.168.0.0-192.168.255.255
+    denied-peer-ip=172.16.0.0-172.31.255.255
+
+    user-quota=24
+    total-quota=1200
+
+    cert=/etc/letsencrypt/live/voip.mousepawmedia.com/fullchain.pem
+    pkey=/etc/letsencrypt/live/voip.mousepawmedia.com/privkey.pem
+
+Save and close, and then restart coturn.
+
+..  code-block:: bash
+
+    $ sudo systemctl restart coturn
+
+Now we edit the configuration of Synapse to work with TURN.
+
+..  code-block:: bash
+
+    $ sudo vim /etc/matrix-synapse/homeserver.yaml
+
+Add or change the following lines (which are not necessarily next to each
+other). The ``turn_shared_secret`` should match the ``static-auth-secret`` from
+above, but must be wrapped in quotes.
+
+..  code-block:: text
+
+    turn_uris: [ "turns:voip.mousepawmedia.com?transport=udp", "turns:voip.mousepawmedia.com?transport=tcp" ]
+    turn_shared_secret: "THETURNSHAREDSECRETKEY"
+    turn_user_lifetime: 86400000
+
+We are *not* turning on `turn_allow_guests`, as an additional security
+measure.
+
+Restart Synapse and open up the expected ports:
+
+..  code-block:: bash
+
+    $ sudo systemctl restart matrix-synapse.service
+    $ sudo ufw allow 3478
+    $ sudo ufw allow 5479
+    $ sudo ufw allow 49152:65535/udp
+
+`SOURCE: Configuring a TURN Server <https://matrix-org.github.io/synapse/latest/turn-howto.html>`_
+
+LimeSurvey
+=================
+
+Let's install LimeSurvey.
+
+Install the dependencies.
+
+..  code-block:: bash
+
+    $ sudo apt install php-gd php-ldap php-zip php-imap php-ldap
+
+Get the download link from `LimeSurvey Community Edition <https://community.limesurvey.org/downloads/>`_,
+which we'll use in the next step.
+
+Download and unzip the latest version. Be sure to replace the URL and filename
+with the one appropriate for your download. We'll also set our permissions here.
+
+..  note:: If you're paranoid like me about unzipping directly in an important
+    directory like ``/opt/password_providers``, you can always unzip it in another folder and
+    move the ``limesurvey`` folder to ``/opt/papers``.
+
+..  code-block:: bash
+
+    $ cd /tmp
+    $ sudo wget https://download.limesurvey.org/latest-stable-release/limesurvey5.0.8+210712.zip
+    $ sudo unzip limesurvey2.67.2+170719.zip
+    $ sudo mv /tmp/limesurvey /opt/papers
+    $ sudo chown -R mpm:www-data /opt/papers
+    $ sudo chmod -R 755 /opt/papers
+    $ sudo chmod -R 775 /opt/papers/tmp
+    $ sudo chmod -R 775 /opt/papers/upload
+    $ sudo chmod -R 775 /opt/papers/application/config
+
+We gave the webserver group write permissions to three specific directories,
+and read-only access to the rest of the folders for LimeSurvey.
+
+Apache2
+---------------
+
+Let's set up the subsite for LimeSurvey. Before proceeding, ensure you've
+created the certificate for the domain you're using via the Certbot steps
+described earlier in this document.
+
+We must allow Apache2 to access the directory we just set up:
+
+..  code-block:: bash
+
+    $ sudo vim /etc/apache2/apache2.conf
+
+Add the following Directory block to that file:
+
+..  code-block:: apache
+
+    <Directory /opt/papers/>
+        Options FollowSymLinks
+        AllowOverride all
+        Require all granted
+    </Directory>
+
+Save and close. Then, we create the Apache2 site.
+
+..  code-block:: bash
+
+    $ sudo vim /etc/apache2/sites-available/papers.conf
+
+Set the contents of that file to the following:
+
+..  code-block:: apache
+
+    <IfModule mod_ssl.c>
+        <VirtualHost papers.mousepawmedia.com:443>
+            ServerName papers.mousepawmedia.com
+
+            ServerAdmin webmaster@mousepawmedia.com
+            DocumentRoot /opt/papers
+
+            ErrorLog ${APACHE_LOG_DIR}/error.log
+            CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+            <Directory /opt/papers>
+                    Options -MultiViews -Indexes
+                    AllowOverride All
+            </Directory>
+
+            # prevent iframing this site
+            #Header set X-Frame-Options DENY
+
+            # SSL
+            SSLEngine on
+            SSLCertificateFile      /etc/letsencrypt/live/papers.mousepawmedia.com/fullchain.pem
+            SSLCertificateKeyFile   /etc/letsencrypt/live/papers.mousepawmedia.com/privkey.pem
+
+            Include /etc/letsencrypt/options-ssl-apache.conf
+
+            <FilesMatch "\.(cgi|shtml|phtml|php)$">
+                    SSLOptions +StdEnvVars
+            </FilesMatch>
+            <Directory /usr/lib/cgi-bin>
+                    SSLOptions +StdEnvVars
+            </Directory>
+        </VirtualHost>
+    </IfModule>
+
+Save and close. Now we can enable the site.
+
+..  code-block:: bash
+
+    $ sudo a2ensite survey
+    $ sudo systemctl restart apache2
+
+The site should now be accessible at ``papers.mousepawmedia.com``. However,
+before continuing with the installer, we need to set up a couple more things.
+
+Database
+--------------
+
+Let's set up the LimeSurvey database:
+
+..  code-block:: bash
+
+    $ sudo mysql -u root
+
+Run the following:
+
+..  code-block:: text
+
+    CREATE USER 'limesurvey'@'localhost' IDENTIFIED BY 'some_password';
+    CREATE DATABASE IF NOT EXISTS limesurvey;
+    GRANT SELECT, CREATE, INSERT, UPDATE, DELETE, ALTER, DROP, INDEX ON limesurvey.* TO 'limesurvey'@'localhost' WITH GRANT OPTION;
+    FLUSH privileges;
+    \q
+
+LDAP
+----------------------
+
+We want Limesurvey to use LDAP for user authentication.
+
+Setup
+----------
+
+Go to ``https://survey.mousepawmedia.com`` and follow the setup wizard.
+
+On the new installation, log in with the administrator account you set up
+in the setup wizard.
+
+Go to :guilabel:`Configuration -> Settings -> Global`, and set the following:
+
+* :guilabel:`Email settings`:
+  * :guilabel:`Email method`: ``SMTP``
+  * :guilabel:`SMTP host`: ``mail.mousepawmedia.com:465``
+  * :guilabel:`SMTP username`: ``noreply@mousepawmedia.com``
+  * :guilabel:`SMTP password`: (the password for the email account)
+  * :guilabel:`SMTP encryption`: ``SSL/TLS``
+* :guilabel:`Bounce settings`:
+  * :guilabel:`Default site bounce email`: ``noreply@mousepawmedia.com``
+  * :guilabel:`Server type`: ``IMAP``
+  * :guilabel:`Server name & port`: ``mail.mousepawmedia.com:993``
+  * :guilabel:`User name`: ``noreply@mousepawmedia.com``
+  * :guilabel:`Password`: (the password for the email account)
+  * :guilabel:`Encryption type`: ``SSL/TLS``
+* Security
+  * :guilabel:`Force HTTPS`: ``On``
+
+Be sure to save your settings changes.
+
+`SOURCE: Installation (LimeSurvey Manual) <https://manual.limesurvey.org/Installation>`_
+
+LDAP
+--------------------
+
+Go to :guilabel:`Configuration -> Plugins` and enable :guilabel:`AuthLDAP`.
+Click the title of the plugin to go to its overview, and then click
+:guilabel:`Settings`.
+
+Set the following settings:
+
+* :guilabel:`LDAP server`: ``ldap://id.mousepawmedia.com``
+* :guilabel:`Port number`: ``389``
+* :guilabel:`LDAP version`: ``LDAPv3``
+* :guilabel:`Enable Start-TLS`: ``Yes``
+* :guilabel:`Select how to perform authentication`: ``Search and bind``
+* :guilabel:`Attribute to compare to the given login`: ``uid``
+* :guilabel:`Base DN for the user search operation`: ``ou=Users,dc=id,dc=mousepawmedia,dc=com``
+* :guilabel:`Optional extra LDAP filter to be ANDed...`: ``(objectClass=inetOrgPerson)``
+* :guilabel:`LDAP attribute of email address`: ``mail``
+* :guilabel:`LDAP attribute of full name`: ``cn``
+* :guilabel:`Check to make default authentication method`: ``Yes``
+* :guilabel:`Automatically create user if it exists in LDAP server`: ``Yes``
+* :guilabel:`Grant survey creation permission to automatically created users`: ``No``
+* :guilabel:`Optional base DN for group restriction`: ``ou=Groups,dc=id,dc=mousepawmedia,dc=com``
+* :guilabel:`Optional filter for group restriction`: ``(&(|(cn=management)(cn=hiring)(cn=admin))(memberUid=$username))``
+* :guilabel:`Allow initial user to login via LDAP`: ``No``

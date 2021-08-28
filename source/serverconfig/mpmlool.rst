@@ -1,5 +1,5 @@
-Server Configuration: Linode
-##############################################
+Server Configuration: MPM Collaboration Server
+##################################################
 
 This documentation outlines how the Linode "Webster" server was built.
 
@@ -866,7 +866,7 @@ Save and close, and then enable and restart Docker in systemd:
     $ sudo systemctl restart docker
     $ sudo systemctl enable docker
 
-..  warning:: DO NOT add ``hawksnest`` to the ``docker`` group. You want to
+..  warning:: DO NOT add ``mpm`` to the ``docker`` group. You want to
     really strictly limit control of Docker.
 
 We also need to adjust the operating system to allow limiting the swap

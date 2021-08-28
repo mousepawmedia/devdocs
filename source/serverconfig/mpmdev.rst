@@ -1949,36 +1949,334 @@ granted the ``staff`` role.)
 
 Scroll down and click ``Save``.
 
-Kubernetes
+Object Storage (S3 Bucket) Integration
 ---------------------------------------------------
 
 Go to :guilabel:`Manage Jenkins` and :guilabel:`Plugins`. Install the
-following plugins:
+following plugin:
 
-* Kubernetes
-* Phabricator Differential
-* S3 publisher
+* Artifact Manager on S3 plugin
 
-In a terminal, run the following:
+This will install a few other plugins as well. Although this seems to be
+tightly coupled to Amazon, it will work with S3-compatible object storage
+from other cloud providers, including Linode.
+
+Go to ``cloud.linode.com`` and select :guilabel:`Object Storage`. Create a
+Bucket, and an associated Access Key with limited read/write access to the
+bucket you create. I've named the bucket ``mpm-artifacts``, and created it
+in the ``us-east-1`` zone.
+
+Go to :guilabel:`Manage Jenkins` and :guilabel:`AWS`. Set the following
+settings:
+
+* S3 Bucket Name: :code:`mpm-artifacts`
+* Base Prefix: (Empty; set it if you like)
+* Custom Endpoint: :code:`us-east-1.linodeobjects.com`
+* Custom Signing Region: :code:`us-east-1`
+* Use Path Style URL: No
+* Use Insecure HTTP: No
+* Disable Session Token: Yes
+
+Under Amazon Credentials, set Region to ``Auto`` and add new Amazon Credentials:
+
+* Domain: Global credentials (unrestricted)
+* Kind: AWS Credentials
+* Scope: Global
+* ID: (Optional)
+* Description: (Optional)
+* Access Key ID: (the access key ID you created on Linode)
+* Secret Access Key: (the secret access key you created on Linode)
+
+Click :guilabel:`Add`. Select the newly created Amazon Credentials in the
+drop-down box. Now select :guilabel:`Validate S3 Bucket configuration`.
+If everything is configured correctly, you will see a ``success`` message.
+Press :guilabel:`Save`.
+
+Now to go to to :guilabel:`Manage Jenkins` and :guilabel:`Configure System`.
+Scroll down to :guilabel:`Artifact Management for Builds`. Select
+:guilabel:`Add` and :guilabel:`Cloud Artifact Storage`. From the drop-down
+box under :guilabel:`Cloud provider`, select :guilabel:`Amazon S3`. This will
+use the settings you configured above. Press :guilabel:`Save`.
+
+In the server terminal, run...
 
 ..  code-block:: bash
 
+    $ sudo vim /etc/default/jenkins
+
+Modify the following variable to add the two
+``-Dio.jenkins.plugins.artifact_manager`` arguments shown below:
+
+..  code-block:: bash
+
+    JAVA_ARGS="-Djava.awt.headless=true -Dio.jenkins.plugins.artifact_manager_jclouds.s3.S3BlobStoreConfig.deleteArtifacts=true -Dio.jenkins.plugins.artifact_manager_jclouds.s3.S3BlobStoreConfig.deleteStashes=true"
+
+Be certain you're modifying :code:`JAVA_ARGS`, and *not* :code:`JENKINS_ARGS`.
+
+Save and close, and then restart Jenkins from the command line:
+
+..  code-block:: bash
+
+    $ sudo systemctl restart jenkins
+
+In the web browser, if you navigate to :guilabel:`Manage Jenkins` and
+:guilabel:`AWS`, you should see the :guilabel:`Delete Artifacts` and
+:guilabel:`Delete Stashes` options are now checked.
+
+Phabricator Integration
+---------------------------------------------------
+
+Go to :guilabel:`Manage Jenkins` and :guilabel:`Plugins`. Install the
+following plugin:
+
+* Phabricator Differential
+
+On Phabricator, create a new bot account (if you don't already have one)
+for Jenkins. Go to the settings for the bot and generate a Conduit Token.
+
+Go to :guilabel:`Manage Jenkins` and :guilabel:`Configure System`. Look for
+:guilabel:`Phabricator`, and under
+:guilabel:`Default Phabricator Credentials`, click :guilabel:`Add`.
+
+Set the following:
+
+* Domain: Global credentials (unrestricted)
+* Kind: Phabricator Conduit Key
+* Phabricator URL: :code:`https://phab.mousepawmedia.com`
+* Conduit Token: (the token from the previous step)
+
+Click :guilabel:`Add`. Select the credentials you just created under
+:guilabel:`Default Phabricator Credentials`.
+
+Also set :guilabel:`Location of arcanist` to :code:`/opt/phab/arcanist/bin/arc`,
+which is where Arcanist is installed on this server (which also runs
+Phabricator).
+
+Scroll down to :guilabel:`Phabricator Notifications` and set
+:guilabel:`Default Phabricator Credentials` to the credentials you created
+as well. (Don't worry about Uberalls)
+
+Docker Integration
+---------------------------------------------------
+
+Install the following plugins on Jenkins:
+
+* Docker
+* Docker Pipeline
+
+Docker Over TLS
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+We'll run Docker on a separate machine. We'll need to generate a certificate
+authority and certificates to control access to this separate build
+machine. These certificates need to be generated on this server and
+moved to the other server.
+
+..  code-block:: bash
+
+    $ sudo mkdir /opt/certs
+    $ cd /opt/certs
+    $ sudo su
+    $ openssl genrsa -aes256 -out ca-key.pem 4096
+    $ openssl req -new -x509 -days 365 -key ca-key.pem -sha256 -out ca.pem
+
+Fill out that form. Change the domain name from :code:`docker.mousepawmedia.com`
+as appropriate, as well as the IP address ``11.111.111.111``.
+
+..  code-block:: bash
+
+    $ openssl genrsa -out server-key.pem 4096
+    $ openssl req -subj "/CN=docker.mousepawmedia.com" -sha256 -new -key server-key.pem -out server.csr
+    $ echo subjectAltName = DNS:docker.mousepawmedia.com,IP:11.111.111.111,IP:127.0.0.1 >> extfile.cnf
+    $ echo extendedKeyUsage = serverAuth >> extfile.cnf
+    $ openssl x509 -req -days 365 -sha256 -in server.csr -CA ca.pem -CAkey ca-key.pem -CAcreateserial -out server-cert.pem -extfile extfile.cnf
+    $ openssl genrsa -out key.pem 4096
+    $ openssl req -subj '/CN=client' -new -key key.pem -out client.csr
+    $ echo extendedKeyUsage = clientAuth > extfile-client.cnf
+    $ openssl x509 -req -days 365 -sha256 -in client.csr -CA ca.pem -CAkey ca-key.pem -CAcreateserial -out cert.pem -extfile extfile-client.cnf
+    $ rm -v client.csr server.csr extfile.cnf extfile-client.cnf
+    $ chmod -v 0400 {ca-key,key,server-key}.pem
+    $ chmod -v 0444 {ca,server-cert,cert}.pem
+
+Create a Linode with Docker. (You can use the initial setup here as a model.)
+
+I recommend added the build server to /etc/hosts like this:
+
+..  code-block:: bash
+
+    $ sudo vim /etc/hosts
+
+Add the following line, changing the IP address to the IP of the
+Linode build server you created.
+
+..  code-block:: text
+
+    11.111.111.111 docker.mousepawmedia.com
+    1111:1111::1111:1111:1111:1111 docker.mousepawmedia.com
+
+Create an SSH key on this machine, and set it up on the other machine.
+That isn't covered here, as it's a standard procedure.
+
+Now add the SSH configuration to your machine:
+
+..  code-block:: bash
+
+    $ vim ~/.ssh/config
+
+Add the following block:
+
+..  code-block:: text
+
+    Host build
+        HostName docker.mousepawmedia.com
+        Port 333
+        User mpm
+        IdentityFile ~/.ssh/build_rsa
+
+Now we transfer the necessary certificates over SSH with Rsync to the
+build server.
+
+..  code-block:: bash
+
+    $ cd /opt/certs
+    $ sudo chmod 444 {ca,server-key,server-cert}.pem
+    $ rsync -avz --progress {ca,server-key,server-cert}.pem build:/home/mpm/incoming
+
+Install Docker on Remote Build Server
+""""""""""""""""""""""""""""""""""""""""""""""
+
+We start by installing Docker:
+
+..  code-block:: bash
+
+    $ sudo apt-get remove docker docker-engine docker.io
+    $ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+    $ sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
     $ sudo apt update
-    $ sudo apt install -y apt-transport-https ca-certificates curl
-    $ sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
-    $ echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
-    $ sudo apt update
-    $ sudo apt install -y kubectl
+    $ sudo apt install docker-ce docker-compose
 
-In the Linode control panel, go to Kubernetes and select
-:guilabel:`Create Cluster`.
+Next, we set up Docker to be automatically started by systemd.
 
-* Cluster Label: ``mpmbuilds``
-* Region: (same as other servers)
-* Kubernetes Version: (same as seen in :code:`kubectl version`)
+..  code-block:: bash
 
-I started out with three "Linode 2 GB Shared CPU" instances to the Node Pool,
-although you can change this later if needed.
+    $ sudo systemctl edit docker.service
 
-`SOURCE: Install and Set Up kubectl on Linux (Kubernetes) <https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/>`_
-`SOURCE: Deploy and Manage a Cluster with Linode Kubernetes Engine (Linode) <https://www.linode.com/docs/guides/deploy-and-manage-a-cluster-with-linode-kubernetes-engine-a-tutorial/>`_
+Set the contents of that file to:
+
+..  code-block:: text
+
+    [Service]
+    ExecStart=
+    ExecStart=/usr/bin/dockerd -H fd:// -H unix:///var/run/docker.sock
+
+Save and close, and then enable and restart Docker in systemd:
+
+..  code-block:: bash
+
+    $ sudo systemctl restart docker
+    $ sudo systemctl enable docker
+
+We need to add the user to the ``docker`` group. This is reasonably safe
+here, as this instance is largely sandboxed.
+
+..  code-block:: bash
+
+    $ sudo groupadd docker
+    $ sudo usermod -aG docker $USER
+    $ newgrp docker
+
+We also need to adjust the operating system to allow limiting the swap
+memory of Docker containers:
+
+..  code-block:: bash
+
+    $ sudo nano /etc/default/grub
+
+Edit the following line to match the following:
+
+..  code-block:: text
+
+    GRUB_CMDLINE_LINUX="cgroup_enable=memory swapaccount=1"
+
+Be **absolutely certain** you have that line correct!
+
+Save and close, and then run the following:
+
+..  code-block:: bash
+
+    $ sudo update-grub
+
+Restart the computer.
+
+`SOURCE: Install Docker Engine on Ubuntu <https://docs.docker.com/engine/install/ubuntu/>`_
+
+`SOURCE: Post-Installation steps for Linux <https://docs.docker.com/engine/install/linux-postinstall/>`_
+
+Remote Build Server Configuation
+""""""""""""""""""""""""""""""""""""""
+
+On the **remote build server**, run the following.
+
+..  code-block:: bash
+
+    $ sudo mkdir /etc/docker/certs
+    $ sudo mv /home/mpm/incoming/* /etc/docker/certs
+    $ sudo chmod 400 /etc/docker/certs/server-key.pem
+    $ sudo systemctl edit docker.service
+
+Set the contents of that file to the following:
+
+..  code-block:: json
+
+    [Service]
+    ExecStart=
+    ExecStart=/usr/bin/dockerd -H fd:// -H unix:///var/run/docker.sock -H tcp://0.0.0.0:2376 \
+            --tlsverify --tlscacert=/etc/docker/certs/ca.pem \
+            --tlscert=/etc/docker/certs/server-cert.pem \
+            --tlskey=/etc/docker/certs/server-key.pem
+
+Save and close, and then run:
+
+..  code-block:: bash
+
+    $ sudo ufw allow 2376
+    $ sudo systemctl daemon-reload
+    $ sudo systemctl restart docker.service
+    $ sudo netstat -lntp | grep dockerd
+
+If everything was done correctly, you should see:
+
+..  code-block:: text
+
+    tcp6       0      0 :::2376                 :::*                    LISTEN      19183/dockerd
+
+Connect To Remote Build Server
+""""""""""""""""""""""""""""""""""""""""""""""
+
+Next, we set up the client, which is the main server, running Jenkins.
+Run the following:
+
+..  code-block:: bash
+
+    $ mkdir ~/.docker
+    $ sudo chmod 444 /opt/certs/key.pem
+    $ cp /opt/certs/{ca,key,cert}.pem ~/.docker
+    $ vim ~/.bashrc
+
+Add the following two lines:
+
+..  code-block:: bash
+
+    export DOCKER_HOST=tcp://docker.mousepawmedia.com:2376
+    export DOCKER_TLS_VERIFY=1
+
+Save and close, and then run the following.
+
+..  code-block:: bash
+
+    $ source ~/.bashrc
+    $ docker version
+
+`SOURCE: Post-installation steps for Linux: Configuring Remote Access with systemd (Docker) <https://docs.docker.com/engine/install/linux-postinstall/#configuring-remote-access-with-systemd-unit-file>`_
+`SOURCE: Enable Remote Access with TLS on Systemd (RIP Tutorial) <https://riptutorial.com/docker/example/17079/enable-remote-access-with-tls-on-systemd>`_
+`SOURCE: How to set up Remote Access to Docker Daemon (Linux Handbook) <https://linuxhandbook.com/docker-remote-access/>`_
