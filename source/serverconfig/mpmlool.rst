@@ -1051,3 +1051,20 @@ After saving, you should then see a green checkmark and a message that
 says "Collabora Online server is reachable."
 
 `SOURCE: Getting started in 3 steps (Nextcloud) <https://nextcloud.com/collaboraonline/>`_
+
+Cleanup
+---------------------------
+
+Periodically you will get a warning that the server is out of disk space.
+When this happens, run the following commands:
+
+..  code-block:: bash
+
+    $ sudo docker ps
+    # Find the processid from the preceeding.
+    $ sudo docker stop processid
+    $ sudo docker rm processid
+    $ sudo docker system prune -a --force
+    $ find /tmp -ctime +10 -exec rm -rf {} +
+    $ sudo docker pull collabora/code
+    $ sudo docker run -t -d -p 127.0.0.1:9980:9980 -e 'domain=cloud\\.mousepawmedia\\.com|cloud\\.ajcharlesonpublishing\\.com|cloud\\.codemouse92\\.com|cloud\\.bughunters\\.cafe' -e 'username=admin' -e 'password=CollaboraPassword' --restart always --cap-add MKNOD collabora/code

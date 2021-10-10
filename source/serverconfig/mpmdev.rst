@@ -2250,33 +2250,267 @@ If everything was done correctly, you should see:
 
     tcp6       0      0 :::2376                 :::*                    LISTEN      19183/dockerd
 
-Connect To Remote Build Server
-""""""""""""""""""""""""""""""""""""""""""""""
-
-Next, we set up the client, which is the main server, running Jenkins.
-Run the following:
-
-..  code-block:: bash
-
-    $ mkdir ~/.docker
-    $ sudo chmod 444 /opt/certs/key.pem
-    $ cp /opt/certs/{ca,key,cert}.pem ~/.docker
-    $ vim ~/.bashrc
-
-Add the following two lines:
-
-..  code-block:: bash
-
-    export DOCKER_HOST=tcp://docker.mousepawmedia.com:2376
-    export DOCKER_TLS_VERIFY=1
-
-Save and close, and then run the following.
-
-..  code-block:: bash
-
-    $ source ~/.bashrc
-    $ docker version
-
 `SOURCE: Post-installation steps for Linux: Configuring Remote Access with systemd (Docker) <https://docs.docker.com/engine/install/linux-postinstall/#configuring-remote-access-with-systemd-unit-file>`_
 `SOURCE: Enable Remote Access with TLS on Systemd (RIP Tutorial) <https://riptutorial.com/docker/example/17079/enable-remote-access-with-tls-on-systemd>`_
 `SOURCE: How to set up Remote Access to Docker Daemon (Linux Handbook) <https://linuxhandbook.com/docker-remote-access/>`_
+
+Configuring Jenkins
+""""""""""""""""""""""""""""""""""""""""""""""
+
+In Jenkins, go to :guilabel:`Manage Jenkins -> Configure Clouds` and add a new Docker cloud. Set the following settings:
+
+* **Docker Host URI:** ``tcp://docker.mousepawmedia.com:2376``
+* **Server credentials:**  Configure with the ca, certificate, and key that you set up on the client in the previous step.
+
+Click :guilabel:`Test Connection`. It should connect!
+
+Creating the Docker Registry
+-----------------------------------
+
+The Docker Registry hosts images for creating Docker containers. This speeds
+up build times significantly.
+
+Unlike other Docker instances, this will live in the Docker instance running
+directly on the build server.
+
+I start by created a directory for the registry to live in, and then pointing
+Docker to it.
+
+..  code-block:: bash
+
+    $ sudo mkdir /opt/registry
+    $ sudo docker run -d -p 5000:5000 \
+    --restart=always \
+    --name registry \
+    -v /opt/registry:/var/lib/registry \
+    registry:2
+
+..  warning:: Do not run Docker containers as ``--privileged``. Ever.
+
+I can now set up Apache2 to host the registry.
+
+..  code-block:: bash
+
+    $ sudo vim /etc/apache2/sites-available/registry.conf
+
+Set the contents of that file to:
+
+..  code-block:: apache
+
+    <IfModule mod_ssl.c>
+        <VirtualHost registry.mousepawmedia.com:443>
+            ServerName registry.mousepawmedia.com
+            ServerAdmin developers@mousepawmedia.com
+
+            Header add X-Forwarded-Proto "https"
+            RequestHeader add X-Forwarded-Proto "https"
+
+            ProxyPreserveHost On
+            ProxyPass         /  http://127.0.0.1:5000/
+            ProxyPassReverse  /  http://127.0.0.1:5000/
+
+            <Location />
+                Order deny,allow
+                Allow from all
+
+                #AllowOverride AuthConfig
+                AuthName "Registry Authentication"
+                AuthType basic
+                AuthBasicProvider ldap
+                AuthLDAPURL "ldap://id.mousepawmedia.com:389/ou=Users, dc=id, dc=mousepawmedia, dc=com"
+                Require valid-user
+            </Location>
+
+            # Allow ping and users to run unauthenticated
+            <Location /v1/_ping>
+                Satisfy any
+                Allow from all
+            </Location>
+
+            # Allow ping and users to run authenticated
+            <Location /_ping>
+                Satisfy any
+                Allow from all
+            </Location>
+
+            SSLEngine on
+            SSLCertificateFile  /etc/letsencrypt/live/registry.mousepawmedia.com/fullchain.pem
+            SSLCertificateKeyFile /etc/letsencrypt/live/registry.mousepawmedia.com/privkey.pem
+            Include /etc/letsencrypt/options-ssl-apache.conf
+        </VirtualHost>
+    </IfModule>
+
+Save and close. Now we enable the site:
+
+..  code-block:: bash
+
+    $ sudo a2ensite registry
+    $ sudo a2enmod headers proxy authnz_ldap ldap
+    $ sudo systemctl restart apache2
+
+We can test it out with the following command:
+
+..  code-block:: bash
+
+    $ sudo docker login registry.mousepawmedia.com
+    $ sudo docker pull ubuntu:18.04
+    $ sudo docker tag ubuntu:18.04 registry.mousepawmedia.com/mpm-bionic
+    $ sudo docker push registry.mousepawmedia.com/mpm-bionic
+    $ sudo docker image remove ubuntu:18.04
+    $ sudo docker image remove registry.mousepawmedia.com/mpm-bionic
+    $ sudo docker pull registry.mousepawmedia.com/mpm-bionic
+
+Login with valid LDAP credentials. If it succeeds, everything is correctly
+configured.
+
+We now tear down our initial test container, and switch to ``docker-compose``
+for running our registry long-term instead:
+
+..  code-block:: bash
+
+    $ sudo docker container stop registry
+    $ sudo docker container rm -v registry
+    $ sudo mkdir -p /opt/docker/registry
+    $ sudo vim /opt/docker/registry/docker-compose.yml
+
+Set the contents of that file to...
+
+..  code-block:: yaml
+
+    version: '2'
+    services:
+        registry:
+            restart: always
+            image: registry:2
+            ports:
+            - "5000:5000"
+            volumes:
+            - /opt/registry:/var/lib/registry
+            environment:
+                REGISTRY_STORAGE: s3
+                REGISTRY_STORAGE_S3_ACCESSKEY: UAV1BYKVP8VX2VOOV52M
+                REGISTRY_STORAGE_S3_SECRETKEY: DUYkyk4MEmadvBPsq0882DUM141R1XuIPJXuCPXQ
+                REGISTRY_STORAGE_S3_REGION: us-east-1
+                REGISTRY_STORAGE_S3_REGIONENDPOINT: https://.us-east-1.linodeobjects.com
+                REGISTRY_STORAGE_S3_BUCKET: mpm-registry
+                REGISTRY_STORAGE_S3_ENCRYPT: 'false'
+                REGISTRY_STORAGE_S3_SECURE: 'true'
+                REGISTRY_STORAGE_S3_V4AUTH: 'false'
+                REGISTRY_STORAGE_S3_CHUNKSIZE: 5242880
+
+Save and close, and then run...
+
+    $ sudo chown root:docker -R /opt/docker
+    $ cd /opt/docker/registry
+    $ sudo docker-compose up -d
+
+The registry will now automatically restart with the ``docker.service``
+managed by ``systemctl``.
+
+SOURCE: `Securing a docker registry behind Apache <https://lathonez.com/2016/docker-registry-apache-letsencrypt/>`_
+SOURCE: `registry: s3 storage (GitHub) <https://github.com/docker/compose/issues/1557>`_
+
+Setting Up Docker Login with Pass
+-----------------------------------
+
+For additional security, we want to use ``pass`` to store credentials for
+Docker registry logins. Run this on each machine that needs to push to the
+registry.
+
+I'll start by logging out of the registry, and installing ``pass``:
+
+..  code-block:: bash
+
+    $ sudo docker logout registry.mousepawmedia.net
+    $ sudo apt install pass
+
+Before I go any further, I need a GPG key for the main user account.
+I can create a new one with the following commands:
+
+..  code-block:: bash
+
+    gpg --gen-key
+
+Fill out the form, using defaults for everything except the name and email.
+
+After creating it, or if I already have one I want to use, I can access the
+key by running ``gpg --list-keys``, and then looking for the name associated
+with the key for this user account. (We MUST have the associated private key
+accessible on this machine as well.)
+
+For example, here's the key I want:
+
+..  code-block:: text
+
+    pub   rsa3072 2021-10-10 [SC] [expires: 2023-10-10]
+        E08D77DB8847BC63143BE82AE9DFC829E9631E82
+    uid           [ultimate] MousePaw Media (Developers) <developers@mousepawmedia.com>
+    sub   rsa3072 2021-10-10 [E] [expires: 2023-10-10]
+
+I copy the public key, which is the part after the forward-slash (``/``) on the
+first line; in this case, that's ``B4B6AD7C``.
+
+I pass that to the next command, in place of ``PUBLICKEYTOUSE``:
+
+..  code-block:: bash
+
+    $ pass init PUBLICKEYTOUSE
+    $ pass git init
+
+Now I can install the ``docker-credential-helpers`` package I'll need.
+You should get the URL for the latest version from the
+`docker-credential-helpers GitHub Releases page <https://github.com/docker/docker-credential-helpers/releases>`_
+
+..  code-block:: bash
+
+    cd /tmp
+    wget https://github.com/docker/docker-credential-helpers/releases/download/v0.6.3/docker-credential-pass-v0.6.3-amd64.tar.gz
+    tar -xf docker-credential-pass-v0.6.3-amd64.tar.gz
+    chmod +x docker-credential-pass
+    sudo mv docker-credential-pass /usr/local/bin/.
+
+Test that installed correctly by running the following:]
+
+..  code-block:: bash
+
+    $ sudo docker-credential-pass version
+
+That should print out the version of ``docker-credential-pass` that is
+installed. If it works, you should also make sure it is communicating with
+``pass`` via the following command:
+
+..  code-block:: bash
+
+    $ sudo docker-credential-pass list
+
+If that returns ``{}`` or some other data (instead of an error or warning),
+everything is correctly installed.
+
+Finally, I'll tell Docker to use ``docker-credential-pass``:
+
+..  code-block:: bash
+
+    $ vim ~/.docker/config.json
+
+Set the contents of that file to the following, or if it already exists,
+modify the :code:`credsStore` property as shown:
+
+    {
+        "auths": {
+            "registry.mousepawmedia.com": {}
+        },
+        "credsStore": "pass"
+    }
+
+Save and close. You should now be able to login with Docker,
+which you can test via:
+
+..  code-block:: bash
+
+    $ docker login registry.mousepawmedia.net
+
+Enter valid LDAP credentials. If it works, you'll see:
+
+..  code-block:: text
+
+    Login Succeeded
