@@ -4593,6 +4593,313 @@ Restart Synapse and open up the expected ports:
 
 `SOURCE: Configuring a TURN Server <https://matrix-org.github.io/synapse/latest/turn-howto.html>`_
 
+Mattermost
+================
+
+We'll be using Mattermost self-hosted on the free plan. We won't be integrating
+with LDAP at this time. Rather, anyone can create accounts. Invites must be
+issued to join the Staff team.
+
+Install Mattermost
+------------------------------
+
+To set up Mattermost, we need to first create the database:
+
+..  code-block:: bash
+
+    $ sudo mysql -u root
+
+Run the following:
+
+..  code-block:: text
+
+    CREATE USER 'mattermost'@'%' IDENTIFIED BY 'mmuser-password';
+    CREATE DATABASE mattermost;
+    GRANT ALL PRIVILEGES ON mattermost.* to 'mattermost'@'%';
+    exit;
+
+Now we download and install the latest version of Mattermost. The version and
+download link are on `mattermost.com/deploy <https://mattermost.com/deploy/>`_
+
+..  code-block:: bash
+
+    $ cd /tmp
+    $ wget https://releases.mattermost.com/6.0.0/mattermost-6.0.0-linux-amd64.tar.gz
+    $ tar -xvzf mattermost*.gz
+    $ sudo mv mattermost /opt/mattermost
+    $ sudo mkdir /opt/mattermost/data
+    $ sudo useradd --system --user-group mattermost
+    $ sudo chown -R mattermost:mattermost /opt/mattermost
+    $ sudo chmod -R g+w /opt/mattermost
+    $ sudo vim /opt/mattermost/config/config.json
+
+Change the following sections of that file to match the following, subtituting
+in your own values as appropriate:
+
+..  code-block:: json
+
+    {
+      "ServiceSettings": {
+        "SiteURL": "https://chat.mousepawmedia.com",
+      "SqlSettings": {
+        "DriverName": "mysql",
+        "DataSource": "mattermost:mmuser-password@tcp(localhost:3306)/mattermost?charset=utf8mb4,utf8&writeTimeout=30s",
+
+Save and close.
+
+Now test Mattermost by running:
+
+..  code-block:: bash
+
+    $ cd /opt/mattermost
+    $ sudo -u mattermost ./bin/mattermost
+
+Watch for the text ``Server is listening on :8065``. If you see it, everything
+worked. Now we set this up to work in production.
+
+..  code-block:: bash
+
+    sudo vim /lib/systemd/system/mattermost.service
+
+Set the contents of that file to:
+
+..  code-block:: text
+
+    [Unit]
+    Description=Mattermost
+    After=network.target
+    After=mysql.service
+    BindsTo=mysql.service
+
+    [Service]
+    Type=notify
+    ExecStart=/opt/mattermost/bin/mattermost
+    TimeoutStartSec=3600
+    KillMode=mixed
+    Restart=always
+    RestartSec=10
+    WorkingDirectory=/opt/mattermost
+    User=mattermost
+    Group=mattermost
+    LimitNOFILE=49152
+
+    [Install]
+    WantedBy=mysql.service
+
+Save and close, and then run:
+
+..  code-block:: bash
+
+    $ sudo systemctl daemon-reload
+    $ sudo systemctl status mattermost.service
+
+Ensure the unit was loaded, and then...
+
+..  code-block:: bash
+
+    $ sudo systemctl start mattermost.service
+    $ curl http://localhost:8065
+
+Ensure that responds, then...
+
+..  code-block:: bash
+
+    $ sudo systemctl enable mattermost.service
+
+`SOURCE: Installing Mattermost on Ubuntu 20.04 (Mattermost) <https://docs.mattermost.com/install/installing-ubuntu-2004-LTS.html>`_
+
+Apache2 Proxy
+-----------------
+
+We'll use Apache2 as the proxy. The recommended technique is actually to use
+NGINX, but as we're already using Apache2 on this server, we'll stick with it.
+
+..  code-block:: bash
+
+    $ sudo vim /etc/apache2/sites-available/chat-mattermost.conf
+
+Set the contents of that file to:
+
+..  code-block:: apache
+
+    <VirtualHost chat.mousepawmedia.com:443>
+        ServerName chat.mousepawmedia.com
+        DocumentRoot /opt/mattermost
+        ServerAdmin webmaster@mousepawmedia.com
+
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+        SSLEngine on
+        SSLCertificateFile /etc/letsencrypt/live/chat.mousepawmedia.com/fullchain.pem
+        SSLCertificateKeyFile /etc/letsencrypt/live/chat.mousepawmedia.com/privkey.pem
+        Include /etc/letsencrypt/options-ssl-apache.conf
+
+        ProxyPreserveHost on
+
+        RewriteEngine On
+        RewriteCond %{REQUEST_URI} /api/v[0-9]+/(users/)?websocket [NC]
+        RewriteCond %{HTTP:UPGRADE} ^WebSocket$ [NC]
+        RewriteCond %{HTTP:CONNECTION} \bUpgrade\b [NC]
+        RewriteRule .* ws://127.0.0.1:8065%{REQUEST_URI} [P,QSA,L]
+
+        <Location />
+            Require all granted
+            ProxyPass http://127.0.0.1:8065/
+            ProxyPassReverse http://127.0.0.1:8065/
+            ProxyPassReverseCookieDomain 127.0.0.1 mysubdomain.mydomain.com
+        </Location>
+
+    </VirtualHost>
+
+Save and close. Now run:
+
+..  code-block:: bash
+
+    $ sudo a2enmod rewrite proxy proxy_http proxy_wstunne
+    $ sudo a2ensite chat-mattermost
+    $ sudo systemctl restart apache2
+
+`SOURCE: Configuring Apache2 as a proxy for Mattermost Server (Unofficial) (Mattermost) <https://docs.mattermost.com/configure/config-proxy-apache2.html>`_
+
+Mattermost Configuration
+-----------------------------------
+
+You should be able to go to ``chat.mousepawmedia.com`` now and proceed with
+Mattermost setup. Create the initial super user and the team. In this case,
+the team is "MousePaw Media", with the URL "staff".
+
+After setup, select the product menu in the top-left and select System Console.
+
+Email Notifications
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+On the System Console, from the left menu, go to :guilabel:`Environment`
+and :guilabel:`SMTP`. Set the following settings:
+
+* :guilabel:`SMTP Server`: ``mail.mousepawmedia.com``
+* :guilabel:`SMTP Server Port`:  ``465``
+* :guilabel:`Enable SMTP Authentication`: True
+* :guilabel:`SMTP Server Username`: ``noreply@mousepawmedia.com``
+* :guilabel:`SMTP Server Password`: (Password for email account)
+* :guilabel:`Connection Security`: TLS
+
+Click :guilabel:`Save`, and then :guilabel:`Test Connection`. (The other way
+around will not use the new settings in the test.)
+
+S3 Integration
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+On the System Console, from the left menu, go to :guilabel:`Environment`
+and :guilabel:`File Storage`. Set the following settings:
+
+* :guilabel:`File System Storage`: Amazon S3
+* :guilabel:`Amazon S3 Bucket`: ``mpm-mattermost```
+* :guilabel:`Amazon S3 Region`: ``us-east-1``
+* :guilabel:`Amazon S3 Access Key ID`: (Your access key id here)
+* :guilabel:`Amazon S3 Endpoint`: ``us-east-1.linodeobjects.com``
+* :guilabel:`Amazon S3 Secret Access Key`: (Your secret access key here)
+* :guilabel:`Enable Secure Amazon S3 Connections`: Yes
+
+Click :guilabel:`Save`, and then :guilabel:`Test Connection`. (The other way
+around will not use the new settings in the test.)
+
+Mattermost IRC Integration
+------------------------------------
+
+We'll connect to our IRC room via Matterbridge.
+
+Go to the `Matterbridge GitHub Releases <https://github.com/42wim/matterbridge/releases/latest>`_
+page and copy the link address for `matterbridge-x.xx.x-linux-64bit`. You'll use
+that in the following bash commands, in place of the :code:`URLHERE`. You will
+also need to revise the other reference to :code:`matterbridge-x.xx.x-linux-64bit`:
+
+..  code-block::  bash
+
+    $ sudo mkdir /opt/matterbridge
+    $ cd /opt/matterbridge
+    $ sudo wget URLHERE
+    $ sudo mv matterbridge-x.xx.x-linux-64bit matterbridge
+    $ sudo chmod a+x /opt/matterbridge
+    $ sudo vim /opt/matterbridge/matterbridge.toml
+
+Set the contents of that file to the following, replacing PASSWORD
+with the password as appropriate. Notice that we are using dedicated accounts
+on both services for Matterbridge's use:
+
+    [irc.myirc]
+    Nick="mousepawmedia"
+    NickServNick="mousepawmedia"
+    NickServPassword="PASSWORD"
+    Server="irc.libera.chat:6697"
+    UseTLS=true
+    UseSASL=true
+    SkipTLSVerify=false
+    RemoteNickFormat="[{PROTOCOL}] <{NICK}> "
+
+    [mattermost.mymattermost]
+    #The mattermost hostname. (do not prefix it with http or https)
+    Server="chat.mousepawmedia.com"
+
+    #the team name as can be seen in the mattermost webinterface URL
+    #in lowercase, without spaces
+    Team="staff"
+
+    #login/pass of your bot.
+    #Use a dedicated user for this and not your own!
+    Login="developers@mousepawmedia.com"
+    Password="PASSWORD"
+
+    RemoteNickFormat="[{PROTOCOL}] <{NICK}> "
+    PrefixMessagesWithNick=true
+
+    [[gateway]]
+    name="gateway1"
+    enable=true
+
+    [[gateway.inout]]
+    account="irc.myirc"
+    channel="#mousepawmedia"
+
+    [[gateway.inout]]
+    account="mattermost.mymattermost"
+    channel="town-square"
+
+Save and close. Now run the following to start Matterbridge. Watch
+the output here; ensure it works.
+
+..  code-block:: bash
+
+    /opt/matterbridge/matterbridge -conf /opt/matterbridge/matterbridge.toml
+
+If that works, we can disown the process, so it keeps running separate from the
+current SSH session...
+
+..  code-block:: bash
+
+    bg
+    jobs
+    disown -h %1
+
+Now we edit cron to start Matterbridge automatically:
+
+..  code-block:: bash
+
+    $ crontab -e
+
+Add the following line:
+
+..  code-block:: text
+
+    @reboot /opt/matterbridge/matterbridge -conf /opt/matterbridge/matterbridge.toml
+
+Save and close.
+
+SOURCE: `Matterbridge README: Installing / upgrading <https://github.com/42wim/matterbridge/blob/master/README.md#installing--upgrading>`_
+
+SOURCE: `How to create your config (Matterbridge) <https://github.com/42wim/matterbridge/wiki/How-to-create-your-config>`_
+
+
 LimeSurvey
 =================
 

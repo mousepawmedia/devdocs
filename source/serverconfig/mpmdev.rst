@@ -2353,12 +2353,14 @@ We can test it out with the following command:
 ..  code-block:: bash
 
     $ sudo docker login registry.mousepawmedia.com
-    $ sudo docker pull ubuntu:18.04
-    $ sudo docker tag ubuntu:18.04 registry.mousepawmedia.com/mpm-bionic
-    $ sudo docker push registry.mousepawmedia.com/mpm-bionic
-    $ sudo docker image remove ubuntu:18.04
-    $ sudo docker image remove registry.mousepawmedia.com/mpm-bionic
-    $ sudo docker pull registry.mousepawmedia.com/mpm-bionic
+    $ sudo docker pull hello-world:latest
+    $ sudo docker tag hello-world:latest registry.mousepawmedia.com/hello-world:latest
+    $ sudo docker push registry.mousepawmedia.com/hello-world:latest
+    $ sudo docker image remove hello-world:latest
+    $ sudo docker image remove registry.mousepawmedia.com/hello-world:latest
+    $ sudo docker pull registry.mousepawmedia.com/hello-world:latest
+
+..  NOTE:: The above is a great way to test the registry from a remote machine.
 
 Login with valid LDAP credentials. If it succeeds, everything is correctly
 configured.
@@ -2380,6 +2382,7 @@ Set the contents of that file to...
     version: '2'
     services:
         registry:
+            container_name: registry
             restart: always
             image: registry:2
             ports:
@@ -2387,16 +2390,20 @@ Set the contents of that file to...
             volumes:
             - /opt/registry:/var/lib/registry
             environment:
-                REGISTRY_STORAGE: s3
-                REGISTRY_STORAGE_S3_ACCESSKEY: UAV1BYKVP8VX2VOOV52M
-                REGISTRY_STORAGE_S3_SECRETKEY: DUYkyk4MEmadvBPsq0882DUM141R1XuIPJXuCPXQ
-                REGISTRY_STORAGE_S3_REGION: us-east-1
-                REGISTRY_STORAGE_S3_REGIONENDPOINT: https://.us-east-1.linodeobjects.com
-                REGISTRY_STORAGE_S3_BUCKET: mpm-registry
-                REGISTRY_STORAGE_S3_ENCRYPT: 'false'
-                REGISTRY_STORAGE_S3_SECURE: 'true'
-                REGISTRY_STORAGE_S3_V4AUTH: 'false'
-                REGISTRY_STORAGE_S3_CHUNKSIZE: 5242880
+                - REGISTRY_REDIRECT_DISABLE=true
+                - REGISTRY_STORAGE=s3
+                - REGISTRY_STORAGE_S3_ACCESSKEY=ACCESSKEYHERE
+                - REGISTRY_STORAGE_S3_SECRETKEY=SECRETKEYHERE
+                - REGISTRY_STORAGE_S3_REGION=us-east-1
+                - REGISTRY_STORAGE_S3_REGIONENDPOINT=https://us-east-1.linodeobjects.com
+                - REGISTRY_STORAGE_S3_BUCKET=mpm-registry
+                - REGISTRY_STORAGE_S3_ENCRYPT=false
+                - REGISTRY_STORAGE_S3_SECURE=true
+                - REGISTRY_STORAGE_S3_V4AUTH=true
+                - REGISTRY_STORAGE_S3_CHUNKSIZE=5242880
+
+..  NOTE:: If you don't use V4AUTH and disable redirect, you'll get http 307
+    errors and other problems with push/pull.
 
 Save and close, and then run...
 
@@ -2408,7 +2415,13 @@ The registry will now automatically restart with the ``docker.service``
 managed by ``systemctl``.
 
 SOURCE: `Securing a docker registry behind Apache <https://lathonez.com/2016/docker-registry-apache-letsencrypt/>`_
+
 SOURCE: `registry: s3 storage (GitHub) <https://github.com/docker/compose/issues/1557>`_
+
+SOURCE: `How to Configure Nextcloud to use Object Storage -- Create a New Linode Object Storage External Storage Mount (Linode) <https://www.linode.com/docs/guides/how-to-configure-nextcloud-to-use-linode-object-storage-as-an-external-storage-mount/#create-a-new-linode-object-storage-external-storage-mount>`_
+
+SOURCE: `How to set up a Docker Registry with a Swarm S3 storage target (Confluence) <https://caringo.atlassian.net/wiki/spaces/KB/pages/718110780/How+to+set+up+a+Docker+Registry+with+a+Swarm+S3+storage+target>`_
+
 
 Setting Up Docker Login with Pass
 -----------------------------------
