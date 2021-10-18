@@ -30,7 +30,7 @@ install it along with its dependencies and related tools.
 
 ..  code-block:: bash
 
-    $ sudo apt install git php php-curl php-cli php-xml cppcheck arcanist
+    $ sudo apt install git php php-curl php-cli php-xml cppcheck arcanist clang-format arcanist-clang-format-linter
 
 Then, we just test it out.
 
@@ -54,7 +54,7 @@ First, we need to install our dependencies.
 
 ..  code-block:: bash
 
-    $ sudo apt install git php php-curl php-cli php-xml cppcheck
+    $ sudo apt install git php php-curl php-cli php-xml cppcheck clang-format
 
 Enter your password if prompted. It will want to install a few other packages.
 Tell it "yes" (`Y`) and let it run. It might take a little while.
@@ -98,6 +98,18 @@ Save and close pluma. Then, restart your computer. To test it out, run...
 Arcanist may ask you to install additional PHP packages via apt. If you set
 everything up right, you'll see arc's help list.
 
+We use the clang-format-linter to configure our C++ code. 
+For non-Debian-based Linux systems, you will need to follow the steps below:
+
+Locate where Arcanist is installed on your system via :code:`whereis arcanist`. 
+This will provide you with a path like `/usr/share/arcanist`. 
+Navigate to the folder containing Arcanist (e.g. `/usr/share`) and install `arcanist-clang-format-linter` like this:
+
+..  code-block:: bash
+
+    cd /usr/share   # or whatever path given by 'where arcanist'
+    sudo git clone https://github.com/pwithnall/morefas-phabricator.git clang-format-linter
+
 Installing on Mac
 -----------------------------------
 
@@ -108,6 +120,23 @@ installation, see `Git: Getting Started Installing Git <https://git-scm.com/book
 You can install Arcanist following these instructions:
 `Arcanist User Guide: Mac OS X <https://secure.phabricator.com/book/phabricator/article/arcanist_mac_os_x/>`_
 
+We use the clang-format-linter to configure our C++ code. 
+For macOS systems, you will need to follow the steps below:
+
+Install clang-format first using homebrew with the following code:
+
+..  code-block:: bash
+    brew install clang-format
+
+Locate where Arcanist is installed on your system via :code:`whereis arcanist`. 
+This will provide you with a path like `/usr/share/arcanist`. 
+Navigate to the folder containing Arcanist (e.g. `/usr/share`) and install `arcanist-clang-format-linter` like this:
+
+..  code-block:: bash
+
+    cd /usr/share   # or whatever path given by 'where arcanist'
+    sudo git clone https://github.com/pwithnall/morefas-phabricator.git clang-format-linter
+
 Installing on Windows
 -----------------------------------
 
@@ -117,6 +146,24 @@ the instructions for Linux.
 Otherwise, to install directly on Windows, follow these instructions:
 * `Git: Getting Started Installing Git <https://git-scm.com/book/en/v2/Getting-Started-Installing-Git>`_
 * `Arcanist User Guide: Windows <https://secure.phabricator.com/book/phabricator/article/arcanist_windows/>`_
+* `Clang-format-linter guide <https://llvm.org/builds/>`_
+
+To install clang-format-linter follow the directions below:
+
+Locate where Arcanist is installed on your system via:
+
+..  code-block:: cmd
+    
+    cd\ 
+    dir <arcanist> /AD /s
+
+This will provide you with a path like `C:\Program Files (x86)`. 
+Navigate to the folder containing Arcanist (e.g. `C:\Program Files (x86)`) and install `arcanist-clang-format-linter` like this:
+
+..  code-block:: cmd
+
+    cd c:\Program Files (x86)` # or whatever path given by 'dir <arcanist> /AD /s'
+    git clone https://github.com/pwithnall/morefas-phabricator.git clang-format-linter
 
 .. _gitarc_gitconfig:
 
