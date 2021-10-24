@@ -65,32 +65,13 @@ instructions on using Phabricator, see :ref:`phab`.
 Chatting With Us
 ===============================
 
-You can join our chatroom via either **Matrix** or **IRC**. We highly
-recommend you join the chatroom, where you can talk with MousePaw Media
-staff and other community members.
+You can join our chatroom via **IRC**. We highly recommend you join the
+chatroom, where you can talk with MousePaw Media staff and other community
+members.
 
-Matrix
---------------------------------
-
-Matrix is a modern, free, decentralized chat protocol. If you already have
-a federated Matrix account somewhere, simply join the room
-``#lobby:chat.mousepawmedia.com``.
-
-If you want to join Matrix, go to ``https://element.io/get-started`` and either
-open in browser or install a client. On the login screen for the client,
-select Create account and create your free account.
-
-Towards the left, click or tap the compass icon to search public rooms,
-and then search for ``#lobby:chat.mousepawmedia.com``.
-
-There are many Matrix clients besides Element.
-`See the full list here <https://matrix.org/clients/>`_.
-
-Libera.Chat IRC
--------------------------------
-
-If you prefer IRC, you can join the ``#mousepawmedia`` room on the
-``irc.libera.chat`` IRC network.
+You can join the ``#mousepawmedia`` room on the ``irc.libera.chat`` IRC
+network. The chatroom is bridged to our Mattermost chat via the
+``mousepawmedia``` bot.
 
 If you want to try IRC, but don't know how to get started, check out
 `https://libera.chat <https://libera.chat/>`_, or see our :ref:`irc` guide.

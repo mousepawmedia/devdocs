@@ -67,8 +67,7 @@ Here are some very important things to keep in mind at all times.
   using the Microsoft Authenticator on your mobile and/or the
   `Authenticator app <https://flathub.org/apps/details/com.belmoussaoui.Authenticator>`_
   on Linux desktop.
-* Consider using Element for Matrix chat, and enable its optional
-  security features.
+* Consider adding Multi-Factor Authentication to your Mattermost account.
 * Be careful clicking on unusual or disguised links in emails, even if
   the email looks like it's from within the company or from a coworker.
   Verify URLs and SSL certificates before entering your password or other
@@ -93,6 +92,8 @@ The Staff Network consists of seven major components:
 
 * Phabricator (phab.mousepawmedia.com)
 
+* Mattermost (chat.mousepawmedia.com)
+
 * Nextcloud (cloud.mousepawmedia.com)
 
 * Jenkins (ci.mousepawmedia.com)
@@ -101,7 +102,7 @@ The Staff Network consists of seven major components:
 
 * LimeSurvey (survey.mousepawmedia.com)
 
-We also use Skype for regular communication.
+We also use `Jitsi Meet <https://meet.jit.si/>`_ for regular communication.
 
 Visit **staff.mousepawmedia.com** for our main staff portal, with links to
 everything else.
@@ -464,6 +465,90 @@ doing. There are six major apps you should be making frequent use of.
 All of these apps (and more) are on the left side of the main page of
 Phabricator.
 
+.. _gstaff_mattermost:
+
+Mattermost
+----------------------------
+
+We use Mattermost, an open source chat service, for team chat.
+**All staff members are expected to be logged into Mattermost during work**,
+and are strongly encouraged to stay signed in when convenient to facilitate
+collaboration and communication.
+
+Mattermost can be accessed directly through the web browser from
+`chat.mousepawmedia.com <https://chat.mousepawmedia.com/>`_, but we
+*strongly* recommend installing the official client, which works on Linux,
+Windows, macOS, Android, and iOS. You can download and install the client from
+`mattermost.com/download <https://mattermost.com/download/>`_.
+
+..  important:: Install the Mattermost client on your work computer, and if
+    possible, on your mobile device.
+
+.. _gstaff_mattermost_login:
+
+Creating Your Account
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Mattermost is the only service we use which is not tied to your MousePaw ID.
+Instead, you'll need to create an account using the invite that was sent
+to your MousePaw Media email address. You **must** sign up using your
+company email address, or else you will be unable to access our chatrooms.
+
+..  important:: Sign up using the invite that was emailed to your company
+    email address.
+
+Once you've signed in to Mattermost, either through the website or the client,
+you should immediately set up your user profile. Click your profile picture in
+the upper-left corner and click :guilabel:`Account Settings`. Add your
+:guilabel:`Full Name`, your :guilabel:`Profile Picture`, and anything else you
+want to add.
+
+..  important:: Log into the MousePaw Media Mattermost and set up your user
+    profile with your Full Name and Profile Picture.
+
+At this time, you may want to take a minute and look through the other
+Account Settings, especially...
+
+* Security: Multi-factor Authentication
+* Notifications: Email Notifications
+* Display: Theme
+
+.. _gstaff_mattermost_rooms:
+
+Rooms in Mattermost
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+When you log in for the first time, you'll be added to the most important
+rooms. There may be more that you can find and join freely later.
+
+Here's the most important rooms for you to join and know:
+
+**Town Square** (``~town-square``) is our public room, linked to our IRC
+channel. Please default to using this room for any development conversations,
+so anyone joining via IRC can see and join in.
+
+..  warning:: Because Town Square is bridged to IRC, deleting a message will not
+    actually delete it from the room history altogether. What you say, you
+    cannot take back.
+
+**Water Cooler** (``~water-cooler``) is our staff-only chatroom. Use this for
+any internal conversations that we don't want to have in public.
+
+**Off Topic** (``~off-topic``) is for random chat-chat that doesn't really
+relate to work.
+
+**ECO** (``~eco``) is for any questions you want to bring up with ECO, but
+which you don't necessary need to keep confidential from other staff.
+(If you want a private conversation, feel free to email
+``eco@mousepawmedia.com`` instead.)
+
+**IT**  (``~it``) is for reporting any problems with the staff network,
+including email.
+
+Last, but not least, you can private message anyone through Mattermost.
+
+..  important:: Post a message in ``~town-square``.
+
 .. _gstaff_nextcloud:
 
 Nextcloud
@@ -508,113 +593,6 @@ you'll especially be spending a lot of time on Nextcloud.
 
 When you upload files, be sure to place them in an appropriate folder and
 **share the folder with your department.**
-
-.. _gstaff_network_chat:
-
-Matrix Chat
------------------------------------
-
-We use Matrix for chat because it's free, decentralized, and open source.
-Some of our rooms are open to the public, particularly
-``#lobby:chat.mousepawmedia.com``, while many others are private.
-
-Some of our private channels on Matrix are actually end-to-end encrypted,
-for maximum security.
-
-.. _gstaff_network_chat_client:
-
-Selecting a Client
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-There are a number of clients to choose from. We recommend installing a
-native Linux client on your work machine, and a mobile client on your phone
-for convenience.
-
-Here are a few (of many!) options:
-
-* `Element (formerly Riot) <https://element.io/get-started>`_ [Win/macOS/Linux/Android/iOS] (RECOMMENDED!)
-* `Spectral <https://gitlab.com/spectral-im/spectral>`_ [Linux]
-* `Fractal <https://wiki.gnome.org/Apps/Fractal>`_ [Linux]
-* `NeoChat <https://invent.kde.org/network/neochat>`_ [Linux]
-* `FluffyChat <https://fluffychat.im/>`_ [Linux/Android/iOS/Browser]
-
-All of the above can be installed on Linux via Flatpak (recommended!).
-`Browse Matrix clients on Flathub <https://flathub.org/apps/search/matrix%20chat>`_.
-
-..  note:: Right now, it's not possible to log into our homeserver with
-    the browser-based versions of Element and SchildiChat. Use the desktop or
-    mobile client instead. If you want browser-based access, try FluffyChat.
-
-You can see a `full list of Matrix clients here <https://matrix.org/clients/>`_.
-
-..  important:: Install a Matrix client now. If you're not sure which one you
-    want to use, try Element.
-
-.. _gstaff_network_chat_login:
-
-Logging In
-^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Depending on which Matrix client you choose, your login screen will look
-slightly different. In any case, you'll need three pieces of information
-to login:
-
-* Homeserver: ``chat.mousepawmedia.com``
-* Username: (your company username)
-* Password: (your company password)
-
-..  note:: your Matrix login for our homeserver is tied to your MousePaw ID.
-
-That's all! You can now chat on our Matrix server. You should take a moment
-to add your profile picture to your account profile, so everyone can see
-your smiling face.
-
-..  important:: Log into the MousePaw Media Matrix homeserver on your
-    installed client(s) and add your profile picture.
-
-.. _gstaff_network_chat_rooms:
-
-Joining Rooms
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-When you log in for the first time, you won't see any rooms. This is okay!
-On your Matrix client, look for the option to join a public room.
-
-..  note:: Many of our private rooms are listed as "public" for anyone logged
-    in with company credentials. Don't worry...the outside world can't see
-    most of these.
-
-Here's the most important rooms for you to join and know:
-
-**Lobby** (``#lobby``) is our public room, joinable by absolutely anyone.
-It's where general conversation with our community at large will take place.
-Be careful what you post in this room! Anyone can see it, including the
-history.
-
-If someone has a Matrix account with *any* federated homeserver, including the
-free and public ``matrix.org``, they can join this room as
-``#lobby:chat.mousepawmedia.com``. It's also bridged to our
-``#mousepawmedia`` IRC room on Libera.Chat.
-
-..  warning:: Because Lobby is bridged to IRC, deleting a message will not
-    actually delete it from the room history altogether. What you say, you
-    cannot take back.
-
-**Water Cooler** (``#staff``) is our company-wide chatroom. Anyone with a
-MousePaw ID can join this room, but no one else can see it.
-
-We also have staff rooms for each of our main departments: ``#programming``,
-``#designprod``, and ``#contentdev``. These are also only visible to users
-logged in with a MousePaw ID.
-
-You can create your own public and private rooms as well, although I
-*strongly* recommending using Element for this, as it has the best options
-for encryption and privacy. If you want a chat to be encrypted, make it
-private, and then invite the staff members you want to join.
-
-Last, but not least, you can private message anyone through Matrix.
-
-..  important:: Join the Lobby and Water Cooler rooms.
 
 .. _gstaff_eco:
 

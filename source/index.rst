@@ -123,8 +123,9 @@ Feedback
 This documentation is written and maintained by the MousePaw Media Standards
 Board. Feedback is welcome via email (developers@mousepawmedia.com).
 
-You can also find us on Matrix in `#lobby:chat.mousepawmedia.com`, or on
-the `#mousepawmedia channel` on Libera.Chat IRC.
+You can also find us on on the `#mousepawmedia` channel on Libera.Chat IRC,
+which is bridged to our company Mattermost chat via the `mousepawmedia` bot
+account. (We're there, promise!)
 
 Pull requests to this repository are not accepted. If you wish to propose a
 change, email your patch to us at the address above.
