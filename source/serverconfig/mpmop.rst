@@ -2147,9 +2147,12 @@ in your own values as appropriate:
     {
       "ServiceSettings": {
         "SiteURL": "https://chat.mousepawmedia.com",
+      }
       "SqlSettings": {
         "DriverName": "mysql",
         "DataSource": "mattermost:mmuser-password@tcp(localhost:3306)/mattermost?charset=utf8mb4,utf8&writeTimeout=30s",
+        }
+    }
 
 Save and close.
 
