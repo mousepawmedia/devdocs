@@ -6,6 +6,9 @@ Phabricator
 Registration and Login
 =================================
 
+MousePaw Media staff and interns should log in with LDAP. Everyone else logs
+in using GitHub.
+
 .. _phab_register_github:
 
 Registration with Github
@@ -42,9 +45,6 @@ MousePaw Media staff may log into Phabricator using their LDAP credentials
 If you're a staff member, and you are having trouble logging in with your
 LDAP credentials, contact IT to have your password reset.
 
-..  important:: We do not issue LDAP credentials to non-staff under
-    any circumstances.
-
 General Structure
 =================================
 
@@ -61,6 +61,10 @@ unique ID, such as "D123" (Differential Revision 123) or "T50"
 This structure makes URLs very easy to guess in Phabricator. The page for the
 Maniphest application would be :code:`https://phab.mousepawmedia.com/maniphest`.
 Meanwhile, the page for task 50 (T50) would be :code:`https://phab.mousepawmedia.com/T50`.
+
+However, if you aren't sure of the object code, just start typing in
+Phabricator's universal search box in the upper-right. Suggestions will
+appear as you type, and you can click the one you want.
 
 .. _phab_toolbar:
 
@@ -94,38 +98,6 @@ Right Now
 When you first log onto Phabricator, you'll start on the Right Now page.
 This will show the latest activity and help you narrow in on what you need
 to do.
-
-* **Next Tasks...** shows the five highest priority tasks assigned to you, from
-  Maniphest. (See :ref:`phab_maniphest`).
-
-* **Review...** shows the three main review queues.
-
-  * **Revisions** shows all the Differential Revisions you are involved with,
-    either as an author or reviewer. (See :ref:`phab_differential`).
-
-  * **Pholios** shows the five most recent open Pholio Mocks.
-    (See :ref:`phab_pholio`).
-
-  * **Audits** shows all the Audits you are involved with, either as the
-    commit author or a reviewer. (See :ref:`phab_audit`).
-
-* **The Latest** shows the latest activity on Phabricator.
-
-  * **Just Now...** lists the three most recent events on Phabricator.
-
-  * **What's Next?** contains helpful reminders on what you should do on
-    Phabricator every time you're working.
-
-  * **All Recent** lists everything that has happened on Phabricator recently.
-    You can also check the *Feed* application for this info.
-
-* **Answer...** lists the five most recent Ponder questions. Consider commenting
-  on or answering one! (See :ref:`phab_ponder`).
-
-* **Vote...** shows the five most recent open Polls. Be sure to vote in each!
-  (See :ref:`phab_slowvote`).
-
-* **Flags** lists all of your flags. (See :ref:`phab_flags`).
 
 .. _phab_comments:
 
@@ -284,71 +256,51 @@ confusion, we will use these terms as defined below. From now on, we'll use the
 term "project object" or "subproject object" to denote the actual
 object type, instead of the kind of project object.
 
-* We use the term **Project** or Master Project to refer to a particular
-  top-level "Project" designated with "[Project]" in the name. These are the
-  giant bins for organizing what we're working on - :code:`PawLIB`,
-  :code:`Redstring`, :code:`Knitpicker`, and :code:`Anari`, to name a few.
+* We use the term **Project** to refer to a particular product we're producing.
+  These are the bins for organizing what we're working on - :code:`Goldilocks`,
+  :code:`Ratscript`, :code:`Stormsound`, and :code:`Anari`, to name a few.
 
-* For our purposes, a **Subproject** refers to a subset of features within a Project.
+* A **Label** exists purely for organizing other things by technologies or
+  concepts. See :ref:`phab_projects_labels`.
 
-* A **Group** designates permissions. We have several...
-
-  * :code:`Bots [Group]` are system bots, which can access everything.
+* A **Group** designates permissions. The hierarchy is as follows:
 
   * :code:`Trusted [Group]` is made up of all users who have "trusted"
     level access. (See :ref:`phab_security`).
 
-  * :code:`Trusted Contributors [Group]` are non-staff members who have earned
-    additional authority and privileges.
+    * :code:`Bots [Group]` are accounts for automated systems, with full
+      access to everything.
 
-  * :code:`Informal Interns [Group]` are outside contributors who are
-    working as unofficial interns. They receive much of the same training
-    as interns, but are strictly volunteers, and not legally considered staff.
+    * :code:`Trusted Contributors [Group]` are non-staff members who have earned
+      additional authority and privileges.
 
-  * :code:`Interns [Group]` are official staff interns. They have the
-    full authority of a staff member, but are currently in training.
+    * :code:`Alumni [Group]` are internship graduates who have left the company.
+    They retain Trusted-level access and privileges.
 
-  * :code:`Management [Group]` are official MousePaw Media managers.
+    * :code:`Staff [Group]` is all current staff...
 
-  * :code:`Senior Staff [Group]` are official staff, usually those who have
-    graduated from the internship program.
+      * :code:`Interns [Group]` are current MousePaw Media interns. This is
+        further subdivided into :code:`Provisional Intern [Group]` and
+        :code:`Intern [Group]`.
 
-  * :code:`Senior Advisors [Group]` are official, yet inactive, staff. They
-    served as senior staff at some point, but have officially left the company.
-    However, they retain all the access and privileges of senior staff.
+      * :code:`Regular Staff [Group]` are non-intern staff.
 
-  * :code:`Staff [Group]` is a master group denoting all official staff.
+        * :code:`Mentors [Group]` are internship mentors.
+
+        * :code:`Journeyman [Group]` are internship graduates who haven't yet
+          reached Senior rank.
+
+        * :code:`Senior [Group]` are Senior-level staff.
+
+    * :code:`Management [Group]` are official MousePaw Media managers.
 
 * A **Department**, designated with "[Dept]", is a particular department at
   MousePaw Media. Membership is staff-only, and controlled by management.
-
-* A **Team** is a group within a department. A team is generally characterized
-  by a particular approach and skill set, and maintains a specific set of
-  projects (their "code territory"). We have three teams:
-
-  * The :code:`BSS [Team]`, or "Black Sheep Squadron", specializes in data
-    storage and processing. Their "code territory" includes PawLIB,
-    SIMPLEXpress, PuppeteerXML, Trailcrest, and Ratscript.
-
-  * The :code:`IMF [Team]` specializes in multimedia and graphics. Their
-    "code territory" includes Anari, Lightrift, and Stormsound.
-
-  * The :code:`A-Team [Team]` specializes in integration, threading, and
-    multiprocessing. The team is currently inactive.
 
 * A **Control** is a special type of project that controls automation on
   objects tagged with it.
 
 * **Access** designates a special permission group.
-
-* A **Subproject** belongs to a Project for further organizing objects. For
-  example, PawLIB has subprojects for OneString and Goldilocks,
-  to name a couple. A subproject should define a large, distinct collection of
-  features with a unique name. These aren't arbitrary divisions. Use with
-  caution!
-
-* A **Milestone** is a special kind of subproject, which belongs to a Master
-  Project. It is used to designate versions.
 
 * A **Label** is a project that is used exclusively for topical tagging and
   organization. We maintain labels for most of the technologies we use.
@@ -421,14 +373,10 @@ upper-right corner of the Projects app, and select :guilabel:`Create Label`.
 Workboards
 ------------------------------------------
 
-A Workboard is an organization tool which appears on each Project, Subproject,
-and Milestone. Using the Master Project or Subproject's workboard is usually
-best, as columns for each Milestone are automatically generated. You can
-drag-and-drop tasks to move them between milestones.
-
-..  note:: A task will NOT appear on the workboards for both its Project and
-    Subproject. If it is tagged with a Subproject, it will appear on that
-    workboard. Thus, it is prudent to ensure each Subproject has Milestones.
+A Workboard is an organization tool which appears on each Project.
+We use Workboards for tracking the tasks we've selected for our current
+sprint. Be careful not to rearrange these on your own. Selecting and priorizing
+tasks in a sprint is a team activity.
 
 ..  _phab_security:
 
@@ -499,6 +447,83 @@ Sometimes, we use a special group for certain objects:
 
 * **Repository Masters [Access]**: All users with control over the repositories.
 
+.. _phab_phame:
+
+Phame
+==================================
+
+**Phame** is our internal blogging tool, which we use for our Dev Journals
+and our company newsletter.
+
+.. _phab_phame_reading:
+
+Reading on Phame
+----------------------------------
+
+From the main page of Phame, you can see a feed of all Posts, starting from
+the most recent. To the right is the list of all Blogs.
+
+To view a Post, click its title. At the bottom, you can leave comments.
+
+To view a Blog, from the main page of Phame, click the Blog name at right.
+Alternatively, on a Post, click the Blog name on the breadcrumb trail at the
+top of the page. From the :guilabel:`Actions` menu, you can Subscribe or
+Unsubscribe, Mute Notifications, and more.
+
+.. _phab_phame_posting:
+
+Posting on Phame
+----------------------------------
+
+There are two ways to start a new Post:
+
+* From the main page of Phame, click the :guilabel:`+` icon next to the Blog
+  you want to post to.
+
+* Navigate to the Blog you want to post to, and select :guilabel:`Actions`
+  and :guilabel:`Write Post`.
+
+Give your post a Title, and optionally, a Subtitle. You can keep your post's
+Visibility as :guilabel:`Published` to publish when you first save, or else
+change it to :guilabel:`Draft`, so you can choose when to publish later.
+
+The Body is the main content of the post. The template provided is for
+Dev Journal posts, which you can use or modify as you need. You can use
+the full Remarkup markdown language here, including formatting, embedded
+objects, images, memes, and emojis. Make it yours!
+
+Tags is purely optional, although it may be helpful to add Labels related
+to your post. For example, if you learned something amazing about Clang,
+you might consider adding "Clang/LLVM [Label]" here.
+
+Normally, anyone who subscribes to your blog, and anyone you mention directly
+in your post, will be notified of your post. However, if you want someone
+else to know, add them to subscribers here. (Be advised, they may not get an
+email about the initial post, only updates to it. It's a glitch.)
+
+When you're done, click :guilabel:`Create New Post`. That will create your
+Post and take you directly to it.
+
+From here, you can further modify your post using the :guilabel:`Actions`
+menu:
+
+* :guilabel:`Publish` or :guilabel:`Unpublish` will change your post to
+  Published or Draft status, respectively. If you started as a Draft, click
+  :guilabel:`Publish` to make the post visible to all!
+
+* :guilabel:`Edit Post` takes you back to the post editing screen.
+
+* :guilabel:`Edit Header Image` lets you add a header image. These are NOT
+  resized and cropped automatically. If you want to add one, I recommend
+  the dimensions 960x320.
+
+* :guilabel:`Move Post` moves the post to a different Blog.
+
+* :guilabel:`View History` shows the whole edit history of the post.
+
+* :guilabel:`Archive` effectively deletes the post, although you can
+  Unarchive it later if you so choose.
+
 .. _phab_maniphest:
 
 Maniphest
@@ -521,27 +546,6 @@ Creating Tasks
 You can create a new Maniphest Task by clicking :guilabel:`Create Task` in
 the upper-right corner, and selecting the task type.
 
-* :guilabel:`Create Task` allows you to create a new task, usually for a
-  project *you* are working on.
-
-* :guilabel:`Bug Report` creates a new Bug Report for a project you aren't
-  working on. It only prompts you for the essential information, and leaves the
-  actual prioritization to the person working on that bug.
-
-* :guilabel:`Feature Request` is like Bug Report, but is focused on a requested
-  feature instead of an actual bug.
-
-* :guilabel:`D+P Task` is for Design+Production department tasks.
-
-* :guilabel:`Private Task` is for any task that should be hidden from everyone
-  but you. Please only use this if the task is MousePaw Media-related, but
-  unrelated to an actual project. For example, you may create an "Organize
-  Work Inbox" task, or a "Read 'Dreaming in Code'" task - those sorts of tasks
-  only matter to you, and might even overlap a similar task for another user
-  if made public.
-
-..  warning:: DO NOT use Private Task for *any* project-related task!
-
 More detail about creating tasks, bug reports, and feature requests can
 be found at :ref:`gtaskcreate`.
 
@@ -556,7 +560,7 @@ To the right of the description, you will see the following (depending on
 permissions):
 
 * :guilabel:`Edit Task` allows you to edit any field in the task. Use this
-  ability courteously! Most QTM measures are intended to be set by a
+  ability courteously! Most fields are intended to be set by a
   member of the project the task is related to.
 
 * :guilabel:`Edit Related Tasks...` lets you connect this task to others.
@@ -607,15 +611,17 @@ on your permissions.)
   only QTM measure that is likely to change once set. Out of courtesy, be sure
   NOT to set priority if the task belongs to a project you aren't a member of.
 
-* In general, just forget that :guilabel:`Change Gravity Points` exists.
-  Because of how we use this system, Gravity and Gravity Points should always
-  be kept in sync.
+* In general, just forget that :guilabel:`Change Energy Points` exists.
+  Because of how we use this system, this should always be based on the
+  Distance, Friction, and Relativity fields.
 
 * :guilabel:`Move on Workboard` lets you quickly change which column this
   task is in on the project workboard. (See :ref:`phab_projects_workboard`).
+  Be careful about this: we only move tasks on workboards as a group, as part
+  of sprint planning.
 
 * :guilabel:`Change Project Tags` allows you to quickly change the project
-  tags on the task. Remember to include the Department, Team, and Project.
+  tags on the task. Remember to include the Department and Project.
   (See :ref:`gtaskcreate_practice_tagging`).
 
 * :guilabel:`Change Subscribers` lets you subscribe (or unsubscribe) users
@@ -626,6 +632,137 @@ on your permissions.)
 
 Phriction
 ==================================
+
+Phriction is our wiki. For the most part, anyone on our team can edit any
+page. We use it to share ideas, collaborate on project specifications and
+design notes, and keep all of our collective brilliance organized.
+
+Pages can be nested under other pages. The URL and breadcrumb trail can always
+tell you where you are in the wiki. For example, :code:`/w/anari/spec/`
+is the :code:`spec` page, under the :code:`anari` page. In the URL, :code:`w`
+is the root of the wiki.
+
+.. _phab_phriction_reading:
+
+Reading the Wiki
+------------------------------------
+
+At the very top is breadcrumb trail showing where you are in the wiki.
+
+Next is the Title. There may also be a button with lines just to the left.
+Clicking this shows you a list of all headers in the document. Click one to
+jump to that header.
+
+Below the Title is an indicator of when the last change was made.
+
+The body of the wiki document is below that. Nothing more needs to be said
+about that. Just read it!
+
+Below the page is a bit of information about the last change, followed by
+a :guilabel:`Document Hierarchy` listing all documents that are under this one.
+Typically we'll try to keep links to these documents in the wiki page itself,
+but this ensures nothing can get misplaced.
+
+Next is the history of actions and comments on the document.
+Click :guilabel:`(Show Details)` to see what changed in that edit.
+Alternatively, you can click :guilabel:`View History` from the menu
+to the right of the document itself to see the whole history of edits to
+the wiki document.
+
+At the very bottom, you can read and leave comments.
+
+.. _phab_phriction_actions:
+
+Wiki Actions
+------------------------------------
+
+:guilabel:`Edit Document` lets you edit the document. If you're able to even
+click this button, you do NOT need permission to make edits! Just make any
+addition or change you think should be made. Wikis are meant to be
+freely collaborative.
+
+:guilabel:`View History` shows every change ever made to the page. Any change
+can be seen individually, and even reverted if necessary.
+
+:guilabel:`Move Document` allows you to change the path (in the URL) to the
+page.
+
+:guilabel:`Delete Document` deletes the document. This too can be reverted.
+
+:guilabel:`Printable Page` shows a printable version of the wiki page,
+perfect for distraction free reading or for printing.
+
+.. _phab_phriction_editing:
+
+Editing a Wiki Page
+------------------------------------
+
+Editing a wiki page is straightforward. The document is in Remarkup, like
+everything else in Phabricator.
+
+Before publishing, briefly describe your changes in :guilabel:`Edit Notes`
+at the bottom of the form.
+
+:guilabel:`Tags`` is useful for tagging pages with relevant Projects and
+Labels, to help find pages later.
+
+The :guilabel:`Visible To` and :guilabel:`Editable By` fields should be
+left as open as possible. Unless there's a very specific reason to
+change the policy, most pages should be viewable by Public, and editable
+by Trusted.
+
+When you're ready to save your changes, you have two options:
+
+* :guilabel:`Save and Publish` immediately posts your changes.
+
+* :guilabel:`Save Draft` saves your changes as a draft. These are also
+  viewable by anyone, but won't be shown by default when someone views the
+  document. This is helpful if you want feedback on your changes before
+  publishing officially.
+
+If you save as draft, you can publish by clicking :guilabel:`Publish Draft`
+while viewing the draft on the document itself.
+
+..  note:: To change where a document lives instead, see the
+    :guilabel:`Move Document` option from the menu on the document itself.
+
+.. _phab_phriction_creating:
+
+Creating a New Wiki Page
+------------------------------------
+
+There are two ways to create a document.
+
+The first is to click :guilabel:`New Document` on the upper-right-most corner
+of Phriction, and filling out the path you want. Every document except the
+last one in the path must already exist.
+
+The other way, which is usually easier, is to add a link to the new document
+directly to the document you want to create the new document under. For example,
+if I wanted to create the document :code:`whiteboard/cat_pictures`, I would
+edit the :code:`whiteboard` document and add the link
+:code:`[[ ./cat_pictures ]]`. After saving the document, you'll see the new
+link is red, indicating that the linked document doesn't exist yet. Click
+the link, and on the new page, click :guilabel:`Create this Document`.
+
+..  _phab_phriction_links:
+
+About Wiki Links
+-----------------------------------
+
+In Remarkup, you can link to any Phriction wiki document like this:
+:code:`[[ path/to/doc ]]`. Notice that I do *not* start the path with a
+leading forward slash, which would point to an actual URL on Phabricator
+instead.
+
+Within Phriction itself, it's tedious to have to type the whole path
+for every wiki link you include in a document. Instead, you can use relative
+paths. A dot (:code:`.`) indicates the current document, so
+:code:`[[ ./thing ]]` would point to a document :code:`thing` under the current
+document. A double dot indicates the parent document, so :code:`[[ ../other ]]`
+would point to a document :code:`other` which is a *sibling* of the current
+document. Similarly, :code:`[[ ../../whatever ]]` would go back two levels, and
+then down to the page :code:`whatever`.
 
 .. _phab_phriction_vs_docs:
 
@@ -640,6 +777,11 @@ Phriction. Here's the basic principle:
 
 * Everything else belongs on Phriction. This includes internal (developer)
   docs, specs, planning notes, and design work.
+
+However, in some cases, a collaborative document Nextcloud may suit the purpose
+of the document better. This is especially true if multiple people need to
+edit the document at once, such as during sprint planning. Consider moving
+the finished document to the wiki when you're done.
 
 .. _phab_ponder:
 
@@ -997,30 +1139,6 @@ Once you've selected all of the actions you want, and written a comment
 (recommended, but not required), click :guilabel:`Submit` to perform the
 actions.
 
-.. _phab_reviewerfinder:
-
-Reviewer Finder
-==================================
-
-If you need to find someone to review your Differential, you can use the
-**Reviewer Finder** for the appropriate department. The Reviewer Finders are
-only listed on the left-hand menu on the main page of Phabricator.
-
-On the Reviewer Finder, you will see a list of all active staff and trusted
-contributors who might be able to do a code review. Under the section for each
-person is a complete list of all Differentials that the person is marked as
-"reviewer" on.
-
-You may want to take note of the status of the Differentials. "Needs Review"
-indicates that the person still needs to review the Differential, while
-"Needs Revision" means they've completed the review, but will need to repeat it
-once the requested changes are made. "Accepted" means the review is complete,
-and the Differential will most likely be landed soon without further review.
-
-For reference, the reviewers are also listed in the top-right section, under
-"Reviewer Info." Here, you will find a summary of everyone's specialties, as
-well as other relevant notes.
-
 .. _phab_diffusion:
 
 Diffusion
@@ -1166,7 +1284,7 @@ When viewing a file, you'll see four or five buttons:
   you want to be able to download or copy/paste from the web interface.
 
 * :guilabel:`Back to HEAD` allows you to jump to the current version of the
-   file. If you're already there, this button will be hidden.
+  file. If you're already there, this button will be hidden.
 
 * :guilabel:`History` displays the complete commit history for the file.
 
@@ -1778,18 +1896,3 @@ details page. Both forms look and act the same.
 
 * :guilabel:`Subscribers` is the list of users who will be notified about
   changes to this Paste.
-
-.. _phab_phurl:
-
-Phurl
-==================================
-
-.. _phab_slowvote:
-
-Slowvote
-==================================
-
-.. _phab_owners:
-
-Owners
-==================================

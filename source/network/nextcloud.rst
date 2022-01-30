@@ -82,7 +82,7 @@ be sure to explain why you need the extra space.
 Basic Structure
 ===========================
 
-Nextcloud offers a few different Apps, which you can switch between from the
+Nextcloud offers a couple different Apps, which you can switch between from the
 top bar.
 
 * :guilabel:`Files` allows you to browse through your files and folders.
@@ -90,32 +90,10 @@ top bar.
 
 * :guilabel:`Activity` lists all of the recent activity on Nextcloud.
 
-* :guilabel:`Gallery` lets you view and browse all the photos on Nextcloud.
-
-* :guilabel:`Circles` allows you to create custom groups for sharing.
-
-* :guilabel:`Notes` is a place to quickly store notes for yourself.
-  (Not collaborative.)
-
-* :guilabel:`Announcements` shows the latest news.
-
-* :guilabel:`Bookmarks` allows you to store internet bookmarks and
-  access them from any device. (Not collaborative.)
-
-* :guilabel:`Tasks` is your personal task list. (Not collaborative.)
-
-..  note:: You should still be using Phabricator Maniphest for project tasks,
-    so your teammates can see them. The Nextcloud Tasks app is only for personal
-    work tasks, such as "Read 'Dreaming in Code'" or "Clean desk".
-
-Clicking the gear on the right side of the top bar brings up another menu.
-This gives you access to your profile (:guilabel:`Personal`), Nextcloud's
-official documentation (:guilabel:`Help`), and the ability to sign out of your
-account (:guilabel:`Log out`).
-
-Most of these applications are self-explanatory. Thus, for brevity, we will
-only be covering Files and Collabora Office here. If you need other help,
-contact IT.
+Clicking your profile picture on the right side of the top bar brings up
+another menu. This gives you access to your profile (:guilabel:`Settings`),
+Nextcloud's official documentation (:guilabel:`Help`), and the ability to
+sign out of your account (:guilabel:`Log out`).
 
 ..  _nextcloud_files:
 
@@ -158,13 +136,13 @@ You can upload nearly any kind of file to Nextcloud.
   Gallery app.
 
 * Document files (``*.odt``, ``*.doc``, ``*.docx``) can be viewed and edited
-  via the Office (Document) app.
+  via the Collabora Writer or LibreOffice Writer.
 
 * Spreadsheet files (``*.ods``, ``*.xls``, ``*.xlsx``) can be viewed and
-  edited via the Office (Spreadsheet) app.
+  edited via the Collabora Calc or LibreOffice Calc.
 
 * Presentation files (``*.odp``, ``*.ppt``, ``*.pptx``) can be viewed and
-  edited via the Office (Presentation) app.
+  edited via the Collabora Impress or LibreOffice Impress.
 
 * PDF files can be viewed directly via the built-in PDF viewer.
 
@@ -172,6 +150,8 @@ You can upload nearly any kind of file to Nextcloud.
   Text editor.
 
 * Many video files can be viewed directly via the built-in Video player.
+
+* eBooks can be viewed directly via the built-in eBook reader.
 
 ..  important:: You should keep an eye on your file space quota.
     See :ref:`nextcloud_quota`.
@@ -184,10 +164,8 @@ Managing Files
 On each file/folder's row on the center pane, you'll see the following
 controls (moving from left to right)...
 
-* The Star button marks a file as favorite.
-
-* Clicking the item icon toggles its selection. Selecting multiple items
-  allows you to perform various file actions on them in bulk.
+* Clicking the check box icon toggles the file's selection. Selecting
+  multiple items allows you to perform various file actions on them in bulk.
 
 * Click the item name opens it.
 
@@ -196,10 +174,17 @@ controls (moving from left to right)...
 
 * The Menu button (the three dots) opens the actions menu.
 
+  * :guilabel:`Add to Favorites` adds the document to your favorite documents,
+    for easy access via the :guilabel:`Favorites` section on the left of the
+    Files app.
+
   * :guilabel:`Details` shows information and history about the item in the
     right pane. (See :ref:`nextcloud_files_details`).
 
   * :guilabel:`Rename` allows you to rename the item.
+
+  * :guilabel:`Move or copy` allows you to move or copy the item to another
+    folder on Nextcloud.
 
   * :guilabel:`Download` downloads the current version of the item to your
     computer. If you download a folder, it will download all of the contents
@@ -227,9 +212,6 @@ To share an item, start typing a username (i.e. "jcmcdonald") or group name
 (i.e. "Content Developers") in the :guilabel:`Share with users or groups...`
 box. Tap the name when it appears in the autocomplete list.
 
-..  note:: You *must* search users by their username. You presently cannot
-    search by their real name.
-
 After selecting a user or group, they will appear in the sharing list below
 the search box. You can control sharing permissions from here.
 
@@ -244,24 +226,26 @@ the search box. You can control sharing permissions from here.
     most convenient to place uploaded work into a folder and share it with
     your entire department, using the department's group name.
 
+Alternatively, you can also click :guilabel:`Share Link` to create a sharing
+link that you can provide to anyone with Nextcloud access. Anyone with this
+link will have the permissions you assign from the menu (three dots) to the
+right of the share link.
+
 ..  _nextcloud_files_details:
 
 File Details and Versions
 -----------------------------------
 
-The right pane of te Files app allows you to control details about each folder
+The right pane of the Files app allows you to control details about each folder
 and file. If you don't see this pane, click the Menu button (the three dots)
 on the item's row in the center pane, and select :guilabel:`Details`.
 
-At the top, you can see the file name, size, and date modified. You can
-set tags by clicking the :guilabel:`Tags` button. Type in the
-:guilabel:`Collaborative tags` box to search existing tags. You can also type
-a new tag name and press :kbd:`Enter` to create one.
+At the top, you can see the file name, size, and date modified.
 
 The :guilabel:`Activities` tab shows the history of the file.
 
-..  note:: Any action attributed to "remote user" is due to a bug in the
-    Office app. You can view more revision information in that app.
+The :guilabel:`Checksum` generates checksums, so you can verify that a file
+has not changed.
 
 The :guilabel:`Comments` section allows you to discuss the item with other
 users.
@@ -292,16 +276,16 @@ Office
 Nextcloud has the latest version of Collabora Office built in. This allows us
 to collaboratively edit documents right from the web browser.
 
+..  _nextcloud_office_limitations:
+
+Limitations
+------------------------------
+
 We are specifically running :abbr:`CODE (Collabora Office Development Edition)`.
 This is basically a special version of LibreOffice, designed and optimized for
 web browsers. For performance reasons, many extraneous editing features have
 been removed. However, it is capable of displaying documents the same as if you
 opened them in LibreOffice on your computer.
-
-..  _nextcloud_office_limitations:
-
-Limitations
-------------------------------
 
 Missing Features
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -702,21 +686,6 @@ left side. You can navigate by clicking on a slide.
 The Insert, Duplicate, and Delete Slide buttons are available at the bottom of
 this pane, in addition to the Fullscreen presentation button.
 (See :ref:`nextcloud_office_interface_menus_slide`).
-
-..  _nextcloud_etherpad:
-
-Etherpad
-===========================
-
-Nextcloud also is integrated with Etherpad (see :ref:`etherpad_usage`), a
-collaborative text editor.
-
-From the Files application, you can create a new Etherpad by clicking the
-:guilabel:`+` icon at the top center and selecting :guilabel:`Pad`.
-
-The interface for Etherpad is the same whether accessed through Nextcloud
-or directly at `pad.mousepawmedia.com`. See :ref:`etherpad_usage` for usage
-instructions.
 
 ..  _nextcloud_client:
 
