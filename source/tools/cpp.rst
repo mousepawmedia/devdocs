@@ -148,7 +148,7 @@ Install Development Tools
 We use a number of coding tools, both command-line and otherwise.
 
 **Required:**
-* CMake
+* CMake 
 
 **Recommended:**
 * Valgrind
