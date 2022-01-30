@@ -125,9 +125,6 @@ to do.
 * **Vote...** shows the five most recent open Polls. Be sure to vote in each!
   (See :ref:`phab_slowvote`).
 
-* **Upcoming Events** shows the next five events on the Calendar. If it's green,
-  that means you're invited, and you should RSVP! (See :ref:`phab_calendar`).
-
 * **Flags** lists all of your flags. (See :ref:`phab_flags`).
 
 .. _phab_comments:
@@ -470,8 +467,6 @@ provide four.
 
   * Non-confidential staff-related objects.
 
-  * Most Calendar Events.
-
 * **S2: Staff-Only** only allows access by MousePaw Media Staff. This should
   be used for anything confidential to the company.
 
@@ -626,118 +621,6 @@ on your permissions.)
 * :guilabel:`Change Subscribers` lets you subscribe (or unsubscribe) users
   from a task. Remember to be courteous when using this! The most common
   reason to use this is if you want to notify a particular person about a task.
-
-.. _phab_calendar:
-
-Calendar
-==================================
-
-..  note:: The Calendar tool is only accessible to staff.
-
-Meetings, events, vacations, and deadlines are posted on the
-`Calendar <https://phab.mousepawmedia.com/calendar>`_ application.
-Events you are invited to are shown in green.
-
-Events will automatically send email reminders 15 minutes before.
-
-.. _phab_calendar_rsvp:
-
-Responding to an Event
-----------------------------------
-
-You should **always** respond to any event you are invited to, whether
-accepting or declining, as soon as you know. If you are invited to an
-event, you may accept by clicking :guilabel:`Accept` or :guilabel:`Join Event`.
-You may decline by clicking :guilabel:`Decline` or :guilabel:`Decline Event`.
-
-If you decline, you should consider commenting with the reason.
-
-After accepting an event, you can set your **Availability** by using the
-:guilabel:`Availability` control in the upper right corner of the event page.
-This is the status icon that will appear next to your username around
-Phabricator. It's useful for letting people know when you are and aren't
-available.
-
-.. _phab_calendar_create:
-
-Creating an Event
-----------------------------------
-
-You can create a new event by clicking on :guilabel:`Create Event` and selecting
-an event type. There are three types:
-
-* :guilabel:`Create Event` is for your run-of-the-mill event, especially
-  the in-person variety.
-
-* :guilabel:`Create Event [Reserve Jitsi]` is for any meeting which will use
-  our Jitsi meeting rooms. This allows us to prevent schedule conflicts in the
-  meeting room.
-
-* :guilabel:`Create Hiring Event` is only for Hiring-related events. If you
-  aren't a part of the Hiring team, this will be hidden from you.
-
-Then, fill out the form.
-
-* The event Name should describe the event briefly. "Programming Meeting",
-  "Anari Planning", or "1-on-1: Sergio/Andrew" are a few examples.
-
-* Ensure your start and end days and times are correct. We typically check the
-  "All Day Event" for deadline and vacation events.
-
-* Select Invitees - the people you want to have attend the event.
-
-* Write up a description. This is a good place for meeting agendas, or for
-  event location and details.
-
-* Consider changing the Icon. We typically use "Meeting" for large meetings,
-  "Coffee Meeting" for small meetings (especially 1-on-1), "Official Business"
-  for out-of-office business events, and "Holiday" for vacations and breaks.
-
-* The default settings for Visible To and Editable By are usually fine, unless
-  you need to hide an from anyone not in a particular group. For example, we
-  usually set the visibility for hiring-related events to "Hiring [Dept]".
-
-* You should *always* tag your event with the relevant Department at minimum.
-  You may also want to include the appropriate Group, Team, or Project tags.
-  Also, if you're using the Jitsi meeting room, make sure you include the
-  ``Jitsi Room Reservation [Control]`` tag.
-
-* As a habit, you should include the same people in Subscribers as you set in
-  Invitees, so they get email notifications about attendance.
-
-Click :guilabel:`Create Event` to create your event.
-
-After creating an event, you can edit it to change the Host - the person who
-is organizing the event. This is useful if you're creating the event on behalf
-of another user.
-
-Recurring Events
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-You can make an event repeat itself automatically. To do this, you must create
-the first event. Then, on the event's page, click :guilabel:`Make Recurring`.
-
-On the popup window, set the Frequency and, if desires, the Repeat Until date.
-Then click :guilabel:`Save Changes`.
-
-Later, you can click :guilabel:`Edit Recurrence` to change these settings.
-
-.. _phab_calendar_reservations:
-
-Jitsi Room Reservations
------------------------------------
-
-The ``Jitsi Room Reservation [Control]`` tag page
-`here <https://phab.mousepawmedia.com/project/view/116/>`_ provides
-shortcuts to view and create reservations for the Jitsi meeting rooms, as
-well as to join the room itself. Simply select an action from the menu to the
-left of that page.
-
-* :guilabel:`Join Room` opens the Jitsi room in the current tab.
-
-* :guilabel:`View Room Reservations` shows all the upcoming room reservations.
-
-* :guilabel:`Reserve Room` creates a new Event reserving the room.
 
 .. _phab_phriction:
 
@@ -1910,4 +1793,3 @@ Slowvote
 
 Owners
 ==================================
-
