@@ -52,39 +52,116 @@ systems if you need to.
 Security
 =======================================
 
-It is your responsibility to keep your MousePaw Media account secure!
-Here are some very important things to keep in mind at all times.
+Your MousePaw Media account may grant you access to personal and private
+company information, advanced controls that can potentially harm our systems,
+and more. It is your responsibility to keep your MousePaw Media account secure!
+
+.. _gstaff_security_password:
+
+Password Management
+---------------------------------------
+
+To save your MousePaw Media credentials, you should use a secure password
+manager. *Never* trust your web browser's "save password" feature for this.
+
+If you aren't already using a secure password manager, install
+`Bitwarden <https://bitwarden.com/>`_.
+
+1.  Go to https://bitwarden.com and tap :guilabel:`Get Started` to create
+    a **free** account.
+
+2.  Use your personal email address, and create a secure master password.
+    Your password should be long, unique, and never consist of pet names,
+    relative names, or other personal information.
+
+3.  Write down your master password and store it in a secure physical location.
+    NEVER keep it on a digital device. Be advised, for security reasons, if you
+    lose your Bitwarden master password, you will NEVER be able to recover
+    either it or any information you stored in your Bitwarden account.
+    A password reset on Bitwarden will erase everything in your account.
+
+4.  Go to https://bitwarden.com/download/ and install the Bitwarden extension
+    for your web browser and each of your devices. This will allow you to
+    access your passwords and other secure data stored in Bitwarden from any
+    device, so long as you know your master password.
+
+..  note:: Set up Bitwarden now and store your MousePaw Media credentials.
+    If you already use a different secure password manager, add your MousePaw
+    Media credentials to that instead.
+
+.. _gstaff_security_mfa:
+
+Multi-Factor Authentication
+---------------------------------------
+
+Passwords are a good first step in securing your account, but they're not the
+whole story. If your password is compromised, **Multi-Factor Authentication**,
+or **MFA**, is the next line of defence. MFA requires that you use a separate
+physical device, like your smartphone, to verify that a login is indeed coming
+from you, and not just some random person who has your username and password.
+
+To set up MFA, you will need to install an authenticator app. Unless you
+are already using another trustworthy authenticator app, please install one
+of the following:
+
+* To use your iOS or Android smartphone as your MFA device, install the
+  Microsoft Authenticator app.
+
+* To use your Linux machine as your MFA device, install the
+  `Authenticator app <https://flathub.org/apps/details/com.belmoussaoui.Authenticator>`_
+  from Flatpak.
+
+..  note:: Set up an MFA authenticator app now.
+
+In the sections that follow, you will be installing MFA for
+
+* Phabricator
+
+* Nextcloud
+
+* Mattermost
+
+**DO NOT** skip those sections!
+
+.. _gstaff_security_tips:
+
+Security Tips
+---------------------------------------
+
+All the security tools in the world mean nothing without a good dose of
+common sense. Here are some very important things to keep in mind at all times.
 
 ..  warning: Read this section carefully!
 
-* Never share your password with *anyone*. We won't ask for it. Period.
+1.  Never share your password with *anyone*. We won't ask for it. Period.
 
-* Don't leave your work devices unlocked and unattended.
+2.  Store your passwords in your secure Password Manager.
 
-* Consider enabling full-disk encryption when you install Linux.
+3.  Don't leave your work devices unlocked and unattended.
 
-* Use a secure password manager like `Bitwarden <https://bitwarden.com/>`_.
-  Never use your browser's "save password" feature.
+4.  Consider enabling full-disk encryption when you install Linux.
 
-* Add Multi-Factor Authentication (MFA) to your Phabricator and Nextcloud accounts.
-  Instructions are included in those sections below. We strongly recommend
-  using the Microsoft Authenticator on your mobile and/or the
-  `Authenticator app <https://flathub.org/apps/details/com.belmoussaoui.Authenticator>`_
-  on Linux desktop.
+5.  Be careful clicking on unusual or disguised links in emails, even if
+    the email looks like it's from within the company or from a coworker.
+    Verify URLs and SSL certificates before entering your password or other
+    information.
 
-* Consider adding Multi-Factor Authentication to your Mattermost account.
+6.  If you lose a device you've used to access your MousePaw Media account, or
+    which you use for MFA, contact us **immediately!**
 
-* Be careful clicking on unusual or disguised links in emails, even if
-  the email looks like it's from within the company or from a coworker.
-  Verify URLs and SSL certificates before entering your password or other
-  information.
+.. _gstaff_security_recover:
 
-* If you lose a device you've used to access your MousePaw Media account, or
-  which you use for MFA, contact us **immediately!**
+Recovering Access
+---------------------------------------
 
-If you lose access to your MousePaw Media account at any point, contact
-``eco@mousepawmedia.com``. We will work with you *over video chat* (for
-authentication purposes) to restore access to your account.
+If you lose access to your MousePaw Media account at any point, whether
+that's a missing password or a lost or non-functioning MFA device, don't panic!
+MousePaw Media administrators are able to reset passwords and MFA credentials.
+
+To start the process, contact ``eco@mousepawmedia.com``, or ping someone in the
+``~eco`` channel on Mattermost. We will arrange to work with you
+*over video chat* (for authentication purposes) to restore access to your
+account.
 
 .. _gstaff_network:
 
@@ -107,7 +184,7 @@ The Staff Network consists of seven major components:
 
 * Etherpad (pad.mousepawmedia.com)
 
-* LimeSurvey (survey.mousepawmedia.com)
+* LimeSurvey (papers.mousepawmedia.com)
 
 We also use `Jitsi Meet <https://meet.jit.si/>`_ for regular communication.
 
@@ -125,24 +202,32 @@ email address, which comes with a calendar and a contact book.
 ..  warning:: Be sure to check your company email every single day, and
     respond in a timely fashion!
 
-You can check your email and calendar through the SoGO web client.
+You can check your email and calendar through the SOGo web client.
 This is useful if you don't want to configure an external client, or need
 to check your email without access to your usual device.
 
 .. _gstaff_network_email_sogosetup:
 
-SoGO Setup
+SOGo Setup
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-SoGO is a modern web client with many useful features.
+SOGo is a modern webmail and calendar client with many useful features.
 
 First, go to mail.mousepawmedia.com/sogo. Sign in using your full company email
 address and your password.
 
-..  important:: Access your company email through the SoGO client.
+..  important:: Access your company email through the SOGo client.
 
-You'll want to start by setting up your default signature. Tap the gear in
-the upper-left to open Settings, and then go to :guilabel:`Mail` and
+Tap the gear in the upper-left to open Preferences.
+
+You should set your time zone first. Under :guilabel:`General` ->
+:guilabel:`General`, set your :guilabel:`Time Zone` to the appropriate time
+zone for you. You may also want to select your preferred date and time formats.
+
+Also consider checking :guilabel:`Enable Desktop Notifications`, so you
+will get notified of new emails when SOGo is open in your browser.
+
+To set up your default signature, go to :guilabel:`Mail` and
 :guilabel:`IMAP Accounts`. Click the pencil next to your email address on
 that window, and click on your name under the :guilabel:`Identity`
 section.
@@ -159,24 +244,97 @@ for your signature:
     Twitter: @mousepawmedia
 
 Press :guilabel:`OK` to save. Then, tap the green save icon in the upper-right
-corner to save your settings. If you wish, you can take a moment to look
-through your other settings.
+corner to save your settings.
 
-..  important:: Set up your signature now.
+..  warning:: If you get a warning message about
+    "Service temporarily unavailable", you may ignore it. Your settings ARE
+    saved. Furthermore, if you click anywhere to leave Preferences, and are
+    warned of Unsaved Changes, you can select "Don't Save"; pressing the save
+    icon that one time **did** save your changes.
+
+..  important:: Set up your settings and signature as documented above now.
 
 .. _gstaff_network_email_sogocalendar:
 
-SoGO Calendar
+SOGo Calendar
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-To navigate around SoGO, in the upper-right, click the Mail, Calendar, and
+To navigate around SOGo, in the upper-right, click the Mail, Calendar, and
 Contacts icons.
 
 The first time you click the Calendar, it will create a Personal Calendar
 for you. Any events you RSVP to will appear here. You can click the three
 dots to change the name and color of this calendar.
 
-You can also subscribe to other people's calendars.
+One of the particular benefits of SOGo calendar is how easy it makes
+scheduling. When you create an event, add the Attendees you want to meet with.
+SOGo will show you a chart of their free/busy times. (However, please be
+mindful of time zone differences as well.)
+
+.. _gstaff_network_email_sogocalendar_external:
+
+Importing Web Calendars
+""""""""""""""""""""""""""""""""""""""
+
+To make scheduling easier for everyone, you should subscribe to any external
+calendars (Web Calendars) you routinely use for scheduling. This may include a
+personal calendar, a work calendar, or a school calendar. To do this:
+
+1.  Get the **public** CalDAV or WebDAV URL of the external calendar you want to
+    add. If you're concerned about privacy, at least enable a public link that
+    shows free/busy status without event details. (If you need help with this,
+    contact your mentor.)
+
+2.  In SOGo Calendar, tap the :guilabel:`+` next to :guilabel:`Web Calendars`,
+    enter the URL, and press :guilabel:`OK`. If you did everything right,
+    the events from this calendar will appear in SOGo within a few moments.
+
+3.  Tap the three dots next to the calendar, and select :guilabel:`Properties`.
+    Set the name and color, and ensure :guilabel:`Include in free-busy` and
+    :guilabel:`Reload on login` are checked. Press :guilabel:`OK`.
+
+4.  Press the toggle switch to the left of the calendar name to hide it from
+    your calendar view, if desired. Others will still see your free/busy status
+    when scheduling an event where you're listed as an Attendee.
+
+..  important:: Import your web calendars now.
+
+.. _gstaff_network_email_sogocalendar_busy:
+
+Setting Up Out of Office Hours
+""""""""""""""""""""""""""""""""""""""
+
+If there are times you are consistently unavailable, you may consider creating
+a separate Calendar on SOGo to block out these times.
+
+To create this calendar:
+
+1.  Click the :guilabel:`+` icon next to :guilabel:`Calendars`.
+
+2.  Name the calendar "Out of Office". Press :guilabel:`OK`.
+
+3.  Click the three dots next to "Out of Office", and click
+    :guilabel:`Properties`.
+
+4.  Select :guilabel:`Include in free-busy`. Unselect :guilabel:`Show alarms`
+    and :guilabel:`Show tasks`. Press :guilabel:`Save`.
+
+Now create events for your typical unavailabilities, such as days off and
+sleeping hours. On the event creation screen:
+
+1. Set :guilabel:`Calendar` to "Out of Office".
+
+2. Unselect :guilabel:`Send Appointment Notifications`
+
+3. Set the day, time, and repetition. For example, if you take Sundays off,
+  you may create an "All day Event" that repeats "Weekly" on Sundays.
+
+4. Unselect :guilabel:`Reminder`.
+
+5. Press :guilabel:`Save`.
+
+..  important:: Set up your Out of Office calendar now, with at least "Offline"
+    hours for sleep.
 
 .. _gstaff_network_email_settings:
 
@@ -263,7 +421,7 @@ If you use an external calendar application, you can work directly with your
 MousePaw Media calendar via CalDAV.
 
 The easiest way to get your CalDAV link is to go to
-`SoGO <https://mail.mousepawmedia.com/sogo>`, tap the Calendar icon in
+`SOGo <https://mail.mousepawmedia.com/sogo>`, tap the Calendar icon in
 the upper-right corner, and click the three dots next to the calendar you want
 to access via CalDAV. Select :guilabel:`Links to this Calendar`.
 
@@ -302,8 +460,8 @@ Kimai
 -----------------------------------
 
 Kimai is where we track time. You are responsible for reporting your time
-**every day**. Each day's time sheets are locked automatically the next morning
-at 10 am.
+**every day**. Each day's time sheets are locked automatically the next morning,
+but you should try to log your time before then.
 
 ..  warning:: If you forget to log your time, you will NOT be reminded.
     Contact ``eco@mousepawmedia.com`` if you forget, and report your time
@@ -350,6 +508,10 @@ Fill out the following fields:
 ..  warning:: These notes are not a replacement for your Dev Journal entries.
 
 Finally, click :guilabel:`Save` in the lower-left corner to store the hours.
+
+..  warning:: Kimai's date/time selector is a bit unintuitive. You **must**
+    click the green :guilabel:`Confirm` button to keep the date/time you
+    chose in the selector.
 
 While you're here, take a look at the :guilabel:`Dashboard`,
 :guilabel:`Calendar` and :guilabel:`Reporting` tabs. These give you detailed
@@ -432,8 +594,11 @@ so anyone joining via IRC can see and join in.
     actually delete it from the room history altogether. What you say, you
     cannot take back.
 
-**Water Cooler** (``~water-cooler``) is our staff-only chatroom. Use this for
-any internal conversations that we don't want to have in public.
+**Water Cooler** (``~water-cooler``) is a staff-only chatroom. Use this for
+general conversations that we don't want to have in public.
+
+**Sprint** (``~sprint``) is a staff-only room for sprint planning and
+discussion.
 
 **Off Topic** (``~off-topic``) is for random chat-chat that doesn't really
 relate to work.
@@ -446,9 +611,12 @@ which you don't necessary need to keep confidential from other staff.
 **IT**  (``~it``) is for reporting any problems with the staff network,
 including email.
 
+**Hardware**  (``~hardware``) is for discussing problems with your computer,
+operating system, and the like.
+
 Last, but not least, you can private message anyone through Mattermost.
 
-..  important:: Post a message in ``~town-square``.
+..  important:: Post a message in ``~town-square`` introducing yourself.
 
 .. _gstaff_network_phab:
 
