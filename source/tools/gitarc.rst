@@ -30,7 +30,7 @@ install it along with its dependencies and related tools.
 
 ..  code-block:: bash
 
-    $ sudo apt install git php php-curl php-cli php-xml cppcheck arcanist clang-format arcanist-clang-format-linter
+    $ sudo apt install git php php-{curl,cli,xml} cppcheck arcanist clang-format arcanist-clang-format-linter
 
 Then, we just test it out.
 
@@ -39,6 +39,9 @@ Then, we just test it out.
     $ arc help
 
 If the help list shows up, that's it! You're ready to go.
+
+..  warning:: If you run into any errors with this, run `sudo apt remove arcanist arcanist-clang-format-linter`
+    and install according to "Installing on Linux, Alternate" below. 
 
 Installing on Linux, Alternate
 --------------------------------
@@ -50,11 +53,15 @@ If you're on a Debian-based Linux OS, you can follow these instructions to
 install Arcanist. If you're on another Linux OS, these instructions should
 still work, although you may need to adjust commands a little to make it work.
 
+Arcanist requires PHP 7; as of July 2022, it doesn't work with PHP 8.
+If you're on Ubuntu 22.04 or later, you will need to run `sudo add-apt-repository ppa:ondrej/php -y`
+so you can install PHP 7.4 explicitly.
+
 First, we need to install our dependencies.
 
 ..  code-block:: bash
 
-    $ sudo apt install git php php-curl php-cli php-xml cppcheck clang-format
+    $ sudo apt install git php7.4 php7.4-{curl,cli,xml} cppcheck clang-format
 
 Enter your password if prompted. It will want to install a few other packages.
 Tell it "yes" (`Y`) and let it run. It might take a little while.
@@ -102,12 +109,13 @@ We use the clang-format-linter to configure our C++ code.
 For non-Debian-based Linux systems, you will need to follow the steps below:
 
 Locate where Arcanist is installed on your system via :code:`whereis arcanist`. 
-This will provide you with a path like `/usr/share/arcanist`. 
-Navigate to the folder containing Arcanist (e.g. `/usr/share`) and install `arcanist-clang-format-linter` like this:
+This will provide you with a path like `/usr/share/arcanist` or `/home/user/.arcanist/arcanist/bin/arc`. 
+Navigate to the folder containing `arcanist` (e.g. `/usr/share` or `/home/user/.arcanist`) and
+install `arcanist-clang-format-linter` like this:
 
 ..  code-block:: bash
 
-    cd /usr/share   # or whatever path given by 'where arcanist'
+    cd /usr/share   # or whatever path given by 'whereis arc'
     sudo git clone https://github.com/pwithnall/morefas-phabricator.git clang-format-linter
 
 Installing on Mac
