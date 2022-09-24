@@ -73,7 +73,7 @@ in Arcanist.
 
     $ mkdir ~/.arcanist
     $ cd ~/.arcanist
-    $ git clone https://github.com/phacility/arcanist.git
+    $ git clone https://github.com/phorgeit/arcanist.git
 
 Now we need to tell our system where to look for Arcanist. The easiest way
 to do this is to add Arcanist's :file:`/bin` directory to our environment
