@@ -2261,8 +2261,6 @@ Set the contents of that file to:
 
     </VirtualHost>
 
-Save and close. Now run:
-
 ..  code-block:: bash
 
     $ sudo a2enmod rewrite proxy proxy_http proxy_wstunne
