@@ -28,7 +28,7 @@ To install on Ubuntu, simply run...
 
 ..  code-block:: bash
 
-    $ sudo apt install python3-sphinx pandoc
+    sudo apt install python3-sphinx pandoc
 
 Installing Sphinx on Mac
 ------------------------------
@@ -40,8 +40,8 @@ Installing Via MacPorts
 
 ..  code-block:: bash
 
-    $ sudo port install py36-sphinx pandoc
-    $ sudo port select --set sphinx py36-sphinx
+    sudo port install py36-sphinx pandoc
+    sudo port select --set sphinx py36-sphinx
 
 `SOURCE: Installing Sphinx - MacPorts <http://www.sphinx-doc.org/en/master/usage/installation.html#macports>`_
 
@@ -50,7 +50,7 @@ Installing Via Homebrew
 
 ..  code-block:: bash
 
-    $ brew install sphinx-doc pandoc
+    brew install sphinx-doc pandoc
 
 `SOURCE: Installing Sphinx - Homebrew <http://www.sphinx-doc.org/en/master/usage/installation.html#homebrew>`_
 
@@ -144,14 +144,14 @@ Sphinx. In your Terminal, go to your :file:`docs/` folder, and simply type...
 
 ..  code-block:: bash
 
-    $ make
+    make
 
 ...to list out all the supported formats. My favorite is HTML, which generates a
 snazzy, searchable web version. To output to HTML, type...
 
 ..  code-block:: bash
 
-    $ make html
+    make html
 
 Double-check the Terminal output. If it complains about any errors or warnings,
 be sure to fix them! Errors are pretty obvious in Sphinx - missing documents,
@@ -175,15 +175,15 @@ run...
 
 ..  code-block:: bash
 
-    $ mkdir docs
-    $ cd docs
+    mkdir docs
+    cd docs
 
 This creates a new folder :file:`docs` for our documentation, and navigates into
 it. Then, run...
 
 ..  code-block:: bash
 
-    $ sphinx-quickstart
+    sphinx-quickstart
 
 * Below are the settings you should select during Quickstart. I've marked ENTER
   for those options that you should use the default on.

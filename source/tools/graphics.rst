@@ -29,7 +29,7 @@ Birdfont can be installed on Debian-based systems from the official repositories
 
 ..  code-block:: bash
 
-    $ sudo apt install birdfont
+    sudo apt install birdfont
 
 * Official Website: `<https://birdfont.org/>`_
 * Tutorials: `<https://birdfont.org/doku/doku.php/tutorials>`_
@@ -46,19 +46,19 @@ It's available from the main repositories on Debian-based systems:
 
 ..  code-block:: bash
 
-    $ sudo apt install blender
+    sudo apt install blender
 
 It's available via Snapcraft:
 
 ..  code-block:: bash
 
-    $ sudo snap install blender
+    sudo snap install blender
 
 Or, install via Flatpak from Flathub:
 
 ..  code-block:: bash
 
-    $ flatpak install flathub org.blender.Blender
+    flatpak install flathub org.blender.Blender
 
 * Official Website: `<https://www.blender.org/>`_
 * Documentation: `<https://docs.blender.org/manual/en/dev/>`_
@@ -77,30 +77,29 @@ It's available from the main repositories on Debian-based systems:
 
 ..  code-block:: bash
 
-    $ sudo apt install darktable
+    sudo apt install darktable
 
 It's available via Snapcraft:
 
 ..  code-block:: bash
 
-    $ sudo snap install darktable
+    sudo snap install darktable
 
 Or, install via Flatpak from Flathub:
 
 ..  code-block:: bash
 
-    $ flatpak install flathub org.darktable.Darktable
+    flatpak install flathub org.darktable.Darktable
 
 * Official Website: `<https://www.darktable.org/>`_
 * Official Documentation: `<https://www.darktable.org/usermanual/en/>`_
 * Tutorials: `<https://www.youtube.com/playlist?list=PLmvlUro_Up1NBX7VK8UUuyWo1B468zEA0>`_
 
-Glimpse (v0.2 or later)
+GIMP (v2.10 or later)
 =====================================
 
-Glimpse is a feature-rich graphics editing tool, largely analogous to Adobe
-Photoshop®. It is forked from the GNU Image Manipulation Program for ethical
-reasons.
+GIMP is a feature-rich graphics editing tool, largely analogous to Adobe
+Photoshop®.
 
 It can be installed in one of two ways (select ONE):
 
@@ -108,18 +107,18 @@ It's available via Snapcraft:
 
 ..  code-block:: bash
 
-    $ sudo snap install glimpse-editor
+    sudo snap install gimp
 
 Or, install via Flatpak from Flathub:
 
 ..  code-block:: bash
 
-    $ flatpak install flathub org.glimpse_editor.Glimpse
+    flatpak install flathub org.gimp.GIMP
 
-Alternative, it's available for Windows, macOS and also as an Appimage.
-See their website for more downloads: https://glimpse-editor.org/downloads/
+Alternative, it's available for Windows, macOS, and also as an Appimage.
+See their website for more downloads: https://www.gimp.org/downloads/
 
-* Official Website: `<https://glimpse-editor.org/>`_
+* Official Website: `<https://www.gimp.org/>`_
 
 Gpick (v0.2.6 or later)
 =====================================
@@ -132,7 +131,7 @@ Gpick can be installed on Debian-based systems from the official repositories:
 
 ..  code-block:: bash
 
-    $ sudo apt install gpick
+    sudo apt install gpick
 
 * Official Website: `<http://www.gpick.org/>`_
 
@@ -149,19 +148,19 @@ It's available from the main repositories on Debian-based systems:
 
 ..  code-block:: bash
 
-    $ sudo apt install inkscape
+    sudo apt install inkscape
 
 It's available via Snapcraft:
 
 ..  code-block:: bash
 
-    $ sudo snap install inkscape
+    sudo snap install inkscape
 
 Or, install via Flatpak from Flathub:
 
 ..  code-block:: bash
 
-    $ flatpak run org.inkscape.Inkscape
+    flatpak run org.inkscape.Inkscape
 
 * Official Website: `<https://inkscape.org/>`_
 * Official Documentation: `<http://tavmjong.free.fr/INKSCAPE/MANUAL/html/>`_
@@ -181,19 +180,19 @@ It's available from the main repositories on Debian-based systems:
 
 ..  code-block:: bash
 
-    $ sudo apt install krita
+    sudo apt install krita
 
 It's available via Snapcraft:
 
 ..  code-block:: bash
 
-    $ sudo snap install krita
+    sudo snap install krita
 
 Or, install via Flatpak from Flathub:
 
 ..  code-block:: bash
 
-    $ flatpak run org.kde.krita
+    flatpak run org.kde.krita
 
 * Official Website: `<https://krita.org/>`_
 * Official Documentation: `<https://docs.krita.org/en/user_manual.html#user-manual>`_
@@ -212,13 +211,13 @@ It's available from the main repositories on Debian-based systems:
 
 ..  code-block:: bash
 
-    $ sudo apt install mypaint
+    sudo apt install mypaint
 
 Or, install via Flatpak from Flathub:
 
 ..  code-block:: bash
 
-    $ flatpak install flathub org.mypaint.MyPaint
+    flatpak install flathub org.mypaint.MyPaint
 
 * Official Website: `<http://mypaint.org/>`_
 * Official Documentation: `<https://github.com/mypaint/mypaint/wiki/v1.2-User-Manual>`_
@@ -236,13 +235,13 @@ It's available from the main repositories on Debian-based systems:
 
 ..  code-block:: bash
 
-    $ sudo apt install scribus
+    sudo apt install scribus
 
 Or, install via Flatpak from Flathub:
 
 ..  code-block:: bash
 
-    $ flatpak install flathub net.scribus.Scribus
+    flatpak install flathub net.scribus.Scribus
 
 * Official Website: `<https://www.scribus.net/>`_
 * Official Documentation: `<https://wiki.scribus.net/canvas/Help:TOC>`_

@@ -3,11 +3,8 @@
 Python3 Development Environment
 ######################################
 
-We use Python 3.7 (or later) for a lot of our application and GUI development.
-PySide2 is our GUI toolkit.
-
-We recommend either VSCode or Atom as our main Python IDE, although
-you can use whatever you're most comfortable with.
+We use Python 3.10 (or later) for a lot of our application and GUI development.
+We recommend :ref:`vscode` as your main Python IDE.
 
 .. _python_installing:
 
@@ -17,7 +14,7 @@ Installing Python
 Installing Python on Linux
 ---------------------------------
 
-Operating systems based on Ubuntu 16.04 or later ship with Python 3.7 or later
+Operating systems based on Ubuntu 22.04 or later ship with Python 3.10 or later
 by default. It is included in the installation command below anyway, just
 in case you've removed it, or are on a system where it isn't installed
 by default.
@@ -30,8 +27,8 @@ We'll also install the libraries and development tools we use for Python3.
 
 ..  code-block:: bash
 
-    $ sudo apt update
-    $ sudo apt install python3 python3-pip python3-virtualenv pylint3 python-dev python3-dev virtualenv
+    sudo apt update
+    sudo apt install python3 python3-pip python3-virtualenv python-dev python3-dev virtualenv
 
 ..  warning:: Do not **ever** use :code:`sudo pip`. If you want to install
     packages via pip, use a virtual environment.
@@ -46,19 +43,18 @@ Installing Via MacPorts
 
 ..  code-block:: bash
 
-    $ sudo port install python37 py37-pip py37-virtualenv py37-pylint
-    $ sudo port select --set python python37
-    $ sudo port select --set pip py37-pip
-    $ sudo port select --set virtualenv py37-virtualenv
-    $ sudo port select --set pylint py37-pylint
+    sudo port install python310 py310-pip py310-virtualenv
+    sudo port select --set python python310
+    sudo port select --set pip py310-pip
+    sudo port select --set virtualenv py310-virtualenv
 
 Installing Via Homebrew
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 ..  code-block:: bash
 
-    $ brew install python
-    $ pip install virtualenv pylint
+    brew install python@3.10
+    pip install virtualenv
 
 Installing Python on Windows
 ---------------------------------
@@ -72,58 +68,7 @@ command to install the rest of what we need.
 ..  code-block:: batch
 
     python -m pip install --upgrade pip wheel setuptools
-    python -m pip install virtualenv pylint
-
-.. _python_pyside2:
-
-Installing PySide2
-=============================
-
-Installing PySide2 on Linux or Mac
-------------------------------------
-
-We'll create a new virtual environment for PySide2. You can reuse these
-instructions to create a different virtual environment for any project
-you're working on using PySide2, but this provides a good general testing
-ground.
-
-In your terminal, run the following...
-
-..  code-block:: bash
-
-    $ python3.7 -m venv pyside2-venv
-    $ source ~/pyside2-venv/bin/activate
-    $ pip install pyside2
-    $ deactivate
-
-Any time you want to use that virtual environment, just run
-:code:`source ~/pyside2-venv/bin/activate` in the directory containing the
-virtual environment's folder. The command :code:`deactivate` exits the virtual
-environment.
-
-`SOURCE: Qt For Python/Getting Started <https://wiki.qt.io/Qt_for_Python/GettingStarted>`_
-
-Installing PySide2 on Windows
--------------------------------
-
-We'll create a new virtual environment for PySide2. You can reuse these
-instructions to create a different virtual environment for any project
-you're working on using PySide2, but this provides a good general testing
-ground.
-
-In your Command Prompt, run the following...
-
-..  code-block:: batch
-
-    python3.7 -m venv pyside2-venv
-    pyside2-venv\Scripts\activate.bat
-    pip install pyside2
-    venv\Scripts\deactivate.bat
-
-Any time you want to use that virtual environment, just run
-:code:`pyside2-venv\Scripts\activate.bat` in the directory containing the
-virtual environment's folder. The command :code:` venv\Scripts\deactivate.bat`
-exits the virtual environment.
+    python -m pip install virtualenv
 
 .. _python_ide:
 

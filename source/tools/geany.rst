@@ -19,7 +19,7 @@ If you're on Ubuntu, you can just install via...
 
 ..  code-block:: bash
 
-    $ sudo apt install geany geany-plugins
+    sudo apt install geany geany-plugins
 
 Geany is available from the official package repositories for many other
 Linux distros.
@@ -60,7 +60,7 @@ Open up a Terminal and run the following command...
 
 ..  code-block:: bash
 
-    $ ~/geany-themes-master/install.sh
+    ~/geany-themes-master/install.sh
 
 That will report if it runs successfully.
 

@@ -34,7 +34,7 @@ a new branch, run...
 
 ..  code-block:: bash
 
-    $ git checkout -b newbranchname
+    git checkout -b newbranchname
 
 ...where *newbranchname* is the name of the branch you're creating. You can
 call it absolutely anything (except "devel", "fresh", or "stable").
@@ -59,9 +59,9 @@ Revision, or update the one you already have open for the repository, run...
 
 ..  code-block:: bash
 
-    $ git add .
-    $ git commit
-    $ arc diff
+    git add .
+    git commit
+    arc diff
 
 The first time you run ``arc diff``, it will bring up a form for you to fill
 out to create a new Revision. Give it a brief, descriptive title. Describe
@@ -87,15 +87,15 @@ push the changes to the :code:`devel` branch. In the repository, run...
 
 ..  code-block:: bash
 
-    $ arc land yourbranchname --onto devel
+    arc land yourbranchname --onto devel
 
 ...where *yourbranchname* is the name of the branch you've been working in.
 
 ..  sidebar:: **Having trouble landing?**
 
-    First make sure you're landing to :code:`devel`. Arcanist defaults to 
-    :code:`master`, which MousePaw doesn't use.  If you're receiving a 
-    permissions error, make sure to go to the :guilabel:`Project` you're 
+    First make sure you're landing to :code:`devel`. Arcanist defaults to
+    :code:`master`, which MousePaw doesn't use.  If you're receiving a
+    permissions error, make sure to go to the :guilabel:`Project` you're
     contributing to, click :guilabel:`Members`, then :guilabel:`Join`.
 
 Be sure to keep your Maniphest tasks up-to-date, marking them as complete or
@@ -118,14 +118,14 @@ First, make sure you're on the devel branch, and it is up-to-date.
 
 ..  code-block:: bash
 
-    $ git checkout devel
-    $ git pull origin devel
+    git checkout devel
+    git pull origin devel
 
 Then patch the Differential Revision with...
 
 ..  code-block:: bash
 
-    $ arc patch D###
+    arc patch D###
 
 ...where :code:`D###` is the Differential Revision ID (such as ``D123``).
 
@@ -136,4 +136,4 @@ via...
 
 ..  code-block:: bash
 
-    $ git branch -m arcpatch_D### newbranchname
+    git branch -m arcpatch_D### newbranchname

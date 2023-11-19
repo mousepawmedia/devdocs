@@ -16,8 +16,8 @@ Before we continue, we need to check for any updates.
 
 ..  code-block:: bash
 
-    $ apt update
-    $ apt full-upgrade
+    apt update
+    apt full-upgrade
 
 Setting Hostname and Timezone
 --------------------------------
@@ -26,9 +26,9 @@ We'll start by defining the name of our host.
 
 ..  code-block:: bash
 
-    $ echo "mpmmail" > /etc/hostname
-    $ hostname -F /etc/hostname
-    $ vim /etc/hosts
+    echo "mpmmail" > /etc/hostname
+    hostname -F /etc/hostname
+    vim /etc/hosts
 
 In that file, add the following lines below the first line, substituting the
 actual IPv4 and IPv6 of the Linode in place of the NNN.NNN values:
@@ -44,7 +44,7 @@ Now we set the timezone.
 
 ..  code-block:: bash
 
-    $ dpkg-reconfigure tzdata
+    dpkg-reconfigure tzdata
 
 Use the arrow and ENTER keys to set your timezone. We'll be using US/Central.
 
@@ -60,15 +60,15 @@ user account.
 
 ..  code-block:: bash
 
-    $ adduser mpm
+    adduser mpm
 
 Define the password for the new user, and other information if desired.
 Then, we add the user to the ``sudo`` group.
 
 ..  code-block:: bash
 
-    $ usermod -aG sudo mpm
-    $ groups mpm
+    usermod -aG sudo mpm
+    groups mpm
 
 The second command will list all of the groups ``mpm`` is in. Ensure
 it includes the ``sudo`` group.
@@ -85,10 +85,10 @@ change a few settings and start the service.
 ..  code-block:: bash
 
     # Make a backup of the default SSH configuration.
-    $ sudo cp /etc/ssh/sshd_config{,.bak}
+    sudo cp /etc/ssh/sshd_config{,.bak}
 
     # Edit the SSH configuration.
-    $ sudo vim /etc/ssh/sshd_config
+    sudo vim /etc/ssh/sshd_config
 
 Change ``Port 22`` to ``Port 123`` and ``PermitRootLogin yes`` to
 ``PermitRootLogin no``. Also add the line ``DebianBanner no`` (you can put it under
@@ -100,7 +100,7 @@ Now we'll restart the service.
 ..  code-block:: bash
 
     # Restart the SSH service.
-    $ sudo systemctl restart ssh
+    sudo systemctl restart ssh
 
 On the **remote machine** (the computer you're connecting *from*), run the
 following command, where :code:`NNN.NNN.NNN.NNN` is the IP address of the
@@ -139,7 +139,7 @@ We need to lock down SSH for further security.
 
 ..  code-block:: bash
 
-    $ sudo vim /etc/ssh/sshd_config
+    sudo vim /etc/ssh/sshd_config
 
 Edit the file so the following lines have the given settings:
 
@@ -153,7 +153,7 @@ Save and close the file, and then run...
 
 ..  code-block:: bash
 
-    $ sudo systemctl restart sshd
+    sudo systemctl restart sshd
 
 Firewall Settings
 ---------------------
@@ -163,15 +163,15 @@ and enable it. Be sure to change ``123`` to your SSL port from previously.
 
 ..  code-block:: bash
 
-    $ sudo ufw allow 333,25,465,587,143,993,110,995,4190,80,443/tcp
-    $ sudo ufw enable
+    sudo ufw allow 333,25,465,587,143,993,110,995,4190,80,443/tcp
+    sudo ufw enable
 
 Secure Shared Memory
 --------------------------
 
 ..  code-block:: bash
 
-    $ sudo vim /etc/fstab
+    sudo vim /etc/fstab
 
 At the bottom of the file, add the lines:
 
@@ -190,16 +190,16 @@ We'll limit ``sudo`` privileges to only users in the ``admin`` group.
 
 ..  code-block:: bash
 
-    $ sudo groupadd admin
-    $ sudo usermod -a -G admin <YOUR ADMIN USERNAME>
-    $ sudo dpkg-statoverride --update --add root admin 4750 /bin/su
+    sudo groupadd admin
+    sudo usermod -a -G admin <YOUR ADMIN USERNAME>
+    sudo dpkg-statoverride --update --add root admin 4750 /bin/su
 
 Harden Network with ``sysctl`` Settings
 ------------------------------------------------------
 
 ..  code-block:: bash
 
-    $ sudo vi /etc/sysctl.conf
+    sudo vi /etc/sysctl.conf
 
 Edit the file, uncommenting or adding the following lines:
 
@@ -245,7 +245,7 @@ Finally, reload ``sysctl``. If there are any errors, fix the associated lines.
 
 ..  code-block:: bash
 
-    $ sudo sysctl -p
+    sudo sysctl -p
 
 Install Docker
 ==================================
@@ -254,17 +254,17 @@ We start by installing Docker:
 
 ..  code-block:: bash
 
-    $ sudo apt remove docker docker-engine docker.io
-    $ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-    $ sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-    $ sudo apt update
-    $ sudo apt install docker-ce docker-compose
+    sudo apt remove docker docker-engine docker.io
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+    sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+    sudo apt update
+    sudo apt install docker-ce docker-compose
 
 Next, we set up Docker to be automatically started by systemd.
 
 ..  code-block:: bash
 
-    $ sudo systemctl edit docker.service
+    sudo systemctl edit docker.service
 
 Set the contents of that file to:
 
@@ -278,8 +278,8 @@ Save and close, and then enable and restart Docker in systemd:
 
 ..  code-block:: bash
 
-    $ sudo systemctl restart docker
-    $ sudo systemctl enable docker
+    sudo systemctl restart docker
+    sudo systemctl enable docker
 
 `SOURCE: Install Docker Engine on Ubuntu <https://docs.docker.com/engine/install/ubuntu/>`_
 
@@ -290,13 +290,13 @@ Install Mailcow
 
 ..  code-block:: bash
 
-    $ sudo su
-    $ umask
+    sudo su
+    umask
     # verify the above is 0022
-    $ cd /opt
-    $ git clone https://github.com/mailcow/mailcow-dockerized
-    $ cd mailcow-dockerized
-    $ ./generate_config.sh
+    cd /opt
+    git clone https://github.com/mailcow/mailcow-dockerized
+    cd mailcow-dockerized
+    ./generate_config.sh
 
 Follow the prompts, specifying a FQDN for the mail admin panel. In this case,
 we are using ``mail.mousepawmedia.com``.
@@ -305,7 +305,7 @@ Now run...
 
 ..  code-block:: bash
 
-    $ vim mailcow.conf
+    vim mailcow.conf
 
 Change the following lines, as well as any other settings you want to modify.
 
@@ -346,8 +346,8 @@ Save and close, and then run...
 
 ..  code-block:: bash
 
-    $ docker-compose pull
-    $ docker-compose up -d
+    docker-compose pull
+    docker-compose up -d
 
 Now go to ``mail.mousepawmedia.com``. It'll take a couple of minutes
 to set up Mailcow for the first time, and then you can configure it.

@@ -68,7 +68,7 @@ with whatever branch name you're switching to:
 
 ..  code-block:: bash
 
-    $ git checkout -b devel origin/devel
+    git checkout -b devel origin/devel
 
 Dependencies
 ====================================
@@ -138,7 +138,7 @@ clone should be in the same directory. Then run...
 
 ..  code-block:: bash
 
-    $ cd libdeps
+    cd libdeps
 
 Next, we'll build the dependencies. All you need to do is run ``make
 <library>``, where ``<library>`` is the name of the library you want to build.
@@ -162,8 +162,8 @@ If the Opus build fails on an Ubuntu-based system with a message about
 
 ..  code-block:: bash
 
-    $ make ubuntu-fix-aclocal
-    $ make opus
+    make ubuntu-fix-aclocal
+    make opus
 
 Hereafter, you can just run ``make opus`` to build that library (or ``make
 ready`` to build it along with all the others.)
@@ -183,9 +183,9 @@ working on (``fresh`` or ``stable``)
 
 ..  code-block:: bash
 
-    $ git clean -xdff
-    $ git pull origin devel
-    $ make ready
+    git clean -xdff
+    git pull origin devel
+    make ready
 
 .. _gbuild_pawlib:
 
@@ -204,7 +204,7 @@ repository folder, so make sure you run...
 
 ..  code-block:: bash
 
-    $ cd pawlib
+    cd pawlib
 
 .. _gbuild_pawlib_buildingdep:
 
@@ -219,7 +219,7 @@ Then, simply run...
 
 ..  code-block:: bash
 
-    $ make ready
+    make ready
 
 .. _gbuild_pawlib_buildingdev:
 
@@ -236,13 +236,13 @@ benchmarks on the fly. To build that, run...
 
 ..  code-block:: bash
 
-    $ make tester_debug
+    make tester_debug
 
 After the build, you can start the tester via...
 
 ..  code-block:: bash
 
-    $ ./tester_debug
+    ./tester_debug
 
 It's that simple.
 

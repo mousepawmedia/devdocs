@@ -705,9 +705,9 @@ run...
 
 ..  code-block:: bash
 
-    $ sudo add-apt-repository ppa:nextcloud-devs/client
-    $ sudo apt update
-    $ sudo apt install nextcloud-client
+    sudo add-apt-repository ppa:nextcloud-devs/client
+    sudo apt update
+    sudo apt install nextcloud-client
 
 To install the Nextcloud client on Windows (7-10) or macOS (10.10+)
 `download the installer <https://nextcloud.com/install/#install-clients>`_

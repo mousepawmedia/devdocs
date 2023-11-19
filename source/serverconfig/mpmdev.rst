@@ -16,8 +16,8 @@ Before we continue, we need to check for any updates.
 
 ..  code-block:: bash
 
-    $ apt update
-    $ apt full-upgrade
+    apt update
+    apt full-upgrade
 
 Setting Hostname and Timezone
 --------------------------------
@@ -26,9 +26,9 @@ We'll start by defining the name of our host.
 
 ..  code-block:: bash
 
-    $ echo "mpmdev" > /etc/hostname
-    $ hostname -F /etc/hostname
-    $ vim /etc/hosts
+    echo "mpmdev" > /etc/hostname
+    hostname -F /etc/hostname
+    vim /etc/hosts
 
 In that file, add the following lines below the first line, substituting the
 actual IPv4 and IPv6 of the Linode in place of the NNN.NNN values:
@@ -44,7 +44,7 @@ Now we set the timezone.
 
 ..  code-block:: bash
 
-    $ dpkg-reconfigure tzdata
+    dpkg-reconfigure tzdata
 
 Use the arrow and ENTER keys to set your timezone. We'll be using US/Central.
 
@@ -60,15 +60,15 @@ user account.
 
 ..  code-block:: bash
 
-    $ adduser mpm
+    adduser mpm
 
 Define the password for the new user, and other information if desired.
 Then, we add the user to the ``sudo`` group.
 
 ..  code-block:: bash
 
-    $ usermod -aG sudo mpm
-    $ groups mpm
+    usermod -aG sudo mpm
+    groups mpm
 
 The second command will list all of the groups ``mpm`` is in. Ensure
 it includes the ``sudo`` group.
@@ -85,10 +85,10 @@ change a few settings and start the service.
 ..  code-block:: bash
 
     # Make a backup of the default SSH configuration.
-    $ sudo cp /etc/ssh/sshd_config{,.bak}
+    sudo cp /etc/ssh/sshd_config{,.bak}
 
     # Edit the SSH configuration.
-    $ sudo vim /etc/ssh/sshd_config
+    sudo vim /etc/ssh/sshd_config
 
 Change ``Port 22`` to ``Port 123`` and ``PermitRootLogin yes`` to
 ``PermitRootLogin no``. Also add the line ``DebianBanner no`` (you can put it under
@@ -100,7 +100,7 @@ Now we'll restart the service.
 ..  code-block:: bash
 
     # Restart the SSH service.
-    $ sudo systemctl restart ssh
+    sudo systemctl restart ssh
 
 On the **remote machine** (the computer you're connecting *from*), run the
 following command, where :code:`NNN.NNN.NNN.NNN` is the IP address of the
@@ -137,8 +137,8 @@ We'll start by setting up Apache2.
 
 ..  code-block:: bash
 
-    $ sudo apt install apache2
-    $ sudo vim /etc/apache2/apache2.conf
+    sudo apt install apache2
+    sudo vim /etc/apache2/apache2.conf
 
 Next, we'll edit the configuration file to turn off ``KeepAlive``, as that
 uses up extra memory (and we don't have that much to spare). We'll also set
@@ -167,7 +167,7 @@ Next, we'll change the settings for the ``mpm_prefork`` module.
 
 ..  code-block:: bash
 
-    $ sudo vim /etc/apache2/mods-available/mpm_prefork.conf
+    sudo vim /etc/apache2/mods-available/mpm_prefork.conf
 
 Set the file to the following...
 
@@ -185,16 +185,16 @@ Save and close. Now we'll enable the prefork module and restart Apache2.
 
 ..  code-block:: bash
 
-    $ sudo a2dismod mpm_event
-    $ sudo a2enmod mpm_prefork
-    $ sudo systemctl restart apache2
+    sudo a2dismod mpm_event
+    sudo a2enmod mpm_prefork
+    sudo systemctl restart apache2
 
 Next, we will add our user to the ``www-data`` group, which will be
 helpful for permissions.
 
 ..  code-block:: bash
 
-    $ sudo usermod -aG www-data mpm
+    sudo usermod -aG www-data mpm
 
 Browse to the web server using the IP or whatever address is most convenient,
 and ensure the Apache2 default page is appearing.
@@ -206,8 +206,8 @@ Now we will set up our database software.
 
 ..  code-block:: bash
 
-    $ sudo apt install mysql-server
-    $ sudo mysql_secure_installation
+    sudo apt install mysql-server
+    sudo mysql_secure_installation
 
 Validate Password is optional; you should specify the root password
 and answer ``Y`` to the following:
@@ -224,8 +224,8 @@ We'll be using PHP 7.4, which is the default in Ubuntu 20.04, for this server.
 
 ..  code-block:: bash
 
-    $ sudo apt install php7.4 libapache2-mod-php7.4 php7.4-cli php7.4-common php7.4-curl php7.4-dev php7.4-gd php7.4-json php7.4-mbstring php7.4-mysql php7.4-opcache php7.4-readline php7.4-xml
-    $ sudo vim /etc/php/7.4/apache2/php.ini
+    sudo apt install php7.4 libapache2-mod-php7.4 php7.4-cli php7.4-common php7.4-curl php7.4-dev php7.4-gd php7.4-json php7.4-mbstring php7.4-mysql php7.4-opcache php7.4-readline php7.4-xml
+    sudo vim /etc/php/7.4/apache2/php.ini
 
 Edit the contents of that file so the following lines match the given values:
 
@@ -240,9 +240,9 @@ Finally, restart Apache2 to start using the changes.
 
 ..  code-block:: bash
 
-    $ sudo mkdir /var/log/php
-    $ sudo chown www-data /var/log/php
-    $ sudo systemctl restart apache2
+    sudo mkdir /var/log/php
+    sudo chown www-data /var/log/php
+    sudo systemctl restart apache2
 
 `SOURCE: Install LAMP on Ubuntu 16.04 (Linode) <https://www.linode.com/docs/web-servers/lamp/install-lamp-on-ubuntu-16-04/>`_
 
@@ -253,16 +253,16 @@ We need to save a number of scripts for regular use.
 
 ..  code-block:: bash
 
-    $ sudo mkdir -p /opt/scripts/sys
-    $ sudo mkdir -p /opt/scripts/root
-    $ sudo chown root:root /opt/scripts/root
-    $ sudo chmod 700 /opt/scripts/root
+    sudo mkdir -p /opt/scripts/sys
+    sudo mkdir -p /opt/scripts/root
+    sudo chown root:root /opt/scripts/root
+    sudo chmod 700 /opt/scripts/root
 
 Now we add the system scripts to the path for the main user.
 
 ..  code-block:: bash
 
-    $ vim ~/.bashrc
+    vim ~/.bashrc
 
 Add the following to that file:
 
@@ -286,10 +286,10 @@ We need to install the Let's Encrypt Certbot for generating certificates.
 
 ..  code-block:: bash
 
-    $ sudo snap install core; sudo snap refresh core
-    $ sudo snap install --classic certbot
-    $ sudo ln -s /snap/bin/certbot /usr/bin/certbot
-    $ sudo certbot register
+    sudo snap install core; sudo snap refresh core
+    sudo snap install --classic certbot
+    sudo ln -s /snap/bin/certbot /usr/bin/certbot
+    sudo certbot register
 
 Follow the instructions to register with Let's Encrypt.
 
@@ -304,7 +304,7 @@ Now we need to schedule the autorenewal task.
 
 ..  code-block:: bash
 
-    $ sudo crontab -e
+    sudo crontab -e
 
 Add the following line to the end:
 
@@ -327,7 +327,7 @@ We need to lock down SSH for further security.
 
 ..  code-block:: bash
 
-    $ sudo vim /etc/ssh/sshd_config
+    sudo vim /etc/ssh/sshd_config
 
 Edit the file so the following lines have the given settings:
 
@@ -341,7 +341,7 @@ Save and close the file, and then run...
 
 ..  code-block:: bash
 
-    $ sudo systemctl restart sshd
+    sudo systemctl restart sshd
 
 Firewall Settings
 ---------------------
@@ -351,17 +351,17 @@ and enable it. Be sure to change ``123`` to your SSL port from previously.
 
 ..  code-block:: bash
 
-    $ sudo ufw allow 123
-    $ sudo ufw allow 80
-    $ sudo ufw allow 443
-    $ sudo ufw enable
+    sudo ufw allow 123
+    sudo ufw allow 80
+    sudo ufw allow 443
+    sudo ufw enable
 
 Secure Shared Memory
 --------------------------
 
 ..  code-block:: bash
 
-    $ sudo vim /etc/fstab
+    sudo vim /etc/fstab
 
 At the bottom of the file, add the lines:
 
@@ -380,16 +380,16 @@ We'll limit ``sudo`` privileges to only users in the ``admin`` group.
 
 ..  code-block:: bash
 
-    $ sudo groupadd admin
-    $ sudo usermod -a -G admin <YOUR ADMIN USERNAME>
-    $ sudo dpkg-statoverride --update --add root admin 4750 /bin/su
+    sudo groupadd admin
+    sudo usermod -a -G admin <YOUR ADMIN USERNAME>
+    sudo dpkg-statoverride --update --add root admin 4750 /bin/su
 
 Harden Network with ``sysctl`` Settings
 ------------------------------------------------------
 
 ..  code-block:: bash
 
-    $ sudo vi /etc/sysctl.conf
+    sudo vi /etc/sysctl.conf
 
 Edit the file, uncommenting or adding the following lines:
 
@@ -435,14 +435,14 @@ Finally, reload ``sysctl``. If there are any errors, fix the associated lines.
 
 ..  code-block:: bash
 
-    $ sudo sysctl -p
+    sudo sysctl -p
 
 Harden PHP
 ---------------------------------------------
 
 ..  code-block:: bash
 
-    $ sudo vim /etc/php/7.4/apache2/php.ini
+    sudo vim /etc/php/7.4/apache2/php.ini
 
 Add or edit the following lines and save:
 
@@ -462,7 +462,7 @@ Restart the Apache2 server and make sure it still works.
 
 ..  code-block:: bash
 
-    $ sudo systemctl restart apache2
+    sudo systemctl restart apache2
 
 Harden Apache2
 ---------------------------------------------
@@ -471,7 +471,7 @@ Edit the Apache2 security configuration file...
 
 ..  code-block:: bash
 
-    $ sudo vim /etc/apache2/conf-available/security.conf
+    sudo vim /etc/apache2/conf-available/security.conf
 
 Change or add the following lines:
 
@@ -486,7 +486,7 @@ Restart the Apache2 server and make sure it still works.
 
 ..  code-block:: bash
 
-    $ sudo systemctl restart apache2
+    sudo systemctl restart apache2
 
 Setup ModSecurity
 ---------------------------------------------------
@@ -497,29 +497,29 @@ the package itself.
 
 ..  code-block:: bash
 
-    $ sudo apt install libxml2 libxml2-dev libxml2-utils libaprutil1 libaprutil1-dev
-    $ sudo ln -s /usr/lib/x86_64-linux-gnu/libxml2.so.2 /usr/lib/libxml2.so.2
-    $ sudo apt install libapache2-mod-security2
+    sudo apt install libxml2 libxml2-dev libxml2-utils libaprutil1 libaprutil1-dev
+    sudo ln -s /usr/lib/x86_64-linux-gnu/libxml2.so.2 /usr/lib/libxml2.so.2
+    sudo apt install libapache2-mod-security2
 
 Now we'll copy the default configuration.
 
 ..  code-block:: bash
 
-    $ sudo mv /etc/modsecurity/modsecurity.conf-recommended /etc/modsecurity/modsecurity.conf
+    sudo mv /etc/modsecurity/modsecurity.conf-recommended /etc/modsecurity/modsecurity.conf
 
 Now we download the latest OWASP security rules.
 
 ..  code-block:: bash
 
-    $ cd /etc/modsecurity
-    $ sudo wget https://github.com/coreruleset/coreruleset/archive/v3.3.0.tar.gz
-    $ sudo tar -xvf v3.3.0.tar.gz
-    $ sudo mv coreruleset-3.3.0 owasp-modsecurity-crs
-    $ cd owasp-modsecurity-crs
-    $ sudo mv crs-setup.conf.example crs-setup.conf
-    $ cd rules
-    $ sudo mv REQUEST-900-EXCLUSION-RULES-BEFORE-CRS.conf.example REQUEST-900-EXCLUSION-RULES-BEFORE-CRS.conf
-    $ sudo mv RESPONSE-999-EXCLUSION-RULES-AFTER-CRS.conf.example RESPONSE-999-EXCLUSION-RULES-AFTER-CRS.conf
+    cd /etc/modsecurity
+    sudo wget https://github.com/coreruleset/coreruleset/archive/v3.3.0.tar.gz
+    sudo tar -xvf v3.3.0.tar.gz
+    sudo mv coreruleset-3.3.0 owasp-modsecurity-crs
+    cd owasp-modsecurity-crs
+    sudo mv crs-setup.conf.example crs-setup.conf
+    cd rules
+    sudo mv REQUEST-900-EXCLUSION-RULES-BEFORE-CRS.conf.example REQUEST-900-EXCLUSION-RULES-BEFORE-CRS.conf
+    sudo mv RESPONSE-999-EXCLUSION-RULES-AFTER-CRS.conf.example RESPONSE-999-EXCLUSION-RULES-AFTER-CRS.conf
 
 You may need to edit :file:`/etc/modsecurity/owasp-modsecurity-crs/crs-setup.conf`
 to match your server's situation. For example, we enabled Project Honeypot.
@@ -528,7 +528,7 @@ Edit the configuration for the ModSecurity Apache module...
 
 ..  code-block:: bash
 
-    $ sudo vim /etc/apache2/mods-available/security2.conf
+    sudo vim /etc/apache2/mods-available/security2.conf
 
 Change the ``IncludeOptional`` entries to match the following:
 
@@ -545,9 +545,9 @@ Enable the modules and restart Apache2, ensuring that it still works.
 
 ..  code-block:: bash
 
-    $ sudo a2enmod headers
-    $ sudo a2enmod security2
-    $ sudo systemctl restart apache2
+    sudo a2enmod headers
+    sudo a2enmod security2
+    sudo systemctl restart apache2
 
 Finally, to make sure it works, go to ``http://<serveraddress>/?param="><script>alert(1);</script>``.
 Check ``/var/log/apache2/error.log`` for an error report from ``mod_security``.
@@ -561,9 +561,9 @@ actions.
 
 ..  code-block:: bash
 
-    $ sudo apt install fail2ban
-    $ sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
-    $ sudo vim /etc/fail2ban/jail.local
+    sudo apt install fail2ban
+    sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
+    sudo vim /etc/fail2ban/jail.local
 
 To turn on various "jails", scroll down to the ``# JAILS`` section. Place
 ``enabled = true`` under each jail name you want turned on. This is the list
@@ -603,8 +603,8 @@ be changed in Fail2Ban's configuration:
 
 ..  code-block:: bash
 
-    $ sudo cp /etc/fail2ban/fail2ban.conf /etc/fail2ban/fail2ban.local
-    $ sudo vim /etc/fail2ban/fail2ban.local
+    sudo cp /etc/fail2ban/fail2ban.conf /etc/fail2ban/fail2ban.local
+    sudo vim /etc/fail2ban/fail2ban.local
 
 Change the following values:
 
@@ -619,25 +619,25 @@ Save and close. Run the following command to ensure there are no errors:
 
 ..  code-block:: bash
 
-    $ sudo fail2ban-client -x start
+    sudo fail2ban-client -x start
 
 Finally, restart the fail2ban process.
 
 ..  code-block:: bash
 
-    $ sudo systemctl restart fail2ban
+    sudo systemctl restart fail2ban
 
 Setup PSAD
 ------------------------------------------
 
 ..  code-block:: bash
 
-    $ sudo apt install psad
-    $ sudo iptables -A INPUT -j LOG
-    $ sudo iptables -A FORWARD -j LOG
-    $ sudo ip6tables -A INPUT -j LOG
-    $ sudo ip6tables -A FORWARD -j LOG
-    $ sudo vim /etc/psad/psad.conf
+    sudo apt install psad
+    sudo iptables -A INPUT -j LOG
+    sudo iptables -A FORWARD -j LOG
+    sudo ip6tables -A INPUT -j LOG
+    sudo ip6tables -A FORWARD -j LOG
+    sudo vim /etc/psad/psad.conf
 
 Change the following values:
 
@@ -656,10 +656,10 @@ Save and close, and then reload like this:
 
 ..  code-block:: bash
 
-    $ sudo psad -R
-    $ sudo psad --sig-update
-    $ sudo psad -H
-    $ sudo psad --Status
+    sudo psad -R
+    sudo psad --sig-update
+    sudo psad -H
+    sudo psad --Status
 
 When you run that last command, it may whine about not finding a pidfile.
 It appears we can ignore that error.
@@ -669,7 +669,7 @@ Otherwise, ``psad`` won't be able to log correctly.
 
 ..  code-block:: bash
 
-    $ sudo vim /lib/systemd/system/fail2ban.service
+    sudo vim /lib/systemd/system/fail2ban.service
 
 In that file, add ``ufw.service`` and ``psad.service`` to the ``After=`` directive,
 so it looks something like this:
@@ -682,15 +682,15 @@ Save and close, and then reload the daemons for systemctl and restart fail2ban.
 
 ..  code-block:: bash
 
-    $ sudo systemctl daemon-reload
-    $ sudo systemctl restart fail2ban
+    sudo systemctl daemon-reload
+    sudo systemctl restart fail2ban
 
 Now we need to adjust the UFW settings.
 
 ..  code-block:: bash
 
-    $ sudo ufw logging high
-    $ sudo vim /etc/ufw/before.rules
+    sudo ufw logging high
+    sudo vim /etc/ufw/before.rules
 
 Add the following lines before the final commit message:
 
@@ -706,8 +706,8 @@ reload PSAD.
 
 ..  code-block:: bash
 
-    $ sudo systemctl restart ufw
-    $ sudo psad --fw-analyze
+    sudo systemctl restart ufw
+    sudo psad --fw-analyze
 
 Restart the computer, and ensure PSAD isn't sending any system emails
 complaining about the firewall configuration. (Check system email by
@@ -720,8 +720,8 @@ We use two different rootkit checkers.
 
 ..  code-block:: bash
 
-    $ sudo apt install rkhunter chkrootkit
-    $ sudo vim /opt/scripts/root/rootkitscan
+    sudo apt install rkhunter chkrootkit
+    sudo vim /opt/scripts/root/rootkitscan
 
 Set the contents of that file to the following:
 
@@ -742,23 +742,23 @@ These are a few other useful programs.
 
 ..  code-block:: bash
 
-    $ sudo apt install nmap logwatch libdate-manip-perl apparmor apparmor-profiles tiger clamav
+    sudo apt install nmap logwatch libdate-manip-perl apparmor apparmor-profiles tiger clamav
 
     # Ensure apparmor is working.
-    $ sudo apparmor_status
+    sudo apparmor_status
 
 To use logwatch, run...
 
 ..  code-block:: bash
 
-    $ sudo logwatch | less
+    sudo logwatch | less
 
 To scan for vulnerabilites with Tiger, run...
 
 ..  code-block:: bash
 
-    $ sudo tiger
-    $ sudo less /var/log/tiger/security.report.*
+    sudo tiger
+    sudo less /var/log/tiger/security.report.*
 
 Adding Sites
 ============================
@@ -770,8 +770,8 @@ to be done the first time.
 
 ..  code-block:: bash
 
-    $ sudo a2enmod ssl
-    $ sudo systemctl restart apache2
+    sudo a2enmod ssl
+    sudo systemctl restart apache2
 
 We start by generating a certificate for the domain being added. In this case,
 I'm creating one certificate for two domains. Ordinarily, you'd only create
@@ -783,16 +783,16 @@ other sites will work.
 
 ..  code-block:: bash
 
-    $ sudo a2ensite 000-default
-    $ sudo systemctl reload apache2
-    $ sudo certbot certonly --apache -d phab.mousepawmedia.com,phabfiles.mousepawmedia.com
+    sudo a2ensite 000-default
+    sudo systemctl reload apache2
+    sudo certbot certonly --apache -d phab.mousepawmedia.com,phabfiles.mousepawmedia.com
 
 In the output for the certbot command, take note of the paths where the
 certificate and chain were saved. You'll need that in the next step.
 
 ..  code-block:: bash
 
-    $ sudo vim /etc/apache2/sites-available/phab.conf
+    sudo vim /etc/apache2/sites-available/phab.conf
 
 Set the contents of that file to the following, substituting the
 domain name in place for :code:`ServerName`, and fixing the paths for
@@ -837,16 +837,16 @@ in :code:`DocumentRoot`.
 
 ..  code-block:: bash
 
-    $ cd /opt
-    $ sudo mkdir phab
-    $ sudo chown www-data:www-data phab
-    $ sudo chmod 775 phab
+    cd /opt
+    sudo mkdir phab
+    sudo chown www-data:www-data phab
+    sudo chmod 775 phab
 
 We need to tell Apache2 to read this directory.
 
 ..  code-block:: bash
 
-    $ sudo vim /etc/apache2/apache2.conf
+    sudo vim /etc/apache2/apache2.conf
 
 Scroll down to the section with all the directories, and add these entries:
 
@@ -867,9 +867,9 @@ Now we disable the default site, enable the new site, and restart Apache2.
 
 ..  code-block:: bash
 
-    $ sudo a2dissite 000-default
-    $ sudo a2ensite phab
-    $ sudo systemctl restart apache2
+    sudo a2dissite 000-default
+    sudo a2ensite phab
+    sudo systemctl restart apache2
 
 Ensure the new domain works over http.
 
@@ -880,7 +880,7 @@ With that set up, we want to redirect port 80 to port 443.
 
 ..  code-block:: bash
 
-    $ sudo vim /etc/apache2/sites-available/000-redirect.conf
+    sudo vim /etc/apache2/sites-available/000-redirect.conf
 
 Set the contents of that file to...
 
@@ -897,9 +897,9 @@ restart Apache2.
 
 ..  code-block:: bash
 
-    $ sudo a2ensite 000-redirect
-    $ sudo a2enmod rewrite
-    $ sudo systemctl restart apache2
+    sudo a2ensite 000-redirect
+    sudo a2enmod rewrite
+    sudo systemctl restart apache2
 
 Navigating to ``http://<serveraddress>`` should now redirect properly to
 Navigate to ``https://<serveraddress>``. The same will apply for any subdirectory
@@ -918,7 +918,7 @@ PHPMyAdmin
 
 ..  code-block:: bash
 
-    $ sudo apt install phpmyadmin
+    sudo apt install phpmyadmin
 
 On the configuration dialog, select ``apache2`` by selecting it and tapping
 :kbd:`Space`. Enter an application password (different from the MySQL root
@@ -928,7 +928,7 @@ Edit the configuration for PHP, to force HTTPS.
 
 ..  code-block:: bash
 
-    $ sudo vim /etc/phpmyadmin/config.inc.php
+    sudo vim /etc/phpmyadmin/config.inc.php
 
 Add the following line to the bottom of that file.
 
@@ -942,8 +942,8 @@ Now enable one necessary PHP module and restart Apache2.
 
 ..  code-block:: bash
 
-    $ sudo phpenmod mbstring
-    $ sudo systemctl restart apache2
+    sudo phpenmod mbstring
+    sudo systemctl restart apache2
 
 Validate that you can access ``https://<serveraddress>/phpmyadmin``. Log
 in there with the username ``phpmyadmin`` and the password you defined.
@@ -958,7 +958,7 @@ access to all databases, run the following:
 
 ..  code-block:: bash
 
-    $ sudo mysql -u root
+    sudo mysql -u root
 
 Run the following commands in the MySQL shell:
 
@@ -979,7 +979,7 @@ PHPMyAdmin using a script.
 
 ..  code-block:: bash
 
-    $ sudo vim /opt/scripts/sys/controls
+    sudo vim /opt/scripts/sys/controls
 
 The contents of that file are as follows.
 
@@ -1010,7 +1010,7 @@ Save and close, and then make executable.
 
 ..  code-block:: bash
 
-    $ sudo chmod +x /opt/scripts/sys/controls
+    sudo chmod +x /opt/scripts/sys/controls
 
 Now you can run :code:`controls on` or :code:`controls off` to toggle
 access to PHPMyAdmin.
@@ -1025,8 +1025,8 @@ We need a few packages for Phabricator to work well:
 
 ..  code-block:: bash
 
-    $ sudo apt install php7.4-ldap php-apcu imagemagick subversion python3-pygments python-pygments
-    $ sudo systemctl restart apache2
+    sudo apt install php7.4-ldap php-apcu imagemagick subversion python3-pygments python-pygments
+    sudo systemctl restart apache2
 
 This will also assume you've set up the two domains for Phabricator with
 Apache2 and Let's Encrypt, following the earlier instructions. For this
@@ -1042,23 +1042,23 @@ user called ``phabdaemon`` for Phabricator-based daemons.
 
 ..  code-block:: bash
 
-    $ sudo groupadd phab
-    $ sudo useradd -G phab phabdaemon
-    $ sudo usermod -a -G phab mpm
-    $ sudo usermod -a -G phab www-data
+    sudo groupadd phab
+    sudo useradd -G phab phabdaemon
+    sudo usermod -a -G phab mpm
+    sudo usermod -a -G phab www-data
 
 Now we need to modify the ``phabdaemon`` user.
 
 ..  code-block:: bash
 
-    $ sudo vim /etc/passwd
+    sudo vim /etc/passwd
 
 Look for the ``phabdaemon`` entry and set the last field to ``/usr/sbin/nologin``.
 Save and close. Then...
 
 ..  code-block:: bash
 
-    $ sudo vim /etc/shadow
+    sudo vim /etc/shadow
 
 Look for the ``phabdaemon`` entry again, and set the second field to ``*``.
 Save and close.
@@ -1074,16 +1074,16 @@ Once you've moved the folders over, change their permissions as follows...
 
 ..  code-block:: bash
 
-    $ cd /opt
-    $ sudo chown -R mpm phab
-    $ sudo chown -R phabdaemon phabfiles
-    $ sudo chown -R phabdaemon phabrepo
-    $ sudo chgrp -R phab phab
-    $ sudo chgrp -R phab phabfiles
-    $ sudo chgrp -R phab phabrepo
-    $ sudo chmod u=rwx,g=rwx,o=rx -R phab
-    $ sudo chmod u=rwx,g=rwx,o=rx -R phabfiles
-    $ sudo chmod u=rwx,g=rwx,o=rx -R phabrepo
+    cd /opt
+    sudo chown -R mpm phab
+    sudo chown -R phabdaemon phabfiles
+    sudo chown -R phabdaemon phabrepo
+    sudo chgrp -R phab phab
+    sudo chgrp -R phab phabfiles
+    sudo chgrp -R phab phabrepo
+    sudo chmod u=rwx,g=rwx,o=rx -R phab
+    sudo chmod u=rwx,g=rwx,o=rx -R phabfiles
+    sudo chmod u=rwx,g=rwx,o=rx -R phabrepo
 
 ..  note:: That last command migrates where repositories look for files.
 
@@ -1091,15 +1091,15 @@ We also exported the Phabricator database on the *old* server using...
 
 ..  code-block:: bash
 
-    $ cd /home/mpm/phab/phabricator
-    $ ./bin/storage dump | gzip > /home/mpm/backup.sql.gz
+    cd /home/mpm/phab/phabricator
+    ./bin/storage dump | gzip > /home/mpm/backup.sql.gz
 
 On the *new* server, we copy that backup to our ``IMPORTED`` directory, and then
 run the following to move it into the new copy of MySQL.
 
 ..  code-block:: bash
 
-    $ gunzip -c /home/mpm/IMPORTED/backup.sql.gz | sudo mysql -u root
+    gunzip -c /home/mpm/IMPORTED/backup.sql.gz | sudo mysql -u root
 
 Now wait. You might take this opportunity to set up a chess board and talk
 about playing badly. Don't count on actually starting a game.
@@ -1109,9 +1109,9 @@ domain names:
 
 ..  code-block:: bash
 
-    $ cd /opt/phab/phabricator
-    $ ./bin/config set phabricator.base-uri https://phab.mousepawmedia.com/
-    $ ./bin/config set phabricator.allowed-uris '["https://phab.mousepawmedia.com/"]'
+    cd /opt/phab/phabricator
+    ./bin/config set phabricator.base-uri https://phab.mousepawmedia.com/
+    ./bin/config set phabricator.allowed-uris '["https://phab.mousepawmedia.com/"]'
 
 Configuring Apache
 --------------------------------------------
@@ -1120,7 +1120,7 @@ We need to modify a few files to get this working. First, modify ``apache2.conf`
 
 ..  code-block:: bash
 
-    $ sudo vim /etc/apache2/apache2.conf
+    sudo vim /etc/apache2/apache2.conf
 
 Near the other ``Directory`` sections, modify the ``/opt/phab`` Directory
 entry to the following...
@@ -1137,7 +1137,7 @@ Finally, add or update the following site:
 
 ..  code-block:: bash
 
-    $ sudo vim /etc/apache2/sites-available/phab.conf
+    sudo vim /etc/apache2/sites-available/phab.conf
 
 Copy and paste the following into that file.
 
@@ -1183,9 +1183,9 @@ Save and close the file. Finally, load them up.
 
 ..  code-block:: bash
 
-    $ sudo a2ensite phab
-    $ sudo a2enmod ssl php7.4 rewrite
-    $ sudo systemctl restart apache2
+    sudo a2ensite phab
+    sudo a2enmod ssl php7.4 rewrite
+    sudo systemctl restart apache2
 
 Now see if ``https://<phabricatoraddress>/`` works.
 
@@ -1196,7 +1196,7 @@ Next, we need to make some modifications to ``php.ini`` for Phabricator to work.
 
 ..  code-block:: bash
 
-    $ sudo vim /etc/php/7.4/apache2/php.ini
+    sudo vim /etc/php/7.4/apache2/php.ini
 
 Make these changes...
 
@@ -1209,14 +1209,14 @@ Save and close, and then restart Apache:
 
 ..  code-block:: bash
 
-    $ sudo systemctl restart apache2
+    sudo systemctl restart apache2
 
 Next, we'll add a new user to MySQL and give it all privileges for the
 Phabricator databases.
 
 ..  code-block:: bash
 
-    $ sudo mysql -u root
+    sudo mysql -u root
 
 Run the following:
 
@@ -1232,15 +1232,15 @@ configuration to access the database.
 
 ..  code-block:: bash
 
-    $ /opt/phab/phabricator/bin/config set mysql.host localhost
-    $ /opt/phab/phabricator/bin/config set mysql.user phab
-    $ /opt/phab/phabricator/bin/config set mysql.pass some_password
+    /opt/phab/phabricator/bin/config set mysql.host localhost
+    /opt/phab/phabricator/bin/config set mysql.user phab
+    /opt/phab/phabricator/bin/config set mysql.pass some_password
 
 We also need to change some settings for MySQL:
 
 ..  code-block:: bash
 
-    $ sudo vim /etc/mysql/mysql.conf.d/mysqld.cnf
+    sudo vim /etc/mysql/mysql.conf.d/mysqld.cnf
 
 Add or change the following lines in the ``[mysqld]`` section:
 
@@ -1253,7 +1253,7 @@ Save and close, and then restart MySQL:
 
 ..  code-block:: bash
 
-    $ sudo systemctl restart mysql
+    sudo systemctl restart mysql
 
 Set Log Locations
 ---------------------------------------------------
@@ -1268,14 +1268,14 @@ to find it.
 
 ..  code-block:: bash
 
-    $ sudo mkdir /var/log/phab
-    $ sudo chown -R mpm /var/log/phab
-    $ sudo chgrp -R phab /var/log/phab
-    $ sudo chmod -R 775 /var/log/phab
-    $ cd /opt/phab/phabricator
-    $ ./bin/config set log.access.path /var/log/phab/access.log
-    $ ./bin/config set log.ssh.path /var/log/phab/ssh.log
-    $ ./bin/config set phd.log-directory /var/log/phab/phd.log
+    sudo mkdir /var/log/phab
+    sudo chown -R mpm /var/log/phab
+    sudo chgrp -R phab /var/log/phab
+    sudo chmod -R 775 /var/log/phab
+    cd /opt/phab/phabricator
+    ./bin/config set log.access.path /var/log/phab/access.log
+    ./bin/config set log.ssh.path /var/log/phab/ssh.log
+    ./bin/config set phd.log-directory /var/log/phab/phd.log
 
 Setting Up Alternative File Domain
 -------------------------------------------------
@@ -1287,9 +1287,9 @@ We can copy and tweak the configuration file we used for Phabricator in Apache2.
 
 ..  code-block:: bash
 
-    $ cd /etc/apache2/sites-available
-    $ sudo cp phab.conf phabfiles.conf
-    $ sudo vim phabfiles.conf
+    cd /etc/apache2/sites-available
+    sudo cp phab.conf phabfiles.conf
+    sudo vim phabfiles.conf
 
 Set the contents to the following...
 
@@ -1336,8 +1336,8 @@ Save and close. Then, run...
 
 ..  code-block:: bash
 
-    $ sudo a2ensite phabfiles
-    $ sudo systemctl restart apache2
+    sudo a2ensite phabfiles
+    sudo systemctl restart apache2
 
 Go to ``https://<filedomainname>``. You **should** see an error on the page
 saying "Unhandled Exception ("AphrontMalformedRequestException")"
@@ -1347,8 +1347,8 @@ Next, we'll configure Phabricator to use this domain name for file serving.
 
 ..  code-block:: bash
 
-    $ cd /opt/phab/phabricator
-    $ ./bin/config set security.alternate-file-domain https://phabfiles.<serveraddress>/
+    cd /opt/phab/phabricator
+    ./bin/config set security.alternate-file-domain https://phabfiles.<serveraddress>/
 
 Recaptcha
 -------------------------------------------------
@@ -1360,9 +1360,9 @@ from that website.
 
 ..  code-block:: bash
 
-    $ ./bin/config set recaptcha.enabled true
-    $ ./bin/config set recaptcha.public-key PUBLICKEY
-    $ ./bin/config set recaptcha.private-key PRIVATEKEY
+    ./bin/config set recaptcha.enabled true
+    ./bin/config set recaptcha.public-key PUBLICKEY
+    ./bin/config set recaptcha.private-key PRIVATEKEY
 
 LDAP
 -------------------------------------------------
@@ -1371,9 +1371,9 @@ I want to allow logging in with LDAP. In the terminal, run the following:
 
 ..  code-block:: bash
 
-    $ sudo apt install php7.4-ldap
-    $ cd /opt/phab/phabricator
-    $ bin/auth unlock
+    sudo apt install php7.4-ldap
+    cd /opt/phab/phabricator
+    bin/auth unlock
 
 Then, in Phabricator itself, go to the Auth app (``/auth``).
 
@@ -1409,11 +1409,11 @@ handles that.
 
 ..  code-block:: bash
 
-    $ sudo mkdir /opt/scripts/phab
-    $ sudo chown mpm /opt/scripts/phab
-    $ sudo chgrp phab /opt/scripts/phab
-    $ sudo chmod 775 /opt/scripts/phab
-    $ sudo vim /opt/scripts/phab/phd_start
+    sudo mkdir /opt/scripts/phab
+    sudo chown mpm /opt/scripts/phab
+    sudo chgrp phab /opt/scripts/phab
+    sudo chmod 775 /opt/scripts/phab
+    sudo vim /opt/scripts/phab/phd_start
 
 Put the following in that file.
 
@@ -1428,13 +1428,13 @@ Save and close. Then, change its permissions.
 
 ..  code-block:: bash
 
-    $ sudo chmod 775 /opt/scripts/phab/phd_start
+    sudo chmod 775 /opt/scripts/phab/phd_start
 
 Now, add this script to the crontab.
 
 ..  code-block:: bash
 
-    $ sudo crontab -e
+    sudo crontab -e
 
 At the bottom, add the line:
 
@@ -1452,13 +1452,13 @@ the daemons.
 
 ..  code-block:: bash
 
-    $ /opt/phab/phabricator/bin/config set phd.user phabdaemon
+    /opt/phab/phabricator/bin/config set phd.user phabdaemon
 
 Of course, we can run this to start the Phabricator daemons right now...
 
 ..  code-block:: bash
 
-    $ sudo /opt/scripts/phab/phd_start
+    sudo /opt/scripts/phab/phd_start
 
 ..  note:: If it complains about not being able to modify a path starting with
     ``/var/tmp/phd``, just CAREFULLY run ``sudo rm -r /var/tmp/phd``.
@@ -1473,9 +1473,9 @@ package repositories.
 
 ..  code-block:: bash
 
-    $ sudo apt install nodejs npm
-    $ cd /opt/phab/phabricator/support/aphlict/server/
-    $ npm install ws
+    sudo apt install nodejs npm
+    cd /opt/phab/phabricator/support/aphlict/server/
+    npm install ws
 
 You can safely ignore the warning messages from ``npm``.
 
@@ -1483,10 +1483,10 @@ Next, we'll set things up so ``phabdaemon`` can read the SSL certificates.
 
 ..  code-block:: bash
 
-    $ sudo mkdir /etc/phab/ssl
-    $ sudo chown -R phabdaemon:phab /etc/phab
-    $ sudo chmod 700 /etc/phab/ssl
-    $ sudo vim /opt/scripts/root/postrenew
+    sudo mkdir /etc/phab/ssl
+    sudo chown -R phabdaemon:phab /etc/phab
+    sudo chmod 700 /etc/phab/ssl
+    sudo vim /opt/scripts/root/postrenew
 
 Set the contents of that file to:
 
@@ -1500,15 +1500,15 @@ Save and close. Then, make executable and run.
 
 ..  code-block:: bash
 
-    $ sudo chmod +x /opt/scripts/root/postrenew
-    $ sudo /opt/scripts/root/postrenew
+    sudo chmod +x /opt/scripts/root/postrenew
+    sudo /opt/scripts/root/postrenew
 
 That script will need to be run every time certificates are renewed, so let's
 update our cron job.
 
 ..  code-block:: bash
 
-    $ sudo crontab -e
+    sudo crontab -e
 
 Modify the crontab for certbot to the following (without changing the time
 you have already specified, of course):
@@ -1523,9 +1523,9 @@ Now we need to adjust the Aphlict configuration, or it won't start.
 
 ..  code-block:: bash
 
-    $ cd /opt/phab/phabricator/conf/aphlict
-    $ cp aphlict.default.json aphlict.custom.json
-    $ vim aphlict.custom.json
+    cd /opt/phab/phabricator/conf/aphlict
+    cp aphlict.default.json aphlict.custom.json
+    vim aphlict.custom.json
 
 The file should look like this:
 
@@ -1562,9 +1562,9 @@ Finally, open the necessary port and start Aphlict via...
 
 ..  code-block:: bash
 
-    $ sudo ufw allow 22280
-    $ cd /opt/phab/phabricator
-    $ sudo -u phabdaemon ./bin/aphlict start
+    sudo ufw allow 22280
+    cd /opt/phab/phabricator
+    sudo -u phabdaemon ./bin/aphlict start
 
 It should start up without any issues. If there are some, check the previous
 steps.
@@ -1598,7 +1598,7 @@ If all's well, let's add the Aphlict startup to our PHD start script.
 
 ..  code-block:: bash
 
-    $ sudo vim /opt/scripts/phab/phd_start
+    sudo vim /opt/scripts/phab/phd_start
 
 Add the line...
 
@@ -1619,9 +1619,9 @@ user, and then give these users appropriate sudo permissions.
 
 ..  code-block:: bash
 
-    $ sudo useradd -m git
-    $ /opt/phab/phabricator/bin/config set diffusion.ssh-user git
-    $ sudo visudo
+    sudo useradd -m git
+    /opt/phab/phabricator/bin/config set diffusion.ssh-user git
+    sudo visudo
 
 Add these lines to that file:
 
@@ -1646,7 +1646,7 @@ Now, we need to edit a couple other files.
 
 ..  code-block:: bash
 
-    $ sudo vim /etc/shadow
+    sudo vim /etc/shadow
 
 Find the line for ``git`` and change the ``!`` in the second field to ``NP``. Save
 and close.
@@ -1655,7 +1655,7 @@ Next, run...
 
 ..  code-block:: bash
 
-    $ sudo vim /etc/passwd
+    sudo vim /etc/passwd
 
 Find the line for ``git`` and set (or change) the last field to ``/bin/sh``.
 Save and close.
@@ -1665,14 +1665,14 @@ locations.
 
 ..  code-block:: bash
 
-    $ sudo usermod -a -G phab git
+    sudo usermod -a -G phab git
 
 Now let's configure the ports and SSH settings.
 
 ..  code-block:: bash
 
-    $ /opt/phab/phabricator/bin/config set diffusion.ssh-port 2222
-    $ sudo ufw allow 2222
+    /opt/phab/phabricator/bin/config set diffusion.ssh-port 2222
+    sudo ufw allow 2222
 
 Now we need to copy the SSH hook script to our scripts directory. We will
 need to create a special subdirectory that is owned by root and has permissions
@@ -1680,9 +1680,9 @@ need to create a special subdirectory that is owned by root and has permissions
 
 ..  code-block:: bash
 
-    $ sudo cp /opt/phab/phabricator/resources/sshd/phabricator-ssh-hook.sh /opt/scripts/sys/phabricator-ssh-hook
-    $ sudo chmod 755 /opt/scripts/sys/phabricator-ssh-hook
-    $ sudo vim /opt/scripts/sys/phabricator-ssh-hook
+    sudo cp /opt/phab/phabricator/resources/sshd/phabricator-ssh-hook.sh /opt/scripts/sys/phabricator-ssh-hook
+    sudo chmod 755 /opt/scripts/sys/phabricator-ssh-hook
+    sudo vim /opt/scripts/sys/phabricator-ssh-hook
 
 Edit that file so it matches the following...
 
@@ -1707,8 +1707,8 @@ Save and close. Now we need to set up SSHD's configuration.
 
 ..  code-block:: bash
 
-    $ sudo cp /opt/phab/phabricator/resources/sshd/sshd_config.phabricator.example /etc/ssh/sshd_config.phabricator
-    $ sudo vim /etc/ssh/sshd_config.phabricator
+    sudo cp /opt/phab/phabricator/resources/sshd/sshd_config.phabricator.example /etc/ssh/sshd_config.phabricator
+    sudo vim /etc/ssh/sshd_config.phabricator
 
 In that file, set the following lines:
 
@@ -1729,7 +1729,7 @@ Now we try running SSHD in debug mode first.
 
 ..  code-block:: bash
 
-    $ sudo /usr/sbin/sshd -d -d -d -f /etc/ssh/sshd_config.phabricator
+    sudo /usr/sbin/sshd -d -d -d -f /etc/ssh/sshd_config.phabricator
 
 Make sure you've added your SSH public key to your Phabricator profile. Then,
 on the guest computer you use for SSH, run...
@@ -1750,7 +1750,7 @@ Once you're assured of this working, run...
 
 ..  code-block:: bash
 
-    $ sudo /usr/sbin/sshd -f /etc/ssh/sshd_config.phabricator
+    sudo /usr/sbin/sshd -f /etc/ssh/sshd_config.phabricator
 
 Double-check functionality by re-running the earlier command on the
 computer you SSH from. Run this two or three times to be certain.
@@ -1763,7 +1763,7 @@ If it works, then all's well! Add the sshd start command to the system cron.
 
 ..  code-block:: bash
 
-    $ sudo crontab -e
+    sudo crontab -e
 
 On that file, add the line:
 
@@ -1783,11 +1783,11 @@ We first need to install Jenkins.
 
 ..  code-block:: bash
 
-    $ wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo apt-key add -
-    $ sudo sh -c 'echo deb https://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
-    $ sudo apt update
-    $ sudo apt install openjdk-11-jdk
-    $ sudo apt install jenkins
+    wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo apt-key add -
+    sudo sh -c 'echo deb https://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
+    sudo apt update
+    sudo apt install openjdk-11-jdk
+    sudo apt install jenkins
 
 `SOURCE: Linux (Jenkins) <https://www.jenkins.io/doc/book/installing/linux/#debianubuntu>`_
 
@@ -1799,7 +1799,7 @@ through HTTPS.
 
 ..  code-block:: bash
 
-    $ sudo vim /etc/default/jenkins
+    sudo vim /etc/default/jenkins
 
 Add or edit the following lines. They will *not* necessarily be
 next to each other.
@@ -1814,8 +1814,8 @@ Save and close. Now we set up Apache2.
 
 ..  code-block:: bash
 
-    $ sudo a2enmod proxy proxy_http headers
-    $ sudo vim /etc/apache2/sites-available/ci.conf
+    sudo a2enmod proxy proxy_http headers
+    sudo vim /etc/apache2/sites-available/ci.conf
 
 Set the contents of that file to:
 
@@ -1855,8 +1855,8 @@ Save and close, and then run:
 
 ..  code-block:: bash
 
-    $ sudo a2ensite ci
-    $ sudo systemctl restart apache2
+    sudo a2ensite ci
+    sudo systemctl restart apache2
 
 `SOURCE: Reverse proxy - Apache (Jenkins) <https://www.jenkins.io/doc/book/system-administration/reverse-proxy-configuration-apache/>`_
 
@@ -1869,7 +1869,7 @@ terminal command:
 
 ..  code-block:: bash
 
-    $ sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+    sudo cat /var/lib/jenkins/secrets/initialAdminPassword
 
 Be sure not to share this password!
 
@@ -2002,7 +2002,7 @@ In the server terminal, run...
 
 ..  code-block:: bash
 
-    $ sudo vim /etc/default/jenkins
+    sudo vim /etc/default/jenkins
 
 Modify the following variable to add the two
 ``-Dio.jenkins.plugins.artifact_manager`` arguments shown below:
@@ -2017,7 +2017,7 @@ Save and close, and then restart Jenkins from the command line:
 
 ..  code-block:: bash
 
-    $ sudo systemctl restart jenkins
+    sudo systemctl restart jenkins
 
 In the web browser, if you navigate to :guilabel:`Manage Jenkins` and
 :guilabel:`AWS`, you should see the :guilabel:`Delete Artifacts` and
@@ -2074,29 +2074,29 @@ moved to the other server.
 
 ..  code-block:: bash
 
-    $ sudo mkdir /opt/certs
-    $ cd /opt/certs
-    $ sudo su
-    $ openssl genrsa -aes256 -out ca-key.pem 4096
-    $ openssl req -new -x509 -days 365 -key ca-key.pem -sha256 -out ca.pem
+    sudo mkdir /opt/certs
+    cd /opt/certs
+    sudo su
+    openssl genrsa -aes256 -out ca-key.pem 4096
+    openssl req -new -x509 -days 365 -key ca-key.pem -sha256 -out ca.pem
 
 Fill out that form. Change the domain name from :code:`docker.mousepawmedia.com`
 as appropriate, as well as the IP address ``11.111.111.111``.
 
 ..  code-block:: bash
 
-    $ openssl genrsa -out server-key.pem 4096
-    $ openssl req -subj "/CN=docker.mousepawmedia.com" -sha256 -new -key server-key.pem -out server.csr
-    $ echo subjectAltName = DNS:docker.mousepawmedia.com,IP:11.111.111.111,IP:127.0.0.1 >> extfile.cnf
-    $ echo extendedKeyUsage = serverAuth >> extfile.cnf
-    $ openssl x509 -req -days 365 -sha256 -in server.csr -CA ca.pem -CAkey ca-key.pem -CAcreateserial -out server-cert.pem -extfile extfile.cnf
-    $ openssl genrsa -out key.pem 4096
-    $ openssl req -subj '/CN=client' -new -key key.pem -out client.csr
-    $ echo extendedKeyUsage = clientAuth > extfile-client.cnf
-    $ openssl x509 -req -days 365 -sha256 -in client.csr -CA ca.pem -CAkey ca-key.pem -CAcreateserial -out cert.pem -extfile extfile-client.cnf
-    $ rm -v client.csr server.csr extfile.cnf extfile-client.cnf
-    $ chmod -v 0400 {ca-key,key,server-key}.pem
-    $ chmod -v 0444 {ca,server-cert,cert}.pem
+    openssl genrsa -out server-key.pem 4096
+    openssl req -subj "/CN=docker.mousepawmedia.com" -sha256 -new -key server-key.pem -out server.csr
+    echo subjectAltName = DNS:docker.mousepawmedia.com,IP:11.111.111.111,IP:127.0.0.1 >> extfile.cnf
+    echo extendedKeyUsage = serverAuth >> extfile.cnf
+    openssl x509 -req -days 365 -sha256 -in server.csr -CA ca.pem -CAkey ca-key.pem -CAcreateserial -out server-cert.pem -extfile extfile.cnf
+    openssl genrsa -out key.pem 4096
+    openssl req -subj '/CN=client' -new -key key.pem -out client.csr
+    echo extendedKeyUsage = clientAuth > extfile-client.cnf
+    openssl x509 -req -days 365 -sha256 -in client.csr -CA ca.pem -CAkey ca-key.pem -CAcreateserial -out cert.pem -extfile extfile-client.cnf
+    rm -v client.csr server.csr extfile.cnf extfile-client.cnf
+    chmod -v 0400 {ca-key,key,server-key}.pem
+    chmod -v 0444 {ca,server-cert,cert}.pem
 
 Create a Linode with Docker. (You can use the initial setup here as a model.)
 
@@ -2104,7 +2104,7 @@ I recommend added the build server to /etc/hosts like this:
 
 ..  code-block:: bash
 
-    $ sudo vim /etc/hosts
+    sudo vim /etc/hosts
 
 Add the following line, changing the IP address to the IP of the
 Linode build server you created.
@@ -2121,7 +2121,7 @@ Now add the SSH configuration to your machine:
 
 ..  code-block:: bash
 
-    $ vim ~/.ssh/config
+    vim ~/.ssh/config
 
 Add the following block:
 
@@ -2138,9 +2138,9 @@ build server.
 
 ..  code-block:: bash
 
-    $ cd /opt/certs
-    $ sudo chmod 444 {ca,server-key,server-cert}.pem
-    $ rsync -avz --progress {ca,server-key,server-cert}.pem build:/home/mpm/incoming
+    cd /opt/certs
+    sudo chmod 444 {ca,server-key,server-cert}.pem
+    rsync -avz --progress {ca,server-key,server-cert}.pem build:/home/mpm/incoming
 
 Install Docker on Remote Build Server
 """"""""""""""""""""""""""""""""""""""""""""""
@@ -2149,17 +2149,17 @@ We start by installing Docker:
 
 ..  code-block:: bash
 
-    $ sudo apt-get remove docker docker-engine docker.io
-    $ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-    $ sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-    $ sudo apt update
-    $ sudo apt install docker-ce docker-compose
+    sudo apt-get remove docker docker-engine docker.io
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+    sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+    sudo apt update
+    sudo apt install docker-ce docker-compose
 
 Next, we set up Docker to be automatically started by systemd.
 
 ..  code-block:: bash
 
-    $ sudo systemctl edit docker.service
+    sudo systemctl edit docker.service
 
 Set the contents of that file to:
 
@@ -2173,24 +2173,24 @@ Save and close, and then enable and restart Docker in systemd:
 
 ..  code-block:: bash
 
-    $ sudo systemctl restart docker
-    $ sudo systemctl enable docker
+    sudo systemctl restart docker
+    sudo systemctl enable docker
 
 We need to add the user to the ``docker`` group. This is reasonably safe
 here, as this instance is largely sandboxed.
 
 ..  code-block:: bash
 
-    $ sudo groupadd docker
-    $ sudo usermod -aG docker $USER
-    $ newgrp docker
+    sudo groupadd docker
+    sudo usermod -aG docker $USER
+    newgrp docker
 
 We also need to adjust the operating system to allow limiting the swap
 memory of Docker containers:
 
 ..  code-block:: bash
 
-    $ sudo nano /etc/default/grub
+    sudo nano /etc/default/grub
 
 Edit the following line to match the following:
 
@@ -2204,7 +2204,7 @@ Save and close, and then run the following:
 
 ..  code-block:: bash
 
-    $ sudo update-grub
+    sudo update-grub
 
 Restart the computer.
 
@@ -2219,10 +2219,10 @@ On the **remote build server**, run the following.
 
 ..  code-block:: bash
 
-    $ sudo mkdir /etc/docker/certs
-    $ sudo mv /home/mpm/incoming/* /etc/docker/certs
-    $ sudo chmod 400 /etc/docker/certs/server-key.pem
-    $ sudo systemctl edit docker.service
+    sudo mkdir /etc/docker/certs
+    sudo mv /home/mpm/incoming/* /etc/docker/certs
+    sudo chmod 400 /etc/docker/certs/server-key.pem
+    sudo systemctl edit docker.service
 
 Set the contents of that file to the following:
 
@@ -2239,10 +2239,10 @@ Save and close, and then run:
 
 ..  code-block:: bash
 
-    $ sudo ufw allow 2376
-    $ sudo systemctl daemon-reload
-    $ sudo systemctl restart docker.service
-    $ sudo netstat -lntp | grep dockerd
+    sudo ufw allow 2376
+    sudo systemctl daemon-reload
+    sudo systemctl restart docker.service
+    sudo netstat -lntp | grep dockerd
 
 If everything was done correctly, you should see:
 
@@ -2278,8 +2278,8 @@ Docker to it.
 
 ..  code-block:: bash
 
-    $ sudo mkdir /opt/registry
-    $ sudo docker run -d -p 5000:5000 \
+    sudo mkdir /opt/registry
+    sudo docker run -d -p 5000:5000 \
     --restart=always \
     --name registry \
     -v /opt/registry:/var/lib/registry \
@@ -2291,7 +2291,7 @@ I can now set up Apache2 to host the registry.
 
 ..  code-block:: bash
 
-    $ sudo vim /etc/apache2/sites-available/registry.conf
+    sudo vim /etc/apache2/sites-available/registry.conf
 
 Set the contents of that file to:
 
@@ -2344,21 +2344,21 @@ Save and close. Now we enable the site:
 
 ..  code-block:: bash
 
-    $ sudo a2ensite registry
-    $ sudo a2enmod headers proxy authnz_ldap ldap
-    $ sudo systemctl restart apache2
+    sudo a2ensite registry
+    sudo a2enmod headers proxy authnz_ldap ldap
+    sudo systemctl restart apache2
 
 We can test it out with the following command:
 
 ..  code-block:: bash
 
-    $ sudo docker login registry.mousepawmedia.com
-    $ sudo docker pull hello-world:latest
-    $ sudo docker tag hello-world:latest registry.mousepawmedia.com/hello-world:latest
-    $ sudo docker push registry.mousepawmedia.com/hello-world:latest
-    $ sudo docker image remove hello-world:latest
-    $ sudo docker image remove registry.mousepawmedia.com/hello-world:latest
-    $ sudo docker pull registry.mousepawmedia.com/hello-world:latest
+    sudo docker login registry.mousepawmedia.com
+    sudo docker pull hello-world:latest
+    sudo docker tag hello-world:latest registry.mousepawmedia.com/hello-world:latest
+    sudo docker push registry.mousepawmedia.com/hello-world:latest
+    sudo docker image remove hello-world:latest
+    sudo docker image remove registry.mousepawmedia.com/hello-world:latest
+    sudo docker pull registry.mousepawmedia.com/hello-world:latest
 
 ..  NOTE:: The above is a great way to test the registry from a remote machine.
 
@@ -2370,10 +2370,10 @@ for running our registry long-term instead:
 
 ..  code-block:: bash
 
-    $ sudo docker container stop registry
-    $ sudo docker container rm -v registry
-    $ sudo mkdir -p /opt/docker/registry
-    $ sudo vim /opt/docker/registry/docker-compose.yml
+    sudo docker container stop registry
+    sudo docker container rm -v registry
+    sudo mkdir -p /opt/docker/registry
+    sudo vim /opt/docker/registry/docker-compose.yml
 
 Set the contents of that file to...
 
@@ -2407,9 +2407,9 @@ Set the contents of that file to...
 
 Save and close, and then run...
 
-    $ sudo chown root:docker -R /opt/docker
-    $ cd /opt/docker/registry
-    $ sudo docker-compose up -d
+    sudo chown root:docker -R /opt/docker
+    cd /opt/docker/registry
+    sudo docker-compose up -d
 
 The registry will now automatically restart with the ``docker.service``
 managed by ``systemctl``.
@@ -2434,8 +2434,8 @@ I'll start by logging out of the registry, and installing ``pass``:
 
 ..  code-block:: bash
 
-    $ sudo docker logout registry.mousepawmedia.net
-    $ sudo apt install pass
+    sudo docker logout registry.mousepawmedia.net
+    sudo apt install pass
 
 Before I go any further, I need a GPG key for the main user account.
 I can create a new one with the following commands:
@@ -2467,8 +2467,8 @@ I pass that to the next command, in place of ``PUBLICKEYTOUSE``:
 
 ..  code-block:: bash
 
-    $ pass init PUBLICKEYTOUSE
-    $ pass git init
+    pass init PUBLICKEYTOUSE
+    pass git init
 
 Now I can install the ``docker-credential-helpers`` package I'll need.
 You should get the URL for the latest version from the
@@ -2486,7 +2486,7 @@ Test that installed correctly by running the following:]
 
 ..  code-block:: bash
 
-    $ sudo docker-credential-pass version
+    sudo docker-credential-pass version
 
 That should print out the version of ``docker-credential-pass` that is
 installed. If it works, you should also make sure it is communicating with
@@ -2494,7 +2494,7 @@ installed. If it works, you should also make sure it is communicating with
 
 ..  code-block:: bash
 
-    $ sudo docker-credential-pass list
+    sudo docker-credential-pass list
 
 If that returns ``{}`` or some other data (instead of an error or warning),
 everything is correctly installed.
@@ -2503,7 +2503,7 @@ Finally, I'll tell Docker to use ``docker-credential-pass``:
 
 ..  code-block:: bash
 
-    $ vim ~/.docker/config.json
+    vim ~/.docker/config.json
 
 Set the contents of that file to the following, or if it already exists,
 modify the :code:`credsStore` property as shown:
@@ -2520,7 +2520,7 @@ which you can test via:
 
 ..  code-block:: bash
 
-    $ docker login registry.mousepawmedia.net
+    docker login registry.mousepawmedia.net
 
 Enter valid LDAP credentials. If it works, you'll see:
 

@@ -118,7 +118,7 @@ Getting the Code
 Each of our projects has a dedicated Git repository. You should create a
 dedicated folder on your computer for the repositories you clone. You can find
 each repository's clone command on Phabricator Diffusion. If you need help
-with cloning a repository, see :ref:`gitarc_importrepos`.
+with cloning a repository, see :ref:`git_importrepos`.
 
 After you have cloned a project repository, see its :file:`BUILDING.md` file
 for instructions on how to build the code for the first time.
@@ -149,6 +149,6 @@ Submitting the Code
 Once you're ready for the code to be reviewed, you should submit it to a
 Phabricator Differential.
 
-If you have set up Arcanist (see :ref:`gitarc`), you can use it to create a new
+If you have set up Arcanist (see :ref:`git`), you can use it to create a new
 Differential Revision, or update the one you already have open. For more
 information on how to do this, see :ref:`grevision`.

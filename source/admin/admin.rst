@@ -22,11 +22,3 @@ Table of Contents
     accounts
     eco
     email
-    gpg
-    etherpad
-    irc
-    nextcloud
-    phabricator
-
-..  note:: The Repository Master Guide is a separate document, and will
-    be published at a later date.

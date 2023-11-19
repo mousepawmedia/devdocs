@@ -39,12 +39,8 @@ Network
 ..  toctree::
     :maxdepth: 2
 
-    network/phabricator
     network/programmingworkflow
-    network/etherpad
     network/nextcloud
-    network/harbormaster_jenkins
-    tools/irc
 
 Development Tools
 ---------------------------
@@ -52,7 +48,7 @@ Development Tools
 ..  toctree::
     :maxdepth: 2
 
-    tools/gitarc
+    tools/git
     tools/cpp
     tools/python
     tools/sphinx

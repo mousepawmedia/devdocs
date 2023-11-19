@@ -40,8 +40,8 @@ To install Hexchat on any Ubuntu-based distribution, run...
 
 ..  code-block:: bash
 
-    $ sudo apt update
-    $ sudo apt install hexchat
+    sudo apt update
+    sudo apt install hexchat
 
 If you're on Windows, you can download the installer from the
 `HexChat website <https://hexchat.github.io/downloads.html>`_.

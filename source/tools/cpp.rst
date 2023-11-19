@@ -12,7 +12,7 @@ languages on Linux.
 Install the Compiler
 ============================
 
-..  note:: Updated 10 April 2020
+..  note:: Updated 18 November 2023
 
 We use the Clang compiler primarily, and GCC secondarily. If you're not on a
 Debian-based Linux system, you'll need to find out how to install these yourself.
@@ -21,8 +21,8 @@ Linux
 ----------------------------
 
 We'll start by installing Clang and LLVM. We require Clang 3.4 or later, but
-recommend 6.0 for all company developers. We'll be using
-`LLVM's official stable apt repository <http://apt.llvm.org/>`_ instead of
+recommend 16.0 for all company developers. We'll be using
+`LLVM's official stable apt repository <https://apt.llvm.org/>`_ instead of
 using the older version in the default system repository.
 
 Below are the instructions for adding and installing from the official
@@ -30,30 +30,10 @@ LLVM/Clang repository.
 
 ..  code-block:: bash
 
-    $ sudo add-apt-repository "deb http://apt.llvm.org/`lsb_release -sc`/ llvm-toolchain-`lsb_release -sc` main"
-    $ wget -O - http://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
-    $ sudo apt update
-    $ sudo apt install libllvm-9-ocaml-dev libllvm9 llvm-9 llvm-9-dev llvm-9-doc llvm-9-examples llvm-9-runtime clang-9 clang-tools-9 clang-9-doc libclang-common-9-dev libclang-9-dev libclang1-9 clang-format-9 libfuzzer-9-dev lldb-9 lld-9 libc++-9-dev libc++abi-9-dev libomp-9-dev
-    $ sudo ln -sf /usr/bin/llvm-symbolizer-9 /usr/bin/llvm-symbolizer
-
-If you are upgrading from Clang 7, be sure to run...
-
-..  code-block:: bash
-
-    $ sudo apt remove -f clang-7 clang-7-doc libclang-common-7-dev libclang-7-dev libclang1-7 libllvm7 libllvm7 lldb-7 llvm-7 llvm-7-dev llvm-7-doc llvm-7-examples llvm-7-runtime clang-format-7 python-clang-7 libfuzzer-7-dev
-
-If you are upgrading from Clang 6.0, be sure to run...
-
-..  code-block:: bash
-
-    $ sudo apt remove -f clang-6.0 clang-6.0-doc libclang-common-6.0-dev libclang-6.0-dev libclang1-6.0 libclang1-6.0-dbg libllvm6.0 libllvm6.0-dbg lldb-6.0 llvm-6.0 llvm-6.0-dev llvm-6.0-doc llvm-6.0-examples llvm-6.0-runtime clang-format-6.0 python-clang-6.0 libfuzzer-6.0-dev
-
-If you are upgrading from Clang 5.0, be sure to run...
-
-..  code-block:: bash
-
-    $ sudo add-apt-repository --remove "deb http://apt.llvm.org/`lsb_release -sc`/ llvm-toolchain-`lsb_release -sc`-5.0 main"
-    $ sudo apt remove -f clang-5.0 clang-5.0-doc libclang-common-5.0-dev libclang-5.0-dev libclang1-5.0 libclang1-5.0-dbg libllvm-5.0-ocaml-dev libllvm5.0 libllvm5.0-dbg lldb-5.0 llvm-5.0 llvm-5.0-dev llvm-5.0-doc llvm-5.0-examples llvm-5.0-runtime clang-format-5.0 python-clang-5.0 libfuzzer-5.0-dev
+    wget -qO- https://apt.llvm.org/llvm-snapshot.gpg.key | sudo tee /etc/apt/trusted.gpg.d/apt.llvm.org.asc
+    sudo add-apt-repository "deb http://apt.llvm.org/`lsb_release -sc`/ llvm-toolchain-`lsb_release -sc`-16 main"
+    sudo apt install libllvm-16-ocaml-dev libllvm16 llvm-16 llvm-16-dev llvm-16-doc llvm-16-examples llvm-16-runtime clang-16 clang-tools-16 clang-16-doc libclang-common-16-dev libclang-16-dev libclang1-16 clang-format-16 lldb-16 lld-16 libc++-16-dev libc++abi-16-dev libomp-16-dev
+    sudo ln -sf /usr/bin/llvm-symbolizer-16 /usr/bin/llvm-symbolizer
 
 ..  warning:: If you're using an operating system based on a version of
     Ubuntu before 16.04, you may not be able to compile our code with GCC.
@@ -65,14 +45,14 @@ by your distribution, as long as it is GCC 7 or later.
 
 ..  code-block:: bash
 
-    $ sudo apt update
-    $ sudo apt install gcc g++ gcc-doc
+    sudo apt update
+    sudo apt install gcc g++ gcc-doc
 
 If you're on a 64-bit system, you'll need some additional packages...
 
 ..  code-block:: bash
 
-    $ sudo apt-get install gcc-multilib g++-multilib libc6-dev-i386
+    sudo apt-get install gcc-multilib g++-multilib libc6-dev-i386
 
 Once you have everything installed, configure Ubuntu to allow you to switch
 between GCC and Clang.
@@ -90,12 +70,12 @@ and configure this tool using the following commands.
 
 ..  code-block:: bash
 
-    $ sudo update-alternatives --remove-all cc
-    $ sudo update-alternatives --install /usr/bin/cc cc /usr/bin/clang-9 30
-    $ sudo update-alternatives --install /usr/bin/cc cc /usr/bin/gcc 10
-    $ sudo update-alternatives --remove-all c++
-    $ sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-9 30
-    $ sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++ 10
+    sudo update-alternatives --remove-all cc
+    sudo update-alternatives --install /usr/bin/cc cc /usr/bin/clang-16 30
+    sudo update-alternatives --install /usr/bin/cc cc /usr/bin/gcc 10
+    sudo update-alternatives --remove-all c++
+    sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-9 30
+    sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++ 10
 
 Once you've set all that up, you can easily switch between options using the
 following command, substituting ``cc`` for ``c++`` if you're changing the C
@@ -103,7 +83,7 @@ compiler.
 
 ..  code-block:: bash
 
-    $ sudo update-alternatives --config c++
+    sudo update-alternatives --config c++
 
 You can generally just leave each on auto.
 
@@ -129,16 +109,20 @@ Macports.
 Windows
 ----------------------------
 
-We don't directly support Windows as a development environment. If you're
-using Windows, you'll need to use Clang or a GCC7-compatible C++ compiler
-(such as MinGW). **We have no plans to support MSVC.**
+While we do not directly support Windows operating systems, if you're using
+Windows 10 or Windows 11, you can use the `Windows Subsystem for Linux <https://learn.microsoft.com/en-us/windows/wsl/install>`_.
 
-* If you're using Windows 10, you may use the `Windows Subsystem for Linux <https://docs.microsoft.com/en-us/windows/wsl/install-win10>`_. (Recommended)
-* You may use `MinGW <http://mingw.org/>`_ for C++ compiling.
-* You can have `Visual Studio use the Clang compiler <https://blogs.msdn.microsoft.com/vcblog/2017/03/07/use-any-c-compiler-with-visual-studio/>`_.
+If you choose to use the Windows Subsystem for Linux, you can generally follow
+our instructions for Ubuntu Linux.
 
-If you're using the Windows Subsystem for Linux, you can follow the Linux
-version of the instructions in this guide.
+..  note:: If you use the Windows Subsystem for Linux, you can also run some
+    graphical Linux applications, by following `this guide from HowToGeek <https://www.howtogeek.com/261575/how-to-run-graphical-linux-desktop-applications-from-windows-10s-bash-shell/>`_.
+
+There are two alternative approaches, although we do not provide technical
+support for them:
+
+* You may use `MinGW-w64 <https://www.mingw-w64.org/>`_ for C++ compiling.
+* You can have `Visual Studio use the Clang compiler <https://devblogs.microsoft.com/cppblog/use-any-c-compiler-with-visual-studio/>`_.
 
 ..  _cpp_install_devtools:
 
@@ -148,7 +132,7 @@ Install Development Tools
 We use a number of coding tools, both command-line and otherwise.
 
 **Required:**
-* CMake 
+* CMake
 
 **Recommended:**
 * Valgrind
@@ -163,7 +147,7 @@ essential packages for compiling code, by running the following...
 
 ..  code-block:: bash
 
-    $ sudo apt install build-essential cmake valgrind kcachegrind vim emacs cccc
+    sudo apt install build-essential cmake valgrind kcachegrind vim emacs cccc
 
 You can install the same packages on most other versions of Linux.
 
@@ -181,14 +165,14 @@ Installing Via Macports
 
 ..  code-block:: bash
 
-    $ port install cmake emacs valgrind qcachegrind
+    port install cmake emacs valgrind qcachegrind
 
 Installing Via Homebrew
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 ..  code-block:: bash
 
-    $ brew install cmake emacs valgrind qcachegrind
+    brew install cmake emacs valgrind qcachegrind
 
 Alternative
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

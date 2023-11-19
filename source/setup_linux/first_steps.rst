@@ -34,7 +34,7 @@ For MATE, run the following in a terminal:
 
 ..  code-block:: bash
 
-    $ sudo apt install mate-desktop-environment mate-desktop-environment-extras ubuntu-mate-desktop
+    sudo apt install mate-desktop-environment mate-desktop-environment-extras ubuntu-mate-desktop
 
 If you've installed MATE, or are sticking with GNOME3, you can follow the
 instructions from the rest of this tutorial as if you had Ubuntu MATE or
@@ -44,25 +44,25 @@ For Cinnamon, run the following:
 
 ..  code-block:: bash
 
-    $ sudo apt install cinnamon-desktop-environment
+    sudo apt install cinnamon-desktop-environment
 
 For KDE Plasma (from Kubuntu), run:
 
 ..  code-block:: bash
 
-    $ sudo apt install kde-standard
+    sudo apt install kde-standard
 
 For XFCE (on lightweight systems), run:
 
 ..  code-block:: bash
 
-    $ sudo apt install xfce4 xfce4-goodies
+    sudo apt install xfce4 xfce4-goodies
 
 For LXDE (another lightweight option), run:
 
 ..  code-block:: bash
 
-    $ sudo apt install lxde
+    sudo apt install lxde
 
 After installing, log out, and then at the login screen, find the option to
 switch which desktop environment you're using.
@@ -87,13 +87,13 @@ Ubuntu (GNOME3)
 ------------------------------------------------
 
 You can learn how to use Ubuntu from the official
-`Ubuntu 20.04 Getting Started Guide <https://help.ubuntu.com/stable/ubuntu-help/getting-started.html.en>`_.
+`Ubuntu 22.04 Desktop Guide <https://help.ubuntu.com/lts/ubuntu-help/index.html>`_.
 
 You can customize many aspects of Ubuntu MATE using the ``GNOME Tweak``
 application.
 
 ..  important:: The rest of the instructions are universal to all varieties
-    of Ubuntu 18.04.
+    of Ubuntu 22.04.
 
 Pop!_OS
 ------------------------------------------------
@@ -114,10 +114,10 @@ use the Terminal.
 
 ..  code-block:: bash
 
-    $ sudo apt update
-    $ sudo apt full-upgrade
-    $ sudo apt autoremove
-    $ sudo apt autoclean
+    sudo apt update
+    sudo apt full-upgrade
+    sudo apt autoremove
+    sudo apt autoclean
 
 Let's break this down quickly. ``apt`` is a command-line program that installs
 and manages packages on your system. The ``update`` command fetches the
@@ -146,7 +146,7 @@ Ubuntu system. We'll install those now:
 
 ..  code-block:: bash
 
-    $ sudo apt install gdebi synaptic apt-xapian-index gufw ubuntu-restricted-extras
+    sudo apt install gdebi synaptic apt-xapian-index gufw ubuntu-restricted-extras
 
 While those install, here's a quick breakdown of what those packages are for...
 
@@ -160,7 +160,7 @@ Before we can use synaptic, we need to run...
 
 ..  code-block:: bash
 
-    $ sudo update-apt-xapian-index -vf
+    sudo update-apt-xapian-index -vf
 
 For the rest of this tutorial, you can either install packages via the
 `sudo apt install <packagename>` command given, or you can
@@ -181,7 +181,7 @@ by running the following:
 
 ..  code-block:: bash
 
-    $ sudo apt install snapcraft snapd
+    sudo apt install snapcraft snapd
 
 You may need to restart after installation before installing anything with
 Snapcraft.
@@ -198,8 +198,8 @@ You can install via the following:
 
 ..  code-block:: bash
 
-    $ sudo apt install flatpak
-    $ flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+    sudo apt install flatpak
+    flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
 You will need to restart after installation before installing anything with
 Flatpak.
@@ -241,7 +241,7 @@ the open-source ClamAV.
 
 ..  code-block:: bash
 
-    $ sudo apt install clamav clamtk clamav-daemon
+    sudo apt install clamav clamtk clamav-daemon
 
 You will need to run Clam manually when you want to check for viruses.
 
@@ -262,9 +262,9 @@ the now-available updates.
 
 ..  code-block:: bash
 
-    $ sudo add-apt-repository ppa:libreoffice/ppa
-    $ sudo apt update
-    $ sudo apt dist-upgrade
+    sudo add-apt-repository ppa:libreoffice/ppa
+    sudo apt update
+    sudo apt dist-upgrade
 
 Alternative Office Suites
 -----------------------------
@@ -387,8 +387,8 @@ Want to play DVDs? Yes, Ubuntu can do that, but you have to set it up first.
 
 ..  code-block:: bash
 
-    $ sudo apt install libdvd-pkg
-    $ sudo dpkg-reconfigure libdvd-pkg
+    sudo apt install libdvd-pkg
+    sudo dpkg-reconfigure libdvd-pkg
 
 ..  note:: In my experience, mpv Media Player (package ``mpv``) provides the
     best video and DVD playback experience.

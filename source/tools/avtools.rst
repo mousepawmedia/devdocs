@@ -31,7 +31,7 @@ To install support for these codecs, you should run the following...
 
 ..  code-block:: bash
 
-    $ sudo apt install ubuntu-restricted-extras
+    sudo apt install ubuntu-restricted-extras
 
 When prompted, accept the EULA for the Microsoft Fonts (or reject it, if you
 so choose). To do so, use your arrow keys to highlight an option, and press
@@ -51,19 +51,19 @@ It's available from the main repositories on Debian-based systems:
 
 ..  code-block:: bash
 
-    $ sudo apt install audacity
+    sudo apt install audacity
 
 It's available via Snapcraft:
 
 ..  code-block:: bash
 
-    $ sudo snap install audacity
+    sudo snap install audacity
 
 Or, install via Flatpak from Flathub:
 
 ..  code-block:: bash
 
-    $ flatpak install flathub org.audacityteam.Audacity
+    flatpak install flathub org.audacityteam.Audacity
 
 * Official Website: `<https://www.audacityteam.org/>`_
 * Documentation: `<https://manual.audacityteam.org/>`_
@@ -83,19 +83,19 @@ It's available from the main repositories on Debian-based systems:
 
 ..  code-block:: bash
 
-    $ sudo apt install handbrake
+    sudo apt install handbrake
 
 It's available via Snapcraft:
 
 ..  code-block:: bash
 
-    $ sudo snap install handbrake-jz
+    sudo snap install handbrake-jz
 
 Or, install via Flatpak from Flathub:
 
 ..  code-block:: bash
 
-    $ flatpak install flathub fr.handbrake.ghb
+    flatpak install flathub fr.handbrake.ghb
 
 * Official Website: `<https://handbrake.fr/>`_
 * Documentation: `<https://handbrake.fr/docs/>`_
@@ -115,19 +115,19 @@ It's available from the main repositories on Debian-based systems:
 
 ..  code-block:: bash
 
-    $ sudo apt install kdenlive
+    sudo apt install kdenlive
 
 It's available via Snapcraft:
 
 ..  code-block:: bash
 
-    $ sudo snap install kdenlive
+    sudo snap install kdenlive
 
 Or, install via Flatpak from Flathub:
 
 ..  code-block:: bash
 
-    $ flatpak install flathub org.kde.kdenlive
+    flatpak install flathub org.kde.kdenlive
 
 * Official Website: `<https://kdenlive.org/>`_
 * Documentation: `<https://userbase.kde.org/Kdenlive/Manual>`_
@@ -151,19 +151,19 @@ It's available from the main repositories on Debian-based systems:
 
 ..  code-block:: bash
 
-    $ sudo apt install musescore3
+    sudo apt install musescore3
 
 It's available via Snapcraft:
 
 ..  code-block:: bash
 
-    $ sudo snap install musescore
+    sudo snap install musescore
 
 Or, install via Flatpak from Flathub:
 
 ..  code-block:: bash
 
-    $ flatpak install flathub org.musescore.MuseScore
+    flatpak install flathub org.musescore.MuseScore
 
 .. _avtools_op:
 
@@ -189,7 +189,7 @@ sound server. We'll be setting that up as well.
 
 ..  code-block:: bash
 
-    $ sudo apt install ardour5 qjackctl pulseaudio-module-jack
+    sudo apt install ardour5 qjackctl pulseaudio-module-jack
 
 That command will install all three packages, plus their dependencies. When you
 reach the "Configuring jackd2" screen, we recommend selecting ``<Yes>``.
@@ -200,8 +200,8 @@ Now we need to change some limits, so Ardour can run.
 
 ..  code-block:: bash
 
-    $ sudo adduser $USER audio
-    $ sudo nano /etc/security/limits.conf
+    sudo adduser $USER audio
+    sudo nano /etc/security/limits.conf
 
 Ensure the following line is in the file. If you don't see it, add it towards
 the bottom of the file, just above the ``# END OF FILE`` line.
@@ -243,8 +243,8 @@ We can install this from the official PPA.
 
 ..  code-block:: bash
 
-    $ sudo add-apt-repository ppa:audio-recorder/ppa
-    $ sudo apt install audio-recorder
+    sudo add-apt-repository ppa:audio-recorder/ppa
+    sudo apt install audio-recorder
 
 * Official Website: `<https://launchpad.net/~audio-recorder>`_
 
@@ -260,8 +260,8 @@ We will install DVDStyle fro the unofficial PPA.
 
 ..  code-block:: bash
 
-    $ sudo add-apt-repository ppa:ubuntuhandbook1/dvdstyler
-    $ sudo apt install dvdstyler
+    sudo add-apt-repository ppa:ubuntuhandbook1/dvdstyler
+    sudo apt install dvdstyler
 
 * Official Website: `<https://www.dvdstyler.org/en/>`_
 * Documentation: `<https://www.dvdstyler.org/en/70>`_
@@ -283,13 +283,13 @@ you can install along with all of its extra drumkits:
 
 ..  code-block:: bash
 
-    $ sudo apt install hydrogen hydrogen-drumkits hydrogen-drumkits-effects
+    sudo apt install hydrogen hydrogen-drumkits hydrogen-drumkits-effects
 
 Or, install via Flatpak from Flathub:
 
 ..  code-block:: bash
 
-    $ flatpak install flathub org.hydrogenmusic.Hydrogen
+    flatpak install flathub org.hydrogenmusic.Hydrogen
 
 If you have installed Ardour and JACK, you may need to change Hydrogen to use
 PulseAudio under ordinary circumstances. To do this, start Hydrogen. Go to
@@ -316,13 +316,13 @@ It's available from the main repositories on Debian-based systems:
 
 ..  code-block:: bash
 
-    $ sudo apt install lmms
+    sudo apt install lmms
 
 Or, install via Flatpak from Flathub:
 
 ..  code-block:: bash
 
-    $ flatpak install flathub io.lmms.LMMS
+    flatpak install flathub io.lmms.LMMS
 
 In many cases, LMMS works best with JACK. (See :ref:`avtools_op_ardour`)
 
@@ -345,19 +345,19 @@ It's available from the main repositories on Debian-based systems:
 
 ..  code-block:: bash
 
-    $ sudo apt install obs-studio
+    sudo apt install obs-studio
 
 It's available via Snapcraft:
 
 ..  code-block:: bash
 
-    $ sudo snap install obs-studio
+    sudo snap install obs-studio
 
 Or, install via Flatpak from Flathub:
 
 ..  code-block:: bash
 
-    $ flatpak install flathub com.obsproject.Studio
+    flatpak install flathub com.obsproject.Studio
 
 * Official Website: `<https://obsproject.com/>`_
 * Documentation & Tutorials: `<https://obsproject.com/wiki/>`_

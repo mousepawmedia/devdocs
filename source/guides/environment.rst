@@ -33,31 +33,27 @@ We officially support the following operating systems for development work:
 Developing on Windows
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-While we do not directly support the Windows operating systems (none of us use it),
-there are four ways you can develop on that operating system:
-
-* If you're using Windows 10, you may use the `Windows Subsystem for Linux <https://docs.microsoft.com/en-us/windows/wsl/install-win10>`_. (Recommended)
-* You may use `MinGW <http://mingw.org/>`_ for C++ compiling.
-* You can have `Visual Studio use the Clang compiler <https://blogs.msdn.microsoft.com/vcblog/2017/03/07/use-any-c-compiler-with-visual-studio/>`_.
+While we do not directly support Windows operating systems, if you're using
+Windows 10 or Windows 11, you can use the `Windows Subsystem for Linux <https://learn.microsoft.com/en-us/windows/wsl/install>`_.
 
 If you choose to use the Windows Subsystem for Linux, you can generally follow
-our instructions for Ubuntu Linux. We've also included Windows setup
-instructions throughout this guide, although we offer no technical support
-or guarantees for these instructions.
+our instructions for Ubuntu Linux.
 
 ..  note:: If you use the Windows Subsystem for Linux, you can also run some
     graphical Linux applications, by following `this guide from HowToGeek <https://www.howtogeek.com/261575/how-to-run-graphical-linux-desktop-applications-from-windows-10s-bash-shell/>`_.
+
+There are two alternative approaches, although we do not provide technical
+support for them:
+
+* You may use `MinGW-w64 <https://www.mingw-w64.org/>`_ for C++ compiling.
+* You can have `Visual Studio use the Clang compiler <https://devblogs.microsoft.com/cppblog/use-any-c-compiler-with-visual-studio/>`_.
+
 
 Git and Arcanist
 -------------------------------------
 
 Regardless what part of the project you're working on, you'll need access to our
-repositories and code review systems. You need the following for this:
-
-* **Git**
-* **Arcanist**
-
-For setup instructions for Git and Arcanist, see :ref:`gitarc`.
+Git repositories. For setup instructions for Git and Arcanist, see :ref:`git`.
 
 C/C++ Development
 -------------------------------------
@@ -79,7 +75,7 @@ Python Development
 For Python development:
 
 * **Python 3**
-* **A Python IDE**: We recommend either VSCode or Atom.
+* **A Python IDE**: We strongly recommend VSCode.
 
 For setup instructions, see :ref:`python`.
 
@@ -90,7 +86,7 @@ For Sphinx development:
 
 * **Python 3**
 * **Sphinx**
-* **A code editor**: We recommend either VSCode or Atom.
+* **A code editor**: We strongly recommend VSCode.
 
 For setup instructions, see :ref:`sphinx`.
 
@@ -100,7 +96,6 @@ Selecting an IDE
 We have guides for setting up several IDEs and editors...
 
 * :ref:`vscode` (recommended)
-* :ref:`atom`
 * :ref:`geany`
 
 General Coding Tools
@@ -154,13 +149,8 @@ Git and Arcanist
 -------------------------------------
 
 Content development still involves code! Regardless what part of the project
-you're working on, you'll need access to our repositories and code review
-systems. You need the following for this:
-
-* **Git**
-* **Arcanist**
-
-For setup instructions for Git and Arcanist, see :ref:`gitarc`.
+you're working on, you'll need access to our Git repositories.
+For setup instructions for Git and Arcanist, see :ref:`git`.
 
 Sphinx Development
 -------------------------------------
@@ -179,7 +169,7 @@ Selecting an IDE
 
 You should install one or both of these text and code editors.
 
-* :ref:`atom`
+* :ref:`vscode` (recommended)
 * :ref:`geany`
 
 Fonts
@@ -216,7 +206,7 @@ We use the following graphics design tools:
 * **Birdfont**
 * **Blender**
 * **Darktable**
-* **Glimpse**
+* **GIMP**
 * **Gpick**
 * **Inkscape**
 * **Krita**
@@ -228,8 +218,8 @@ For setup instructions, see :ref:`graphics`.
 Wacom Tablet
 -------------------------------------
 
-Ubuntu 18.04 (GNOME) allows you to control Wacom tablets out of the box, while
-Ubuntu MATE 18.04 (and some other distros) require additional tools to control
+Ubuntu (GNOME) allows you to control Wacom tablets out of the box, while
+Ubuntu MATE (and some other distros) require additional tools to control
 your tablet.
 
 For instructions, see :ref:`wacom`.

@@ -16,8 +16,8 @@ Before we continue, we need to check for any updates.
 
 ..  code-block:: bash
 
-    $ apt update
-    $ apt full-upgrade -y
+    apt update
+    apt full-upgrade -y
 
 Setting Hostname and Timezone
 --------------------------------
@@ -26,9 +26,9 @@ We'll start by defining the name of our host.
 
 ..  code-block:: bash
 
-    $ echo "mpmbuild" > /etc/hostname
-    $ hostname -F /etc/hostname
-    $ vim /etc/hosts
+    echo "mpmbuild" > /etc/hostname
+    hostname -F /etc/hostname
+    vim /etc/hosts
 
 In that file, add the following lines below the first line, substituting the
 actual IPv4 and IPv6 of the Linode in place of the NNN.NNN values:
@@ -44,7 +44,7 @@ Now we set the timezone.
 
 ..  code-block:: bash
 
-    $ dpkg-reconfigure tzdata
+    dpkg-reconfigure tzdata
 
 Use the arrow and ENTER keys to set your timezone. We'll be using US/Central.
 
@@ -60,15 +60,15 @@ user account.
 
 ..  code-block:: bash
 
-    $ adduser mpm
+    adduser mpm
 
 Define the password for the new user, and other information if desired.
 Then, we add the user to the ``sudo`` group.
 
 ..  code-block:: bash
 
-    $ usermod -aG sudo mpm
-    $ groups mpm
+    usermod -aG sudo mpm
+    groups mpm
 
 The second command will list all of the groups ``mpm`` is in. Ensure
 it includes the ``sudo`` group.
@@ -85,10 +85,10 @@ change a few settings and start the service.
 ..  code-block:: bash
 
     # Make a backup of the default SSH configuration.
-    $ sudo cp /etc/ssh/sshd_config{,.bak}
+    sudo cp /etc/ssh/sshd_config{,.bak}
 
     # Edit the SSH configuration.
-    $ sudo vim /etc/ssh/sshd_config
+    sudo vim /etc/ssh/sshd_config
 
 Change ``Port 22`` to ``Port 123`` and ``PermitRootLogin yes`` to
 ``PermitRootLogin no``. Also add the line ``DebianBanner no`` (you can put it under
@@ -100,7 +100,7 @@ Now we'll restart the service.
 ..  code-block:: bash
 
     # Restart the SSH service.
-    $ sudo systemctl restart ssh
+    sudo systemctl restart ssh
 
 On the **remote machine** (the computer you're connecting *from*), run the
 following command, where :code:`NNN.NNN.NNN.NNN` is the IP address of the
@@ -134,17 +134,17 @@ We start by installing Docker:
 
 ..  code-block:: bash
 
-    $ sudo apt remove docker docker-engine docker.io
-    $ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-    $ sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-    $ sudo apt update
-    $ sudo apt install docker-ce docker-compose
+    sudo apt remove docker docker-engine docker.io
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+    sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+    sudo apt update
+    sudo apt install docker-ce docker-compose
 
 Next, we set up Docker to be automatically started by systemd.
 
 ..  code-block:: bash
 
-    $ sudo systemctl edit docker.service
+    sudo systemctl edit docker.service
 
 Set the contents of that file to:
 
@@ -158,24 +158,24 @@ Save and close, and then enable and restart Docker in systemd:
 
 ..  code-block:: bash
 
-    $ sudo systemctl restart docker
-    $ sudo systemctl enable docker
+    sudo systemctl restart docker
+    sudo systemctl enable docker
 
 We need to add the user to the ``docker`` group. This is reasonably safe
 here, as this instance is largely sandboxed.
 
 ..  code-block:: bash
 
-    $ sudo groupadd docker
-    $ sudo usermod -aG docker $USER
-    $ newgrp docker
+    sudo groupadd docker
+    sudo usermod -aG docker $USER
+    newgrp docker
 
 We also need to adjust the operating system to allow limiting the swap
 memory of Docker containers:
 
 ..  code-block:: bash
 
-    $ sudo nano /etc/default/grub
+    sudo nano /etc/default/grub
 
 Edit the following line to include the following space-delimited options:
 
@@ -189,7 +189,7 @@ Save and close, and then run the following:
 
 ..  code-block:: bash
 
-    $ sudo update-grub
+    sudo update-grub
 
 Restart the computer.
 

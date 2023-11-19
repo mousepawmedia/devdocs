@@ -142,7 +142,7 @@ Now we add the system scripts to the path for the main user.
 
 ..  code-block:: bash
 
-    $ vim ~/.bashrc
+    vim ~/.bashrc
 
 Add the following to that file:
 
@@ -166,8 +166,8 @@ We'll now set up Apache2.
 
 ..  code-block:: bash
 
-    $ sudo apt install apache2
-    $ sudo vim /etc/apache2/apache2.conf
+    sudo apt install apache2
+    sudo vim /etc/apache2/apache2.conf
 
 Next, we'll edit the configuration file to turn off ``KeepAlive``, as that
 uses up extra memory (and we don't have that much to spare). We'll also set
@@ -196,7 +196,7 @@ Next, we'll change the settings for the ``mpm_prefork`` module.
 
 ..  code-block:: bash
 
-    $ sudo vim /etc/apache2/mods-available/mpm_prefork.conf
+    sudo vim /etc/apache2/mods-available/mpm_prefork.conf
 
 Set the file to the following...
 
@@ -214,16 +214,16 @@ Save and close. Now we'll enable the prefork module and restart Apache2.
 
 ..  code-block:: bash
 
-    $ sudo a2dismod mpm_event
-    $ sudo a2enmod mpm_prefork
-    $ sudo systemctl restart apache2
+    sudo a2dismod mpm_event
+    sudo a2enmod mpm_prefork
+    sudo systemctl restart apache2
 
 Next, we will add our user to the ``www-data`` group, which will be
 helpful for permissions.
 
 ..  code-block:: bash
 
-    $ sudo usermod -aG www-data mpm
+    sudo usermod -aG www-data mpm
 
 Browse to the web server using the IP or whatever address is most convenient,
 and ensure the Apache2 default page is appearing.
@@ -284,7 +284,7 @@ Add the following lines to the end:
 ..  code-block:: text
 
     host    all             all             172.17.0.0/16           scram-sha-256
-    host    all             all             172.0.0.0/16            scram-sha-256
+    host    all             all             0.0.0.0/0               md5
 
 Save and close, and then restart PostgreSQL.
 
@@ -292,6 +292,24 @@ Save and close, and then restart PostgreSQL.
 
     sudo systemctl restart postgresql
     sudo ufw allow 5432
+
+MySQL
+-------------------------------------------
+
+Now we will set up MySQL.
+
+..  code-block:: bash
+
+    sudo apt install mysql-server
+    sudo mysql_secure_installation
+
+Validate Password is optional; you should specify the root password
+and answer ``Y`` to the following:
+
+* Remove anonymous users?
+* Disallow root login remotely?
+* Remove test database and access to it?
+* Reload privilege tables now?
 
 Server Hardening
 ===========================================
@@ -367,7 +385,7 @@ Harden Network with ``sysctl`` Settings
 
 ..  code-block:: bash
 
-    sudo vim /etc/sysctl.conf
+    sudo vi /etc/sysctl.conf
 
 Edit the file, uncommenting or adding the following lines:
 
@@ -380,9 +398,42 @@ Edit the file, uncommenting or adding the following lines:
     # Ignore ICMP broadcast requests
     net.ipv4.icmp_echo_ignore_broadcasts = 1
 
-    # Do not accept IP source route packets (we are not a router)
+    # Disable source packet routing
     net.ipv4.conf.all.accept_source_route = 0
-    net.ipv6.conf.all.accept_source_route = 0Apache2
+    net.ipv6.conf.all.accept_source_route = 0
+    net.ipv4.conf.default.accept_source_route = 0
+    net.ipv6.conf.default.accept_source_route = 0
+
+    # Ignore send redirects
+    net.ipv4.conf.all.send_redirects = 0
+    net.ipv4.conf.default.send_redirects = 0
+
+    # Block SYN attacks
+    net.ipv4.tcp_syncookies = 1
+    net.ipv4.tcp_max_syn_backlog = 2048
+    net.ipv4.tcp_synack_retries = 2
+    net.ipv4.tcp_syn_retries = 5
+
+    # Log Martians
+    net.ipv4.conf.all.log_martians = 1
+    net.ipv4.icmp_ignore_bogus_error_responses = 1
+
+    # Ignore ICMP redirects
+    net.ipv4.conf.all.accept_redirects = 0
+    net.ipv6.conf.all.accept_redirects = 0
+    net.ipv4.conf.default.accept_redirects = 0
+    net.ipv6.conf.default.accept_redirects = 0
+
+    # Ignore Directed pings
+    net.ipv4.icmp_echo_ignore_all = 1
+
+Finally, reload ``sysctl``. If there are any errors, fix the associated lines.
+
+..  code-block:: bash
+
+    sudo sysctl -p
+
+Installing Apache2
 ======================================
 
 We'll now set up Apache2.
@@ -1236,30 +1287,10 @@ Now set up the necessary users and databases.
 
 You can now `exit` out of the `postgres` shell session as well.
 
-PostgreSQL
+Installing Discourse
 -------------------------------------
 
-Rather than use the bundled PostgreSQL server in the GitLab instance, we need to
-use a separately managed database. This enables us to easily administer it for this
-and other applications.
-
-Connect to the PostgreSQL instance:
-
-..  code-block:: bash
-
-    sudo su - postgres
-    psql
-
-
-Now create the necessary user and database for Discourse.
-
-..  code-block:: sql
-
-    CREATE ROLE discourse WITH LOGIN PASSWORD 'password';
-    CREATE DATABASE discourse_production OWNER discourse;
-    \q
-
-Now type `exit` to leave the PostgreSQL shell session.
+To set up Discouse, run the following:
 
 ..  code-block:: bash
 
@@ -1497,3 +1528,684 @@ method, change the following settings under Admin -> Settings -> Login:
 * auth overrides name: yes
 
 Save each setting as you go.
+
+OrangeHRM
+============================
+
+OrangeHRM is our ECO (HR) platform.
+
+Installation
+----------------------
+
+The latest release of OrangeHRM open source can be found on the
+`OrangeHRM SourceForge <https://sourceforge.net/projects/orangehrm/>`_.
+Unfortunately, they make it hard to find the direct download link, but it
+can be constructed as in the :code:`wget` command below:
+
+..  code-block:: bash
+
+    sudo mkdir /opt/orangehrm
+    cd /opt/orangehrm
+    sudo wget https://downloads.sourceforge.net/project/orangehrm/stable/5.5/orangehrm-5.5.zip
+    sudo unzip orangehrm-5.5.zip
+    sudo chown mpm:www-data -R /opt/orangehrm
+
+Also install the necessary dependencies:
+
+..  code-block:: bash
+
+    sudo apt install php8.1 php8.1-mysql php8.1-curl php8.1-xml php8.1-zip php8.1-gd php8.1-intl php8.1-ldap libapache2-mod-php8.1
+    sudo a2enmod php8.1
+    sudo systemctl restart apache2
+
+Domain and Certificates
+---------------------------------------
+
+We first set up the domain name and the certificates. For our configuration, we used `discourse.mousepawmedia.com`.
+
+The ``000-default`` Apache site is what we'll use for initially generating on
+a domain name. After generating the cert, we disable that site again so the
+other sites will work.
+
+..  code-block:: bash
+
+    sudo a2ensite 000-default
+    sudo systemctl reload apache2
+    sudo certbot certonly --apache -d eco.mousepawmedia.com
+
+In the output for the certbot command, take note of the paths where the
+certificate and chain were saved. You'll need that in the next step.
+
+Apache2 Configuration
+---------------------------------------
+
+Now we configure Apache2.
+
+..  code-block:: bash
+
+    sudo vim /etc/apache2/sites-available/eco.conf
+
+Set the contents of that file to the following, substituting the
+domain name in place for :code:`ServerName`, and fixing the paths for
+the :code:`SSLCertificateFile` and :code:`SSLCertificateKeyFile`.
+Also set the :code:`DocumentRoot` to the desired directory.
+
+..  code-block:: apache
+
+    <VirtualHost *:80>
+        ServerName eco.mousepawmedia.com
+        ServerSignature Off
+
+        RewriteEngine on
+        RewriteCond %{HTTPS} !=on
+        RewriteRule .* https://%{SERVER_NAME}%{REQUEST_URI} [NE,R,L]
+    </VirtualHost>
+
+    <VirtualHost *:443>
+        ServerName eco.mousepawmedia.com
+        ServerAdmin webmaster@mousepawmedia.com
+        DocumentRoot /opt/orangehrm/orangehrm-5.5
+
+        SSLEngine On
+        SSLProtocol TLSv1 TLSv1.1 TLSv1.2
+        SSLProxyEngine on
+        SSLHonorCipherOrder On
+        SSLCipherSuite "EECDH+ECDSA+AESGCM:EECDH+aRSA+AESGCM:EECDH+ECDSA+SHA256:EECDH+aRSA+SHA256:EECDH+ECDSA+SHA384:EECDH+ECDSA+SHA256:EECDH+aRSA+SHA384:EDH+aRSA+AESGCM:EDH+aRSA+SHA256:EDH+aRSA:EECDH:!aNULL:!eNULL:!MEDIUM:!LOW:!3DES:!MD5:!EXP:!PSK:!SRP:!DSS:!RC4:!SEED"
+        Header always set Strict-Transport-Security "max-age=31536000"
+        Header always set Content-Security-Policy upgrade-insecure-requests
+
+        SSLCertificateFile /etc/letsencrypt/live/eco.mousepawmedia.com/fullchain.pem
+        SSLCertificateKeyFile /etc/letsencrypt/live/eco.mousepawmedia.com/privkey.pem
+
+    </VirtualHost>
+
+We need to tell Apache2 to read this directory.
+
+..  code-block:: bash
+
+    sudo vim /etc/apache2/apache2.conf
+
+Scroll down to the section with all the directories, and add these entries:
+
+..  code-block:: apache
+
+    <Directory /opt/eco/>
+        Options FollowSymLinks
+        AllowOverride All
+        Require all granted
+    </Directory>
+
+Save and close. Then restart Apache2.
+
+..  code-block:: bash
+
+    sudo systemctl restart apache2
+
+Database
+---------------------------------------
+
+We need to create the user and database for OrangeHRM in MySQL.
+
+..  code-block:: bash
+
+    sudo mysql -u root
+
+Run the following:
+
+..  code-block:: text
+
+    CREATE USER 'orangehrm'@'localhost' IDENTIFIED BY 'some_password';
+    GRANT ALL PRIVILEGES ON *.* TO 'orangehrm'@'localhost' WITH GRANT OPTION;
+    SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
+    \q
+
+Type `exit` to return to the main terminal session.
+
+Setup
+---------------------------------------
+
+Go to :code:`https://eco.<yourdomain>/` and follow the wizard.
+For the database, use `localhost`, and the database, user, and password
+you created in the previous step.
+
+Nextcloud
+===============================================
+
+Domain and Certificates
+---------------------------------------
+
+We first set up the domain name and the certificates. For our configuration, we used `cloud.mousepawmedia.com`.
+
+The ``000-default`` Apache site is what we'll use for initially generating on
+a domain name. After generating the cert, we disable that site again so the
+other sites will work.
+
+..  code-block:: bash
+
+    sudo a2ensite 000-default
+    sudo systemctl reload apache2
+    sudo certbot certonly --apache -d cloud.mousepawmedia.com
+
+In the output for the certbot command, take note of the paths where the
+certificate and chain were saved. You'll need that in the next step.
+
+Installation
+----------------------------
+
+Let's install the other PHP packages we need for this. Most of these are
+probably already installed, but we're putting them here to be certain.
+
+..  code-block:: bash
+
+    sudo apt install php8.1 php8.1-curl php8.1-gd php8.1-xml php8.1-mbstring php8.1-xml php8.1-zip php8.1-pgsql php8.1-bz2 php8.1-intl php8.1-imap php8.1-bcmath php8.1-gmp php8.1-apcu php8.1-memcached php8.1-redis php8.1-imagick ffmpeg
+    sudo phpenmod bcmath gmp
+
+Now we can install Nextcloud itself.
+
+..  note:: While we are installing 27.1.3 below, Nextcloud may have been
+    updated since. Adjust commands below according to the latest stable
+    version of Nextcloud.
+
+..  code-block:: bash
+
+    cd /tmp
+    curl -LO https://download.nextcloud.com/server/releases/nextcloud-27.1.3.tar.bz2
+    curl -LO https://download.nextcloud.com/server/releases/nextcloud-27.1.3.tar.bz2.sha256
+    shasum -a 256 -c nextcloud-27.1.3.tar.bz2.sha256 < nextcloud-27.1.3.tar.bz2
+
+Ensure that last command says "OK" before continuing, as that confirms the
+tarball hasn't been tampered with or spoofed.
+
+..  code-block:: bash
+
+    rm nextcloud-27.1.3.tar.bz2.sha256
+    sudo tar -C /opt -xvjf /tmp/nextcloud-27.1.3.tar.bz2
+    vim /tmp/nextcloud.sh
+
+Set the contents of that file to...
+
+..  code-block:: bash
+
+    ocpath='/opt/nextcloud'
+    htuser='www-data'
+    htgroup='www-data'
+    rootuser='root'
+
+    printf "Creating possible missing Directories\n"
+    mkdir -p $ocpath/data
+    mkdir -p $ocpath/assets
+    mkdir -p $ocpath/updater
+
+    printf "chmod Files and Directories\n"
+    find ${ocpath}/ -type f -print0 | xargs -0 chmod 0640
+    find ${ocpath}/ -type d -print0 | xargs -0 chmod 0750
+    chmod 755 ${ocpath}
+
+    printf "chown Directories\n"
+    chown -R ${rootuser}:${htgroup} ${ocpath}/
+    chown -R ${htuser}:${htgroup} ${ocpath}/apps/
+    chown -R ${htuser}:${htgroup} ${ocpath}/assets/
+    chown -R ${htuser}:${htgroup} ${ocpath}/config/
+    chown -R ${htuser}:${htgroup} ${ocpath}/data/
+    chown -R ${htuser}:${htgroup} ${ocpath}/themes/
+    chown -R ${htuser}:${htgroup} ${ocpath}/updater/
+
+    chmod +x ${ocpath}/occ
+
+    printf "chmod/chown .htaccess\n"
+    if [ -f ${ocpath}/.htaccess ]
+    then
+    chmod 0664 ${ocpath}/.htaccess
+    chown ${rootuser}:${htgroup} ${ocpath}/.htaccess
+    fi
+    if [ -f ${ocpath}/data/.htaccess ]
+    then
+    chmod 0664 ${ocpath}/data/.htaccess
+    chown ${rootuser}:${htgroup} ${ocpath}/data/.htaccess
+    fi
+
+Save and close, and then run the file.
+
+..  code-block:: bash
+
+    sudo bash /tmp/nextcloud.sh
+
+After that finishes, we can start configuring Apache2.
+
+Apache2 Configuration
+----------------------------
+
+Let's create an Apache2 site configuration for Nextcloud.
+
+..  code-block:: bash
+
+    sudo vim /etc/apache2/sites-available/cloud.conf
+
+Set the contents to...
+
+..  code-block:: apache
+
+    <IfModule mod_ssl.c>
+        <VirtualHost *:443>
+            ServerName cloud.mousepawmedia.com
+            DocumentRoot /opt/nextcloud
+
+            SSLCertificateFile /etc/letsencrypt/live/cloud.mousepawmedia.com/fullchain.pem
+            SSLCertificateKeyFile /etc/letsencrypt/live/cloud.mousepawmedia.com/privkey.pem
+            Include /etc/letsencrypt/options-ssl-apache.conf
+            Header always set Strict-Transport-Security "max-age=31536000"
+            Header always set Content-Security-Policy upgrade-insecure-requests
+
+            ErrorLog ${APACHE_LOG_DIR}/error.log
+            CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+            <Directory /opt/nextcloud>
+                Options +FollowSymLinks
+                AllowOverride All
+                Satisfy Any
+
+                <IfModule mod_dave.c>
+                        Dav off
+                </IfModule>
+
+                SetEnv HOME /opt/nextcloud
+                SetEnv HTTP_HOME /opt/nextcloud
+            </Directory>
+
+            BrowserMatch "MSIE [2-6]" \
+                nokeepalive ssl-unclean-shutdown \
+                downgrade-1.0 force-response-1.0
+            # MSIE 7 and newer should be able to use keepalive
+            BrowserMatch "MSIE [17-9]" ssl-unclean-shutdown
+        </VirtualHost>
+    </IfModule>
+
+Save and close. Now, we need to also allow access to the Nextcloud directory
+in Apache2's core directory.
+
+..  code-block:: bash
+
+    sudo vim /etc/apache2/apache2.conf
+
+Add the following below the other ``<Directory>`` entries...
+
+..  code-block:: apache
+
+    <Directory /opt/nextcloud>
+        Options Indexes FollowSymLinks
+        Require all granted
+    </Directory>
+
+Then, enable the site and restart Apache2.
+
+..  code-block:: bash
+
+    sudo a2ensite cloud
+    sudo a2enmod headers
+    sudo systemctl restart apache2
+
+Database
+----------------------------------------
+
+Connect to the PostgreSQL instance like this:
+
+..  code-block:: bash
+
+    sudo su - postgres
+    psql
+
+Now set up the necessary users and databases.
+
+..  code-block:: sql
+
+    CREATE ROLE nextcloud WITH LOGIN PASSWORD 'password';
+    CREATE DATABASE nextcloud OWNER nextcloud;
+    \q
+
+You can now `exit` out of the `postgres` shell session as well.
+
+Now ensure that PHP is set up to work with MySQL.
+
+..  code-block:: bash
+
+    sudo phpenmod pgsql
+    sudo systemctl restart apache2
+
+Redis
+----------------------------------------
+
+We also need to install and configure Redis.
+
+..  code-block:: bash
+
+    sudo apt install redis-server
+    sudo vim /etc/redis/redis.conf
+
+Add or change the following lines, substituting a real password in place
+of PASSWORDHERE:
+
+..  code-block:: text
+
+    supervised systemd
+
+    bind 127.0.0.1 -::1
+
+    requirepass PASSWORDHERE
+
+Save and close. Then run:
+
+..  code-block:: bash
+
+    sudo systemctl restart redis-server
+    redis-cli
+
+In the interactive session that appears, enter the following commands
+at the prompt (:code:`>`). Responses are displayed inline without the leading
+:code:`>` below:
+
+..  code-block:: text
+
+    > auth PASSWORDHERE
+    OK
+    > ping
+    PONG
+    > quit
+
+That confirms Redis is configured.
+
+Nextcloud Configuration
+------------------------------
+
+Go to the new Nextcloud site. On the setup screen, specify an admin account.
+
+Click ``Storage and Database``, set the Data folder to ``/opt/nextcloud/data``.
+Select ``PostgreSQL`` for the database, and provide the database user, password,
+and database name. The fourth field should be ``localhost:5432``.
+
+Click ``Finish setup``.
+
+`SOURCE How To Install and Configure Nextcloud on Ubuntu 16.04 (DigitalOcean) <https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-nextcloud-on-ubuntu-16-04>`_
+
+Preventing Lockouts
+-----------------------------
+
+Due to a glitch in Nextcloud, we have to configure fail2ban to prevent lockouts.
+
+..  code-block:: bash
+
+    sudo vim /etc/fail2ban/filter.d/apache-auth.conf
+
+Change or add the following lines:
+
+..  code-block:: text
+
+    # ignore intentional auth failures from nextcloud admin page
+    ignoreregex = cloud/[data/.ocdata|config]
+
+Save and close, and run...
+
+..  code-block:: bash
+
+    sudo systemctl restart fail2ban
+
+
+PHP Configuration
+----------------------------
+
+Nextcloud recommends a few tweaks to php.ini. Run...
+
+.. code-block:: bash
+
+    sudo vim /etc/php/8.1/apache2/php.ini
+
+Add or edit (or uncomment) the following lines:
+
+..  code-block:: text
+
+    date.timezone = America/Chicago
+    memory_limit = 512M
+
+    opcache.enable=1
+    opcache.enable_cli=1
+    opcache.interned_strings_buffer=8
+    opcache.max_accelerated_files=10000
+    opcache.memory_consumption=128
+    opcache.save_comments=1
+    opcache.revalidate_freq=1
+    opcache.jit = 1255
+    opcache.jit_buffer_size = 128M
+
+Save and close. Now open...
+
+..  code-block:: bash
+
+    sudo vim /etc/php/8.1/mods-available/apcu.ini
+
+Add the following line:
+
+..  code-block:: text
+
+    apc.enable_cli=1
+
+Save and close, and restart Apache2.
+
+..  code-block:: bash
+
+    sudo systemctl restart apache2
+
+Configuring Memory Caching
+-----------------------------
+
+To improve performance, we'll enable memory caching. We are using APCu and
+Redis, so we need to enable this for Nextcloud.
+
+..  code-block:: bash
+
+    sudo vim /opt/nextcloud/config/config.php
+
+Add the following lines, substituting your actual Redis password in place of
+:code:`PASSWORDHERE`:
+
+..  code-block:: php
+
+    'filelocking.enabled' => true,
+    'memcache.local' => '\OC\Memcache\APCu',
+    'memcache.distributed' => '\OC\Memcache\Redis',
+    'memcache.locking' => '\OC\Memcache\Redis',
+    'redis' => array(
+        'host' => 'localhost',
+        'port' => 6379,
+        'timeout' => 0.0,
+        'password' => 'PASSWORDHERE'
+    ),
+    'default_phone_region' => 'US',
+
+Save and close, and restart Apache2:
+
+..  code-block:: bash
+
+    sudo systemctl restart apache2
+
+Set Up Cronjob
+----------------------------
+
+It is recommended to use Cron for background tasks. We will set this up now.
+
+..  code-block:: bash
+
+    sudo crontab -u www-data -e
+
+Add the following line:
+
+..  code-block:: text
+
+    */15  *  *  *  * php -f /opt/nextcloud/cron.php
+
+Save and close.
+
+Finally, in the Nextcloud Admin pane, go to ``Basic settings`` and select the ``Cron`` option.
+
+`SOURCE: Background Jobs Configuration (Nextcloud) <https://docs.nextcloud.com/server/10/admin_manual/configuration_server/background_jobs_configuration.html>`_
+
+S3 Bucket Storage
+--------------------------------
+
+We'll be setting an S3 Object Storage Bucket as the primary data host.
+
+..  note:: Do NOT enable the Encryption app; it's not compatible with S3!
+
+In Linode, activate Object Storage and create a bucket, as well as an
+access key.
+
+Then edit the Nextcloud configuration:
+
+..  code-block:: bash
+
+    sudo vim /opt/nextcloud/config/config.php
+
+Add the following to that file, before the closing ``);``, substituting your
+values (especially in place of :code:`ACCESSKEY` and :code:`SECRETKEY`):
+
+..  code-block:: php
+
+    'objectstore' => array(
+        'class' => '\\OC\\Files\\ObjectStore\\S3',
+        'arguments' => array(
+            'bucket' => 'mpm-nextcloud',
+            'autocreate' => false,
+            'key' => 'ACCESSKEY',
+            'secret' => 'SECRETKEY',
+            'hostname' => 'us-east-1.linodeobjects.com',
+            'port' => 443,
+            'use_ssl' => true,
+            'region' => 'us-east-1',
+        ),
+    ),
+
+Save and close. Restart Apache2. Nextcloud will start storing in that
+bucket instead of on the system disk.
+
+`SOURCE: How to Configure Nextcloud to use Linode Object Storage as an External Storage Mount <https://www.linode.com/docs/guides/how-to-configure-nextcloud-to-use-linode-object-storage-as-an-external-storage-mount/>`_
+
+`SOURCE: Deploy Nextcloud with Object Storage (Scaleway) <https://www.scaleway.com/en/docs/install-and-configure-nextcloud-object-storage/>`_
+
+Pretty URLs
+-----------------------------
+
+The default URLs for NextCloud all include `index.php`, which isn't very
+nice to look at all the time. Let's fix this.
+
+..  code-block:: bash
+
+    sudo vim /opt/nextcloud/config/config.php
+
+In that file, add the following lines:
+
+..  code-block:: php
+
+    'overwrite.cli.url' => 'https://cloud.mousepawmedia.com/',
+    'htaccess.RewriteBase' => '/',
+
+Save and close. Then run:
+
+..  code-block:: bash
+
+    sudo -u www-data php /opt/nextcloud/occ maintenance:update:htaccess
+    sudo systemctl restart apache2
+
+Changing Default Files
+--------------------------------
+
+To change or remove the default files, change what is found in
+``/opt/nextcloud/core/skeleton``. For our instance of Nextcloud, we've removed
+all these files.
+
+OAuth2 with GitLab
+---------------------------------
+
+We want to allow logging in with our GitLab OAuth2 provider, and provide
+integration with GitLab besides. To do this, we need to configure a new
+OAuth2 Application in GitLab.
+
+In GitLab, under Admin -> Applications, create a new OAuth2 application
+with the following settings:
+
+* Name: :code:`Discourse`
+* Trusted: Yes
+* Confidential: Yes
+* Scopes: :code:`read_user`
+
+The Redirect URIs are:
+
+..  code-block:: text
+
+    https://cloud.mousepawmedia.com/apps/oidc_login/oidc
+    https://cloud.mousepawmedia.com/apps/integration_gitlab/oauth-redirect
+
+Click :guilabel:`Save Application`, and take note of the application ID
+and the secret. You'll need both in the next step.
+
+In NextCloud, install the following applications:
+
+* OpenID Connect Login
+* GitLab Integration
+
+Go to the Users area, and at left, click :guilabel:`Add group`. Name the
+new group :code:`Staff`.
+
+Edit the Nextcloud configuration:
+
+..  code-block:: bash
+
+    sudo vim /opt/nextcloud/config/config.php
+
+Add the following to that file, before the closing ``);``, substituting your
+values (especially in place of :code:`ACCESSKEY` and :code:`SECRETKEY`):
+
+..  code-block:: php
+
+    'allow_user_to_change_display_name' => false,
+    'lost_password_link' => 'disabled',
+    'oidc_login_provider_url' => 'https://gitlab.mousepawmedia.com',
+    'oidc_login_client_id' => 'ACCESSKEY',
+    'oidc_login_client_secret' => 'SECRETKEY',
+    'oidc_login_auto_redirect' => false,
+    'oidc_login_end_session_redirect' => false,
+    'oidc_login_default_quota' => '1000000000',
+    'oidc_login_button_text' => 'Login with MousePaw Media GitLab',
+    'oidc_login_hide_password_form' => true,
+    'oidc_login_use_id_token' => false,
+    'oidc_login_attributes' => array (
+        'id' => 'nickname',
+        'name' => 'name',
+        'mail' => 'email',
+        'photoURL' => 'picture',
+        'groups' => 'groups',
+        'login_filter' => 'groups',
+    ),
+    'oidc_login_filter_allowed_values' => array('staff'),
+    'oidc_login_use_external_storage' => false,
+    'oidc_login_scope' => 'openid read_user',
+    'oidc_login_proxy_ldap' => false,
+    'oidc_login_disable_registration' => false,
+    'oidc_login_redir_fallback' => false,
+    'oidc_login_alt_login_page' => 'assets/login.php',
+    'oidc_login_tls_verify' => true,
+    'oidc_create_groups' => false,
+    'oidc_login_webdav_enabled' => false,
+    'oidc_login_password_authentication' => false,
+    'oidc_login_public_key_caching_time' => 86400,
+    'oidc_login_min_time_between_jwks_requests' => 10,
+    'oidc_login_well_known_caching_time' => 86400,
+    'oidc_login_update_avatar' => true,
+    'oidc_login_skip_proxy' => false,
+    'oidc_login_code_challenge_method' => '',
+
+Save and close. Restart Apache2.
+
+Finally, from the Administration panel, you can select
+:guilabel:`Connected Accounts` and set up GitLab integration with the
+same OAuth app instance address (:code:`https://gitlab.mousepawmedia.com`),
+application ID, and client secret you used above.
+
+`SOURCE: Nextcloud OIDC Login -- GitHub <https://github.com/pulsejet/nextcloud-oidc-login>`

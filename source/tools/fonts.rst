@@ -25,10 +25,10 @@ In a terminal, run the following commands.
 
 ..  code-block:: bash
 
-    $ cd ~/Desktop
-    $ unzip MPM_FONTS_BUNDLE_v3.2.zip
-    $ cd MPM_FONTS_BUNDLE_v3.2
-    $ ./install.sh
+    cd ~/Desktop
+    unzip MPM_FONTS_BUNDLE_v3.2.zip
+    cd MPM_FONTS_BUNDLE_v3.2
+    ./install.sh
 
 When prompted, enter :kbd:`H` to install the fonts to your home folder,
 or :kbd:`s` to install the fonts system-wide, and then press :kbd:`ENTER`.

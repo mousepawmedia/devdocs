@@ -18,7 +18,7 @@ On Ubuntu, you can install Dia via...
 
 ..  code-block:: bash
 
-    $ sudo apt install dia
+    sudo apt install dia
 
 Dia is also available for other versions of Linux from their respective
 package managers, or from the official Dia website:
@@ -50,7 +50,7 @@ On Ubuntu, Meld can be installed via...
 
 ..  code-block:: bash
 
-    $ sudo apt install meld
+    sudo apt install meld
 
 Meld is also available from the package managers for many other Linux
 distributions.
@@ -70,7 +70,7 @@ You can install Meld via MacPorts by simply running...
 
 ..  code-block:: bash
 
-    $ sudo port install meld
+    sudo port install meld
 
 Installing via DMG
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -109,7 +109,7 @@ On Ubuntu, you can install SpeedCrunch via...
 
 ..  code-block:: bash
 
-    $ sudo apt install speedcrunch
+    sudo apt install speedcrunch
 
 SpeedCrunch is also available for other versions of Linux from their respective
 package managers, or from the official SpeedCrunch website:

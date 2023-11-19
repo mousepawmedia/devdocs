@@ -39,13 +39,14 @@ published.
 Technical Requirements
 =======================================
 
-You **must** have Linux, ideally an Ubuntu-based distro (version 20.04
-or later), installed on your computer. See :doc:`../setup_linux/install` for
-instructions on installing it. If you need help, contact Jason C. McDonald.
+We strongly recommend installing Ubuntu 22.04 or later on your computer.
+If you're using Windows 10 or Windows 11, we recommend installing Ubuntu via
+the Windows Subsystem for Linux.
 
-Although we work on Linux, you may access the Staff Network via Windows, macOS,
-iOS (Apple) mobile devices, Android mobile devices, or BSD-based operating
-systems if you need to.
+We do support macOS if that's what you use, although we don't fully support it.
+
+See :doc:`../setup_linux/install` for
+instructions on installing Ubuntu 22.04. If you need help, contact your mentor.
 
 .. _gstaff_security:
 
@@ -58,14 +59,31 @@ and more. It is your responsibility to keep your MousePaw Media account secure!
 
 .. _gstaff_security_password:
 
-Password Management
+Passwords and Password Management
 ---------------------------------------
+
+A good password should:
+
+* Have a length of at least 16 characters; longer is always better.
+* Have uppercase and lowercase letters.
+* Have at least one number or symbol.
+
+It is perfectly acceptable if you use real words, but you should avoid anything
+that can be associated with you. Names, biographical data, pets, and signficant
+dates should always be avoided! A random but memorable "passphrase" consisting
+of random words is a good option, especially if you add symbols and numbers.\
+For example, `Yodeling7_Goats_Twirl_Vicariously` is a strong password (but don't
+use that exact passphrase, since it's written here!)
+
+Bitwarden (described below) has an excellent password and passphrase generator.
 
 To save your MousePaw Media credentials, you should use a secure password
 manager. *Never* trust your web browser's "save password" feature for this.
 
 If you aren't already using a secure password manager, install
-`Bitwarden <https://bitwarden.com/>`_.
+`Bitwarden <https://bitwarden.com/>`_. Besides being free and open-source,
+it is end-to-end encrypted, so your passwords can never be accessed in a data
+breach of Bitwarden's servers.
 
 1.  Go to https://bitwarden.com and tap :guilabel:`Get Started` to create
     a **free** account.
@@ -84,6 +102,9 @@ If you aren't already using a secure password manager, install
     for your web browser and each of your devices. This will allow you to
     access your passwords and other secure data stored in Bitwarden from any
     device, so long as you know your master password.
+
+..  warning:: WE WILL NEVER ASK YOU FOR YOUR PASSWORD! Our IT department has
+    the ability to reset any account password if necessary.
 
 ..  note:: Set up Bitwarden now and store your MousePaw Media credentials.
     If you already use a different secure password manager, add your MousePaw
@@ -115,7 +136,9 @@ of the following:
 
 In the sections that follow, you will be installing MFA for
 
-* Phabricator
+* GitLab
+
+* Discourse
 
 * Nextcloud
 
@@ -158,10 +181,9 @@ If you lose access to your MousePaw Media account at any point, whether
 that's a missing password or a lost or non-functioning MFA device, don't panic!
 MousePaw Media administrators are able to reset passwords and MFA credentials.
 
-To start the process, contact ``eco@mousepawmedia.com``, or ping someone in the
-``~eco`` channel on Mattermost. We will arrange to work with you
-*over video chat* (for authentication purposes) to restore access to your
-account.
+To start the process, contact ``it@mousepawmedia.com``. We will arrange to work
+with you *over video chat* (for authentication purposes) to restore access
+to your account.
 
 .. _gstaff_network:
 
@@ -172,24 +194,15 @@ The Staff Network consists of seven major components:
 
 * SOGo [Email/Calendar] (mail.mousepawmedia.com)
 
-* Kimai (time.mousepawmedia.com)
+* GitLab (gitlab.mousepawmedia.com)
 
-* Phabricator (phab.mousepawmedia.com)
+* Discourse (discourse.mousepawmedia.com)
 
 * Mattermost (chat.mousepawmedia.com)
 
 * Nextcloud (cloud.mousepawmedia.com)
 
-* Jenkins (ci.mousepawmedia.com)
-
-* Etherpad (pad.mousepawmedia.com)
-
-* LimeSurvey (papers.mousepawmedia.com)
-
 We also use `Jitsi Meet <https://meet.jit.si/>`_ for regular communication.
-
-Visit **staff.mousepawmedia.com** for our main staff portal, with links to
-everything else.
 
 .. _gstaff_network_email:
 

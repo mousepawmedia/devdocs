@@ -16,8 +16,8 @@ Before we continue, we need to check for any updates.
 
 ..  code-block:: bash
 
-    $ apt update
-    $ apt full-upgrade
+    apt update
+    apt full-upgrade
 
 Setting Hostname and Timezone
 --------------------------------
@@ -26,9 +26,9 @@ We'll start by defining the name of our host.
 
 ..  code-block:: bash
 
-    $ echo "mpmdev" > /etc/hostname
-    $ hostname -F /etc/hostname
-    $ vim /etc/hosts
+    echo "mpmdev" > /etc/hostname
+    hostname -F /etc/hostname
+    vim /etc/hosts
 
 In that file, add the following lines below the first line, substituting the
 actual IPv4 and IPv6 of the Linode in place of the NNN.NNN values:
@@ -44,7 +44,7 @@ Now we set the timezone.
 
 ..  code-block:: bash
 
-    $ dpkg-reconfigure tzdata
+    dpkg-reconfigure tzdata
 
 Use the arrow and ENTER keys to set your timezone. We'll be using US/Central.
 
@@ -60,15 +60,15 @@ user account.
 
 ..  code-block:: bash
 
-    $ adduser mpm
+    adduser mpm
 
 Define the password for the new user, and other information if desired.
 Then, we add the user to the ``sudo`` group.
 
 ..  code-block:: bash
 
-    $ usermod -aG sudo mpm
-    $ groups mpm
+    usermod -aG sudo mpm
+    groups mpm
 
 The second command will list all of the groups ``mpm`` is in. Ensure
 it includes the ``sudo`` group.
@@ -85,10 +85,10 @@ change a few settings and start the service.
 ..  code-block:: bash
 
     # Make a backup of the default SSH configuration.
-    $ sudo cp /etc/ssh/sshd_config{,.bak}
+    sudo cp /etc/ssh/sshd_config{,.bak}
 
     # Edit the SSH configuration.
-    $ sudo vim /etc/ssh/sshd_config
+    sudo vim /etc/ssh/sshd_config
 
 Change ``Port 22`` to ``Port 123`` and ``PermitRootLogin yes`` to
 ``PermitRootLogin no``. Also add the line ``DebianBanner no`` (you can put it under
@@ -100,7 +100,7 @@ Now we'll restart the service.
 ..  code-block:: bash
 
     # Restart the SSH service.
-    $ sudo systemctl restart ssh
+    sudo systemctl restart ssh
 
 On the **remote machine** (the computer you're connecting *from*), run the
 following command, where :code:`NNN.NNN.NNN.NNN` is the IP address of the
@@ -137,8 +137,8 @@ We'll start by setting up Apache2.
 
 ..  code-block:: bash
 
-    $ sudo apt install apache2
-    $ sudo vim /etc/apache2/apache2.conf
+    sudo apt install apache2
+    sudo vim /etc/apache2/apache2.conf
 
 Next, we'll edit the configuration file to turn off ``KeepAlive``, as that
 uses up extra memory (and we don't have that much to spare). We'll also set
@@ -167,7 +167,7 @@ Next, we'll change the settings for the ``mpm_prefork`` module.
 
 ..  code-block:: bash
 
-    $ sudo vim /etc/apache2/mods-available/mpm_prefork.conf
+    sudo vim /etc/apache2/mods-available/mpm_prefork.conf
 
 Set the file to the following...
 
@@ -185,16 +185,16 @@ Save and close. Now we'll enable the prefork module and restart Apache2.
 
 ..  code-block:: bash
 
-    $ sudo a2dismod mpm_event
-    $ sudo a2enmod mpm_prefork
-    $ sudo systemctl restart apache2
+    sudo a2dismod mpm_event
+    sudo a2enmod mpm_prefork
+    sudo systemctl restart apache2
 
 Next, we will add our user to the ``www-data`` group, which will be
 helpful for permissions.
 
 ..  code-block:: bash
 
-    $ sudo usermod -aG www-data mpm
+    sudo usermod -aG www-data mpm
 
 Browse to the web server using the IP or whatever address is most convenient,
 and ensure the Apache2 default page is appearing.
@@ -206,8 +206,8 @@ Now we will set up our database software.
 
 ..  code-block:: bash
 
-    $ sudo apt install mysql-server
-    $ sudo mysql_secure_installation
+    sudo apt install mysql-server
+    sudo mysql_secure_installation
 
 Validate Password is optional; you should specify the root password
 and answer ``Y`` to the following:
@@ -224,8 +224,8 @@ We'll be using PHP 7.4, which is the default in Ubuntu 20.04, for this server.
 
 ..  code-block:: bash
 
-    $ sudo apt install php7.4 libapache2-mod-php7.4 php7.4-cli php7.4-common php7.4-curl php7.4-dev php7.4-gd php7.4-json php7.4-mbstring php7.4-mysql php7.4-opcache php7.4-readline php7.4-xml
-    $ sudo vim /etc/php/7.4/apache2/php.ini
+    sudo apt install php7.4 libapache2-mod-php7.4 php7.4-cli php7.4-common php7.4-curl php7.4-dev php7.4-gd php7.4-json php7.4-mbstring php7.4-mysql php7.4-opcache php7.4-readline php7.4-xml
+    sudo vim /etc/php/7.4/apache2/php.ini
 
 Edit the contents of that file so the following lines match the given values:
 
@@ -240,9 +240,9 @@ Finally, restart Apache2 to start using the changes.
 
 ..  code-block:: bash
 
-    $ sudo mkdir /var/log/php
-    $ sudo chown www-data /var/log/php
-    $ sudo systemctl restart apache2
+    sudo mkdir /var/log/php
+    sudo chown www-data /var/log/php
+    sudo systemctl restart apache2
 
 `SOURCE: Install LAMP on Ubuntu 16.04 (Linode) <https://www.linode.com/docs/web-servers/lamp/install-lamp-on-ubuntu-16-04/>`_
 
@@ -253,16 +253,16 @@ We need to save a number of scripts for regular use.
 
 ..  code-block:: bash
 
-    $ sudo mkdir -p /opt/scripts/sys
-    $ sudo mkdir -p /opt/scripts/root
-    $ sudo chown root:root /opt/scripts/root
-    $ sudo chmod 700 /opt/scripts/root
+    sudo mkdir -p /opt/scripts/sys
+    sudo mkdir -p /opt/scripts/root
+    sudo chown root:root /opt/scripts/root
+    sudo chmod 700 /opt/scripts/root
 
 Now we add the system scripts to the path for the main user.
 
 ..  code-block:: bash
 
-    $ vim ~/.bashrc
+    vim ~/.bashrc
 
 Add the following to that file:
 
@@ -286,10 +286,10 @@ We need to install the Let's Encrypt Certbot for generating certificates.
 
 ..  code-block:: bash
 
-    $ sudo snap install core; sudo snap refresh core
-    $ sudo snap install --classic certbot
-    $ sudo ln -s /snap/bin/certbot /usr/bin/certbot
-    $ sudo certbot register
+    sudo snap install core; sudo snap refresh core
+    sudo snap install --classic certbot
+    sudo ln -s /snap/bin/certbot /usr/bin/certbot
+    sudo certbot register
 
 Follow the instructions to register with Let's Encrypt.
 
@@ -304,7 +304,7 @@ Now we need to schedule the autorenewal task.
 
 ..  code-block:: bash
 
-    $ sudo crontab -e
+    sudo crontab -e
 
 Add the following line to the end:
 
@@ -327,7 +327,7 @@ We need to lock down SSH for further security.
 
 ..  code-block:: bash
 
-    $ sudo vim /etc/ssh/sshd_config
+    sudo vim /etc/ssh/sshd_config
 
 Edit the file so the following lines have the given settings:
 
@@ -341,7 +341,7 @@ Save and close the file, and then run...
 
 ..  code-block:: bash
 
-    $ sudo systemctl restart sshd
+    sudo systemctl restart sshd
 
 Firewall Settings
 ---------------------
@@ -351,17 +351,17 @@ and enable it. Be sure to change ``123`` to your SSL port from previously.
 
 ..  code-block:: bash
 
-    $ sudo ufw allow 123
-    $ sudo ufw allow 80
-    $ sudo ufw allow 443
-    $ sudo ufw enable
+    sudo ufw allow 123
+    sudo ufw allow 80
+    sudo ufw allow 443
+    sudo ufw enable
 
 Secure Shared Memory
 --------------------------
 
 ..  code-block:: bash
 
-    $ sudo vim /etc/fstab
+    sudo vim /etc/fstab
 
 At the bottom of the file, add the lines:
 
@@ -380,16 +380,16 @@ We'll limit ``sudo`` privileges to only users in the ``admin`` group.
 
 ..  code-block:: bash
 
-    $ sudo groupadd admin
-    $ sudo usermod -a -G admin <YOUR ADMIN USERNAME>
-    $ sudo dpkg-statoverride --update --add root admin 4750 /bin/su
+    sudo groupadd admin
+    sudo usermod -a -G admin <YOUR ADMIN USERNAME>
+    sudo dpkg-statoverride --update --add root admin 4750 /bin/su
 
 Harden Network with ``sysctl`` Settings
 ------------------------------------------------------
 
 ..  code-block:: bash
 
-    $ sudo vi /etc/sysctl.conf
+    sudo vi /etc/sysctl.conf
 
 Edit the file, uncommenting or adding the following lines:
 
@@ -435,14 +435,14 @@ Finally, reload ``sysctl``. If there are any errors, fix the associated lines.
 
 ..  code-block:: bash
 
-    $ sudo sysctl -p
+    sudo sysctl -p
 
 Harden PHP
 ---------------------------------------------
 
 ..  code-block:: bash
 
-    $ sudo vim /etc/php/7.4/apache2/php.ini
+    sudo vim /etc/php/7.4/apache2/php.ini
 
 Add or edit the following lines and save:
 
@@ -462,7 +462,7 @@ Restart the Apache2 server and make sure it still works.
 
 ..  code-block:: bash
 
-    $ sudo systemctl restart apache2
+    sudo systemctl restart apache2
 
 Harden Apache2
 ---------------------------------------------
@@ -471,7 +471,7 @@ Edit the Apache2 security configuration file...
 
 ..  code-block:: bash
 
-    $ sudo vim /etc/apache2/conf-available/security.conf
+    sudo vim /etc/apache2/conf-available/security.conf
 
 Change or add the following lines:
 
@@ -486,7 +486,7 @@ Restart the Apache2 server and make sure it still works.
 
 ..  code-block:: bash
 
-    $ sudo systemctl restart apache2
+    sudo systemctl restart apache2
 
 Setup ModSecurity
 ---------------------------------------------------
@@ -497,29 +497,29 @@ the package itself.
 
 ..  code-block:: bash
 
-    $ sudo apt install libxml2 libxml2-dev libxml2-utils libaprutil1 libaprutil1-dev
-    $ sudo ln -s /usr/lib/x86_64-linux-gnu/libxml2.so.2 /usr/lib/libxml2.so.2
-    $ sudo apt install libapache2-mod-security2
+    sudo apt install libxml2 libxml2-dev libxml2-utils libaprutil1 libaprutil1-dev
+    sudo ln -s /usr/lib/x86_64-linux-gnu/libxml2.so.2 /usr/lib/libxml2.so.2
+    sudo apt install libapache2-mod-security2
 
 Now we'll copy the default configuration.
 
 ..  code-block:: bash
 
-    $ sudo mv /etc/modsecurity/modsecurity.conf-recommended /etc/modsecurity/modsecurity.conf
+    sudo mv /etc/modsecurity/modsecurity.conf-recommended /etc/modsecurity/modsecurity.conf
 
 Now we download the latest OWASP security rules.
 
 ..  code-block:: bash
 
-    $ cd /etc/modsecurity
-    $ sudo wget https://github.com/coreruleset/coreruleset/archive/v3.3.0.tar.gz
-    $ sudo tar -xvf v3.3.0.tar.gz
-    $ sudo mv coreruleset-3.3.0 owasp-modsecurity-crs
-    $ cd owasp-modsecurity-crs
-    $ sudo mv crs-setup.conf.example crs-setup.conf
-    $ cd rules
-    $ sudo mv REQUEST-900-EXCLUSION-RULES-BEFORE-CRS.conf.example REQUEST-900-EXCLUSION-RULES-BEFORE-CRS.conf
-    $ sudo mv RESPONSE-999-EXCLUSION-RULES-AFTER-CRS.conf.example RESPONSE-999-EXCLUSION-RULES-AFTER-CRS.conf
+    cd /etc/modsecurity
+    sudo wget https://github.com/coreruleset/coreruleset/archive/v3.3.0.tar.gz
+    sudo tar -xvf v3.3.0.tar.gz
+    sudo mv coreruleset-3.3.0 owasp-modsecurity-crs
+    cd owasp-modsecurity-crs
+    sudo mv crs-setup.conf.example crs-setup.conf
+    cd rules
+    sudo mv REQUEST-900-EXCLUSION-RULES-BEFORE-CRS.conf.example REQUEST-900-EXCLUSION-RULES-BEFORE-CRS.conf
+    sudo mv RESPONSE-999-EXCLUSION-RULES-AFTER-CRS.conf.example RESPONSE-999-EXCLUSION-RULES-AFTER-CRS.conf
 
 You may need to edit :file:`/etc/modsecurity/owasp-modsecurity-crs/crs-setup.conf`
 to match your server's situation. For example, we enabled Project Honeypot.
@@ -528,7 +528,7 @@ Edit the configuration for the ModSecurity Apache module...
 
 ..  code-block:: bash
 
-    $ sudo vim /etc/apache2/mods-available/security2.conf
+    sudo vim /etc/apache2/mods-available/security2.conf
 
 Change the ``IncludeOptional`` entries to match the following:
 
@@ -545,8 +545,8 @@ Enable the modules and restart Apache2, ensuring that it still works.
 
 ..  code-block:: bash
 
-    $ sudo a2enmod headers security2
-    $ sudo systemctl restart apache2
+    sudo a2enmod headers security2
+    sudo systemctl restart apache2
 
 Finally, to make sure it works, go to ``http://<serveraddress>/?param="><script>alert(1);</script>``.
 Check ``/var/log/apache2/error.log`` for an error report from ``mod_security``.
@@ -560,9 +560,9 @@ actions.
 
 ..  code-block:: bash
 
-    $ sudo apt install fail2ban
-    $ sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
-    $ sudo vim /etc/fail2ban/jail.local
+    sudo apt install fail2ban
+    sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
+    sudo vim /etc/fail2ban/jail.local
 
 To turn on various "jails", scroll down to the ``# JAILS`` section. Place
 ``enabled = true`` under each jail name you want turned on. This is the list
@@ -603,8 +603,8 @@ be changed in Fail2Ban's configuration:
 
 ..  code-block:: bash
 
-    $ sudo cp /etc/fail2ban/fail2ban.conf /etc/fail2ban/fail2ban.local
-    $ sudo vim /etc/fail2ban/fail2ban.local
+    sudo cp /etc/fail2ban/fail2ban.conf /etc/fail2ban/fail2ban.local
+    sudo vim /etc/fail2ban/fail2ban.local
 
 Change the following values:
 
@@ -619,26 +619,26 @@ Save and close. Run the following command to ensure there are no errors:
 
 ..  code-block:: bash
 
-    $ sudo systemctl stop fail2ban
-    $ sudo fail2ban-client -x start
+    sudo systemctl stop fail2ban
+    sudo fail2ban-client -x start
 
 Finally, restart the fail2ban process.
 
 ..  code-block:: bash
 
-    $ sudo systemctl restart fail2ban
+    sudo systemctl restart fail2ban
 
 Setup PSAD
 ------------------------------------------
 
 ..  code-block:: bash
 
-    $ sudo apt install psad
-    $ sudo iptables -A INPUT -j LOG
-    $ sudo iptables -A FORWARD -j LOG
-    $ sudo ip6tables -A INPUT -j LOG
-    $ sudo ip6tables -A FORWARD -j LOG
-    $ sudo vim /etc/psad/psad.conf
+    sudo apt install psad
+    sudo iptables -A INPUT -j LOG
+    sudo iptables -A FORWARD -j LOG
+    sudo ip6tables -A INPUT -j LOG
+    sudo ip6tables -A FORWARD -j LOG
+    sudo vim /etc/psad/psad.conf
 
 Change the following values:
 
@@ -657,7 +657,7 @@ Save and close, and then reload like this:
 
 ..  code-block:: bash
 
-    $ sudo psad -R; sudo psad --sig-update; sudo psad -H; sudo psad --Status
+    sudo psad -R; sudo psad --sig-update; sudo psad -H; sudo psad --Status
 
 When you run that last command, it may whine about not finding a pidfile.
 It appears we can ignore that error.
@@ -667,7 +667,7 @@ Otherwise, ``psad`` won't be able to log correctly.
 
 ..  code-block:: bash
 
-    $ sudo vim /lib/systemd/system/fail2ban.service
+    sudo vim /lib/systemd/system/fail2ban.service
 
 In that file, add ``ufw.service`` and ``psad.service`` to the ``After=`` directive,
 so it looks something like this:
@@ -680,15 +680,15 @@ Save and close, and then reload the daemons for systemctl and restart fail2ban.
 
 ..  code-block:: bash
 
-    $ sudo systemctl daemon-reload
-    $ sudo systemctl restart fail2ban
+    sudo systemctl daemon-reload
+    sudo systemctl restart fail2ban
 
 Now we need to adjust the UFW settings.
 
 ..  code-block:: bash
 
-    $ sudo ufw logging high
-    $ sudo vim /etc/ufw/before.rules
+    sudo ufw logging high
+    sudo vim /etc/ufw/before.rules
 
 Add the following lines before the final commit message:
 
@@ -704,8 +704,8 @@ reload PSAD.
 
 ..  code-block:: bash
 
-    $ sudo systemctl restart ufw
-    $ sudo psad --fw-analyze
+    sudo systemctl restart ufw
+    sudo psad --fw-analyze
 
 Restart the computer, and ensure PSAD isn't sending any system emails
 complaining about the firewall configuration. (Check system email by
@@ -718,8 +718,8 @@ We use two different rootkit checkers.
 
 ..  code-block:: bash
 
-    $ sudo apt install rkhunter chkrootkit
-    $ sudo vim /opt/scripts/root/rootkitscan
+    sudo apt install rkhunter chkrootkit
+    sudo vim /opt/scripts/root/rootkitscan
 
 Set the contents of that file to the following:
 
@@ -740,23 +740,23 @@ These are a few other useful programs.
 
 ..  code-block:: bash
 
-    $ sudo apt install nmap logwatch libdate-manip-perl apparmor apparmor-profiles tiger clamav
+    sudo apt install nmap logwatch libdate-manip-perl apparmor apparmor-profiles tiger clamav
 
     # Ensure apparmor is working.
-    $ sudo apparmor_status
+    sudo apparmor_status
 
 To use logwatch, run...
 
 ..  code-block:: bash
 
-    $ sudo logwatch | less
+    sudo logwatch | less
 
 To scan for vulnerabilites with Tiger, run...
 
 ..  code-block:: bash
 
-    $ sudo tiger
-    $ sudo less /var/log/tiger/security.report.*
+    sudo tiger
+    sudo less /var/log/tiger/security.report.*
 
 Adding Sites
 ============================
@@ -768,8 +768,8 @@ to be done the first time.
 
 ..  code-block:: bash
 
-    $ sudo a2enmod ssl
-    $ sudo systemctl restart apache2
+    sudo a2enmod ssl
+    sudo systemctl restart apache2
 
 We start by generating a certificate for the domain being added.
 
@@ -779,16 +779,16 @@ other sites will work.
 
 ..  code-block:: bash
 
-    $ sudo a2ensite 000-default
-    $ sudo systemctl reload apache2
-    $ sudo certbot certonly --apache -d eco.mousepawmedia.com
+    sudo a2ensite 000-default
+    sudo systemctl reload apache2
+    sudo certbot certonly --apache -d eco.mousepawmedia.com
 
 In the output for the certbot command, take note of the paths where the
 certificate and chain were saved. You'll need that in the next step.
 
 ..  code-block:: bash
 
-    $ sudo vim /etc/apache2/sites-available/eco.conf
+    sudo vim /etc/apache2/sites-available/eco.conf
 
 Set the contents of that file to the following, substituting the
 domain name in place for :code:`ServerName`, and fixing the paths for
@@ -833,16 +833,16 @@ in :code:`DocumentRoot`.
 
 ..  code-block:: bash
 
-    $ cd /opt
-    $ sudo mkdir eco
-    $ sudo chown www-data:www-data eco
-    $ sudo chmod 775 eco
+    cd /opt
+    sudo mkdir eco
+    sudo chown www-data:www-data eco
+    sudo chmod 775 eco
 
 We need to tell Apache2 to read this directory.
 
 ..  code-block:: bash
 
-    $ sudo vim /etc/apache2/apache2.conf
+    sudo vim /etc/apache2/apache2.conf
 
 Scroll down to the section with all the directories, and add these entries:
 
@@ -863,9 +863,9 @@ Now we disable the default site, enable the new site, and restart Apache2.
 
 ..  code-block:: bash
 
-    $ sudo a2dissite 000-default
-    $ sudo a2ensite eco
-    $ sudo systemctl restart apache2
+    sudo a2dissite 000-default
+    sudo a2ensite eco
+    sudo systemctl restart apache2
 
 Ensure the new domain works over http.
 
@@ -876,7 +876,7 @@ With that set up, we want to redirect port 80 to port 443.
 
 ..  code-block:: bash
 
-    $ sudo vim /etc/apache2/sites-available/000-redirect.conf
+    sudo vim /etc/apache2/sites-available/000-redirect.conf
 
 Set the contents of that file to...
 
@@ -893,9 +893,9 @@ restart Apache2.
 
 ..  code-block:: bash
 
-    $ sudo a2ensite 000-redirect
-    $ sudo a2enmod rewrite
-    $ sudo systemctl restart apache2
+    sudo a2ensite 000-redirect
+    sudo a2enmod rewrite
+    sudo systemctl restart apache2
 
 Navigating to ``http://<serveraddress>`` should now redirect properly to
 Navigate to ``https://<serveraddress>``. The same will apply for any subdirectory
@@ -914,7 +914,7 @@ PHPMyAdmin
 
 ..  code-block:: bash
 
-    $ sudo apt install phpmyadmin
+    sudo apt install phpmyadmin
 
 On the configuration dialog, select ``apache2`` by selecting it and tapping
 :kbd:`Space`. Enter an application password (different from the MySQL root
@@ -924,7 +924,7 @@ Edit the configuration for PHP, to force HTTPS.
 
 ..  code-block:: bash
 
-    $ sudo vim /etc/phpmyadmin/config.inc.php
+    sudo vim /etc/phpmyadmin/config.inc.php
 
 Add the following line to the bottom of that file.
 
@@ -938,8 +938,8 @@ Now enable one necessary PHP module and restart Apache2.
 
 ..  code-block:: bash
 
-    $ sudo phpenmod mbstring
-    $ sudo systemctl restart apache2
+    sudo phpenmod mbstring
+    sudo systemctl restart apache2
 
 Validate that you can access ``https://<serveraddress>/phpmyadmin``. Log
 in there with the username ``phpmyadmin`` and the password you defined.
@@ -954,7 +954,7 @@ access to all databases, run the following:
 
 ..  code-block:: bash
 
-    $ sudo mysql -u root
+    sudo mysql -u root
 
 Run the following commands in the MySQL shell:
 
@@ -975,7 +975,7 @@ PHPMyAdmin using a script.
 
 ..  code-block:: bash
 
-    $ sudo vim /opt/scripts/sys/controls
+    sudo vim /opt/scripts/sys/controls
 
 The contents of that file are as follows.
 
@@ -1006,7 +1006,7 @@ Save and close, and then make executable.
 
 ..  code-block:: bash
 
-    $ sudo chmod +x /opt/scripts/sys/controls
+    sudo chmod +x /opt/scripts/sys/controls
 
 Now you can run :code:`controls on` or :code:`controls off` to toggle
 access to PHPMyAdmin.
@@ -1023,8 +1023,8 @@ Installation
 
 ..  code-block:: bash
 
-    $ sudo apt install slapd ldap-utils ldap-account-manager
-    $ sudo dpkg-reconfigure slapd
+    sudo apt install slapd ldap-utils ldap-account-manager
+    sudo dpkg-reconfigure slapd
 
 During the configuration, use these settings:
 
@@ -1041,8 +1041,8 @@ Now we open the LDAP port and check that LDAP is working:
 
 ..  code-block:: bash
 
-    $ sudo ufw allow 389
-    $ ldapwhoami -H ldap:// -x
+    sudo ufw allow 389
+    ldapwhoami -H ldap:// -x
 
 The last command should return ``anonymous``.
 
@@ -1050,7 +1050,7 @@ Now we need to set up LDAP to use the Let's Encrypt certificates we created.
 
 ..  code-block:: bash
 
-    $ sudo vim /opt/scripts/root/postrenew
+    sudo vim /opt/scripts/root/postrenew
 
 Set the contents of that file to:
 
@@ -1064,15 +1064,15 @@ Save and close. Then, make executable and run.
 
 ..  code-block:: bash
 
-    $ sudo chmod +x /opt/scripts/root/postrenew
-    $ sudo /opt/scripts/root/postrenew
+    sudo chmod +x /opt/scripts/root/postrenew
+    sudo /opt/scripts/root/postrenew
 
 That script will need to be run every time certificates are renewed, so let's
 update our cron job.
 
 ..  code-block:: bash
 
-    $ sudo crontab -e
+    sudo crontab -e
 
 Modify the crontab for certbot to the following (without changing the time
 you have already specified, of course):
@@ -1088,7 +1088,7 @@ file in our current directory (e.g. home) like this:
 
 ..  code-block:: bash
 
-    $ sudo vim ssl.ldif
+    sudo vim ssl.ldif
 
 Set the contents to the following, changing the path to the certificates
 if necessary.
@@ -1110,7 +1110,7 @@ Save and close, and then modify LDAP with that file.
 
 ..  code-block:: bash
 
-    $ sudo ldapmodify -Y EXTERNAL -H ldapi:/// -f /home/mpm/ssl.ldif
+    sudo ldapmodify -Y EXTERNAL -H ldapi:/// -f /home/mpm/ssl.ldif
 
 Check the output. If you get the infamous ``ldap_modify: Other (e.g., implementation specific) error (80)``,
 check that all of the above are correct, especially permissions.
@@ -1119,8 +1119,8 @@ Once the command works, restart LDAP and ensure that StartTLS is working.
 
 ..  code-block:: bash
 
-    $ sudo systemctl restart slapd
-    $ ldapwhoami -H ldap://id.mousepawmedia.com -x -ZZ
+    sudo systemctl restart slapd
+    ldapwhoami -H ldap://id.mousepawmedia.com -x -ZZ
 
 That should return ``anonymous`` if it's working.
 
@@ -1255,20 +1255,20 @@ easily publish websites and documentation.
 
 ..  code-block:: bash
 
-    $ sudo mkdir /opt/sources
-    $ sudo chown www-data:www-data /opt/sources
-    $ cd /opt/sources
-    $ sudo -u www-data git clone git://github.com/mousepawmedia/mpm-websites.git
-    $ sudo ln -sf /opt/sources/mpm-websites/mousepawmedia.com /opt/mpm
-    $ sudo chown www-data:www-data /opt/mpm
-    $ sudo ln -sf /opt/sources/mpm-websites/mousepawmedia.com /opt/mpg
-    $ sudo chown www-data:www-data /opt/mpg
-    $ sudo ln -sf /opt/sources/mpm-websites/eco.mousepawmedia.com /opt/eco
-    $ sudo chown www-data:www-data /opt/eco
-    $ sudo ln -sf /opt/sources/mpm-websites/id.mousepawmedia.com /opt/id
-    $ sudo chown www-data:www-data /opt/id
-    $ sudo a2enmod rewrite include
-    $ sudo vim /etc/apache2/apache2.conf
+    sudo mkdir /opt/sources
+    sudo chown www-data:www-data /opt/sources
+    cd /opt/sources
+    sudo -u www-data git clone git://github.com/mousepawmedia/mpm-websites.git
+    sudo ln -sf /opt/sources/mpm-websites/mousepawmedia.com /opt/mpm
+    sudo chown www-data:www-data /opt/mpm
+    sudo ln -sf /opt/sources/mpm-websites/mousepawmedia.com /opt/mpg
+    sudo chown www-data:www-data /opt/mpg
+    sudo ln -sf /opt/sources/mpm-websites/eco.mousepawmedia.com /opt/eco
+    sudo chown www-data:www-data /opt/eco
+    sudo ln -sf /opt/sources/mpm-websites/id.mousepawmedia.com /opt/id
+    sudo chown www-data:www-data /opt/id
+    sudo a2enmod rewrite include
+    sudo vim /etc/apache2/apache2.conf
 
 Add the following:
 
@@ -1291,18 +1291,18 @@ First, we need to install the lastest Composer:
 
 ..  code-block:: bash
 
-    $ sudo apt install php7.4-cli php7.4-intl unzip
-    $ cd /tmp
-    $ curl -sS https://getcomposer.org/installer -o composer-setup.php
-    $ HASH=`curl -sS https://composer.github.io/installer.sig`
-    $ php -r "if (hash_file('SHA384', 'composer-setup.php') === '$HASH') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+    sudo apt install php7.4-cli php7.4-intl unzip
+    cd /tmp
+    curl -sS https://getcomposer.org/installer -o composer-setup.php
+    HASH=`curl -sS https://composer.github.io/installer.sig`
+    php -r "if (hash_file('SHA384', 'composer-setup.php') === '$HASH') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
 
 You should see "Installer verified". If so, we can install.
 
 ..  code-block:: bash
 
-    $ sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
-    $ composer
+    sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+    composer
 
 If that works (displaying a help menu), we can move on to installing Kimai.
 
@@ -1324,7 +1324,7 @@ Now I create the ``kimai2`` user and grant its permissions.
 
 ..  code-block:: bash
 
-    $ sudo mysql -u root
+    sudo mysql -u root
 
 Run the following:
 
@@ -1338,12 +1338,12 @@ We install Kimai like this:
 
 ..  code-block:: bash
 
-    $ cd /tmp
-    $ git clone -b 1.13 --depth 1 https://github.com/kevinpapst/kimai2.git
-    $ sudo mv kimai2 /opt/time
-    $ cd /opt/time/
-    $ composer install --no-dev --optimize-autoloader
-    $ vim .env
+    cd /tmp
+    git clone -b 1.13 --depth 1 https://github.com/kevinpapst/kimai2.git
+    sudo mv kimai2 /opt/time
+    cd /opt/time/
+    composer install --no-dev --optimize-autoloader
+    vim .env
 
 Now edit that file so it contains something like the following, changing the
 values ``CHANGE_ME`` (two places below) as appropriate.
@@ -1391,11 +1391,11 @@ Save and close, and then run the following:
 
 ..  code-block:: bash
 
-    $ bin/console kimai:install -n
-    $ sudo chown -R mpm:www-data /opt/time
-    $ chmod -R g+r /opt/time
-    $ chmod -R g+rw /opt/time/var/
-    $ chmod -R g+rw /opt/time/public/avatars/
+    bin/console kimai:install -n
+    sudo chown -R mpm:www-data /opt/time
+    chmod -R g+r /opt/time
+    chmod -R g+rw /opt/time/var/
+    chmod -R g+rw /opt/time/public/avatars/
 
 Kimai itself is now installed.
 
@@ -1410,7 +1410,7 @@ file:
 
 ..  code-block:: bash
 
-    $ sudo vim /etc/apache2/sites-available/time.conf
+    sudo vim /etc/apache2/sites-available/time.conf
 
 Set the contents of that file to:
 
@@ -1464,7 +1464,7 @@ Save and close, and then run this:
 
 ..  code-block:: bash
 
-    $ sudo vim /etc/apache2/apache2.conf
+    sudo vim /etc/apache2/apache2.conf
 
 Add the following section:
 
@@ -1484,8 +1484,8 @@ Save and close, and then enable the site and restart Apache2:
 
 ..  code-block:: bash
 
-    $ sudo a2ensite time
-    $ sudo systemctl restart apache2
+    sudo a2ensite time
+    sudo systemctl restart apache2
 
 Now go to ``https://time.<serveraddress>`` and verify that everything works so far.
 
@@ -1499,7 +1499,7 @@ This script will (usually hopefully) fix that:
 
 ..  code-block:: bash
 
-    $ vim /opt/time/cache.sh
+    vim /opt/time/cache.sh
 
 Set the contents of that file to this:
 
@@ -1537,13 +1537,13 @@ Save and close, and then make that script executable.
 
 ..  code-block:: bash
 
-    $ chmod +x /opt/time/cache.sh
+    chmod +x /opt/time/cache.sh
 
 Finally, run the script.
 
 ..  code-block:: bash
 
-    $ /opt/time/cache.sh
+    /opt/time/cache.sh
 
 Kimai should be working now.
 
@@ -1554,10 +1554,10 @@ Let's set up LDAP for Kimai.
 
 ..  code-block:: bash
 
-    $ cd /opt/time
-    $ composer update
-    $ composer require laminas/laminas-ldap --update-no-dev --optimize-autoloader
-    $ vim /opt/time/config/packages/local.yaml
+    cd /opt/time
+    composer update
+    composer require laminas/laminas-ldap --update-no-dev --optimize-autoloader
+    vim /opt/time/config/packages/local.yaml
 
 Set the contents of that file to this:
 
@@ -1625,8 +1625,8 @@ probably already installed, but we're putting them here to be certain.
 
 ..  code-block:: bash
 
-    $ sudo apt install php7.4-bz2 php7.4-intl php7.4-xml php7.4-zip php7.4-curl php7.4-gd php-imagick php7.4-mbstring php7.4-ldap php7.4-imap php-7.4-apcu php7.4-bcmath php7.4-gmp imagick ffmpeg libmagickcore-6.q16-6-extra
-    $ sudo phpenmod bcmath gmp
+    sudo apt install php7.4-bz2 php7.4-intl php7.4-xml php7.4-zip php7.4-curl php7.4-gd php-imagick php7.4-mbstring php7.4-ldap php7.4-imap php-7.4-apcu php7.4-bcmath php7.4-gmp imagick ffmpeg libmagickcore-6.q16-6-extra
+    sudo phpenmod bcmath gmp
 
 Now we can install Nextcloud itself.
 
@@ -1636,19 +1636,19 @@ Now we can install Nextcloud itself.
 
 ..  code-block:: bash
 
-    $ cd /tmp
-    $ curl -LO https://download.nextcloud.com/server/releases/nextcloud-21.0.2.tar.bz2
-    $ curl -LO https://download.nextcloud.com/server/releases/nextcloud-21.0.2.tar.bz2.sha256
-    $ shasum -a 256 -c nextcloud-21.0.2.tar.bz2.sha256 < nextcloud-21.0.2.tar.bz2
+    cd /tmp
+    curl -LO https://download.nextcloud.com/server/releases/nextcloud-21.0.2.tar.bz2
+    curl -LO https://download.nextcloud.com/server/releases/nextcloud-21.0.2.tar.bz2.sha256
+    shasum -a 256 -c nextcloud-21.0.2.tar.bz2.sha256 < nextcloud-21.0.2.tar.bz2
 
 Ensure that last command says "OK" before continuing, as that confirms the
 tarball hasn't been tampered with or spoofed.
 
 ..  code-block:: bash
 
-    $ rm nextcloud-21.0.2.tar.bz2.sha256
-    $ sudo tar -C /opt -xvjf /tmp/nextcloud-21.0.2.tar.bz2
-    $ vim /tmp/nextcloud.sh
+    rm nextcloud-21.0.2.tar.bz2.sha256
+    sudo tar -C /opt -xvjf /tmp/nextcloud-21.0.2.tar.bz2
+    vim /tmp/nextcloud.sh
 
 Set the contents of that file to...
 
@@ -1696,7 +1696,7 @@ Save and close, and then run the file.
 
 ..  code-block:: bash
 
-    $ sudo bash /tmp/nextcloud.sh
+    sudo bash /tmp/nextcloud.sh
 
 After that finishes, we can start configuring Apache2.
 
@@ -1707,7 +1707,7 @@ Let's create an Apache2 site configuration for Nextcloud.
 
 ..  code-block:: bash
 
-    $ sudo vim /etc/apache2/sites-available/cloud.conf
+    sudo vim /etc/apache2/sites-available/cloud.conf
 
 Set the contents to...
 
@@ -1753,7 +1753,7 @@ in Apache2's core directory.
 
 ..  code-block:: bash
 
-    $ sudo vim /etc/apache2/apache2.conf
+    sudo vim /etc/apache2/apache2.conf
 
 Add the following below the other ``<Directory>`` entries...
 
@@ -1768,9 +1768,9 @@ Then, enable the site and restart Apache2.
 
 ..  code-block:: bash
 
-    $ sudo a2ensite cloud
-    $ sudo a2enmod headers
-    $ sudo systemctl restart apache2
+    sudo a2ensite cloud
+    sudo a2enmod headers
+    sudo systemctl restart apache2
 
 Database Setup
 -------------------------------------
@@ -1780,7 +1780,7 @@ MySQL configuration.
 
 ..  code-block:: bash
 
-    $ sudo vim /etc/mysql/mysql.conf.d/mysqld.cnf
+    sudo vim /etc/mysql/mysql.conf.d/mysqld.cnf
 
 Add or change the following lines:
 
@@ -1793,13 +1793,13 @@ Save and close, and restart the database.
 
 ..  code-block:: bash
 
-    $ sudo systemctl restart mysql
+    sudo systemctl restart mysql
 
 We need to create a ``nextcloud`` database and a ``nextcloud`` user in MySQL.
 
 ..  code-block:: bash
 
-    $ sudo mysql -u root
+    sudo mysql -u root
 
 Run the following:
 
@@ -1815,7 +1815,7 @@ Now ensure that PHP is set up to work with MySQL.
 
 ..  code-block:: bash
 
-    $ sudo phpenmod pdo_mysql
+    sudo phpenmod pdo_mysql
 
 Nextcloud Configuration
 ------------------------------
@@ -1841,7 +1841,7 @@ Due to a glitch in Nextcloud, we have to configure fail2ban to prevent lockouts.
 
 ..  code-block:: bash
 
-    $ sudo vim /etc/fail2ban/filter.d/apache-auth.conf
+    sudo vim /etc/fail2ban/filter.d/apache-auth.conf
 
 Change or add the following lines:
 
@@ -1858,7 +1858,7 @@ we're using PHP 7.4), so we simply need to enable this for Nextcloud.
 
 ..  code-block:: bash
 
-    $ sudo vim /opt/cloud/config/config.php
+    sudo vim /opt/cloud/config/config.php
 
 Add the following line before the end:
 
@@ -1875,7 +1875,7 @@ Nextcloud recommends a few tweaks to php.ini. Run...
 
 .. code-block:: bash
 
-    $ sudo vim /etc/php/7.4/apache2/php.ini
+    sudo vim /etc/php/7.4/apache2/php.ini
 
 Find and edit (or uncomment) the following lines:
 
@@ -1898,7 +1898,7 @@ Also edit Nextcloud's configuration:
 
 ..  code-block:: bash
 
-    $ sudo vim /opt/cloud/config/config.php
+    sudo vim /opt/cloud/config/config.php
 
 Add or edit the following line
 
@@ -1915,7 +1915,7 @@ It is recommended to use Cron for background tasks. We will set this up now.
 
 ..  code-block:: bash
 
-    $ sudo crontab -u www-data -e
+    sudo crontab -u www-data -e
 
 Add the following line:
 
@@ -1943,7 +1943,7 @@ Then edit the Nextcloud configuration:
 
 ..  code-block:: bash
 
-    $ sudo vim /opt/cloud/config/config.php
+    sudo vim /opt/cloud/config/config.php
 
 Add the following to that file, before the closing ``);``:
 
@@ -2053,7 +2053,7 @@ CollaboraOffice.
 
 ..  code-block:: bash
 
-    $ sudo nano /etc/fail2ban/filter.d/cloud.conf
+    sudo nano /etc/fail2ban/filter.d/cloud.conf
 
 Set the contents of that file to:
 
@@ -2067,7 +2067,7 @@ Save and close. Then, run...
 
 ..  code-block:: bash
 
-    $ sudo vim /etc/fail2ban/jail.local
+    sudo vim /etc/fail2ban/jail.local
 
 Set the contents of that file to:
 
@@ -2084,7 +2084,7 @@ Save and close. Then, restart fail2ban.
 
 ..  code-block:: bash
 
-    $ sudo systemctl restart fail2ban
+    sudo systemctl restart fail2ban
 
 `SOURCE: Setup Fail2Ban with Owncloud (TechKnight) <https://techknight.eu/2015/07/25/setup-fail2ban-with-owncloud-8-1-0/>`_
 
@@ -2100,11 +2100,11 @@ on your domain before starting the installation of Mattermost.
 
 ..  code-block:: bash
 
-    $ sudo a2ensite 000-default
-    $ sudo systemctrl restart apache2
-    $ sudo certbot certonly --apache -d chat.mousepawmedia.com
-    $ sudo a2dissite 000-default
-    $ sudo systemctrl restart apache2
+    sudo a2ensite 000-default
+    sudo systemctrl restart apache2
+    sudo certbot certonly --apache -d chat.mousepawmedia.com
+    sudo a2dissite 000-default
+    sudo systemctrl restart apache2
 
 Install Mattermost
 ------------------------------
@@ -2113,7 +2113,7 @@ To set up Mattermost, we need to first create the database:
 
 ..  code-block:: bash
 
-    $ sudo mysql -u root
+    sudo mysql -u root
 
 Run the following:
 
@@ -2129,15 +2129,15 @@ download link are on `mattermost.com/deploy <https://mattermost.com/deploy/>`_
 
 ..  code-block:: bash
 
-    $ cd /tmp
-    $ wget https://releases.mattermost.com/6.0.0/mattermost-6.0.0-linux-amd64.tar.gz
-    $ tar -xvzf mattermost*.gz
-    $ sudo mv mattermost /opt/mattermost
-    $ sudo mkdir /opt/mattermost/data
-    $ sudo useradd --system --user-group mattermost
-    $ sudo chown -R mattermost:mattermost /opt/mattermost
-    $ sudo chmod -R g+w /opt/mattermost
-    $ sudo vim /opt/mattermost/config/config.json
+    cd /tmp
+    wget https://releases.mattermost.com/6.0.0/mattermost-6.0.0-linux-amd64.tar.gz
+    tar -xvzf mattermost*.gz
+    sudo mv mattermost /opt/mattermost
+    sudo mkdir /opt/mattermost/data
+    sudo useradd --system --user-group mattermost
+    sudo chown -R mattermost:mattermost /opt/mattermost
+    sudo chmod -R g+w /opt/mattermost
+    sudo vim /opt/mattermost/config/config.json
 
 Change the following sections of that file to match the following, subtituting
 in your own values as appropriate:
@@ -2160,8 +2160,8 @@ Now test Mattermost by running:
 
 ..  code-block:: bash
 
-    $ cd /opt/mattermost
-    $ sudo -u mattermost ./bin/mattermost
+    cd /opt/mattermost
+    sudo -u mattermost ./bin/mattermost
 
 Watch for the text ``Server is listening on :8065``. If you see it, everything
 worked. Now we set this up to work in production.
@@ -2199,21 +2199,21 @@ Save and close, and then run:
 
 ..  code-block:: bash
 
-    $ sudo systemctl daemon-reload
-    $ sudo systemctl status mattermost.service
+    sudo systemctl daemon-reload
+    sudo systemctl status mattermost.service
 
 Ensure the unit was loaded, and then...
 
 ..  code-block:: bash
 
-    $ sudo systemctl start mattermost.service
-    $ curl http://localhost:8065
+    sudo systemctl start mattermost.service
+    curl http://localhost:8065
 
 Ensure that responds, then...
 
 ..  code-block:: bash
 
-    $ sudo systemctl enable mattermost.service
+    sudo systemctl enable mattermost.service
 
 `SOURCE: Installing Mattermost on Ubuntu 20.04 (Mattermost) <https://docs.mattermost.com/install/installing-ubuntu-2004-LTS.html>`_
 
@@ -2225,7 +2225,7 @@ NGINX, but as we're already using Apache2 on this server, we'll stick with it.
 
 ..  code-block:: bash
 
-    $ sudo vim /etc/apache2/sites-available/chat-mattermost.conf
+    sudo vim /etc/apache2/sites-available/chat-mattermost.conf
 
 Set the contents of that file to:
 
@@ -2263,9 +2263,9 @@ Set the contents of that file to:
 
 ..  code-block:: bash
 
-    $ sudo a2enmod rewrite proxy proxy_http proxy_wstunne
-    $ sudo a2ensite chat-mattermost
-    $ sudo systemctl restart apache2
+    sudo a2enmod rewrite proxy proxy_http proxy_wstunnel
+    sudo a2ensite chat-mattermost
+    sudo systemctl restart apache2
 
 `SOURCE: Configuring Apache2 as a proxy for Mattermost Server (Unofficial) (Mattermost) <https://docs.mattermost.com/configure/config-proxy-apache2.html>`_
 
@@ -2323,12 +2323,12 @@ also need to revise the other reference to :code:`matterbridge-x.xx.x-linux-64bi
 
 ..  code-block::  bash
 
-    $ sudo mkdir /opt/matterbridge
-    $ cd /opt/matterbridge
-    $ sudo wget URLHERE
-    $ sudo mv matterbridge-x.xx.x-linux-64bit matterbridge
-    $ sudo chmod a+x /opt/matterbridge
-    $ sudo vim /opt/matterbridge/matterbridge.toml
+    sudo mkdir /opt/matterbridge
+    cd /opt/matterbridge
+    sudo wget URLHERE
+    sudo mv matterbridge-x.xx.x-linux-64bit matterbridge
+    sudo chmod a+x /opt/matterbridge
+    sudo vim /opt/matterbridge/matterbridge.toml
 
 Set the contents of that file to the following, replacing PASSWORD
 with the password as appropriate. Notice that we are using dedicated accounts
@@ -2392,7 +2392,7 @@ Now we edit cron to start Matterbridge automatically:
 
 ..  code-block:: bash
 
-    $ crontab -e
+    crontab -e
 
 Add the following line:
 
@@ -2416,7 +2416,7 @@ Install the dependencies.
 
 ..  code-block:: bash
 
-    $ sudo apt install php-gd php-ldap php-zip php-imap php-ldap
+    sudo apt install php-gd php-ldap php-zip php-imap php-ldap
 
 Get the download link from `LimeSurvey Community Edition <https://community.limesurvey.org/downloads/>`_,
 which we'll use in the next step.
@@ -2430,15 +2430,15 @@ with the one appropriate for your download. We'll also set our permissions here.
 
 ..  code-block:: bash
 
-    $ cd /tmp
-    $ sudo wget https://download.limesurvey.org/latest-stable-release/limesurvey5.0.8+210712.zip
-    $ sudo unzip limesurvey2.67.2+170719.zip
-    $ sudo mv /tmp/limesurvey /opt/papers
-    $ sudo chown -R mpm:www-data /opt/papers
-    $ sudo chmod -R 755 /opt/papers
-    $ sudo chmod -R 775 /opt/papers/tmp
-    $ sudo chmod -R 775 /opt/papers/upload
-    $ sudo chmod -R 775 /opt/papers/application/config
+    cd /tmp
+    sudo wget https://download.limesurvey.org/latest-stable-release/limesurvey5.0.8+210712.zip
+    sudo unzip limesurvey2.67.2+170719.zip
+    sudo mv /tmp/limesurvey /opt/papers
+    sudo chown -R mpm:www-data /opt/papers
+    sudo chmod -R 755 /opt/papers
+    sudo chmod -R 775 /opt/papers/tmp
+    sudo chmod -R 775 /opt/papers/upload
+    sudo chmod -R 775 /opt/papers/application/config
 
 We gave the webserver group write permissions to three specific directories,
 and read-only access to the rest of the folders for LimeSurvey.
@@ -2454,7 +2454,7 @@ We must allow Apache2 to access the directory we just set up:
 
 ..  code-block:: bash
 
-    $ sudo vim /etc/apache2/apache2.conf
+    sudo vim /etc/apache2/apache2.conf
 
 Add the following Directory block to that file:
 
@@ -2470,7 +2470,7 @@ Save and close. Then, we create the Apache2 site.
 
 ..  code-block:: bash
 
-    $ sudo vim /etc/apache2/sites-available/papers.conf
+    sudo vim /etc/apache2/sites-available/papers.conf
 
 Set the contents of that file to the following:
 
@@ -2514,8 +2514,8 @@ Save and close. Now we can enable the site.
 
 ..  code-block:: bash
 
-    $ sudo a2ensite survey
-    $ sudo systemctl restart apache2
+    sudo a2ensite survey
+    sudo systemctl restart apache2
 
 The site should now be accessible at ``papers.mousepawmedia.com``. However,
 before continuing with the installer, we need to set up a couple more things.
@@ -2527,7 +2527,7 @@ Let's set up the LimeSurvey database:
 
 ..  code-block:: bash
 
-    $ sudo mysql -u root
+    sudo mysql -u root
 
 Run the following:
 

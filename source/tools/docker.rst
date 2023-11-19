@@ -12,25 +12,32 @@ the **Docker** extension from Microsoft.
 
 ..  _docker_installing:
 
-Installing Docker
+Installing Docker Engine
 =================================
 
-Docker is fairly easy to install on most major operating systems. Installation
-instructions for Windows, macOS, and the major Linux distributions can be
-found on the `Docker Engine overview | Docker Documentation <https://docs.docker.com/install/>`_
+For Linux, we recommend Docker Engine over Docker Desktop:
 
-..  note:: Linux users should be sure to follow the guides for
+* `Install Docker Engine on Ubuntu <https://docs.docker.com/engine/install/ubuntu/>`_
+* `Install Docker Engine on Debian <https://docs.docker.com/engine/install/debian/>`_
+
+For Windows, we strongly advise installing Docker Engine within Windows
+Subsystem for Linux, as the user experience is much smoother in our experience.
+
+..  note:: Linux and WSL users should be sure to follow the guides for
     ``Manage Docker as a non-root user`` and
     ``Configure Docker to start on boot`` outlined on the
     `Post-installation steps for Linux | Docker Documentation <https://docs.docker.com/install/linux/linux-postinstall/>`_.
+
+For macOS, you'll need to install Docker Desktop instead:
+
+* `Install Docker Desktop on macOS <https://docs.docker.com/desktop/install/mac-install/>`_
 
 ..  _docker_login:
 
 Docker Registry Login
 =================================
 
-We host Docker images on our own private registry, which you can log into with
-your company credentials.
+We host Docker images on our own private registry run by our GitLab instance.
 
 This section describes how to set this up for Linux, specifically Ubuntu,
 although the instructions should be the same across most distros.
@@ -61,36 +68,14 @@ systems is as follows:
 ..  code-block:: bash
 
     cd /tmp
-    wget https://github.com/docker/docker-credential-helpers/releases/download/v0.6.3/docker-credential-pass-v0.6.3-amd64.tar.gz
-    tar -xf docker-credential-pass-v0.6.3-amd64.tar.gz
+    wget https://github.com/docker/docker-credential-helpers/releases/download/v0.8.0/docker-credential-pass-v0.8.0.linux-amd64
+    mv docker-credential-pass-v0.8.0.linux-amd64 docker-credential-pass
     chmod +x docker-credential-pass
-    sudo mv docker-credential-pass /usr/local/bin/.
+    sudo install docker-credential-pass /usr/local/bin
 
 Test that this installed correctly by running the following:
 
-..  code-block:: bash
-
-    docker-credential-pass version
-
-This should print out the version of ``docker-credential-pass`` that
-is installed.
-
-..  _docker_login_install_gpg:
-
-Initializing with GPG Key
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-You'll also need a GPG key.
-
-..  _docker_login_install_gpg_existing:
-
-Existing GPG Key
-""""""""""""""""""""""""""""""
-
-If you already have one created (or if you're not
-sure), you can see all the public keys known to your computer with this command:
-
-..  code-block:: bash
+..  code-block:: bashread_registry, write_registry
 
     gpg --list-keys
 
@@ -102,16 +87,14 @@ letters).
 
 For example, here's mine::
 
-    pub   rsa3072 2019-04-26 [SC]
-        7EE3D0EE0FEF8B536A432F975B410ECF0158442A
-    uid           [ultimate] Jason C. McDonald <codemouse92@outlook.com>
-    uid           [ultimate] [jpeg image of size 4211]
-    uid           [ultimate] Jason C. McDonald <jcmcdonald@mousepawmedia.com>
-    uid           [ultimate] Jason C. McDonald <jason.m@ajcharlesonpublishing.com>
-    uid           [ultimate] Jason C. McDonald <jason@indeliblebluepen.com>
-    sub   rsa3072 2019-04-26 [E]
+    pub   rsa4096 2022-03-02 [SC]
+        FF4678D9D3A42F78D2885F8EE038FEDD4C3CF53D
+    uid           [ultimate] Jason C. McDonald (MousePaw Media) <jcmcdonald@mousepawmedia.com>
+    uid           [ultimate] [jpeg image of size 3881]
+    sub   rsa4096 2022-03-02 [E]
 
-So, ``7EE3D0EE0FEF8B536A432F975B410ECF0158442A`` would be my public key.
+
+So, ``FF4678D9D3A42F78D2885F8EE038FEDD4C3CF53D`` would be my public key.
 Note, I cannot actually sign anything with that key unless I also have the
 private key on my system! (Of course, I do.)
 
@@ -168,36 +151,28 @@ If all goes well, then the following command should work:
     docker-credential-pass list
 
 If ``pass`` is not configured, you'll receive a warning like "pass store is
-uninitialized.".
+uninitialized.".read_registry, write_registrydia.com`. You'll first need to generate
+a Personal Access Token on your MousePaw Media GitLab account.
 
-Otherwise, if you see `{}` or other data, it worked!
+In a browser, log into the MousePaw Media GitLab. Click your profile picture
+at the top of the left pane and select :guilabel:`Preferences`. On the left,
+select :guilabel:`Access Tokens`. Click :guilabel:`Add new token`.
 
-..  _docker_login_install_use:
+Give your token a name, and select the scopes :guilabel:`read_registry` and
+:guilabel:`write_registry`. Then click :guilabel:`Create personal access token`.
 
-Make Docker Use Pass
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+A green box will appear at the top of the page with the heading
+:guilabel:`Your new personal access token`. Click the clipboard icon to the
+left of the text field to copy the access token.
 
-Edit the file :file:`~/.docker/config.json`, and set the property
-``"credsStore"`` to ``"pass"`` (Include the quotes!).
-Save and close the file.
-
-You should now be ready to login with Docker.
-
-..  _docker_login_login:
-
-Logging Into Registry
----------------------------------
-
-Once ``pass`` is configured, you can log into the MousePaw Media Registry,
-which lives at `registry.mousepawmedia.com <https://registry.mousepawmedia.com>`_
+Once you've copied this personal access key, open your terminal. Enter the
+following:
 
 ..  code-block:: bash
 
-    docker login registry.mousepawmedia.com
+    docker login gitlab.mousepawmedia.com
 
-At the prompt, enter your company username and password. If login is successful,
-you will see::
-
-    Login Succeeded
+At the prompts, enter your username and your personal access token.
+If login is successful, you will see "Login Succeeded".
 
 You can now work with MousePaw Media's private Docker image registry.

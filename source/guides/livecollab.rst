@@ -7,15 +7,13 @@ We use **Visual Studio Code: Live Share** for live collaboration and pair
 programming.
 
 * You should have :ref:`vscode` installed and configured.
-* You'll also need a GitHub account to login. If you don't have one,
-  create one now.
-* You should have headphones and a microphone for voice chat (ideally).
+* You'll also need a GitHub or Microsoft account to login. (Create one now if necessary.)
 
 ..  note:: In our experience, Live Share works well even on 200 Kbps internet
     connections.
 
 The first time you start or join a session with Live Share, you will be
-prompted to login to GitHub. Follow the prompts to do so.
+prompted to login to GitHub or Microsoft. Follow the prompts to do so.
 
 .. _glivecollab_settings:
 
@@ -124,14 +122,6 @@ Text Chat
 You can chat with the other people on the session. In the Live Share pane,
 click :guilabel:`Chat Channel`.
 
-.. _glivecollab_tools_audio:
-
-Audio Call
--------------------------------------------
-
-You can join an Audio Call by clicking :guilabel:`Audio Call` on the Live Share
-pane. Using this is recommended, but not required.
-
 .. _glivecollab_tools_inline:
 
 Inline Comments
@@ -184,8 +174,5 @@ should determine well in advance whose code sector to work on.
 
 To make the most of your next pair programming session, I recommend reading
 `7 Ways To Get The Most Out Of Pair Programming <https://dev.to/jacobherrington/7-ways-to-get-the-most-out-of-pair-programming-415h>`_
-
-Staff can check the current MousePaw Media Pair Programming schedule
-on the `Pair Programming Schedule wiki page <https://phab.mousepawmedia.com/w/programming/pair_schedule/>`_.
 
 Happy collaborating!

@@ -7,303 +7,235 @@ Account Management
 
 ..  _admin_accounts_new:
 
-Employee Account Creation
+Staff Account Creation
 ===========================================
 
-All company accounts are managed (primarily) from our LDAP server, with
-two notable exceptions.
+In most places, we use our GitLab instance as our Single-Sign On provider.
+At present, only the email accounts are managed separately.
 
-* Postfix manages email accounts, so we can create additional addresses.
 
-* LimeSurvey is on the remote server (mousepawmedia.com), without access to
-  the LDAP.
+..  _admin_accounts_new_names:
 
-The following instructions will create a new staff account.
-
-..  _admin_accounts_new_generate:
-
-Generating Login
+Username Conventions and Considerations
 -------------------------------------------
 
-Before we begin, we must first create the username and password. Usernames
-are composed of first and middle initials and last name.
+Usernames are the given name initial(s) and surname.
+For example, Nafula A. Jackson would be "najackson", and Jovil Benoit
+(no middle name) would be "jbenoit". If someone has multiple middle
+initials, use all of them.
 
-Passwords should be ranked as strong on both
-`GRC Haystack <https://www.grc.com/haystack.htm>`_ and
-`How Secure Is My Password <https://howsecureismypassword.net/>`_.
+Addtionally, in cultures where there are multiple surnames, consult with the
+individual on which to use, or whether you should use both. This occurs
+frequently with Latin American names, in which case we use the first surname.
+Maria Pilar Flores Mendoza likely goes by Maria Flores, according to Latin
+American tradition (but check with her!), so her username would probably be
+"mpflores".
 
-The username and password should be stored in the GPG-encrypted password
-records (see :ref:`admin_gpg`).
+Asian names typically work opposite of how they do in western culture: the
+surname (family name) comes first, followed by the given name(s).
+However, many people with Asian names living in western cultures will invert
+their name to prevent confusion. Check with the individual to understand what
+is their given name, and what is their surname. For example, Myeong Sun Jung
+would probably be either "smyeong" or "sjmyeong", depending on her preference.
+However, she may originally present her westernized name as Sunjung Meyong, as
+Sun Jung is her entire "first name", so she may combine them and put them first
+to prevent people from calling her "Sun". or "Myeong".
+Always ask instead of assuming!
+
+In addition to getting the username right, be sure you confirm the preferred
+format for the full name!
 
 ..  _admin_accounts_new_email:
 
 Creating Email Account
 -------------------------------------------
 
-Before we can access Postfix Admin, we must first activate the server controls
-on Webster (our remote server). Any company IT with SSH root access can
-do so by running...
+Go to `mail.mousepawmedia.com <https://mail.mousepawmedia.com>`_ and log in
+with an administrator account.
 
-..  code-block:: bash
+Go to :guilabel:`Mailboxes` -> :guilabel:`Mailboxes`, and click
+:guilabel:`Add Mailbox`.
 
-    $ controls on
+* :guilabel:`Username`: (the username)
+* :guilabel:`Domain`: :code:`mousepawmedia.com`
+* :guilabel:`Full name`: (the full name)
+* :guilabel:`Password`: (click :guilabel:`Generate` to create a temporary password)
+* :guilabel:`Force password update at next login`: Yes
+* :guilabel:`Grant direct login access to SoGo`: Yes
 
-Now we can access Postfix Admin at
-`mousepawmedia.com/postfixadmin <https://mousepawmedia.com/postfixadmin/login.php>`_
-and log in with our company account. (Only administrators have access here.)
+Save the temporary password, and click :guilabel:`Add` at the bottom of the
+screen to create the account.
 
-Select :menuselection:`Virtual List --> Add Mailbox`. Fill out the following:
+..  _admin_accounts_new_notify:
 
-* :guilabel:`Username`: The username for the user. Select the
-  :code:`mousepawmedia.com` domain name from the drop-down menu below this
-  field.
-
-* :guilabel:`Password`: Enter the password for the user, and confirm it in
-  :guilabel:`Password (again)`.
-
-* :guilabel:`Name`: The first name, middle initial, and last name of the user.
-  For example, "Jason C. McDonald".
-
-* :guilabel:`Quota`: For all user accounts, this should be 100MB.
-
-* :guilabel:`Active`: Ensure this box is *checked*, or else the new account
-  will not work.
-
-* :guilabel:`Send Welcome mail`: A message detailing first steps for new staff
-  members was pre-programmed into Postfix. Check this box to automatically send
-  it.
-
-After you've filled out all these fields, click :guilabel:`Add Mailbox`.
-
-In a new tab, make sure you can log into webmail at
-`webmail.mousepawmedia.com <https://webmail.mousepawmedia.com/src/login.php>`_
-using the new email address and password.
-
-Once you've confirmed the account was created correctly, select
-:guilabel:`Logout` from the top menu on Postfix Admin.
-
-Be sure to have IT disable the control panel via...
-
-..  code-block:: bash
-
-    $ controls off
-
-..  _admin_accounts_new_ldap:
-
-Creating PawID (LDAP Account)
+Creating Email Account
 -------------------------------------------
 
-To create a new LDAP account, go to the LDAP control panel on Hawksnest:
-`LDAP Account Manager <https://id.mousepawmedia.com/lam/>`_. Login using the
-LDAP management password.
-
-On the :guilabel:`Users` tab, select :guilabel:`New user`:
-
-Toward the upper section, set :guilabel:`RDN identifier` to ``uid``.
-
-..  NOTE: If you get this wrong when you first create the user, go to
-    :guilabel:`Tree view` and rename the item manually from ``cn=whatever,``
-    to ``uid=whatever,``
-
-On the :guilabel:`Personal` tab, fill out the following fields at minimum:
-
-* :guilabel:`First name`
-* :guilabel:`Last name`
-* :guilabel:`Email address`
-
-On the :guilabel:`Unix` tab, fill out the following fields, leaving the others
-as their defaults (or blank):
-
-* :guilabel:`User name`: The company username.
-* :guilabel:`Common name`: The full name - first name, middle initial, last name.
-* :guilabel:`Primary group`: ``user``
-
-Click ``Edit groups`` and add the appropriate groups. At minimum, be sure
-to add either ``staff`` or ``community`` and the department name. Then click
-``Back``.
-
-Verify all the details entered, and then click :guilabel:`Save` at the top, and
-then click :guilabel:`Edit again`.
-
-Select :guilabel:`Set password` toward the top of the page. Set the password.
-
-Click :guilabel:`Save` at the top.
-
-The account is immediately active.
-
-
-..  _admin_accounts_new_phab:
-
-Creating Phabricator Account
--------------------------------------------
-
-It is now possible to log into Phabricator using LDAP, but we want to do some
-additional setup on that profile.
-
-In a new private window (so you don't have to sign out of Phabricator yourself),
-log into Phabricator using the new account.
-
-The window that appears should display that you're Creating a New Account
-using an external LDAP account. The username and real name should automatically
-be pulled from the LDAP database.
-
-Click :guilabel:`Register Account`. Once the Community Rules displays,
-**immediately close out of the window**!
-
-..  important:: You should **NEVER** accept the Community Rules on behalf of
-    the new user!
-
-..  _admin_accounts_new_phabaccess:
-
-Managing Phabricator Permissions
--------------------------------------------
-
-It isn't enough just to *create* a user account on Phabricator, as users have
-very limited permissions by default (which is good for outside contributors).
-We must manually specify this new person as a member of *staff*, and determine
-what they have access to.
-
-As you may know, this is handled through **Projects** on Phabricator. You
-can add a user to a group by going to the Project, selecting
-:guilabel:`Members` on the left, and clicking :guilabel:`Add Members`.
-
-..  note:: If you aren't allowed to add a member to a project, check whether
-    the project has *subprojects*, and add the member to the appropriate
-    subprojects.
-
-The user account we just created must be added to the following:
-
-* All staff should be added to the appropriate *seniority group*. This
-  automatically adds them to **Staff [Group]** and **Trusted [Group]**.
-  All interns should be added to the **Interns [Group]** seniority group.
-
-* Add the staff member to their *[Dept]* (department) project(s).
-  (e.g. **Programming [Dept]**).
-
-* If relevant, add the staff member to their *[Team]* project. At the moment,
-  this only applies to the Programming department.
-
-* Optionally, you may add them to the *[Project]* project(s) they are going
-  to be working on. Technically, they can join these later, but being members
-  automatically can save a lot of time and confusion.
-
-..  note:: It can be confusing for a new user to be blocked from accessing a
-    repository because they aren't a project member. In general, it's just
-    good practice to add new users to their expected projects.
-
-The user can now log in and access everything they're supposed to.
-
-Wrapping Up
--------------------------------------------
-
-We're done! The new account is created and active across the entire staff
-network. Login to all other Staff Network resources not mentioned is controlled
-by LDAP.
-
-You should send the username and password to the new user. Ideally, this should
-be done in person, for maximum security. In that situation, cover the password
-policies as described in the template email below.
-
-If you need to send the password via email, use the following template:
+Once you've created the account, send an email from `it@mousepawmedia.com`
+to the personal email address of the account holder. Use the following
+template, substituting all values in :code:`<corner brackets>` below.
 
 ..  code-block:: text
 
+    Dear <NAME>,
+
     Welcome to MousePaw Media!
 
-    Below are your login details for the entire Staff Network. Please write down
-    your login information in a secure, physical location (not on your computer)
-    and permanently delete this email, making sure to remove it from your trash
-    as well.
+    Below are your login details for your MousePaw Media account.
+
+    ---
+
+    Email: <MOUSEPAW MEDIA EMAIL ADDRESS>
+    Username: <USERNAME>
+    Password: <TEMPORARY PASSWORD>
+
+    ---
+
+    1. Log in at https://mail.mousepawmedia.com/ and change your password.
+
+    2. Use the email sent to that address to log in at https://gitlab.mousepawmedia.com.
+
+    3. Go to https://gitlab.mousepawmedia.com/-/profile/account to change your password and add Two-Factor Authentication.
+
+    4. Log in to https://discourse.mousepawmedia.com and log in with your GitLab account.
+
 
     PASSWORD GUIDELINES
 
-    Do not give out your login details under any circumstances. MousePaw Media
-    IT staff maintain a secure database of all usernames and passwords, and we
-    can also reset any and all passwords, so we will never ask you for your
-    login information. We may need to access your company accounts from time to
-    time for security maintenance purposes.
+    1. Do not give out your login details under any circumstances. MousePaw Media IT staff can manage all company accounts and reset passwords, so we will never ask you for your login information.
 
-    Do not change your password. If you have forgotten your password, believe
-    your account is compromised, or need a new password, contact us here at
-    hawksnest@mousepawmedia.com, and we will assign you a new password.
+    2. Use strong passwords which are at least 16 characters in length, have a mix of lowercase and uppercase letters, numbers, and symbols.
 
-    ---
-    Email: <EMAIL HERE>
+    3. Use Two-Factor Authentication whenever available.
 
-    Username: <USERNAME HERE>
+    4. We strongly recommend using an encrypted password manager, such as BitWarden, for storing your credentials. Do NOT use your browser's built-in password manager!
 
-    Password: <PASSWORD HERE>
+    If you have trouble logging in, please don't hesitate to contact us here at it@mousepawmedia.com.
 
-    ---
-    FURTHER INSTRUCTIONS
+After sending that email, IMMEDIATELY proceed with the next step, so the new
+user will not be delayed in logging in.
 
-    You can access all aspects of this network from the staff portal at
-    https://staff.mousepawmedia.com/. Use your full company email address to log
-    into Webmail. For everything on DevNet, you can use just your username.
+..  _admin_accounts_new_gitlab:
 
-    You should next log into your company email, wherein you will find further
-    instructions. All further communications will take place via your company
-    email.
+Creating GitLab Account
+-------------------------------------------
 
-    If you have trouble logging in, please don't hesitate to contact the IT
-    department at hawksnest@mousepawmedia.com.
+On GitLab, log in with an admin account. On the left, click
+:guilabel:`Search or go to...` and click :guilabel:`Admin Area`. You may
+need to reauthenticate for security reasons.
 
-Send this email to the user's personal email address, and then
-**delete it from Sent Mail and Trash**! Ensure the email is *not* retained
-anywhere on our servers.
+On the left, select :guilabel:`Users`, and click the blue :guilabel:`New User`
+button on the right of that screen.
 
-..  note:: You should encourage the new user not to use their browser's
-    "save this password" feature. By typing their password regularly, they
-    will be able to remember it better more quickly.
+Enter the following information:
 
-Employee Account Suspension
+* :guilabel:`Name`: (the full name)
+* :guilabel:`Username`: (the username)
+* :guilabel:`Email`: (the @mousepawmedia.com email created in the previous step)
+* :guilabel:`Access Level`: :guilabel:`Regular`
+* :guilabel:`External`: No
+* :guilabel:`Validate user account`: Yes
+
+At the bottom, click :guilabel:`Create user`. An email will be sent to the
+specified MousePaw Media email address with a link to reset the GitLab password
+and log in.
+
+..  _admin_accounts_new_discourse:
+
+Discourse Account
+-------------------------------------------
+
+Our Discourse instance's account management is delegated entirely to
+our GitLab instance. Users will need to sign up there with their GitLab account
+before you can grant them permissions.
+
+Once they've created their account, go to :guilabel:`Admin` and
+:guilabel:`Users`. Click :guilabel:`New` to sort by newly created accounts,
+and find and click on the user's account.
+
+For staff, scroll down to the :guilabel:`Permissions` section. Click
+:guilabel:`Grant Moderation`. Set :guilabel:`Trust Level` to
+:guilabel:`4: leader` and click the green check mark.
+
+..  note:: we grant moderator privileges to all staff members. This makes it
+    easier to maintain our community.
+
+..  _admin_accounts_suspend:
+
+Account Suspension and Control
 ===========================================
 
-To lock an employee account, go to the LDAP control panel on Hawksnest:
-`LDAP Account Manager <https://id.mousepawmedia.com/lam/>`_. Login using the
-LDAP management password.
+It is possible to suspend any account, staff or external, temporarily or
+permanently.
 
-On the :guilabel:`Users` tab, look for the account you want to suspend.
-Click the :guilabel:`Edit` icon (the pencil) toward the left of the row.
+..  _admin_accounts_suspend_email:
 
-On the :guilabel:`Unix` tab, click :guilabel:`Lock password`.
+Suspend Email
+-------------------------------------------
 
-Click :guilabel:`Edit groups` and remove all groups from the user. Add the
-``former`` group, and click :guilabel:`Back`.
+Go to `mail.mousepawmedia.com <https://mail.mousepawmedia.com>`_ and log in
+with an administrator account.
 
-Then click :guilabel:`Save`. This will immediately lock down the account,
-shutting off most access privileges and preventing access.
+Go to :guilabel:`Mailboxes` -> :guilabel:`Mailboxes`, and click :guilabel:`Edit`
+next to the email address you wish to suspend.
 
-..  NOTE: You may need to unlock the password temporarily to access the account
-    if you need to inspect as part of an investigation. If this is a
-    possibility, consider changing the password as well.
-
-On Phabricator, go to the user profile and :guilabel:`Manage`, and then
-click :guilabel:`Disable User`.
-
-On Nextcloud, click your profile picture in the upper-right corner and click
-:guilabel:`Users`. Find the user you want to deactivate, and click the three
-dots to the far right of the row. **Be certain you are acting on the right
-user!!** Select :guilabel:`Wipe all devices` and confirm the unique ID number
-against that near the username on the same screen. Click :guilabel:`Wipe` when
-you are sure.
-
-Click the three dots again, and click :guilabel:`Disable user`.
-
-We also need to disable email from Postfix Admin.
-(See :ref:`admin_accounts_new_email` to learn how to access that.)
-Log in with your company account.
-
-Under :guilabel:`Virtual List` select :guilabel:`Virtual List`. From the
-drop-down box at the top, select :guilabel:`mousepawmedia.com`. Scroll down
-to the list of email accounts, and look for the one you want to deactivate.
-Click :guilabel:`Edit`.
-
-Uncheck the :guilabel:`Active` box and click :guilabel:`Save changes`.
+Towards the bottom, find the drop-down box that says :guilabel:`Active`, and
+change it to :guilabel:`Inactive`. Uncheck the box for
+:guilabel:`Grant direct access to SOGo`. Click :guilabel:`Save changes`.
 
 ..  NOTE: You may need to reactivate the email account temporarily if you need
     to inspect as part of an investigation. If this is a possibility, consider
     changing the password as well.
 
-External Accounts
-===========================================
+..  _admin_accounts_suspend_gitlab:
+
+Block GitLab Account
+-------------------------------------------
+
+On GitLab, log in with an admin account. On the left, click
+:guilabel:`Search or go to...` and click :guilabel:`Admin Area`. You may
+need to reauthenticate for security reasons.
+
+On the left, select :guilabel:`Users`. On that list, find the user you wish
+to suspend, and click the three dots to the far right of the username. You
+have two options:
+
+* **Block**: Use this option to suspend an account without hiding contributions.
+  We recommend using this option in most cases.
+
+* **Ban User**: Use this option to Block *and* to hide the user's contributions
+  from all other users. **Only use this option if the user's content was broadly
+  abusive.**
+
+..  note:: We STRONGLY advise you DO NOT use the Delete User option, except
+    where an account's content is entirely abusive.
+
+..  _admin_accounts_suspend_discourse:
+
+Suspend Discourse Account
+-------------------------------------------
+
+If you Block or Ban User on GitLab, that will prevent logging in on Discourse.
+However, if you want to separately control Discourse access, that is possible
+as well.
+
+On Discourse, click :guilabel:`Admin` on the left, and select :guilabel:`Users`
+from the top navigation bar.
+
+Click the username of the user you wish to suspend.
+
+Scroll down to :guilabel:`Permissions.` You have a few options:
+
+* **Trust Level**: You can lower trust level to limit permissions, and can
+  :guilabel:`Lock Trust Level` if necessary to prevent the user from regaining
+  those privileges until unlocked. This is useful if you want to allow a user
+  to continue to access Discourse, but be limited in what actions they can take.
+
+* **Revoke Moderator**: Remove access to staff-only categories, but otherwise
+  allow the user to remain active on Discourse. You must also take this
+  action before Suspending (below).
+
+* **Suspended**: Prevent access to Discourse directly. Useful if you still
+  want to allow access to GitLab.
+
+* **Silenced**: Prevent posting or starting topics. Still has read permissions.

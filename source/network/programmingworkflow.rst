@@ -227,8 +227,8 @@ Steps in Building
 
 ..  code-block:: bash
 
-    $ git pull
-    $ git checkout -b newbranch
+    git pull
+    git checkout -b newbranch
 
 2)   Pick **one** single feature or bugfix, and start building it.
 

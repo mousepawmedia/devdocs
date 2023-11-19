@@ -28,12 +28,12 @@ GitHub repositories.
 
 ..  code-block:: bash
 
-    $ sudo apt install pcregrep
-    $ cd /usr/local/bin
-    $ sudo wget https://github.com/CodeMouse92/WacomRotate/raw/master/wacomrotate
-    $ sudo wget https://github.com/CodeMouse92/WacomTouchToggle/raw/master/wacomtouch
-    $ sudo wget https://github.com/CodeMouse92/WacomDisplayMap/raw/master/wacommap
-    $ sudo chmod +x wacom*
+    sudo apt install pcregrep
+    cd /usr/local/bin
+    sudo wget https://github.com/CodeMouse92/WacomRotate/raw/master/wacomrotate
+    sudo wget https://github.com/CodeMouse92/WacomTouchToggle/raw/master/wacomtouch
+    sudo wget https://github.com/CodeMouse92/WacomDisplayMap/raw/master/wacommap
+    sudo chmod +x wacom*
 
 You can now run any of the scripts directly in the terminal.
 
@@ -55,13 +55,13 @@ Turning touch off is simple. In a terminal, run...
 
 ..  code-block:: bash
 
-    $ wacomtouch off
+    wacomtouch off
 
 To turn it back on, run...
 
 ..  code-block:: bash
 
-    $ wacomtouch on
+    wacomtouch on
 
 .. _wacom_using_map:
 
@@ -76,7 +76,7 @@ Simply run...
 
 ..  code-block:: bash
 
-    $ wacommap
+    wacommap
 
 When prompted, select a display. ``LVDS`` is usually your laptop screen, while
 ``VGA`` or ``HDMI`` is an external monitor. Just enter the number for the
@@ -95,13 +95,13 @@ Run one of the following commands in the terminal, depending on what you want...
 ..  code-block:: bash
 
     # Set to portrait mode.
-    $ wacomrotate p
+    wacomrotate p
 
     # Set to left-hand landscape mode (opposite the default)
-    $ wacomrotate lf
+    wacomrotate lf
 
     # Set to upside-down portrait mode.
-    $ wacomrotate pf
+    wacomrotate pf
 
     # Set back to the default.
-    $ wacomrotate l
+    wacomrotate l
