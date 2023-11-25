@@ -109,9 +109,8 @@ to upgrade, it isn't always easy, and sometimes you have to reinstall the
 entire operating system in the process.
 
 Every two years, Ubuntu releases a **Long-Term Support [LTS] version**,
-which is supported with updates for five years. The most recent LTS was
-**Ubuntu 18.04 "Bionic Beaver"**. If you'd prefer stability over cutting-edge
-new features, I'd recommend this option.
+which is supported with updates for five years. If you'd prefer stability
+over cutting-edge new features, I'd recommend this option.
 
 However, if you're tech-savvy and love experimenting with the latest features,
 you might want to use the newest release.

@@ -11,7 +11,7 @@ for our audio/video production work at MousePaw Media.
     department lead.
 
 These installation instructions are only written for Linux distributions based
-on Ubuntu 18.04. If you're using a different Linux distribution, you may need
+on Ubuntu 22.04. If you're using a different Linux distribution, you may need
 to adjust these instructions.
 
 If you are working with **Design and Production** or **Mass Communication**,

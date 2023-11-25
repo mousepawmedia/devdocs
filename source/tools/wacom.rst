@@ -3,13 +3,13 @@
 Wacom Tablets
 ###################################
 
-If you are running Ubuntu 18.04 with the GNOME or Budgie desktop environments,
-you have a Wacom control panel already. If you're on Ubuntu MATE 18.04, or
-a number of other Ubuntu distros, you may not have a Wacom control panel at all.
-In any case, some graphics tablet settings are hidden on all systems.
+If you are running Ubuntu GNOME desktop environments, you have a Wacom control
+panel already. If you're on Ubuntu MATE, or a number of other Ubuntu distros,
+you may not have a Wacom control panel at all. In any case, some graphics
+tablet settings are hidden on all systems.
 
-CEO/Lead Developer Jason C. McDonald wrote a few scripts for controlling
-Wacom tablet settings. These are likely to be useful on *any* Ubuntu system.
+Jason C. McDonald wrote a few scripts for controlling Wacom tablet settings.
+These are likely to be useful on *any* Ubuntu system.
 
 Official documentation and information is available on each script's
 GitHub repository.

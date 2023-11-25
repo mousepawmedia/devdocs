@@ -10,8 +10,8 @@ for our graphics design work at MousePaw Media.
     no substitutions are permitted without written approval from the
     department lead.
 
-These installation instructions are only written for Linux distributions based
-on Ubuntu 18.04. If you're using a different Linux distribution, you may need
+These installation instructions are only written for Ubuntu-based Linux
+distributions. If you're using a different Linux distribution, you may need
 to adjust these instructions.
 
 If you are working with **Design and Production** or **Mass Communication**,

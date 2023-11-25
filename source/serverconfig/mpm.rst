@@ -2149,9 +2149,22 @@ In NextCloud, install the following applications:
 
 * OpenID Connect Login
 * GitLab Integration
+* Everyone Group
+* Group folders
 
-Go to the Users area, and at left, click :guilabel:`Add group`. Name the
-new group :code:`Staff`.
+Go to the Users area, and at left, use the button :guilabel:`Add group` to
+create the following groups. You MUST name them with all-lowercase and dashes,
+and then rename them to uppercase-with-spaces AFTER creation. (These are all
+based on the groups created in GitLab; change to fit your instance.)
+
+* content-development
+* management
+* applications
+* designers
+* devops
+* librarians
+* platform
+* hiring
 
 Edit the Nextcloud configuration:
 
@@ -2181,6 +2194,7 @@ values (especially in place of :code:`ACCESSKEY` and :code:`SECRETKEY`):
         'mail' => 'email',
         'photoURL' => 'picture',
         'groups' => 'groups',
+        'is_admin' => 'groups_management',
         'login_filter' => 'groups',
     ),
     'oidc_login_filter_allowed_values' => array('staff'),
@@ -2203,9 +2217,17 @@ values (especially in place of :code:`ACCESSKEY` and :code:`SECRETKEY`):
 
 Save and close. Restart Apache2.
 
-Finally, from the Administration panel, you can select
+Users are now automatically added to the Nextcloud groups that correspond to
+the GitLab groups they are members of. Additionally, adding a user to the
+GitLab group "Management" will grant them administration privileges on
+Nextcloud.
+
+From the Administration panel, you can select
 :guilabel:`Connected Accounts` and set up GitLab integration with the
 same OAuth app instance address (:code:`https://gitlab.mousepawmedia.com`),
 application ID, and client secret you used above.
+
+Once you've set all this up, you may want to create group folders from
+:guilabel:`Administration` -> :guilabel:`Group folders`.
 
 `SOURCE: Nextcloud OIDC Login -- GitHub <https://github.com/pulsejet/nextcloud-oidc-login>`

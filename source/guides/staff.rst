@@ -7,32 +7,12 @@ Welcome to MousePaw Media! We're really excited to have you aboard.
 This tutorial will help you get started. If you need additional help, contact
 your internship supervisor.
 
-This tutorial will also get you started as a MousePaw Media employee.
+This tutorial will also get you started as a MousePaw Media staff member.
 Read through it in order. Watch out for...
 
 ..  important:: These are things you should do now.
 
 ..  warning:: These are things you need to watch out for.
-
-.. _gstaff_policies:
-
-Employee Handbook
-=======================================
-
-Our Employee Handbook outlines all the company policies, rules, and
-expectations for staff at MousePaw Media. You should be familiar with
-the latest version of these policies at all times.
-
-We publish the latest version of the Employee Handbook at
-`eco.mousepawmedia.com <https://eco.mousepawmedia.com>`_. Click
-:guilabel:`Employee Handbook` to view or download.
-
-..  important:: Download the latest copy of the Employee Handbook from
-    that link, and save it to your work computer for quick reference.
-    Read it through now.
-
-You will be emailed whenever a new version of the Employee Handbook is
-published.
 
 .. _gstaff_tech:
 
@@ -40,8 +20,8 @@ Technical Requirements
 =======================================
 
 We strongly recommend installing Ubuntu 22.04 or later on your computer.
-If you're using Windows 10 or Windows 11, we recommend installing Ubuntu via
-the Windows Subsystem for Linux.
+If you're using Windows 10 or Windows 11, we recommend installing Ubuntu 22.04
+via the Windows Subsystem for Linux.
 
 We do support macOS if that's what you use, although we don't fully support it.
 
@@ -134,15 +114,8 @@ of the following:
 
 ..  note:: Set up an MFA authenticator app now.
 
-In the sections that follow, you will be installing MFA for
-
-* GitLab
-
-* Discourse
-
-* Nextcloud
-
-* Mattermost
+In the sections that follow, you will be installing MFA for GitLab, which
+handles authentication for most of the rest of our collaboration tools.
 
 **DO NOT** skip those sections!
 
@@ -198,16 +171,16 @@ The Staff Network consists of seven major components:
 
 * Discourse (discourse.mousepawmedia.com)
 
-* Mattermost (chat.mousepawmedia.com)
-
 * Nextcloud (cloud.mousepawmedia.com)
+
+* OrangeHRM (eco.mousepawmedia.com)
 
 We also use `Jitsi Meet <https://meet.jit.si/>`_ for regular communication.
 
-.. _gstaff_network_email:
+.. _gstaff_email:
 
 Email and Calendar
-------------------------------------------
+=======================================
 
 As with any job, email and calendar are essential. You were issued a company
 email address, which comes with a calendar and a contact book.
@@ -219,10 +192,10 @@ You can check your email and calendar through the SOGo web client.
 This is useful if you don't want to configure an external client, or need
 to check your email without access to your usual device.
 
-.. _gstaff_network_email_sogosetup:
+.. _gstaff_email_sogosetup:
 
 SOGo Setup
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+---------------------------------------
 
 SOGo is a modern webmail and calendar client with many useful features.
 
@@ -254,7 +227,6 @@ for your signature:
     Position, MousePaw Media
 
     Visit Us Online: MousePawMedia.com
-    Twitter: @mousepawmedia
 
 Press :guilabel:`OK` to save. Then, tap the green save icon in the upper-right
 corner to save your settings.
@@ -267,10 +239,10 @@ corner to save your settings.
 
 ..  important:: Set up your settings and signature as documented above now.
 
-.. _gstaff_network_email_sogocalendar:
+.. _gstaff_email_sogocalendar:
 
 SOGo Calendar
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+---------------------------------------
 
 To navigate around SOGo, in the upper-right, click the Mail, Calendar, and
 Contacts icons.
@@ -284,10 +256,10 @@ scheduling. When you create an event, add the Attendees you want to meet with.
 SOGo will show you a chart of their free/busy times. (However, please be
 mindful of time zone differences as well.)
 
-.. _gstaff_network_email_sogocalendar_external:
+.. _gstaff_email_sogocalendar_external:
 
 Importing Web Calendars
-""""""""""""""""""""""""""""""""""""""
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 To make scheduling easier for everyone, you should subscribe to any external
 calendars (Web Calendars) you routinely use for scheduling. This may include a
@@ -312,10 +284,10 @@ personal calendar, a work calendar, or a school calendar. To do this:
 
 ..  important:: Import your web calendars now.
 
-.. _gstaff_network_email_sogocalendar_busy:
+.. _gstaff_email_sogocalendar_busy:
 
 Setting Up Out of Office Hours
-""""""""""""""""""""""""""""""""""""""
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 If there are times you are consistently unavailable, you may consider creating
 a separate Calendar on SOGo to block out these times.
@@ -349,10 +321,10 @@ sleeping hours. On the event creation screen:
 ..  important:: Set up your Out of Office calendar now, with at least "Offline"
     hours for sleep.
 
-.. _gstaff_network_email_settings:
+.. _gstaff_email_settings:
 
 Mail Settings
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+---------------------------------------
 
 You can access a number of advanced settings for your email account by going
 directly to `mail.mousepawmedia.com <https://mail.mousepawmedia.com>`_ and
@@ -381,13 +353,13 @@ You can also jump right to SOGo from here via the :guilabel:`Login to webmail`
 button under :guilabel:`Mailbox`, or from the :guilabel:`Apps` menu at
 upper-right.
 
-.. _gstaff_network_email_imap:
+.. _gstaff_email_imap:
 
 IMAP/SMTP Access
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+---------------------------------------
 
 You can also connect your account to an external email client, such as
-Thunderbird or your mobile device.
+Outlook, Apple Mail, Thunderbird, or your mobile device.
 
 You can find full configuration instructions by going to
 `mail.mousepawmedia.com <https://mail.mousepawmedia.com>`_, going to
@@ -416,19 +388,19 @@ In short, here are the recommended server settings:
 
   - Server Name: ``mail.mousepawmedia.com``
 
-  - Port: ``465`` (recommended) or ``587``.
+  - Port: ``587`` (recommended) or ``465``.
 
-  - Connection security: ``SSL/TLS``
+  - Connection security: ``STARTTLS`` (for post 587) or ``SSL/TLS`` (for port 465)
 
   - Authentication method: ``Normal password``
 
 ..  important:: Connect your company email to an email client, such as
     Thunderbird, Evolution, or your smartphone.
 
-.. _gstaff_network_email_caldav:
+.. _gstaff_email_caldav:
 
 CalDAV Access
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+---------------------------------------
 
 If you use an external calendar application, you can work directly with your
 MousePaw Media calendar via CalDAV.
@@ -456,532 +428,200 @@ time/date-only read access for the three types of events.
 ..  important:: Set up your favorite calendar app with access to your calendar
     via CalDAV, so you can receive notifications of upcoming events.
 
-.. _gstaff_network_email_tasks:
+.. _gstaff_email_tasks:
 
 Regular Email Tasks
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+---------------------------------------
 
 * Correspond with co-workers. Read and respond to messages in a timely fashion.
 
 * Schedule and RSVP for meetings.
 
-* Contact ECO to schedule time off, ask questions, and report concerns.
+.. _gstaff_eco:
 
-.. _gstaff_network_kimai:
+OrangeHRM
+===========================================
 
-Kimai
------------------------------------
+Our "human resources" department is called **ECO**, which stands for
+*Employee Care and Opportunity*.
 
-Kimai is where we track time. You are responsible for reporting your time
-**every day**. Each day's time sheets are locked automatically the next morning,
-but you should try to log your time before then.
+Most ECO-related tasks are handled through OrangeHRM, including:
 
-..  warning:: If you forget to log your time, you will NOT be reminded.
-    Contact ``eco@mousepawmedia.com`` if you forget, and report your time
-    that way.
+* Time Tracking
+* Leave (time off)
+* Performance Reviews
+* Employee records
 
-To log your time, go to ``https://time.mousepawmedia.com``. Login using your
-company username and password.
+You are responsible for reporting your time **every day you work**, and you
+must submit your timesheets every week.
 
-You will be on the :guilabel:`My times` section by default.
+.. _gstaff_eco_login:
 
-**We recommend creating separate entries for each major task you work on.**
-This will make it easier for you to see how you use your time.
+Logging Into OrangeHRM
+---------------------------------------
 
-To add time, click the large Play button in the upper-right corner of the page.
-Fill out the following fields:
+Your OrangeHRM account is handled separately from your GitLab account.
+You will receieve an email with your initial password for OrangeHRM.
+If you have not yet recieved this email, contact ``eco@mousepawmedia.com``
+to request an account.
 
-* :guilabel:`From`: select the start date and time for your entry.
-  You may estimate the start the time if you can't remember it.
+Go to ```https://eco.mousepawmedia.com`` and log in. Click your name in the
+upper-right corner of OrangeHRM and click :guilabel:`Change Password`.
+Change your password on the screen that appears. You may use the same
+password as for GitLab if you prefer, or you may create a different password.
+In either case, our password and security policies still apply! Once you've
+entered your new password, click :guilabel:`Save`.
 
-* :guilabel:`Duration`: Enter the duration in ``H:MM`` format.
+..  important:: Log into OrangeHRM.
 
-* :guilabel:`Project`: Select ``Internal``.
+.. _gstaff_eco_pim:
 
-* :guilabel:`Activity`: Select the project you were working on.
+Updating Your Personal Information
+---------------------------------------
 
-  * Most MousePaw Media projects have an entry here. If you don't see the one
-    you need, use ``General`` and contact your supervisor.
+For administrative and legal reasons, we keep track of the contact
+information for our staff. This information is kept secure, and will not
+be accessed or used outside of ECO and administration.
 
-  * Use ``Research`` for general-purpose research and training.
+On the left, click :guilabel:`My Info`. Fill out the following fields.
+Be sure to click :guilabel:`Save` on each page.
 
-  * Use ``General`` for meetings, internship assignments, and anything not
-    covered by another category.
+* Profile photo (click the gray silhouette): must be a head-and-shoulders photo of you.
+* Personal Details
+    * Employee Full Name
+    * Nationality: based on current permanent residency, *not* heritage.
+    * Marital Status
+    * Date of Birth
+    * Gender (you may omit if your gender is not present).
+* Contact Details
+    * Address
+    * Telephone
+        * Home/Mobile: shown only to ECO/admins
+        * Work: shown in staff directory, include if you want others to be able to call.
+    * Email
+        * Work Email: shown in staff directory; use your MousePaw Media email.
+        * Other Email: shown only to ECO/admin
+    * Emergency Contacts
+        * (Please add at least one emergency contact.)
 
-  * Use ``DevOps/IT`` for repository master, build system, and server work.
+We do *NOT* request that you provide your driver's license, dependents, or
+immigration records.
 
-  * Use ``Operations`` for management, administrative, and standards board tasks.
+..  important:: Go to :guilabel:`My Info` and fill out your information.
 
-  * Use ``Hiring`` for hiring-related tasks.
+.. _gstaff_eco_time:
 
-* :guilabel:`Description`: When relevant, you **must** include appropriate
-  Phabricator object codes, including Maniphest Tasks, Differential Revisions,
-  Ponder Questions, wiki pages, and the like.
+Logging Your Time
+---------------------------------------
 
-..  warning:: These notes are not a replacement for your Dev Journal entries.
+You **must** report all time worked at MousePaw Media by Monday the following
+week. This serves two functions:
 
-Finally, click :guilabel:`Save` in the lower-left corner to store the hours.
+* Indicates your attendance, along with your journal (described later).
+* Creates accountability for your use of volunteer time.
 
-..  warning:: Kimai's date/time selector is a bit unintuitive. You **must**
-    click the green :guilabel:`Confirm` button to keep the date/time you
-    chose in the selector.
+..  warning:: Reporting your time is of utmost importance! Set reminders for
+    yourself to remember to fill out and submit your timesheets. Repeated
+    failures to do so may result in disciplinary action.
 
-While you're here, take a look at the :guilabel:`Dashboard`,
-:guilabel:`Calendar` and :guilabel:`Reporting` tabs. These give you detailed
-breakdowns of your hours, including what you worked on and when you worked.
+To log your time, in OrangeHRM, click :guilabel:`Time` on the left. You
+should be on the :guilabel:`My Timesheets` page by default, but if not,
+go to :guilabel:`Timesheets` and :guilabel:`My Timesheets`.
+
+Ensure you are looking at the desired timesheet period, and click
+:guilabel:`Edit`. Each major project you work on will have its own row
+on the timesheet. You may add as many rows as you need by clicking
+:guilabel:`Add Row`.
+
+Under :guilabel:`Project`, type and select the name of the project you're
+working on. Aside from our actual projects, such as :code:`Platform - IOSqueak`
+or :code:`Applications - Quarkboard`, we have several other entries:
+
+* General - Community: interacting with or moderating our community.
+* General - Meetings: syncronous meetings.
+* General - Mentorship: all activities relating to training interns.
+* General - Other: anything that doesn't fit in another category. USE SPARINGLY.
+* General - Setup: setting up workstation, tools, development environment, etc.
+* General - Training: using MousePaw Media curated training materials. Do NOT use for "research".
+* DevOps - DevOps: maintaining build, test, and deployment systems (regardless of project).
+* DevOps - Documentation: writing documentation that is NOT specific to a project.
+* DevOps - Standards: maintaining standards.
+
+We also have administration-related "projects". Non-management staff should
+NOT use these without first confirming with their supervisor.
+
+* Administration - Administration: management activities.
+* Administration - ECO: ECO (HR) management activities.
+* Administration - Hiring: screening, interviewing, or reviewing candidates.
+* Administration - IT: maintaining our servers or collaborative platforms.
+
+In all cases, select :guilabel:`General` under the :guilabel:`Activity` section.
+
+Enter the number of hours for each day. Use decimal hours to represent
+partial hours, such as :code:`1.5` for an hour and a half.
+
+When you've finished updating your timesheet for the day, click :guilabel:`Save`.
+
+..  note:: It is best to update your timesheets at the end of each day you work,
+    rather than trying to remember your hours at the end of the week.
+
+When you have submitted all of your time for the week, click :guilabel:`Submit`
+to submit your timesheet.
+
+..  warning:: You **MUST** submit your time for each week by the following
+    Monday. Set a reminder for yourself!
+
+..  important:: Set a reminder for yourself to log your time.
 
 If you need a tool to help you track your time, check out the
 `Timecard <https://codemouse92.github.io/Timecard/>`_ application, created by
 Jason C. McDonald.
 
-Regular Kimai Tasks
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. _gstaff_eco_leave:
 
-* Log your hours *every day you work*.
+Requesting Leave
+---------------------------------------
 
-* Seriously, that's it. **Log your time!**
+When you are going to miss a week, or come in below your required number of
+hours for a week, you should submit for Leave.
 
-.. _gstaff_mattermost:
+..  warning:: Even if you do not have a mandatory hours requirement, we
+    strongly recommend requesting leave when you are going to be out of
+    the office for a week or more! This ensures that everyone knows you will
+    be unavailable, and when you will be back.
 
-Mattermost
-----------------------------
+To apply for leave or manage your leave entitlements, go to :guilabel:`Leave`.
 
-We use Mattermost, an open source chat service, for team chat.
-**All staff members are expected to be logged into Mattermost during work**,
-and are strongly encouraged to stay signed in when convenient to facilitate
-collaboration and communication.
+:guilabel:`Entitlements` -> :guilabel:`My Entitlements` shows how much
+of each type of leave you have available. Due to our low hour requirements,
+each "Day" of leave actually entitles you to a full **week**. If you only plan
+to be out for part of the week, you can submit for a partial day.
 
-Mattermost can be accessed directly through the web browser from
-`chat.mousepawmedia.com <https://chat.mousepawmedia.com/>`_, but we
-*strongly* recommend installing the official client, which works on Linux,
-Windows, macOS, Android, and iOS. You can download and install the client from
-`mattermost.com/download <https://mattermost.com/download/>`_.
+:guilabel:`Apply` allows you to apply for leave. Select the Leave Type you
+want to apply. Set the :guilabel:`From Date` to Monday of the first week you
+want to take leave for. Set the :guilabel:`To Date` to the Monday of the
+last week you want to take leave for, even if it's the same as
+:guilabel:`From Date`.
 
-..  important:: Install the Mattermost client on your work computer, and if
-    possible, on your mobile device.
+Normally, you can set :guilabel:`Duration` to :code:`Full Day` to just take
+the whole week(s). However, if you have a mandatory weekly hour commitment
+and want to work less than those hours, you can select :code:`Specify Time`.
+The times you enter *DO NOT* matter, only the actual duration.
 
-.. _gstaff_mattermost_login:
+Describe the nature of your leave in :guilabel:`Comments`, and then select
+:guilabel:`Apply`.
 
-Creating Your Account
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+:guilabel:`My Leave` shows your submitted leave requests and their status.
+You can also click :guilabel:`Cancel` next to a leave request if you no longer
+wish to take that leave.
 
-Mattermost is the only service we use which is not tied to your MousePaw ID.
-Instead, you'll need to create an account using the invite that was sent
-to your MousePaw Media email address. You **must** sign up using your
-company email address, or else you will be unable to access our chatrooms.
-
-..  important:: Sign up using the invite that was emailed to your company
-    email address.
-
-Once you've signed in to Mattermost, either through the website or the client,
-you should immediately set up your user profile. Click your profile picture in
-the upper-left corner and click :guilabel:`Account Settings`. Add your
-:guilabel:`Full Name`, your :guilabel:`Profile Picture`, and anything else you
-want to add.
-
-..  important:: Log into the MousePaw Media Mattermost and set up your user
-    profile with your Full Name and Profile Picture.
-
-At this time, you may want to take a minute and look through the other
-Account Settings, especially...
-
-* Security: Multi-factor Authentication
-* Notifications: Email Notifications
-* Display: Theme
-
-.. _gstaff_mattermost_rooms:
-
-Rooms in Mattermost
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-When you log in for the first time, you'll be added to the most important
-rooms. There may be more that you can find and join freely later.
-
-Here's the most important rooms for you to join and know:
-
-**Town Square** (``~town-square``) is our public room, linked to our IRC
-channel. Please default to using this room for any development conversations,
-so anyone joining via IRC can see and join in.
-
-..  warning:: Because Town Square is bridged to IRC, deleting a message will not
-    actually delete it from the room history altogether. What you say, you
-    cannot take back.
-
-**Water Cooler** (``~water-cooler``) is a staff-only chatroom. Use this for
-general conversations that we don't want to have in public.
-
-**Sprint** (``~sprint``) is a staff-only room for sprint planning and
-discussion.
-
-**Off Topic** (``~off-topic``) is for random chat-chat that doesn't really
-relate to work.
-
-**ECO** (``~eco``) is for any questions you want to bring up with ECO, but
-which you don't necessary need to keep confidential from other staff.
-(If you want a private conversation, feel free to email
-``eco@mousepawmedia.com`` instead.)
-
-**IT**  (``~it``) is for reporting any problems with the staff network,
-including email.
-
-**Hardware**  (``~hardware``) is for discussing problems with your computer,
-operating system, and the like.
-
-Last, but not least, you can private message anyone through Mattermost.
-
-..  important:: Post a message in ``~town-square`` introducing yourself.
-
-.. _gstaff_network_phab:
-
-Phabricator
---------------------------------------
-
-Phabricator is where most of our development work takes place. It hosts our
-repositories, task tracker, knowledge base, and wiki.
-
-Phabricator is MASSIVE, so which apps you use depend heavily on what you're
-doing. There are six major apps you should be making frequent use of:
-
-* Phame: Development journals
-
-* Maniphest: Issue tracking
-
-* Projects: Sprint planning (Workboards)
-
-* Differential: Code review
-
-* Phriction: Wiki
-
-* Ponder: Question & Answer
-
-* Pholio: Graphics review
-
-All of these apps (and more) are on the left side of the main page of
-Phabricator.
-
-.. _gstaff_network_phab_settings:
-
-Adjusting Settings
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-To get the most out of Phabricator, you should adjust some settings
-and fill out your profile. Follow these instructions...
-
-1.  Log into Phabricator using your company (LDAP) credentials.
-
-2.  Click your profile picture in the upper-right corner.
-
-3.  On that page, click :guilabel:`Manage` and :guilabel:`Edit Profile`.
-
-4.  Fill out as much of the profile as you want/can. Have fun with this!
-
-..  note:: Please fill out at least five "Fun Stuff" fields, as this is what
-    we will use to craft your profile on the MousePaw Media website.
-
-5.  Click :guilabel:`Save Profile` at the bottom.
-
-6.  Click :guilabel:`Edit Settings` at right. Alternatively, click your icon
-    picture at the top of the page and select :guilabel:`Settings`.
-
-7.  Select :guilabel:`Account` at left, and set :guilabel:`Pronoun`
-    appropriately. Click :guilabel:`Save Changes`.
-
-8.  Click :guilabel:`Notifications` at left. Select the option
-    :code:`Web and Desktop`, and save. Then, click
-    :guilabel:`Enable Desktop Notifications`. You may consider clicking
-    :guilabel:`Send Test Notification` in the upper-right corner to test.
-    Then, click :guilabel:`Save Preference`.
-
-9. Click :guilabel:`External Accounts` at left. Add your GitHub account.
-    Click :guilabel:`Save Changes`.
-
-..  important:: You should also add your company email address to your GitHub
-    account, so you can get public credit for your contributions to our
-    repositories.
-
-..  sidebar:: Notifications vs. Emails
-
-    All staff members are expected to check Phabricator frequently. Email
-    notifications are a great way to remind you to do this, but they can also
-    get quite overwhelming!
-
-    If you choose to set any notifications to "Notify" instead of "Email",
-    you should ensure you are *already* in the habit of checking Phabricator
-    at the start of each workday.
-
-    A great way to be notified about things while you're working is to leave
-    Phabricator open in a browser tab. This way, you'll get a handy popup
-    whenever something important occurs. Otherwise, you can check missed
-    notifications from the Bell menu in the upper-left corner of Phabricator.
-
-10. We **strongly recommend** adding Multi-Factor Autentication to your
-    Phabricator account. Click :guilabel:`Multi-Factor Auth` at left.
-    On your mobile device, install a trustworthy authenticator app like
-    Microsoft Authenticator. On your work laptop, you can install
-    `Authenticator <https://flathub.org/apps/details/com.belmoussaoui.Authenticator>`_.
-    ONLY USE ONE! (Using both requires both.) On Phabricator, click
-    :guilabel:`Add Auth Factor`. Follow the instructions to link your
-    authenticator app. Repeat for the other app.
-
-1.   Click :guilabel:`Email Preferences` at left. Here, you may shut off many
-    email notifications by selecting the :guilabel:`Notify` option for any
-    given item. Recommended defaults are provided, but you can adjust these
-    to your needs.
-
-..  warning:: Do NOT select "Ignore" for any notifications! All notifications
-    are ultimately controlled by whether you're "Subscribed" to an object.
-
-1.  Take a few minutes to go through the rest of the settings independently.
-    Use the menu at left to see more settings.
-
-2.  Click :guilabel:`Phabricator` in the upper-left corner to return to the
-    main page.
-
-.. _gstaff_network_phab_phame:
-
-Phame
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Phame is our internal blogging platform, which we use for our
-company newsletter and our Dev Journals.
-
-Read **The Check-In** every week for the latest reminders, company news,
-and helpful tips.
-
-Your personal Dev Journal is your weekly log of what you're building and
-learning. Since we're a globally distributed, remote team, this how we share
-progress with one another and with our supervisors. This journal is visible
-only to staff and trusted community members.
-
-You must update your Dev Journal by Monday morning every week, with the
-following information:
-
-  * What you've done over the past week,
-  * What challenges you faced over the past week,
-  * What you learned over the past week,
-  * What you're planning to do over the upcoming week,
-  * The Phabricator object IDs or links for anything you've worked on (inline).
-
-..  warning:: Your Dev Journal is how we track your job attendance. Be sure
-    to post it **every single week**! If it is not posted on time, your hours
-    for the week might not be counted.
-
-Along with posting your own Dev Journal entry, read and comment on **at least**
-two other team member's dev journal posts every week.
-
-For more information on Phame, see :ref:`phab_phame`.
-
-Regular Phame Tasks
-""""""""""""""""""""""""""""""""""""""
-
-* Read "The Check-In" for the week.
-
-* Post your weekly entry to your own Dev Journal.
-
-* Read and comment on at least two other new Dev Journal entries.
-
-.. _gstaff_network_phab_maniphest:
-
-Maniphest
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-..  sidebar:: Rule of Task Creation
-
-    Unless the goal will be completed in the next ten minutes, **MAKE A TASK** on Maniphest.
-
-Maniphest is our issue tracker. Just about everything you work on should
-have an associated Maniphest task, which you keep up to date as you work.
-Bigger tasks should be broken down into smaller subtasks.
-
-You should also use the comments section of a Maniphest task to take notes
-and discuss issues with your teammates.
-
-For more information on Maniphest, see :ref:`phab_maniphest`.
-
-Regular Phame Tasks
-""""""""""""""""""""""""""""""""""""""
-
-* Create and update tasks for everything you're working on.
-
-* Report bugs and request features.
-
-.. _gstaff_network_phab_projects:
-
-Projects
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The Projects app does a lot of things, but perhaps most importantly, it hosts
-our Kanban boards for sprint planning and tracking. Maniphest tasks are tagged
-with Project tags, and then they appear on the Workboard for that project.
-
-To see the Workboard for a project, go to Projects, click the project in
-question, and click :guilabel:`Workboard`. Be careful about moving tasks
-between columns, however, as that's something we do as a group as part of
-the sprint process.
-
-For more information on Maniphest, see :ref:`phab_projects`.
-
-Regular Projects Tasks
-""""""""""""""""""""""""""""""""""""""
-
-* See what tasks are selected for the current sprint on a project.
-
-.. _gstaff_network_phab_phriction:
-
-Phriction
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Our central knowledge store and wiki is Phriction. This is where we keep
-all of our project specs, design notes, and idea documents. We also track
-our sprints here.
-
-Phriction is an excellent place to share knowledge of all sorts. If you
-learn something useful that might be helpful to someone else, just add it!
-
-With rare exception, anyone can edit anything on the wiki. It's fully version
-tracked, so don't be afraid to make changes. The number one rule of wiki use:
-don't ask permission! Just do it.
-
-For more information on Phriction, see :ref:`phab_phriction`.
-
-Regular Phriction Tasks
-""""""""""""""""""""""""""""""""""""""
-
-* Monitor pages for projects you're involved in.
-
-* Maintain any specs and design notes you're responsible for.
-
-* Learn and share knowledge, especially via the Resources section.
-
-.. _gstaff_network_phab_differential:
-
-Differential
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-All code and text-based content that is being developed is tracked,
-reviewed, and discussed on Differential. Any code you write will be
-submitted here first to be reviewed.
-
-If you've used GitHub before, this is our equivalent of a Pull Request.
-
-For more information on Differential, see :ref:`phab_differential`.
-
-Regular Differential Tasks
-""""""""""""""""""""""""""""""""""""""
-
-* Submit and maintain Revisions for your code revisions.
-
-* Review other people's Revisions.
-
-.. _gstaff_network_phab_ponder:
-
-Ponder
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Ponder is like our own personal StackOverflow. You can ask and answer questions
-here. While Mattermost is highly recommended for quick questions and live
-conversations, Ponder is fantastic for creating a team knowledge base and
-solving problems asynchronously.
-
-For more information on Ponder, see :ref:`phab_ponder`.
-
-Regular Ponder Tasks
-""""""""""""""""""""""""""""""""""""""
-
-* Ask questions.
-
-* Store collected information as you research a problem.
-
-* Help answer other people's questions.
-
-.. _gstaff_network_phab_pholio:
-
-Pholio
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Graphical assets, including most work produced by the Design+Production
-team, are uploaded to Pholio for review and discussion. We also use Pholio
-for user interface mockups, as well as flowcharts and diagrams from the
-Programming team.
-
-A single Pholio Mock can contain multiple images, and multiple revisions
-thereof. Comments can be left directly on the images themselves, as well as
-in the comments section.
-
-For more information on Pholio, see :ref:`phab_pholio`.
-
-Regular Pholio Tasks
-""""""""""""""""""""""""""""""""""""""
-
-* Submit and maintain Mocks for your graphical work.
-
-* Review other people's Mocks.
-
-.. _gstaff_nextcloud:
-
-Nextcloud
-----------------------------
-
-Nextcloud is where we store all important staff documents
-(see :ref:`gstaff_eco`), collaborate on documents, and share a lot of common
-non-code files.
-
-One essential function of Nextcloud is to allow us to collaborative edit our
-sprint plan and sprint retrospective documents.
-
-Additionally, if you work in the Design+Production or Content Development
-departments, you'll upload most of your work to Nextcloud.
-
-First Steps
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-1.  When you first log into Nextcloud, click your username in the upper-right
-    corner and select :guilabel:`Settings`. This will take you to your profile
-    and settings screen. Fill out your profile.
-
-2.  At left, select :guilabel:`Security`. Start by saving your backup codes in
-    case you lose your device. Then, enable both
-    :guilabel:`Nextcloud Notification` and :guilabel:`Enable TOTP`. That
-    last one will walk you through linking to *one* Authenticator app; we
-    recomemend Microsoft Authenticator on your mobile device. If you don't
-    have a mobile, use `Authenticator on your Linux machine <https://flathub.org/apps/details/com.belmoussaoui.Authenticator>`_.
-
-3.  The Activity section allows you to customize notifications. We recommend
-    leaving many Push notifications enabled.
-
-If you'll be using Nextcloud regularly, you may consider setting up the
-Nextcloud Client on your computer. See :ref:`nextcloud_client`.
-
-Regular Nextcloud Tasks
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-* Collaborative edit documents, especially sprint plans, sprint retrospectives,
-  and standards drafts.
-
-* Upload work. (Content Development, Design+Production)
-
-* Review and proofread content files. (Content Development)
-
-When you upload files meant to be shared, be sure to place them in the
-appropriate shared folder.
-
-.. _gstaff_eco:
-
-ECO: Employee Care and Opportunity
-=======================================
-
-Our "human resources" department is called **ECO**, which stands for
-*Employee Care and Opportunity*.
+..  note:: If you have further questions about leave, contact the ECO
+    department at ``eco@mousepawmedia.com``.
 
 ECO Forms
 ---------------------------------------
 
-All the ECO forms you'll need are stored on Nextcloud, in the *ECO* folder.
-
-All forms must be filled out, signed *by hand* (including by mouse or tablet),
-and emailed to ``eco@mousepawmedia.com``. You can do this either by printing
-and scanning the document, or digitally with
-`Xournal++ <https://github.com/xournalpp/xournalpp>`_.
+Some additional ECO activites are handled through Discourse (discussed later).
 
 * **Formal Grievance**: If you are unable to resolve a conflict with a co-worker
   via informal discussions, you may file this form within 15 days of the
@@ -992,32 +632,329 @@ and scanning the document, or digitally with
   and submit this form. Interns will also need the appropriate
   **Internship Checklist**.
 
-* **Leave of Absence Request**: Any time you will be absent for a week or more,
-  or under six hours a week in the case of an intern, you must file this
-  request at least two days before your absence!
-
 * **Resignation Request**: If you choose to leave MousePaw Media, you must
   file a resignation request. If you're an intern, we may choose to terminate
-  your employment with us instead of accepting the resignation, as specified
+  your staff role with us instead of accepting the resignation, as specified
   in your contract.
 
 Management Forms
 --------------------------------------------
 
-There are a few more ECO forms which are accessible only to management.
+There are a couple more ECO forms which are accessible only to management.
 
-* **Hiring Checklist**: When we are reviewing an applicant for our internship
-  program, we use this form to collect and track all the relevant information
-  about them.
-
-* **Employee Disciplinary Warning Notice**: For serious and/or recurring
+* **Disciplinary Warning Notice**: For serious and/or recurring
   problems, a supervisor may detail the incident and the expected remedy
-  using this form. If you receive one, be sure to read it, initial and sign
-  it, and send it back via e-mail ASAP.
+  using this form. If you receive one, be sure to read it, sign it, and
+  send it back via e-mail ASAP.
 
-* **Employee Termination**: In the rare and unfortunate case where an employee
+* **Termination**: In the rare and unfortunate case where an staff member
   must be fired, we use this form. There is also a separate
   **Internship Termination** form.
+
+.. _gstaff_gitlab:
+
+GitLab
+===========================================
+
+We run our own private instance of GitLab at ``https://gitlab.mousepawmedia.com``.
+This is where most of our development work takes place. Most importantly, it
+hosts our repositories.
+
+In addition, your MousePaw Media GitLab account serves as the single-sign on
+authentication for most of the rest of the network.
+
+.. _gstaff_gitlab_setup:
+
+Setting Up Your Account
+-------------------------------------------
+
+New Account
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+If you did not previously have a MousePaw Media GitLab account, you will
+be issued one associated with your MousePaw Media email address. Look for the
+email in that inbox with the link to log in. After agreeing to terms,
+your account will be active and ready for use.
+
+Go to your User Settings by clicking your picture in the sidebar, and clicking
+:guilabel:`Edit Profile`. On the left, click :guilabel:`Password`, and change
+your password.
+
+Now click :guilabel:`Account` and add two-factor authentication.
+
+..  important:: If you have a new account, set it up now following the
+    instructions above.
+
+Existing Account
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+If you already have a MousePaw Media GitLab account, you can simply associate
+your new MousePaw Media email address with it. Go to your User Settings by
+clicking your picture in the sidebar, and clicking :guilabel:`Edit Profile`.
+Then select :guilabel:`Emails`. Click :guilabel:`Add new email`, enter your
+MousePaw Media email address, and click :guilabel:`Add email address`.
+You will be prompted to verify the address. Once you have, you should set your
+MousePaw Media email address as your Primary email for the account.
+
+You will also (probably) want to change your username to your MousePaw Media
+username. You can do this form :guilabel:`Edit Profile` and :guilabel:`Account`.
+Enter your MousePaw Media username under :guilabel:`Change username`, and click
+:guilabel:`Update username`.
+
+..  note::: The unintended side effects mentioned are related to any private
+    repositories you have on our GitLab instance, which will be redirected to
+    new paths. This is unlikely to affect you, as we don't allow non-staff to
+    create private repositories.
+
+Finally, if you haven't already added two-factor authentication, click
+:guilabel:`Account` and add two-factor authentication.
+
+..  important:: If you have a pre-existing account, set it up now following the
+    instructions above.
+
+.. _gstaff_gitlab_setup:
+
+Editing Your Profile and Settings
+-----------------------------------
+
+Go to your User Settings by clicking your picture in the sidebar, and clicking
+:guilabel:`Edit Profile`. Fill out the following fields at a minimum, as well
+as any others you wish:
+
+* Public avatar (a head-and-shoulders photo of you)
+* Time settings
+  * Time zone
+* Main settings
+  * Full name
+  * Pronouns
+  * Public email (set to your MousePaw Media email)
+  * Job title
+  * Organization (MousePaw Media)
+
+Click :guilabel:`Update profile settings`.
+
+Now click :guilabel:`Preferences` on the left sidebar. Here, you may define
+the appearance and behavior of GitLab to match your preferences.
+
+..  important:: Fill out your profile.
+
+.. _gstaff_gitlab_groups:
+
+Groups
+-----------------------------------
+
+On the main sidebar for GitLab, click :guilabel:`Groups`. This lists all of
+the groups on our GitLab instance which you have access to view.
+
+Groups serve two purposes in our GitLab:
+
+1.  Groups organize projects by department: Platform, Applications, DevOps,
+    and Content Development. There is also a Web project under Applications.
+2.  Groups manage permissions throughout our network. In particular, the
+    Staff group indiciates a person is official MousePaw Media staff, and
+    grants access to staff-related resources.
+
+.. _gstaff_gitlab_projects:
+
+Projects
+-----------------------------------
+
+On the main sidebar for GitLab, click :guilabel:`Projects`. Here, you will
+see all of the projects at MousePaw Media you have access to, as well as their
+associated Group (department). Click on one to navigate to the repository.
+
+On the project page, you'll notice that the sidebar has a lot of entries.
+Here's a brief tour of the most important:
+
+* Plan
+  * Wiki: This is where we store *internal* documentation for the project,
+    which is written for the reference of developers working on the code.
+    External documentation is in the repository itself, usually in the
+    ``docs/`` directory.
+* Code
+  * Merge requests: Proposed changes to the code. All work you submit to
+    a repository must be in a merge request.
+  * Repository: the source code itself.
+  * Branches: a list of all branches in the repository.
+  * Commits: a history of changes to the code.
+  * Tags: named points in the repository history which are important.
+  * Snippets: small pieces of code and text associated with the project, but
+    which we don't want to include in the main repository at present. Think
+    of this as a project-specific "paste bin".
+* Build
+  * Pipelines: chains of test and build jobs that are running, completed, or
+    failed.
+  * Jobs: individual test or build jobs that are running, completed, or failed.
+    These are run as part of pipelines, but can be browsed individually too.
+  * Artifacts: built versions of the project, produced by certain jobs.
+* Deploy
+  * Releases: sets of artifacts and changelogs that constitute a single
+    released version of the project. Associated with a specific tag.
+  * Package Registry: a registry of packaged artifacts associated with the
+    project. Users with access permissions can download/install packages
+    directly from this registry.
+  * Container Registry: a registry of Docker images associated with the
+    project. Users with access permissions can download Docker images directly
+    from this registry.
+
+There are a number of other GitLab features. Some are more advanced, and others
+we simply do not use.
+
+..  note:: We do NOT use GitLab Issues, as it is simply too limited to be
+    useful. We are in the process of building our own issue tracking system,
+    but in the meantime, we use Discourse (covered below).
+
+.. _gstaff_gitlab_snippets:
+
+Snippets
+-----------------------------------
+
+If you want to share a piece of code or text which is *not* strictly associated
+with a project, you can use the Snippets tool. From the main sidebar of GitLab,
+select :guilabel:`Snippets`. Then, in the upper-right, click
+:guilabel:`New snippet.`
+
+If your snippet is meant to be associated with a particular project, navigate
+to that project in GitLab, and go to :guilabel:`Code` -> :guilabel:`Snippets`
+instead.
+
+.. _gstaff_gitlab_learn:
+
+Learn More about GitLab
+-----------------------------------
+
+GitLab has very thorough and up-to-date documentation:
+`GitLab Docs <https://docs.gitlab.com/>`_. You can access this, as well
+as see the current version of GitLab we are running, by clicking
+:guilabel:`Help` in the lower-left corner of GitLab anytime.
+
+..  note:: We are running the Free Self-Hosted tier of GitLab EE, so some
+    features are not available to us. In the documentation, take note when
+    a feature is indicated as being for the Premium or Ultimate tier or
+    SaaS offering.
+
+.. _gstaff_discourse:
+
+Discourse
+===========================================
+
+Most of our collaboration takes place on Discourse. It is home to our:
+
+* Community
+* Curated training material
+* Q&A
+* Issue Tracker
+* Software Product Specifications
+* Forms and Surveys
+
+You can sign into Discourse at ``https://discourse.mousepawmedia.com``
+using your MousePaw Media GitLab account.
+
+Be sure to read the community rules by clicking the :guilabel:`FAQ` button
+from the left sidebar.
+
+..  important:: Read the FAQ!
+
+.. _gstaff_discourse_basics:
+
+Reading and Posting
+-----------------------------------
+
+When you first go to Discourse, you'll start on the Home screen. This
+displays all the categories, as well as the latest posts.
+
+Click the "General" category, and then click the "Personal Introductions" topic.
+After reading as much as you want, click the :guilabel:`Reply` button at
+the bottom of the topic (*not* the one at the bottom of each post) to create
+your own post on the topic.
+
+..  important:: Reply to the "Personal Introductions" topic with an introduction
+    of yourself.
+
+You can learn more about using Discourse from the "Discourse New User Guide"
+under the "General" category.
+
+..  important:: Read "Discourse New User Guide".
+
+.. _gstaff_discourse_journal:
+
+Journal
+-----------------------------------
+
+Every member of the staff is **required** to maintain a weekly journal,
+detailing what they worked on in the past week. In addition to posting
+one's own journal, each staff member must reply to two other Journal entries.
+
+..  warning:: Posting your Journal entry, and replying to two other Journal
+    entires, is a mandatory part of attendance!
+
+You can view the journals by visiting the "Journals" category,
+or by clicking :guilabel:`Journals` on the left sidebar. Only members of
+staff are allowed to view this category.
+
+..  note:: If you cannot view the category, ask an administrator to grant
+    you "moderator" privileges, which designates you as a staff member.
+
+To post your own journal entry, click :guilabel:`New Topic` in the Journals
+category, and use the provided template.
+
+..  important:: Set a reminder to post your journal entry by Monday each week,
+    and reply to at least two other staff member journal entries.
+
+.. _gstaff_discourse_issues:
+
+Issue Tracker
+-----------------------------------
+
+We are in the process of building our own issue tracker. In the meantime,
+Discourse is serving as our issue tracker, and will continue to be the
+staging area for community-reported issues.
+
+You can view the issue tracker by visiting the "Issue Tracker" category,
+or by clicking :guilabel:`Issue Tracker` on the left sidebar.
+
+.. _gstaff_nextcloud:
+
+Nextcloud
+===========================================
+
+Nextcloud is our staff-only file share. It not only hosts our design and
+administration files, but also a number of shared resources. If you work
+in the Design or Content Development departments, you'll upload a lot of
+your work to Nextcloud.
+
+.. _gstaff_nextcloud_settings:
+
+Settings
+-------------------------------------------
+
+When you first log into Nextcloud, click your profile photo in the upper-right
+corner and select :guilabel:`Personal settings`. This will take you to your
+profile and settings screen.
+
+Click :guilabel:`Notifications` at left. Under :guilabel:`Activity`, change
+what notifications you wish you receive. In particular, you will probably
+want to uncheck most of the :guilabel:`Email` notifications to keep your
+inbox from getting overwhelming.
+
+If you'll be using Nextcloud regularly, you may consider setting up the
+Nextcloud Client on your computer. See :ref:`nextcloud_client`.
+
+.. _gstaff_nextcloud_tasks:
+
+Regular Nextcloud Tasks
+-------------------------------------------
+
+* Access shared files, including design assets.
+
+* Upload work. (Content Development, Design)
+
+* Review and proofread files. (Content Development, Design)
+
+* Access your library loans.
+
+When you upload files meant to be shared, be sure to place them in the
+appropriate shared folder.
 
 Next Steps
 ===========================================

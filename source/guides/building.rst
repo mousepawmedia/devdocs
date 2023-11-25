@@ -6,10 +6,10 @@ Guide: Building Code
 The first time you work with our repositories code, you'll want to
 :ref:`set up your development environment <genv>`.
 
-Our builds are currently tested for Ubuntu 18.04 LTS, but they should work on
+Our builds are currently tested for Ubuntu 22.04 LTS, but they should work on
 any up-to-date Debian-based distro. They'll also probably work on almost
 any modern Linux system (though we haven't tested.) We will be adding official
-support for building on Mac OS X and Windows later.
+support for building on macOS and Windows later.
 
 Quick Guide
 ====================================
@@ -27,12 +27,12 @@ If you plan to work on **Anari**, follow sections...
 3. :ref:`gbuild_pawlib_buildingdep`
 4. :ref:`gbuild_systems`
 
-Developing for PawLIB
+Developing for Arctic Tern
 ------------------------------------
 
-If you plan to work on **PawLIB**, follow sections...
+If you plan to work on **Arctic Tern**, follow sections...
 
-1. :ref:`gbuild_libdeps` (you actually only need CPGF and eventpp)
+1. :ref:`gbuild_libdeps` (you actually only need eventpp)
 2. :ref:`gbuild_pawlib_buildingdev`
 3. :ref:`gbuild_systems`
 
@@ -54,6 +54,8 @@ If you plan to work on **SIMPLEXpress**, follow sections...
 2. :ref:`gbuild_pawlib_buildingdep`
 3. :ref:`gbuild_systems`
 
+.. _gbuild_branches:
+
 A Note On Branches
 ====================================
 
@@ -70,10 +72,12 @@ with whatever branch name you're switching to:
 
     git checkout -b devel origin/devel
 
+.. _gbuild_deps:
+
 Dependencies
 ====================================
 
-.. _gbuild_sysdeps:
+.. _gbuild_deps_sys:
 
 System Dependencies
 ------------------------------------
@@ -85,7 +89,8 @@ change that sooner than later.)
 * `Cairo <https://www.cairographics.org/download/>`_
 * `Simple DirectMedia Layer (SDL2) <https://www.libsdl.org/>`_
 
-On Ubuntu/Debian systems, these can be installed via:
+On Ubuntu/Debian systems, or Windows Subsystem for Linux, these can be
+installed via:
 
 ..  code-block:: bash
 
@@ -97,42 +102,36 @@ On Fedora:
 
     sudo yum install cairo-devel SDL2-devel
 
-On Mac:
+On macOS:
 
 ..  code-block:: bash
 
     sudo port install cairo sdl2
 
-On Windows, you can install ``cairo`` and ``SDL2`` with ``vcpkg``.
-Alternatively, you may be able to find binaries or compile it yourself
-(see project sites for instructions.)
+Although it's not officially supported by MousePaw Media, if you're compiling
+on Windows directly (without WSL), you can install ``cairo`` and ``SDL2``
+with ``vcpkg``. Alternatively, you may be able to find binaries or compile it
+yourself (see project sites for instructions.)
 
-.. _gbuild_libdeps:
+.. _gbuild_deps_libdeps:
 
 libdeps
 ------------------------------------
 
-..  sidebar:: Why libdeps?
-
-    It may come as a surprise to some that we track all our third-party
-    dependencies in our own repository, but there really is a good reason. This
-    approach allows us to control the exact version of any given library, as
-    well as push updates and patches to all our developers quickly. That way,
-    we're always on the same page!
-
-We try to keep our library dependencies to a minimum. You can quickly build all
-(except one) of our third-party dependency static libraries using our
-``libdeps`` repository.
+We track all our statically-linked and header-only third-party C++ dependencies
+in a single repository we control, ``libdeps``. This allows us to control the
+exact version of any given library, and ensure all our developers are using it.
+We try to keep our library dependencies to a minimum.
 
 For the complete list of libraries and their versions, see the
 :file:`CHANGELOG.md` file in the ``libdeps`` repository.
 
-.. _gbuild_libgit_building:
+.. _gbuild_deps_libdeps_building:
 
-Building libdeps
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Updating libdeps
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Clone `libdeps <https://phab.mousepawmedia.com/source/libdeps/>`_ into
+Clone `libdeps <https://gitlab.mousepawmedia.com/platform/libdeps>`_ into
 your repositories folder. For best results, all MousePaw Media repositories you
 clone should be in the same directory. Then run...
 
@@ -152,7 +151,7 @@ look for the library files at these locations by default.
 ..  warning:: To make it easier to update ``libdeps`` later, DO NOT EVER commit
     changes on the ``devel``, ``fresh``, or ``stable`` branches directly.
 
-.. _gbuild_libgit_aclocal:
+.. _gbuild_deps_libdeps_aclocal:
 
 Fixing Opus "aclocal" Build Errors
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -168,7 +167,7 @@ If the Opus build fails on an Ubuntu-based system with a message about
 Hereafter, you can just run ``make opus`` to build that library (or ``make
 ready`` to build it along with all the others.)
 
-.. _gbuild_libdeps_updating:
+.. _gbuild_deps_libdeps_updating:
 
 Updating libdeps
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -187,64 +186,88 @@ working on (``fresh`` or ``stable``)
     git pull origin devel
     make ready
 
-.. _gbuild_pawlib:
+.. _gbuild_library:
 
-PawLIB
+Building Projects as Dependency
 ======================================
 
-Most of our repositories rely on PawLIB, which contains many common, helpful
-utilities and features.
+..  sidebar:: Our libraries mostly depend on each other, so we recommend you
+    clone and build them all in the order shown below. Libraries listed on the
+    same number below do not depend on one another, but on the preceding
+    libraries.
 
-Clone `pawlib <https://phab.mousepawmedia.com/source/pawlib/>`_
-into your repositories folder. For best results, all MousePaw Media repositories
-you clone should be in the same directory.
+    1. libdeps
+    2. Arctic Tern, Onestring
+    3. IOSqueak
+    4. Goldilocks
+    5. Nimbly
+    6. SIMPLEXpress
+    7. Anari, Stormsound, Ratscript
 
-All of the following commands will assume you're working in the PawLIB
-repository folder, so make sure you run...
+We have developed a number of libraries that we use throughout our projects.
 
-..  code-block:: bash
+* `Arctic Tern <https://gitlab.mousepawmedia.com/platform/arctic-tern/>`_
+* `Goldilocks <https://gitlab.mousepawmedia.com/platform/goldilocks/>`_
+* `IOSqueak <https://gitlab.mousepawmedia.com/platform/iosqueak/>`_
+* `Nimbly <https://gitlab.mousepawmedia.com/platform/nimbly/>`_
+* `Onestring <https://gitlab.mousepawmedia.com/platform/onestring/>`_
+* `SIMPLEXpress <https://gitlab.mousepawmedia.com/platform/simplexpress/>`_
 
-    cd pawlib
+We also have a few other projects:
 
-.. _gbuild_pawlib_buildingdep:
+* `Anari <https://gitlab.mousepawmedia.com/platform/anari>`_
+* `Ratscript <https://gitlab.mousepawmedia.com/platform/ratscript/>`_
+* `Stormsound <https://gitlab.mousepawmedia.com/platform/stormsound/>`_
 
-Building PawLIB: As Dependency
--------------------------------------
+Clone the desired repository into your repositories folder. For best results,
+all MousePaw Media repositories you clone should be in the same directory.
 
-PawLIB relies on eventpp and (decreasingly) CPGF, so make sure you've
-:ref:`built libdeps <gbuild_libgit_building>`, or otherwise
-:ref:`specified alternate locations for the libraries <gbuild_systems_conf>`
+Consult with ``README.md`` in the repository you're building for what
+dependencies the projects has, and clone/build each of those first.
 
-Then, simply run...
+Then, run the following *within* the repository you clone:
 
 ..  code-block:: bash
 
     make ready
 
-.. _gbuild_pawlib_buildingdev:
+The library is now available to all of the other repositories.
 
-Building PawLIB: For Developing
------------------------------------------
+.. _gbuild_dev:
 
-If you want to test PawLIB or help build it, you should start from the
-``devel`` branch.
+Building for Development
+======================================
+
+If you want to help build or test any of our projects, the build command will
+be slightly different for you.
+
+First, for development, make sure you're working on the ``devel`` branch:
+
+..  code-block:: bash
+
+    git checkout devel
 
 ..  important:: Remember to create a new branch if you plan to make any changes!
 
-We have a tester built in to PawLIB, so you can run Goldilocks tests and
-benchmarks on the fly. To build that, run...
+Each of our library projects have a dedicated tester command-line application
+in the same repository. This allows us to run arbitrary code, as well as our
+tests (via Goldilocks). To build and run the tester with debugging symbols,
+run the following within the repository:
 
 ..  code-block:: bash
 
     make tester_debug
+    ./tester_debug
 
-After the build, you can start the tester via...
+To build and run the tester *without* debugging symbols -- and thus, with
+better performance -- run the following within the repository:
 
 ..  code-block:: bash
 
-    ./tester_debug
+    make tester
+    ./tester
 
-It's that simple.
+You can configure your IDE to use these as the build and execute commands.
 
 .. _gbuild_systems:
 
@@ -252,10 +275,13 @@ Repository Build Systems
 =====================================
 
 All of our own project repositories follow the same structure, and have similar
-build systems.
+build systems. You can learn more about a repository's build system by running
+the :code:`make` command from the root of the repository.
 
-You can learn more about a repository's build system by running ``make`` from
-the root of the repository.
+The canonical template build system is maintained in the
+`test repository <https://gitlab.mousepawmedia.com/devops/test/>`_. You can
+also use this repository for testing arbitrary code within our standard
+build environment.
 
 .. _gbuild_systems_conf:
 
@@ -272,38 +298,37 @@ Folders marked with (*) are untracked in the Git repository:
 ..  code-block:: text
 
     Repository
+    ├── build_system ← the source code for the build system itself.
     ├── docs ← Sphinx documentation.
-    │   ├── build (*) ← The compiled documentation.
-    │   ├── source ← The documentation source files.
-    │   │   └── _themes ← The Sphinx theming files.
-    │   └── Makefile ← The Makefile that automatically runs CMake.
-    ├── library (*) ← Where 'make ready' puts the compiled library and its headers.
-    ├── library-source ← The library source code.
-    │   ├── build_temp (*) ← Temporary build stuff. Also where CMake is run from.
+    │   ├── build (*) ← the compiled documentation.
+    │   ├── source ← the documentation source files.
+    │   │   └── _themes ← the Sphinx theming files.
+    │   └── Makefile ← the Makefile that automatically runs CMake.
+    ├── library (*) ← where 'make ready' puts the compiled library and its headers.
+    ├── library-source ← the library source code.
+    │   ├── build_temp (*) ← temporary build stuff. Also where CMake is run from.
     │   ├── include
-    │   │   └── library ← The library's header files (.hpp).
-    │   ├── lib (*) ← The compiled library (copied from here to ../library)
-    │   ├── obj (*) ← Temporary build stuff.
-    │   ├── src ← The library's implementation files (.cpp).
-    │   ├── CMakeLists.txt ← The CMake build instructions for the library.
-    │   └── Makefile ← The Makefile that automatically runs CMake.
-    ├── library-tester ← The library tester.
-    │   ├── bin (*) ← The compiled tester.
-    │   ├── build_temp (*) ← Temporary build stuff. Also where CMake is run from.
-    │   ├── include ← The tester's header files (.hpp).
-    │   ├── src ← The tester's implementation files (.cpp).
-    │   ├── CMakeLists.txt ← The CMake build instructions for the tester.
-    │   └── Makefile ← The Makefile that automatically runs CMake.
-    ├── .arcconfig ← Configuration for Phabricator Arcanist.
-    ├── .arclint ← Configuration for Arcanist linters.
-    ├── .gitignore ← Untracks temporary build stuff and other cruft.
-    ├── build.config.txt ← The template configuration file.
-    ├── BUILDING.md ← User instructions for building.
-    ├── CHANGELOG.md ← The list of versions and their changes.
-    ├── default.config ← The default configuration file.
-    ├── LICENSE.md ← The project's license.
-    ├── Makefile ← The project's master Makefile.
-    └── README.md ← The README file.
+    │   │   └── library ← the library's header files (.hpp).
+    │   ├── lib (*) ← the compiled library (copied from here to ../library)
+    │   ├── obj (*) ← temporary build stuff.
+    │   ├── src ← the library's implementation files (.cpp).
+    │   ├── CMakeLists.txt ← the CMake build instructions for the library.
+    │   └── Makefile ← the Makefile that automatically runs CMake.
+    ├── library-tester ← the library tester executable source code.
+    │   ├── bin (*) ← the compiled tester.
+    │   ├── build_temp (*) ← temporary build stuff. Also where CMake is run from.
+    │   ├── include ← the tester's header files (.hpp).
+    │   ├── src ← the tester's implementation files (.cpp).
+    │   ├── CMakeLists.txt ← the CMake build instructions for the tester.
+    │   └── Makefile ← the Makefile that automatically runs CMake.
+    ├── .gitignore ← untracks temporary build stuff and other cruft.
+    ├── build.config.txt ← the template configuration file.
+    ├── BUILDING.md ← user instructions for building.
+    ├── CHANGELOG.md ← the list of versions and their changes.
+    ├── default.config ← the default configuration file.
+    ├── LICENSE.md ← the project's license.
+    ├── Makefile ← the project's master Makefile.
+    └── README.md ←the README file.
 
 Adding New Files
 ---------------------------------------

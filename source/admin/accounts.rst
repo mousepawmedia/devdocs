@@ -140,6 +140,32 @@ At the bottom, click :guilabel:`Create user`. An email will be sent to the
 specified MousePaw Media email address with a link to reset the GitLab password
 and log in.
 
+You **MUST** add the user to the Staff group for them to access some other
+parts of the staff network. To do this, from the main page of GitLab, click
+:guilabel:`Groups` on the sidebar, and click :guilabel:`Staff` on the group
+list.
+
+On the sidebar for the group, click :guilabel:`Manage` and :guilabel:`Members`.
+Click :guilabel:`Invite members` in the upper-right corner, and enter the
+username of the user you want to add. Select the role :code:`Developer`.
+(We reserve :code:`Owner` for admins only.) Then click :guilabel:`Invite`.
+The user will be added to the Staff group.
+
+Additionally, add them as :code:`Developer` to the other groups for which
+they should have access:
+
+* Applications: for Applications (Software Engineering) department.
+* Content Development: for Content Development department.
+* Designers: for Design department.
+* DevOps: for DevOps (Software Engineering) department.
+* Platform: for Platform (Software Engineering) department.
+
+Additionally, **only** for managers, add the following if appropriate:
+
+* Hiring: grants read access to hiring records.
+* Librarians: grants ability to manage entire eBook collection on Nextcloud.
+* Management: access to all management records, and admin abilities on Nextcloud.
+
 ..  _admin_accounts_new_discourse:
 
 Discourse Account
@@ -147,7 +173,7 @@ Discourse Account
 
 Our Discourse instance's account management is delegated entirely to
 our GitLab instance. Users will need to sign up there with their GitLab account
-before you can grant them permissions.
+*before* you can grant them permissions.
 
 Once they've created their account, go to :guilabel:`Admin` and
 :guilabel:`Users`. Click :guilabel:`New` to sort by newly created accounts,
@@ -159,6 +185,17 @@ For staff, scroll down to the :guilabel:`Permissions` section. Click
 
 ..  note:: we grant moderator privileges to all staff members. This makes it
     easier to maintain our community.
+
+..  _admin_accounts_new_nextcloud:
+
+Nextcloud Account
+-------------------------------------------
+
+If you added the user's GitLab account to the Staff group, they will have
+access to Nextcloud automatically. Their name, profile picture, groups, and
+(public) email address will be copied from GitLab to Nextcloud every time
+they log in. Group membership is automatic, and is syncronized to the
+GitLab groups the user is a member of.
 
 ..  _admin_accounts_suspend:
 
