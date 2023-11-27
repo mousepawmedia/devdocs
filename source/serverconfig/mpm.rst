@@ -1059,7 +1059,7 @@ Connect to the PostgreSQL instance and install the required extensions, like thi
     sudo su - postgres
     psql
 
-..  code-block:: sql
+..  code-block:: file:///home/jason/repos
 
     CREATE EXTENSION IF NOT EXISTS pg_trgm;
     CREATE EXTENSION IF NOT EXISTS btree_gist;

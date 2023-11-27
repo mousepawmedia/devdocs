@@ -3,18 +3,15 @@
 Guide: Reviewing Code
 ##############################
 
-We have two means of reviewing code: **pre-commit** and **post-commit**.
-In general, we try to emphasize the *pre-commit* review, to avoid landing
-broken code.
-
-**Differential** is used for pre-commit review (see :ref:`phab_differential`),
-while **Audit** is used for post-commit review (see :ref:`phab_audit`). Both
-follow a very similar workflow, which is covered in the linked documentation.
+**GitLab Merge Proposals** are how we review code before it is merged into
+the project's main branches.
 
 ..  note:: If you're looking for a more generic version of this guide, perhaps
     for application outside of MousePaw Media, check out the article
     *`10 Principles of a Good Code Review <https://dev.to/codemouse92/10-principles-of-a-good-code-review-2eg>`_*
     by Jason C. McDonald on dev.to().
+
+.. _greview_who:
 
 Who Can Review?
 ==============================
@@ -34,13 +31,15 @@ insight on how to improve their code; the reviewer can learn new techniques
 and ideas from the code they're reviewing; the bystanders get the benefits
 of *both*.
 
-This is the main reason why Differential Revisions (for programming, anyway)
+This is the main reason why Merge Requests (for programming, anyway)
 are almost always open to the public. Anyone can contribute valuable feedback,
 and anyone can learn code reviews!
 
 In short, **don't be afraid to contribute feedback**! Code reviewing can be
 one of the most valuable contributions you can make to MousePaw Media's
 development work.
+
+.. _greview_principles:
 
 Principles of a Good Review
 ==============================
@@ -59,7 +58,7 @@ as a fairly accurate measure of how well you reviewed the code.
 
 Aim to always suggest at least *one* specific improvement to the code (not just
 style) on the initial review. Follow-up reviews may not require this; otherwise
-we'd never land code!)
+we'd never merge code!)
 
 Principle #2
 -------------------------------
@@ -93,16 +92,14 @@ Principle #3
 -------------------------------
 
 **Don't assume the code works - build and test it yourself!**
-You should actually pull down the code (via `arc patch`) and test it out.
-Take note of the Test Plan described at the top of the Revision. If there is
-no Test Plan, request one from the author.
+You should actually pull down the code and test it out.
 
 When testing code, make sure you're building using the project's build system
-and a supported build environment. If Harbormaster reported successfully
+and a supported build environment. If the CI/CD pipeline reported successfully
 building the code, you should be able to as well.
 
-On this note, if the harbormaster build *failed*, you should require that the
-code successfully build before it can be landed!
+On this note, if the pipeline *failed*, this must be fixed before the Merge
+Request can be merged.
 
 Once you've compiled the code, *actually test it*. Most projects have a tester
 that provides space for arbitrary code; you can use this to try things out.
@@ -175,7 +172,7 @@ a broken function should not be exposed in a non-experimental class.
 Another way to look at this matter is this: **if the code was shipped to
 end-users on the next commit, it may be *functionally incomplete*, but
 it should NOT be *broken*.** In reality, this goal is rarely achieved, but the
-perspective will help prevent bad code from landing to the repository.
+perspective will help prevent bad code from merging to the repository.
 
 Principle #7
 -------------------------------
@@ -183,14 +180,14 @@ Principle #7
 **Check documentation, tests, and build files.** Good code doesn't just
 include code, it includes all of the trappings that go with it.
 
-A finished Differential Revision should contain all of the following:
+A finished Merge Request should contain all of the following:
 
 * **Tests covering the new code.** Review these as strictly as you do the code
   itself, to ensure the test will fail if there is a problem.
 
 * **Documentation for the new code.** The best documentation is written in
   tandem with the code itself. Don't accept documentation *later*; it should
-  be present within the Revision itself!
+  be present within the Merge Request itself!
 
 * **Build files updated for the changes.** Any time code files are added,
   removed, or renamed, the build files need to reflect those changes.
@@ -222,7 +219,7 @@ broken or poorly styled, optimization is only going to make things worse.
 Principle #9
 -------------------------------
 
-**Follow up on reviews.** After suggesting changes to a Revision, or after
+**Follow up on reviews.** After suggesting changes to a Merge Request, or after
 Raising Concerns to a Commit, you should be prepared to review it again.
 Ensure the necessary changes were made, and any problems you found were
 reasonably resolved.
@@ -246,52 +243,53 @@ If you do realize you've made a mistake in a review, the best thing you can
 do is own up to it. Raise a Concern on the commit if appropriate, or else
 file a Bug Report.
 
-Differential Checklist
+.. _greview_checklist:
+
+Merge Checklist
 ==============================
 
-Every Differential Revision is expected to meet all the criteria of the
-`**Differential Checklist** <https://phab.mousepawmedia.com/P1>`_
-before it can be landed.
+Every Merge Request is expected to meet all the following criteria before
+it can be merged:
 
 Reviewers are encouraged to help ensure compliance. It doesn't matter *who*
-you are, if you see a problem on a Revision, or even a Commit, speak up!
+you are, if you see a problem on a Merge Request, or even a Commit, speak up!
 
-Every Revision must...
+Every Merge Request must...
 
-(1) Accomplish the feature(s) it was designed to accomplish.
-    [In some cases, the feature itself may be dropped, and only bugfixes and/or
-    optimizations landed instead.]
+(1) Accomplish the goals(s) it was designed to accomplish.
 
-(2) Have merged all changes from  `devel`  into itself, and all conflicts
-    resolved. (:code:`$ git pull origin devel `)
+(2) Comply with Conventional Commits for all commit messages.
 
-(3) Have binaries and unnecessary cruft untracked and removed. (Keep an eye on
+(3) Be rebased against the latest version of  ``devel`` (or whatever branch
+    is targeted), and all conflicts resolved (:code:`$ git pull origin devel `).
+    (We do NOT use the "squash" or "merge" Git strategies.)
+
+(4) Have binaries and unnecessary cruft untracked and removed. (Keep an eye on
     `.gitignore`!)
 
-(4) Compile and run properly - this should be confirmed via
-    Harbormaster/Jenkins (if available).
+(5) Compile and run properly. (Confirmed via the CI/CD Pipeline.)
 
-(5) Be free of compiler errors and warnings (must compile with
-    `-Wall -Wextra -Werror`).
+(6) Be free of compiler errors and warnings; for C++, must compile with
+    `-Wall -Wextra -Werror`. (Confirmed via the CI/CD Pipeline.)
 
-(6) Be Valgrind pure (no memory leaks detected).
+(7) For C++, be Valgrind pure, meaning no memory leaks are detected.
+    (Confirmed via the CI/CD Pipeline.)
 
-(7) Comply with Coding and Technical standards.
+(8) Comply with Coding and Technical standards.
 
-(8) Be free of linter errors. ($ arc lint --lintall)
+(9) Include tests validating the accomplishment of goals in (1). These tests
+    must be written in the project's test framework, if relevant.
 
-(9) Be fully CSI commented.
+(10) Be fully Commenting-Showing Intent commented.
 
-(10) Have an up-to-date build script (generally CMake) if relevant.
+(11) Have an up-to-date build script (generally CMake) if relevant.
 
-(11) Contain relevant LIT tests, if the project is Goldilocks capable.
+(12) Be reviewed, built, tested, and approved by at least one trusted
+     reviewer.
 
-(12) Have a Test Plan, generally containing a list of Goldilocks tests
-     the reviewer should run.
+(13) Have up-to-date Sphinx documentation, which compiles with no warnings.
 
-(13) Be reviewed, built, tested, and approved by at least one trusted
-     reviewer (Staff or Trusted Contributor).
+(14) Have all reviewer comments processed and marked "Done".
 
-(14) Have up-to-date Sphinx documentation, which compiles with no warnings.
-
-(15) Have all reviewer comments processed and marked "Done".
+Don't worry! Although the list looks long, you can stay on top of most of these
+items as you code, while some others require minimal effort.

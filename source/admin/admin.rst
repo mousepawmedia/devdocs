@@ -20,5 +20,4 @@ Table of Contents
     :maxdepth: 2
 
     accounts
-    eco
     email

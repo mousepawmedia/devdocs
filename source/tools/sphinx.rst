@@ -21,8 +21,7 @@ Installing Sphinx
 Installing Sphinx on Linux
 ------------------------------
 
-In Ubuntu, Sphinx is very easy to install. You can install it for either
-Python 2 or Python 3. Since we use the latter, we'll install that.
+In Ubuntu, Sphinx is very easy to install, as it works with Python 3.
 
 To install on Ubuntu, simply run...
 
@@ -76,8 +75,8 @@ Choosing an Editor
 ReST files are just plain text files written in the ReStructuredText markup
 language. Thus, you can edit them in any text editor.
 
-However, we've found that :ref:`vscode` and :ref:`atom` handle ReST files
-uncommonly well. You can also use a plain text and code editor, such as
+However, we've found that :ref:`vscode` handles ReST files uncommonly well.
+You can also use a plain text and code editor, such as
 :ref:`geany`.
 
 If you're using VSCode, make sure you install the **Esbonio** extension

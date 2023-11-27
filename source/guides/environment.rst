@@ -49,11 +49,11 @@ support for them:
 * You can have `Visual Studio use the Clang compiler <https://devblogs.microsoft.com/cppblog/use-any-c-compiler-with-visual-studio/>`_.
 
 
-Git and Arcanist
+Git
 -------------------------------------
 
 Regardless what part of the project you're working on, you'll need access to our
-Git repositories. For setup instructions for Git and Arcanist, see :ref:`git`.
+Git repositories. For setup instructions for Git, see :ref:`git`.
 
 C/C++ Development
 -------------------------------------
@@ -145,12 +145,12 @@ work:
 ..  note:: We do not provide technical support for third-party development
     tools on non-Debian systems.
 
-Git and Arcanist
+Git
 -------------------------------------
 
 Content development still involves code! Regardless what part of the project
 you're working on, you'll need access to our Git repositories.
-For setup instructions for Git and Arcanist, see :ref:`git`.
+For setup instructions for Git, see :ref:`git`.
 
 Sphinx Development
 -------------------------------------

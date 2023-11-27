@@ -27,20 +27,9 @@ Guides
     guides/environment
     guides/building
     guides/revision
-    guides/taskfinder
-    guides/taskcreate
     guides/reviewing
     guides/livecollab
     guides/staff
-
-Network
----------------------------
-
-..  toctree::
-    :maxdepth: 2
-
-    network/programmingworkflow
-    network/nextcloud
 
 Development Tools
 ---------------------------
@@ -66,7 +55,6 @@ If you can't decide on one, try :ref:`vscode`!
 ..  toctree::
     :maxdepth: 2
 
-    tools/atom
     tools/geany
     tools/vscode
 

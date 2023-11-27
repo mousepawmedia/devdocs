@@ -1,6 +1,6 @@
 ..  _git:
 
-Git and Arcanist
+Git
 ###############################
 
 All of our code is stored on our own private Git repositories. For those who

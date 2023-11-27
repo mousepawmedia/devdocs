@@ -8,147 +8,109 @@ your time and skills to help make our projects awesome.
 
 This tutorial will help you get started as an open source contributor.
 
-Logging On
+GitLab
 ===============================
 
-Phabricator
--------------------------------
+Nearly all of our development work takes place on our **GitLab**,
+located at `gitlab.mousepawmedia.com <https://gitlab.mousepawmedia.com>`_.
+Your MousePaw Media GitLab account also serves as your login for other
+parts of our development network.
 
-Nearly all of our development work takes place on **DevNet Phabricator**,
-located at `phab.mousepawmedia.com <https://phab.mousepawmedia.com>`_.
+1. Log in or create an account now.
 
-1. Log into your `GitHub <https://github.com/>`_ account. If you haven't
-   already created a GitHub account, do that now.
+2. Read through and sign the **Community Rules**, **Terms of Development**, and
+**Terms of Use**.
 
-2. Go to `phab.mousepawmedia.com <https://phab.mousepawmedia.com>`_
-   and click the :guilabel:`Log In or Register (GitHub)` button towards the
-   bottom of the screen.
+3. You should now see the home page of our GitLab. Click your profile
+   picture at the top of the sidebar, and click :guilabel:`Edit Profile`.
+   Fill out as much as you wish, but especially the following.
+   Make sure you click :guilabel:`Update profile settings` when you're done.
 
-..  note:: The LDAP username and password are for staff only. Don't worry
-    about that.
+   * Public avatar
+   * Time zone
+   * Full name
+   * Pronouns
+   * Public email
 
-3. Read through and sign the **Community Rules**.
+4. Click :guilabel:`Preferences` on the left sidebar. Here, you may define
+  the appearance and behavior of GitLab to match your preferences.
 
-4. You should now see the home page of DevNet Phabricator. Click your profile
-   picture on the top bar, towards the right, and select :guilabel:`Settings`.
-   Review and change the following *at minimum*.
+To learn more about how to use GitLab, check out their comprehensive
+documentation at `GitLab Docs <https://docs.gitlab.com/>`_. You can acces
+this, as well as see the current version of GitLab we are running, by clicking
+:guilabel:`Help` in the lower-left corner of GitLab anytime.
 
-   Be sure to click :guilabel:`Save Changes` on each page!
+..  note:: We are running the Free Self-Hosted tier of GitLab EE, so some
+    features are not available to us. In the documentation, take note when
+    a feature is indicated as being for the Premium or Ultimate tier or
+    SaaS offering.
 
-   * :guilabel:`Account`: Set desired ``Pronoun``.
-
-   * :guilabel:`Date and Time`: Set ``Timezone``.
-
-   * :guilabel:`Notifications`: We recommend setting ``Notifications`` to
-    ``Web and Desktop``, so you'll get the latest notifications as they happen
-    while you're logged onto Phabricator. You may also need to grant permission
-    for the desktop notifications to work.
-
-   * :guilabel:`Email Addresses`: Ensure your desired email address is added to
-    this list, and ``Verify`` it. Verification emails come from
-    ``noreply@mousepawmedia.com``; you may need to check your spam bin if you
-    don't get it.
-
-   * :guilabel:`Email Delivery`: Set ``Self Actions`` to ``Disable``. You may also
-     choose to disable all email notifications under ``Email Notifications`` if
-     you plan to check Phabricator manually. Otherwise, if you only want *some*
-     emails, you can select which notifications to receive via email on the
-     :guilabel:`Email Preferences` pane.
-
-5. Click your profile picture on the top bar, towards the right, and select
-   :guilabel:`Manage`. Click :guilabel:`Edit Profile` at right and fill out
-   your user profile.
-
-That's it! You're now set up to use Phabricator! For complete
-instructions on using Phabricator, see :ref:`phab`.
-
-Chatting With Us
+Discourse
 ===============================
 
-You can join our chatroom via **IRC**. We highly recommend you join the
-chatroom, where you can talk with MousePaw Media staff and other community
-members.
+Most of our collaboration takes place on Discourse. It is home to our
+community, as well as Q&A, project discussion, our issue tracker, and
+our software product specifications.
 
-You can join the ``#mousepawmedia`` room on the ``irc.libera.chat`` IRC
-network. The chatroom is bridged to our Mattermost chat via the
-``mousepawmedia``` bot.
+You can sign into Discourse at ``https://discourse.mousepawmedia.com``
+using your MousePaw Media GitLab account.
 
-If you want to try IRC, but don't know how to get started, check out
-`https://libera.chat <https://libera.chat/>`_, or see our :ref:`irc` guide.
+Be sure to read the community rules by clicking the :guilabel:`FAQ` button
+from the left sidebar.
 
-Development Environment
-===============================
+Reading and Posting
+-----------------------------------
+
+When you first go to Discourse, you'll start on the Home screen. This
+displays all the categories, as well as the latest posts.
+
+Click the "General" category, and then click the "Personal Introductions" topic.
+After reading as much as you want, click the :guilabel:`Reply` button at
+the bottom of the topic (*not* the one at the bottom of each post) to create
+your own post on the topic.
+
+..  important:: Reply to the "Personal Introductions" topic with an introduction
+    of yourself.
+
+You can learn more about using Discourse from the "Discourse New User Guide"
+under the "General" category.
+
+..  important:: Read "Discourse New User Guide".
+
+Issue Tracker
+-----------------------------------
+
+We are in the process of building our own issue tracker. In the meantime,
+Discourse is serving as our issue tracker, and will continue to be the
+staging area for community-reported issues.
+
+You can view the issue tracker by visiting the "Issue Tracker" category,
+or by clicking :guilabel:`Issue Tracker` on the left sidebar.
+
+If you're looking for easy tasks to start with, look for ones that have
+been tagged with low Friction scores (f1 or f2) and low Relativity scores
+(r1 or r2). (You can learn more about Friction and Relativity from the
+`Quantified Tasks website <http://quantifiedtasks.org/>`_).
+
+Getting Started with Development
+===================================
 
 You should start by setting up your :ref:`Development Environment <genv>`.
 
-Getting Started
-===============================
-
-A Quick Tour of Phabricator
--------------------------------
-
-The first time you log into Phabricator, it can look a bit overwhelming.
-Don't panic! There are only a few things you need. We've listed them here
-in the relative order they appear on the main menu on the Phabricator
-home page (a.k.a. ``Right Now``).
-
-* **Getting Started**: Instructions to get started.
-* **Maniphest**: Task and bug tracker. Similar to GitHub Issues.
-* **Ponder**: Q&A, StackOverflow style.
-* **Phriction**: Our wiki. You are welcome to create and edit pages.
-  Similar to GitHub Wiki.
-* **Projects**: Browse projects, groups, and other tags. Projects also have
-  **Workboards**, similar to GitHub Projects.
-* **Differential**: Submit and review code (pre-commit review). Similar to
-  GitHub Pull Requests.
-* **Audit**: Post-commit review. Raise concerns about code that's already been
-  committed.
-* **Diffusion**: Browse code and commits. Similar to GitHub Code.
-* **Task Finder [P]**: Find a programming task to work on.
-* **Reviewer Finder [P]**: Find someone who can review your code.
-* **Paste**: Pastebin with syntax highlighting, history, and comments.
-  Similar to GitHub Gist.
-
-From anywhere in Phabricator, you can always click the company logo in the
-upper left corner of the page to go Home.
-
-Getting the Code
--------------------------------
-
 Each of our projects has a dedicated Git repository. You should create a
 dedicated folder on your computer for the repositories you clone. You can find
-each repository's clone command on Phabricator Diffusion. If you need help
+each repository's clone command on our GitLab. If you need help
 with cloning a repository, see :ref:`git_importrepos`.
 
 After you have cloned a project repository, see its :file:`BUILDING.md` file
 for instructions on how to build the code for the first time.
 
-For our C++ projects, you will almost certainly need the following:
-
-* :code:`libdeps`: All our third-party dependency libraries.
-
-* :code:`pawlib`: Our in-house utility library.
-
 For help with working with these repositories and building code, see
 :ref:`gbuild`
 
-Finding a Task
--------------------------------
-
-You may already know what you want to work on. If you don't, you can use
-our **Task Finder** to locate one. See :ref:`gtaskfinder` to learn how to use
-that feature.
-
-Once you've found the task you want to work on, scroll to the bottom of its
-page, to the comment box. From :guilabel:`Actions...`, select
-:guilabel:`Assign/Claim`, and make sure your name is selected.
-
 Submitting the Code
--------------------------------
+===================================
 
-Once you're ready for the code to be reviewed, you should submit it to a
-Phabricator Differential.
-
-If you have set up Arcanist (see :ref:`git`), you can use it to create a new
-Differential Revision, or update the one you already have open. For more
-information on how to do this, see :ref:`grevision`.
+Once you're ready for the code to be reviewed, you should submit a Merge
+Request on the MousePaw Media GitLab. For more information on how to do this,
+see :ref:`grevision`.

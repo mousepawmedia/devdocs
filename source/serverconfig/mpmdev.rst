@@ -2226,7 +2226,7 @@ On the **remote build server**, run the following.
 
 Set the contents of that file to the following:
 
-..  code-block:: json
+..  code-block:: text
 
     [Service]
     ExecStart=

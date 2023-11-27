@@ -163,16 +163,12 @@ to your account.
 Staff Network
 =======================================
 
-The Staff Network consists of seven major components:
+The Staff Network consists of five major components:
 
 * SOGo [Email/Calendar] (mail.mousepawmedia.com)
-
 * GitLab (gitlab.mousepawmedia.com)
-
 * Discourse (discourse.mousepawmedia.com)
-
 * Nextcloud (cloud.mousepawmedia.com)
-
 * OrangeHRM (eco.mousepawmedia.com)
 
 We also use `Jitsi Meet <https://meet.jit.si/>`_ for regular communication.
@@ -938,7 +934,8 @@ want to uncheck most of the :guilabel:`Email` notifications to keep your
 inbox from getting overwhelming.
 
 If you'll be using Nextcloud regularly, you may consider setting up the
-Nextcloud Client on your computer. See :ref:`nextcloud_client`.
+Nextcloud Client on your computer.
+See `Download and install Nextcloud <https://nextcloud.com/install/>`_.
 
 .. _gstaff_nextcloud_tasks:
 
@@ -956,20 +953,35 @@ Regular Nextcloud Tasks
 When you upload files meant to be shared, be sure to place them in the
 appropriate shared folder.
 
+.. _gstaff_policies:
+
+Employee Handbook
+=======================================
+
+Our Employee Handbook outlines all the company policies, rules, and
+expectations for staff at MousePaw Media. You should be familiar with
+the latest version of these policies at all times.
+
+We publish the latest version of the Employee Handbook on our Nextcloud, under
+the ``ECO`` directory.
+
+..  important:: Download the latest copy of the Employee Handbook from
+    that link, and save it to your work computer for quick reference.
+    Read it through now.
+
+You will be emailed whenever a new version of the Employee Handbook is
+published.
+
 Next Steps
 ===========================================
 
 Previous MousePaw Media graduates have written up some tips for new interns!
-You can read those on the Phabricator Phriction wiki at the link below:
+You can read those on Discourse at the link below:
 
-..  important:: Read `Internship Tips <https://phab.mousepawmedia.com/w/resources/internship_tips/>`_
+..  important:: Read `Tips for Interns <https://discourse.mousepawmedia.com/t/tips-for-interns/90>`_
 
 You can learn more about the different parts of the Staff Network in the
 other sections of this documentation.
-
-If you're an intern, you can find a list of all your assignments on
-the appropriate Internship Checklist at the bottom of the
-`Assignments Phriction page <https://phab.mousepawmedia.com/w/assignments/>`_.
 
 Programmers should check out these sections next:
 

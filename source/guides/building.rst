@@ -3,6 +3,9 @@
 Guide: Building Code
 #####################################
 
+..  note:: This presently only relates to our C and C++ projects. Build
+    instructions for other projects will be added later.
+
 The first time you work with our repositories code, you'll want to
 :ref:`set up your development environment <genv>`.
 
@@ -10,49 +13,6 @@ Our builds are currently tested for Ubuntu 22.04 LTS, but they should work on
 any up-to-date Debian-based distro. They'll also probably work on almost
 any modern Linux system (though we haven't tested.) We will be adding official
 support for building on macOS and Windows later.
-
-Quick Guide
-====================================
-
-Before you dive in, you should take note of what you actually need for the
-project you're working on.
-
-Developing for Anari
-------------------------------------
-
-If you plan to work on **Anari**, follow sections...
-
-1. :ref:`gbuild_sysdeps`
-2. :ref:`gbuild_libdeps` (you need CPGF, eventpp, and Eigen)
-3. :ref:`gbuild_pawlib_buildingdep`
-4. :ref:`gbuild_systems`
-
-Developing for Arctic Tern
-------------------------------------
-
-If you plan to work on **Arctic Tern**, follow sections...
-
-1. :ref:`gbuild_libdeps` (you actually only need eventpp)
-2. :ref:`gbuild_pawlib_buildingdev`
-3. :ref:`gbuild_systems`
-
-Developing for Ratscript
-------------------------------------
-
-If you plan to work on **Ratscript**, follow sections...
-
-1. :ref:`gbuild_libdeps`
-2. :ref:`gbuild_pawlib_buildingdep`
-3. :ref:`gbuild_systems`
-
-Developing for SIMPLEXpress
-------------------------------------
-
-If you plan to work on **SIMPLEXpress**, follow sections...
-
-1. :ref:`gbuild_libdeps`
-2. :ref:`gbuild_pawlib_buildingdep`
-3. :ref:`gbuild_systems`
 
 .. _gbuild_branches:
 
