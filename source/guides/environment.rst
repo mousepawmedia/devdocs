@@ -36,8 +36,25 @@ Developing on Windows
 While we do not directly support Windows operating systems, if you're using
 Windows 10 or Windows 11, you can use the `Windows Subsystem for Linux <https://learn.microsoft.com/en-us/windows/wsl/install>`_.
 
-If you choose to use the Windows Subsystem for Linux, you can generally follow
-our instructions for Ubuntu Linux.
+To install WSL, start Terminal, and run the following:
+
+..  code-block:: powershell
+
+    wsl --install -d Ubuntu
+
+This will install the latest version of Ubuntu. Restart your computer after
+the installation is complete.
+
+In Terminal again, launch WSL:
+
+..  code-block:: powershell
+
+    wsl
+
+Follow the prompts to set up a user account for the Ubuntu instance.
+
+With Ubuntu installed via WSL, you can now use the instructions in this
+documentation for Ubuntu Linux.
 
 ..  note:: If you use the Windows Subsystem for Linux, you can also run some
     graphical Linux applications, by following `this guide from HowToGeek <https://www.howtogeek.com/261575/how-to-run-graphical-linux-desktop-applications-from-windows-10s-bash-shell/>`_.
@@ -47,7 +64,6 @@ support for them:
 
 * You may use `MinGW-w64 <https://www.mingw-w64.org/>`_ for C++ compiling.
 * You can have `Visual Studio use the Clang compiler <https://devblogs.microsoft.com/cppblog/use-any-c-compiler-with-visual-studio/>`_.
-
 
 Git
 -------------------------------------

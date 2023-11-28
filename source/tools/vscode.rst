@@ -38,12 +38,35 @@ For Windows and Mac, you can download and install VSCode from
 on another type of Linux system, you can find instructions on the official
 article `Running VS Code on Linux <https://code.visualstudio.com/docs/setup/linux>`_.
 
+Using with Windows and WSL
+=================================
+
+If you're using the Windows Subsystem for Linux (recommended for Windows users),
+you will need to install the WSL extension. This will allow you to run
+VSCode *within* WSL, and thus access your Ubuntu-based development environment.
+
+To do this, open the Extensions pane and search for the official "WSL" extension
+by Microsoft. Install it.
+
+On the far left of the bottom status bar of Visual Studio Code, you will now
+see a new button with two arrows pointing to each other. When you hover over it,
+you'll see :guilabel:`Open a Remote Window`. Click that button, and then from
+the menu that appears towards the top of the window, click
+:guilabel:`Connect to WSL`. This will launch a new window.
+
+You can know whether your current window is running in WSL by looking at this
+leftmost button on the status bar. If it's running in Ubuntu in WSL, for
+example, it will say :guilabel:`WSL: Ubuntu`.
+
 Extensions
 =================================
 
 We recommend the following extensions (author name in parenthesis). Make sure
 you read the description of each, so you understand what it does and how it
-should be configured:
+should be configured.
+
+..  note:: If you're using VSCode with WSL, ensure you install the extensions
+    from within a VSCode window running in WSL.
 
 * C/C++ (Microsoft)
 * C/C++ Advanced Lint (Joseph Benden)
