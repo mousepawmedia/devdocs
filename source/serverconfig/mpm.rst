@@ -1105,7 +1105,8 @@ additional services beyond what is included with the GitLab Omnibus installer,
 we need to switch away from the built-in NGINX server to our system Apache2
 instance, and from the internal PostgreSQL instance to the system instance.
 
-Change the URLs and `PASSWORD` instances as appropriate for your use cases.
+Change the URLs, `PASSWORD`, and `PUBLIC.IP.OF.SERVER` instances as appropriate
+for your use cases:
 
 ..  code-block:: ruby
 
@@ -1135,6 +1136,14 @@ Change the URLs and `PASSWORD` instances as appropriate for your use cases.
     gitlab_rails['db_password'] = "PASSWORD"
     gitlab_rails['db_host'] = '127.0.0.1'
     gitlab_rails['db_port'] = 5432
+
+    gitlab_rails['rack_attack_git_basic_auth'] = {
+        'enabled' => true,
+        'ip_whitelist' => ["127.0.0.1", "PUBLIC.IP.OF.SERVER"],
+        'maxretry' => 10,
+        'findtime' => 60,
+        'bantime' => 600
+    }
 
     mattermost['enable'] = false
 
