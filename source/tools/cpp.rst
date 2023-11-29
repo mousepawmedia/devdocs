@@ -147,7 +147,7 @@ essential packages for compiling code, by running the following...
 
 ..  code-block:: bash
 
-    sudo apt install build-essential cmake valgrind kcachegrind vim emacs cccc
+    sudo apt install build-essential cmake cppcheck valgrind kcachegrind vim emacs cccc
 
 You can install the same packages on most other versions of Linux.
 
