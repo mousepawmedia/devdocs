@@ -28,7 +28,7 @@ We'll also install the libraries and development tools we use for Python3.
 ..  code-block:: bash
 
     sudo apt update
-    sudo apt install python3 python3-pip python3-virtualenv python-dev python3-dev virtualenv
+    sudo apt install python3 python3-pip python3-virtualenv python3-dev virtualenv
 
 ..  warning:: Do not **ever** use :code:`sudo pip`. If you want to install
     packages via pip, use a virtual environment.
