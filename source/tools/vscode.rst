@@ -81,7 +81,7 @@ should be configured.
 * Esbonio (Swyddfa)
 * gitignore (CodeZombie)
 * GitLab Workflow (GitLab)
-* GitLens (Eric Amodio)
+* GitLens (GitKraken)
 * Live Share (Microsoft)
 * Makefile Tools (Microsoft)
 * markdownlint (David Anson)
