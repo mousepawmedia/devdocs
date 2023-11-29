@@ -74,7 +74,7 @@ and configure this tool using the following commands.
     sudo update-alternatives --install /usr/bin/cc cc /usr/bin/clang-16 30
     sudo update-alternatives --install /usr/bin/cc cc /usr/bin/gcc 10
     sudo update-alternatives --remove-all c++
-    sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-9 30
+    sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-16 30
     sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++ 10
 
 Once you've set all that up, you can easily switch between options using the
