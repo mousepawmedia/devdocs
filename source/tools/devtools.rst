@@ -9,7 +9,7 @@ language. You should strongly consider installing them.
 Dia
 ==================================
 
-**Dia** is a structured diagram editor, which we use for creating flowcharts.
+-*Dia** is a structured diagram editor, which we use for creating flowcharts.
 
 Installing for Linux
 ----------------------------------
@@ -39,7 +39,7 @@ You can download the official installer for Dia for Windows from
 Meld
 ==================================
 
-**Meld** is a visual tool for viewing and merging differences between files.
+-*Meld** is a visual tool for viewing and merging differences between files.
 It can be used to compare files and directories, and is compatible with
 Git.
 
@@ -89,7 +89,7 @@ the page.)
 Pencil
 ==================================
 
-**Pencil** is a GUI prototyping application from Evolus. It allows you to
+-*Pencil** is a GUI prototyping application from Evolus. It allows you to
 quickly and easily create GUI mockups for desktop and mobile applications.
 
 You can download for Linux, Mac, or Windows from
@@ -98,7 +98,7 @@ You can download for Linux, Mac, or Windows from
 SpeedCrunch
 ==================================
 
-**SpeedCrunch** is a powerful, high-precision scientific calculator. It has
+-*SpeedCrunch** is a powerful, high-precision scientific calculator. It has
 complete history and many advanced tools. Additionally, it's useful for making
 conversions between different numeric bases.
 

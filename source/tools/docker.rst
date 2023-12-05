@@ -17,8 +17,8 @@ Installing Docker Engine
 
 For Linux, we recommend Docker Engine over Docker Desktop:
 
-* `Install Docker Engine on Ubuntu <https://docs.docker.com/engine/install/ubuntu/>`_
-* `Install Docker Engine on Debian <https://docs.docker.com/engine/install/debian/>`_
+- `Install Docker Engine on Ubuntu <https://docs.docker.com/engine/install/ubuntu/>`_
+- `Install Docker Engine on Debian <https://docs.docker.com/engine/install/debian/>`_
 
 For Windows, we strongly advise installing Docker Engine within Windows
 Subsystem for Linux, as the user experience is much smoother in our experience.
@@ -30,7 +30,7 @@ Subsystem for Linux, as the user experience is much smoother in our experience.
 
 For macOS, you'll need to install Docker Desktop instead:
 
-* `Install Docker Desktop on macOS <https://docs.docker.com/desktop/install/mac-install/>`_
+- `Install Docker Desktop on macOS <https://docs.docker.com/desktop/install/mac-install/>`_
 
 ..  _docker_login:
 

@@ -69,11 +69,11 @@ What Is Free and Open Source?
 Open Source vs Free Software
 --------------------------------
 
-**Open Source** refers in part to a program's source code being publicly
+-*Open Source** refers in part to a program's source code being publicly
 visible. However, the definition does not stop here: Open Source is a distinct
 philosophy of software development. The Open Source Initiative [OSI] maintains
 the `official definition <https://opensource.org/osd>`_, which emphasizes
-**software freedom** - the right of *anyone* to freely view, modify, and
+-*software freedom** - the right of *anyone* to freely view, modify, and
 distribute the source code.
 
 By contrast, the philosophy of **Free Software** ("free" as in "free speech",
@@ -120,7 +120,7 @@ Isn't "Open Source" Insecure?
 
 A common myth is that "open source" software is unsafe, because the bad
 guys can read the source code. In reality, FOSS software is generally
-*safer* than proprietary software, because there are more developers
+-safer* than proprietary software, because there are more developers
 watching for bugs and security issues. The bad guys don't need to read the
 source to find holes (just look at all the viruses for Windows),
 but the good guys do need to read the source to solve the problem.

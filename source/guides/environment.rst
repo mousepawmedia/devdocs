@@ -8,8 +8,8 @@ for MousePaw Media development work.
 
 If you're not a programmer, you may jump to the relevent section of this guide:
 
-* :ref:`genv_content`
-* :ref:`genv_designprod`
+- :ref:`genv_content`
+- :ref:`genv_designprod`
 
 .. _genv_programming:
 
@@ -21,11 +21,11 @@ Operating Systems
 
 We officially support the following operating systems for development work:
 
-* Ubuntu Linux (recommended)
-* Debian Linux
-* Other Linux
-* macOS
-* FreeBSD
+- Ubuntu Linux (recommended)
+- Debian Linux
+- Other Linux
+- macOS
+- FreeBSD
 
 ..  note:: We do not provide technical support for third-party development
     tools on non-Debian systems.
@@ -62,8 +62,8 @@ documentation for Ubuntu Linux.
 There are two alternative approaches, although we do not provide technical
 support for them:
 
-* You may use `MinGW-w64 <https://www.mingw-w64.org/>`_ for C++ compiling.
-* You can have `Visual Studio use the Clang compiler <https://devblogs.microsoft.com/cppblog/use-any-c-compiler-with-visual-studio/>`_.
+- You may use `MinGW-w64 <https://www.mingw-w64.org/>`_ for C++ compiling.
+- You can have `Visual Studio use the Clang compiler <https://devblogs.microsoft.com/cppblog/use-any-c-compiler-with-visual-studio/>`_.
 
 Git
 -------------------------------------
@@ -76,9 +76,9 @@ C/C++ Development
 
 For C/C++ development:
 
-* **C/C++ compiler and toolchain**: Clang (recommended) or GCC.
-* **CMake**
-* **A C++ IDE**: We strongly recommend VSCode.
+- **C/C++ compiler and toolchain**: Clang (recommended) or GCC.
+- **CMake**
+- **A C++ IDE**: We strongly recommend VSCode.
 
 ..  note:: We have **no plans** to support MSVC. Use Clang for compiling on
     Microsoft Windows.
@@ -90,8 +90,8 @@ Python Development
 
 For Python development:
 
-* **Python 3**
-* **A Python IDE**: We strongly recommend VSCode.
+- **Python 3**
+- **A Python IDE**: We strongly recommend VSCode.
 
 For setup instructions, see :ref:`python`.
 
@@ -100,9 +100,9 @@ Sphinx Development
 
 For Sphinx development:
 
-* **Python 3**
-* **Sphinx**
-* **A code editor**: We strongly recommend VSCode.
+- **Python 3**
+- **Sphinx**
+- **A code editor**: We strongly recommend VSCode.
 
 For setup instructions, see :ref:`sphinx`.
 
@@ -111,8 +111,8 @@ Selecting an IDE
 
 We have guides for setting up several IDEs and editors...
 
-* :ref:`vscode` (recommended)
-* :ref:`geany`
+- :ref:`vscode` (recommended)
+- :ref:`geany`
 
 General Coding Tools
 -------------------------------------
@@ -120,10 +120,10 @@ General Coding Tools
 In addition to our language-specific tools, we also use the following
 tools for general work.
 
-* **Dia**: Flowcharting
-* **Meld**: Comparing and merging files.
-* **Pencil**: GUI prototyping
-* **SpeedCrunch**: Scientific calculator.
+- **Dia**: Flowcharting
+- **Meld**: Comparing and merging files.
+- **Pencil**: GUI prototyping
+- **SpeedCrunch**: Scientific calculator.
 
 For setup instructions, see :ref:`devtools`.
 
@@ -153,10 +153,10 @@ Operating Systems
 We officially support the following operating systems for content development
 work:
 
-* Ubuntu Linux (recommended)
-* Debian Linux
-* Other Linux
-* FreeBSD
+- Ubuntu Linux (recommended)
+- Debian Linux
+- Other Linux
+- FreeBSD
 
 ..  note:: We do not provide technical support for third-party development
     tools on non-Debian systems.
@@ -174,9 +174,9 @@ Sphinx Development
 As part of content development, you will be working with Sphinx for authoring
 official scripts and other production documents.
 
-* **Python 3**
-* **Sphinx**
-* **A code editor**: We recommend either VSCode or Atom.
+- **Python 3**
+- **Sphinx**
+- **A code editor**: We recommend either VSCode or Atom.
 
 For setup instructions, see :ref:`sphinx`.
 
@@ -185,8 +185,8 @@ Selecting an IDE
 
 You should install one or both of these text and code editors.
 
-* :ref:`vscode` (recommended)
-* :ref:`geany`
+- :ref:`vscode` (recommended)
+- :ref:`geany`
 
 Fonts
 -------------------------------------
@@ -207,10 +207,10 @@ Operating Systems
 We officially support the following operating systems for design and production
 work:
 
-* Ubuntu Linux (recommended)
-* Debian Linux
-* Other Linux
-* FreeBSD
+- Ubuntu Linux (recommended)
+- Debian Linux
+- Other Linux
+- FreeBSD
 
 ..  note:: We do not offer help with third-party tools on non-Debian systems.
 
@@ -219,15 +219,15 @@ Graphics Tools
 
 We use the following graphics design tools:
 
-* **Birdfont**
-* **Blender**
-* **Darktable**
-* **GIMP**
-* **Gpick**
-* **Inkscape**
-* **Krita**
-* **MyPaint**
-* **Scribus**
+- **Birdfont**
+- **Blender**
+- **Darktable**
+- **GIMP**
+- **Gpick**
+- **Inkscape**
+- **Krita**
+- **MyPaint**
+- **Scribus**
 
 For setup instructions, see :ref:`graphics`.
 
@@ -253,11 +253,11 @@ Audio/Video Tools
 
 We use the following audio and video tools:
 
-* **Audacity**
-* **Audio Recorder**
-* **Handbrake**
-* **Kdenlive**
-* **Musescore**
+- **Audacity**
+- **Audio Recorder**
+- **Handbrake**
+- **Kdenlive**
+- **Musescore**
 
 Depending on your assignment, there are several other applications in this
 category we recommend.

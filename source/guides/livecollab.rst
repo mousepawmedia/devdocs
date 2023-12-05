@@ -6,8 +6,8 @@ Guide: Live Collaboration
 We use **Visual Studio Code: Live Share** for live collaboration and pair
 programming.
 
-* You should have :ref:`vscode` installed and configured.
-* You'll also need a GitHub or Microsoft account to login. (Create one now if necessary.)
+- You should have :ref:`vscode` installed and configured.
+- You'll also need a GitHub or Microsoft account to login. (Create one now if necessary.)
 
 ..  note:: In our experience, Live Share works well even on 200 Kbps internet
     connections.
@@ -28,33 +28,33 @@ From the left pane of Settings, select
 I recommend the following, although you are encouraged to adjust these according
 to your own preferences:
 
-* :guilabel:`Account`: (Leave as is)
-* :guilabel:`Account Provider`: (Leave as is)
-* :guilabel:`Allow Guest Debug Control`: No
-* :guilabel:`Allow Guest Task Control`: No
-* :guilabel:`Anonymous Guest Approval`: ``prompt``
-* :guilabel:`Auto Share Terminals`: Yes
-* :guilabel:`Code Lens`: Yes
-* :guilabel:`Comments`: Yes
-* :guilabel:`Connection Mode`: ``auto``
-* :guilabel:`Diagnostic Logging`: No
-* :guilabel:`Feature Set`: ``stable``
-* :guilabel:`Focus Behavior`: ``accept``
-* :guilabel:`Guest Approval Required`: Yes
-* :guilabel:`Increased Guest Limit`: No
-* :guilabel:`Join Debug Session Option`: ``Automatic``
-* :guilabel:`Keep Alive Interval`: 20
-* :guilabel:`Allow Guest Command Control`: No
-* :guilabel:`Name Tag Visibility`: ``Activity``
-* :guilabel:`Populate Git Co Authors`: ``always``
-* :guilabel:`Presence`: Yes
-* :guilabel:`Publish Workspace Info`: Yes
-* :guilabel:`Shared Terminal Height`: ``50``
-* :guilabel:`Shared Terminal Height`: ``120``
-* :guilabel:`Share External Files`: Yes
-* :guilabel:`Show In Status Bar`: ``always``
-* :guilabel:`Show Read Only Users In Editor`: ``always``
-* :guilabel:`Show Verbose Notifications`: Yes
+- :guilabel:`Account`: (Leave as is)
+- :guilabel:`Account Provider`: (Leave as is)
+- :guilabel:`Allow Guest Debug Control`: No
+- :guilabel:`Allow Guest Task Control`: No
+- :guilabel:`Anonymous Guest Approval`: ``prompt``
+- :guilabel:`Auto Share Terminals`: Yes
+- :guilabel:`Code Lens`: Yes
+- :guilabel:`Comments`: Yes
+- :guilabel:`Connection Mode`: ``auto``
+- :guilabel:`Diagnostic Logging`: No
+- :guilabel:`Feature Set`: ``stable``
+- :guilabel:`Focus Behavior`: ``accept``
+- :guilabel:`Guest Approval Required`: Yes
+- :guilabel:`Increased Guest Limit`: No
+- :guilabel:`Join Debug Session Option`: ``Automatic``
+- :guilabel:`Keep Alive Interval`: 20
+- :guilabel:`Allow Guest Command Control`: No
+- :guilabel:`Name Tag Visibility`: ``Activity``
+- :guilabel:`Populate Git Co Authors`: ``always``
+- :guilabel:`Presence`: Yes
+- :guilabel:`Publish Workspace Info`: Yes
+- :guilabel:`Shared Terminal Height`: ``50``
+- :guilabel:`Shared Terminal Height`: ``120``
+- :guilabel:`Share External Files`: Yes
+- :guilabel:`Show In Status Bar`: ``always``
+- :guilabel:`Show Read Only Users In Editor`: ``always``
+- :guilabel:`Show Verbose Notifications`: Yes
 
 .. _glivecollab_start:
 

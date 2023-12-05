@@ -216,7 +216,7 @@ and they all tend to look a little different.
 ..  warning:: Be very careful in here.
 
 Search through the options for "Secure Boot" and disable it.
-**If you're dual-booting, do NOT turn off UEFI altogether!** Also, search
+-*If you're dual-booting, do NOT turn off UEFI altogether!** Also, search
 for "Fast Boot" (if the option is present) and disable that.
 
 Change Boot Order

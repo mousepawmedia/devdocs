@@ -3,12 +3,12 @@
 Guide: Reviewing Code
 ##############################
 
-**GitLab Merge Proposals** are how we review code before it is merged into
+-*GitLab Merge Proposals** are how we review code before it is merged into
 the project's main branches.
 
 ..  note:: If you're looking for a more generic version of this guide, perhaps
     for application outside of MousePaw Media, check out the article
-    *`10 Principles of a Good Code Review <https://dev.to/codemouse92/10-principles-of-a-good-code-review-2eg>`_*
+    -`10 Principles of a Good Code Review <https://dev.to/codemouse92/10-principles-of-a-good-code-review-2eg>`_*
     by Jason C. McDonald on dev.to().
 
 .. _greview_who:
@@ -48,7 +48,7 @@ Principle #1
 -------------------------------
 
 The first and foremost principle of a good review is this:
-**if you commit to review code, review it thoroughly!**
+-*if you commit to review code, review it thoroughly!**
 Expect to spend a decent amount time on this. Be sure to *read* the code,
 don't just skim it, and apply thought to both the code and its style.
 
@@ -64,7 +64,7 @@ Principle #2
 -------------------------------
 
 This goes hand-in-hand with the second principle:
-**aim to understand every changed line**. Research things you don't understand.
+-*aim to understand every changed line**. Research things you don't understand.
 Ask questions.
 
 There are three major reasons why this is important:
@@ -82,16 +82,16 @@ There are three major reasons why this is important:
 When you're done, you should be able to answer two following questions for
 yourself:
 
-* "What goal does this code accomplish?"
+- "What goal does this code accomplish?"
 
-* "How does it accomplish this goal?"
+- "How does it accomplish this goal?"
 
 If you cannot answer both questions, you don't fully understand the changes!
 
 Principle #3
 -------------------------------
 
-**Don't assume the code works - build and test it yourself!**
+-*Don't assume the code works - build and test it yourself!**
 You should actually pull down the code and test it out.
 
 When testing code, make sure you're building using the project's build system
@@ -115,7 +115,7 @@ by Jeff Atwood (*Coding Horror*).
 Principle #4
 -------------------------------
 
-**Commenting matters.** MousePaw Media follows the `Commenting Showing Intent
+-*Commenting matters.** MousePaw Media follows the `Commenting Showing Intent
 [CSI] <https://standards.mousepawmedia.com/csi.html>`_ standard, which means that
 roughly every logical statement should have a comment describing the
 programmer's intention for it. If you don't see a CSI comment, request one to
@@ -141,7 +141,7 @@ following problems:
 Principle #5
 -------------------------------
 
-**Review temporary code as strictly as production code.** It can be shocking
+-*Review temporary code as strictly as production code.** It can be shocking
 just how often temporary "patch" code and workarounds make it into production,
 and how much of it is never actually replaced. This is just a reality of
 real-world programming. Thus, we should hold *all* code to the same standards
@@ -155,7 +155,7 @@ To put it yet another way, **there is never an excuse for kludgy code.**
 Principle #6
 -------------------------------
 
-**Consider how the code will work in production.** Design is important, and
+-*Consider how the code will work in production.** Design is important, and
 integration matters. How will this code function in the real world? How will
 it handle bad input and user error? Will it play well with the rest of the
 code base? In short, be demanding of the code. (See Principle #3.)
@@ -177,25 +177,25 @@ perspective will help prevent bad code from merging to the repository.
 Principle #7
 -------------------------------
 
-**Check documentation, tests, and build files.** Good code doesn't just
+-*Check documentation, tests, and build files.** Good code doesn't just
 include code, it includes all of the trappings that go with it.
 
 A finished Merge Request should contain all of the following:
 
-* **Tests covering the new code.** Review these as strictly as you do the code
+- **Tests covering the new code.** Review these as strictly as you do the code
   itself, to ensure the test will fail if there is a problem.
 
-* **Documentation for the new code.** The best documentation is written in
+- **Documentation for the new code.** The best documentation is written in
   tandem with the code itself. Don't accept documentation *later*; it should
   be present within the Merge Request itself!
 
-* **Build files updated for the changes.** Any time code files are added,
+- **Build files updated for the changes.** Any time code files are added,
   removed, or renamed, the build files need to reflect those changes.
   Similarly, if any dependencies have changed, the build files should reflect
   that too. This is one more reason why you should build the changes yourself
   (Principle #3)
 
-* **README changes.** The markdown files, including `README.md`, `BUILDING.md`,
+- **README changes.** The markdown files, including `README.md`, `BUILDING.md`,
   `CHANGELOG.md`, and so forth should reflect the latest changes. In reality,
   these rarely need to be changed, but you should be sure they're up-to-date.
 
@@ -219,7 +219,7 @@ broken or poorly styled, optimization is only going to make things worse.
 Principle #9
 -------------------------------
 
-**Follow up on reviews.** After suggesting changes to a Merge Request, or after
+-*Follow up on reviews.** After suggesting changes to a Merge Request, or after
 Raising Concerns to a Commit, you should be prepared to review it again.
 Ensure the necessary changes were made, and any problems you found were
 reasonably resolved.
@@ -231,7 +231,7 @@ Principle #10
 -------------------------------
 
 Reviewing can be daunting, so it helps to remember that
-**reviewers are not perfect!** Issues may slip past you, bugs may evade
+-*reviewers are not perfect!** Issues may slip past you, bugs may evade
 detection, performance flaws may make it to production...in short, broken
 code happens!
 

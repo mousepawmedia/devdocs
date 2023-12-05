@@ -99,8 +99,8 @@ Indices and tables
 
     glossary
 
-* :ref:`genindex`
-* :ref:`search`
+- :ref:`genindex`
+- :ref:`search`
 
 Feedback
 ===========================

@@ -184,32 +184,32 @@ it. Then, run...
 
     sphinx-quickstart
 
-* Below are the settings you should select during Quickstart. I've marked ENTER
+- Below are the settings you should select during Quickstart. I've marked ENTER
   for those options that you should use the default on.
 
-* Root path: ENTER
+- Root path: ENTER
 
-* Separate source and build: :code:`y`
+- Separate source and build: :code:`y`
 
-* Name prefix for templates and static dir: :code:`.`
+- Name prefix for templates and static dir: :code:`.`
 
-* Project name: <name of your project>
+- Project name: <name of your project>
 
-* Author name(s): MousePaw Media
+- Author name(s): MousePaw Media
 
-* Project version: <short project version>
+- Project version: <short project version>
 
-* Project release: <long project version>
+- Project release: <long project version>
 
-* Project language: :kbd:`Enter`
+- Project language: :kbd:`Enter`
 
-* Source file suffix: :kbd:`Enter`
+- Source file suffix: :kbd:`Enter`
 
-* Name of your master document: :kbd:`Enter`
+- Name of your master document: :kbd:`Enter`
 
-* Do you want to use the epub builder?: :code:`y`
+- Do you want to use the epub builder?: :code:`y`
 
-* **Use defaults for the rest of the options.**
+- **Use defaults for the rest of the options.**
 
 ..  note:: You can change most of those options again later.
 

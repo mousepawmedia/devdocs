@@ -56,12 +56,12 @@ with an administrator account.
 Go to :guilabel:`Mailboxes` -> :guilabel:`Mailboxes`, and click
 :guilabel:`Add Mailbox`.
 
-* :guilabel:`Username`: (the username)
-* :guilabel:`Domain`: :code:`mousepawmedia.com`
-* :guilabel:`Full name`: (the full name)
-* :guilabel:`Password`: (click :guilabel:`Generate` to create a temporary password)
-* :guilabel:`Force password update at next login`: Yes
-* :guilabel:`Grant direct login access to SoGo`: Yes
+- :guilabel:`Username`: (the username)
+- :guilabel:`Domain`: :code:`mousepawmedia.com`
+- :guilabel:`Full name`: (the full name)
+- :guilabel:`Password`: (click :guilabel:`Generate` to create a temporary password)
+- :guilabel:`Force password update at next login`: Yes
+- :guilabel:`Grant direct login access to SoGo`: Yes
 
 Save the temporary password, and click :guilabel:`Add` at the bottom of the
 screen to create the account.
@@ -129,12 +129,12 @@ button on the right of that screen.
 
 Enter the following information:
 
-* :guilabel:`Name`: (the full name)
-* :guilabel:`Username`: (the username)
-* :guilabel:`Email`: (the @mousepawmedia.com email created in the previous step)
-* :guilabel:`Access Level`: :guilabel:`Regular`
-* :guilabel:`External`: No
-* :guilabel:`Validate user account`: Yes
+- :guilabel:`Name`: (the full name)
+- :guilabel:`Username`: (the username)
+- :guilabel:`Email`: (the @mousepawmedia.com email created in the previous step)
+- :guilabel:`Access Level`: :guilabel:`Regular`
+- :guilabel:`External`: No
+- :guilabel:`Validate user account`: Yes
 
 At the bottom, click :guilabel:`Create user`. An email will be sent to the
 specified MousePaw Media email address with a link to reset the GitLab password
@@ -154,17 +154,17 @@ The user will be added to the Staff group.
 Additionally, add them as :code:`Developer` to the other groups for which
 they should have access:
 
-* Applications: for Applications (Software Engineering) department.
-* Content Development: for Content Development department.
-* Designers: for Design department.
-* DevOps: for DevOps (Software Engineering) department.
-* Platform: for Platform (Software Engineering) department.
+- Applications: for Applications (Software Engineering) department.
+- Content Development: for Content Development department.
+- Designers: for Design department.
+- DevOps: for DevOps (Software Engineering) department.
+- Platform: for Platform (Software Engineering) department.
 
 Additionally, **only** for managers, add the following if appropriate:
 
-* Hiring: grants read access to hiring records.
-* Librarians: grants ability to manage entire eBook collection on Nextcloud.
-* Management: access to all management records, and admin abilities on Nextcloud.
+- Hiring: grants read access to hiring records.
+- Librarians: grants ability to manage entire eBook collection on Nextcloud.
+- Management: access to all management records, and admin abilities on Nextcloud.
 
 ..  _admin_accounts_new_discourse:
 
@@ -173,7 +173,7 @@ Discourse Account
 
 Our Discourse instance's account management is delegated entirely to
 our GitLab instance. Users will need to sign up there with their GitLab account
-*before* you can grant them permissions.
+-before* you can grant them permissions.
 
 Once they've created their account, go to :guilabel:`Admin` and
 :guilabel:`Users`. Click :guilabel:`New` to sort by newly created accounts,
@@ -237,10 +237,10 @@ On the left, select :guilabel:`Users`. On that list, find the user you wish
 to suspend, and click the three dots to the far right of the username. You
 have two options:
 
-* **Block**: Use this option to suspend an account without hiding contributions.
+- **Block**: Use this option to suspend an account without hiding contributions.
   We recommend using this option in most cases.
 
-* **Ban User**: Use this option to Block *and* to hide the user's contributions
+- **Ban User**: Use this option to Block *and* to hide the user's contributions
   from all other users. **Only use this option if the user's content was broadly
   abusive.**
 
@@ -263,16 +263,16 @@ Click the username of the user you wish to suspend.
 
 Scroll down to :guilabel:`Permissions.` You have a few options:
 
-* **Trust Level**: You can lower trust level to limit permissions, and can
+- **Trust Level**: You can lower trust level to limit permissions, and can
   :guilabel:`Lock Trust Level` if necessary to prevent the user from regaining
   those privileges until unlocked. This is useful if you want to allow a user
   to continue to access Discourse, but be limited in what actions they can take.
 
-* **Revoke Moderator**: Remove access to staff-only categories, but otherwise
+- **Revoke Moderator**: Remove access to staff-only categories, but otherwise
   allow the user to remain active on Discourse. You must also take this
   action before Suspending (below).
 
-* **Suspended**: Prevent access to Discourse directly. Useful if you still
+- **Suspended**: Prevent access to Discourse directly. Useful if you still
   want to allow access to GitLab.
 
-* **Silenced**: Prevent posting or starting topics. Still has read permissions.
+- **Silenced**: Prevent posting or starting topics. Still has read permissions.

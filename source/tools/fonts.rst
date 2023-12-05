@@ -51,49 +51,49 @@ desired font within the :file:`MPM_FONTS_BUNDLE_v3.2` directory.
 About The Fonts
 ===================================
 
-* `Autour One <https://www.fontsquirrel.com/fonts/autour-one>`_: A Decorative
+- `Autour One <https://www.fontsquirrel.com/fonts/autour-one>`_: A Decorative
   Serif font.
-* `Cabin <https://www.fontsquirrel.com/fonts/cabin>`_: A clean Sans Serif font.
-  **This is our official font for all company documents and forms.**
-* `CarbonType <https://www.fontsquirrel.com/fonts/carbontype>`_: A Decorative
+- `Cabin <https://www.fontsquirrel.com/fonts/cabin>`_: A clean Sans Serif font.
+  -*This is our official font for all company documents and forms.**
+- `CarbonType <https://www.fontsquirrel.com/fonts/carbontype>`_: A Decorative
   Typewriter font, with a highly distressed look. (Also see *Moms Typewriter*)
-* `Days <https://www.fontsquirrel.com/fonts/Days>`_: A Sans Serif Display font.
-  **This is our official font for the websites.**
-* `Droid Serif <https://www.fontsquirrel.com/fonts/droid-serif>`_: A Serif font.
-* `Exo <https://www.fontsquirrel.com/fonts/exo>`_: A geometric Sans Serif font.
-* `Exo 2 <https://www.fontsquirrel.com/fonts/exo-2>`_: A geometric Sans Serif
+- `Days <https://www.fontsquirrel.com/fonts/Days>`_: A Sans Serif Display font.
+  -*This is our official font for the websites.**
+- `Droid Serif <https://www.fontsquirrel.com/fonts/droid-serif>`_: A Serif font.
+- `Exo <https://www.fontsquirrel.com/fonts/exo>`_: A geometric Sans Serif font.
+- `Exo 2 <https://www.fontsquirrel.com/fonts/exo-2>`_: A geometric Sans Serif
   font, based on Exo.
-* `Great Vibes <https://www.fontsquirrel.com/fonts/great-vibes>`_: A readable
+- `Great Vibes <https://www.fontsquirrel.com/fonts/great-vibes>`_: A readable
   cursive Script font.
-* `Hack <https://www.fontsquirrel.com/fonts/hack>`_: A Monospace Sans Serif
+- `Hack <https://www.fontsquirrel.com/fonts/hack>`_: A Monospace Sans Serif
   font, designed for maximum legibility, with clear distinctions between all
   letters. Also an excellent font for code editors.
-* `Latin Modern Mono <https://www.fontsquirrel.com/fonts/latin-modern-mono>`_:
+- `Latin Modern Mono <https://www.fontsquirrel.com/fonts/latin-modern-mono>`_:
   A clean and legible Typewriter Sans Serif font.
-* `Liberation Serif <https://www.fontsquirrel.com/fonts/liberation-serif>`_:
+- `Liberation Serif <https://www.fontsquirrel.com/fonts/liberation-serif>`_:
   A Serif font which is metrically compatibility with Times New Roman.
-* `Libre Caslon <https://www.fontsquirrel.com/fonts/libre-caslon>`_:
+- `Libre Caslon <https://www.fontsquirrel.com/fonts/libre-caslon>`_:
   A Serif font based on the historic Caslon font family.
-* `Moms Typewriter <https://www.fontsquirrel.com/fonts/momstypewriter>`_:
+- `Moms Typewriter <https://www.fontsquirrel.com/fonts/momstypewriter>`_:
   A Decorative Typewriter font with a distressed look. (Also see *CarbonType*).
-* `Neris <https://www.fontsquirrel.com/fonts/neris>`_: A Contemporary Sans Serif
+- `Neris <https://www.fontsquirrel.com/fonts/neris>`_: A Contemporary Sans Serif
   font.
-* `Noto Emoji <https://www.google.com/get/noto/>`_: A black-and-white Emoji
+- `Noto Emoji <https://www.google.com/get/noto/>`_: A black-and-white Emoji
   font. Recommended on Ubuntu to ensure emjois render correctly.
-* `Noto Color Emoji <https://www.google.com/get/noto/>`_: A color
+- `Noto Color Emoji <https://www.google.com/get/noto/>`_: A color
   Emoji font. Recommended on Ubuntu to ensure emjois render correctly.
-* `OpenDyslexic <https://www.opendyslexic.org/>`_: A special typeface designed
+- `OpenDyslexic <https://www.opendyslexic.org/>`_: A special typeface designed
   specifically for dyslexic readers. Includes the fonts OpenDyslexic2,
   OpenDyslexic2 Alt-A, OpenDyslexic3, and OpenDyslexic Mono.
-* `Short Stack <https://www.fontsquirrel.com/fonts/short-stack>`_: A highly
+- `Short Stack <https://www.fontsquirrel.com/fonts/short-stack>`_: A highly
   legible Handwriting Sans Serif font.
-* `Source Code Pro <https://www.fontsquirrel.com/fonts/source-code-pro>`_:
+- `Source Code Pro <https://www.fontsquirrel.com/fonts/source-code-pro>`_:
   A Monospace Sans Serif font, with clear distinctions between all characters.
-* `Source Sans Pro <https://www.fontsquirrel.com/fonts/source-sans-pro>`_:
+- `Source Sans Pro <https://www.fontsquirrel.com/fonts/source-sans-pro>`_:
   A Sans Serif font with clear distinctions between all characters.
-* `Source Serif Pro <https://www.fontsquirrel.com/fonts/source-serif-pro>`_:
+- `Source Serif Pro <https://www.fontsquirrel.com/fonts/source-serif-pro>`_:
   A Serif font with clear distinctions between all characters.
-* `Titan One <https://www.fontsquirrel.com/fonts/titan-one>`_: A Display
+- `Titan One <https://www.fontsquirrel.com/fonts/titan-one>`_: A Display
   Headline font. **This is our official company logo font.**
 
 Finding More Fonts

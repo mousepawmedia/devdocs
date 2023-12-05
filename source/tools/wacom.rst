@@ -14,9 +14,9 @@ These are likely to be useful on *any* Ubuntu system.
 Official documentation and information is available on each script's
 GitHub repository.
 
-* `WacomDisplayMap <https://github.com/CodeMouse92/WacomDisplayMap>`_
-* `WacomRotate <https://github.com/CodeMouse92/WacomRotate>`_
-* `WacomTouchToggle <https://github.com/CodeMouse92/WacomTouchToggle>`_
+- `WacomDisplayMap <https://github.com/CodeMouse92/WacomDisplayMap>`_
+- `WacomRotate <https://github.com/CodeMouse92/WacomRotate>`_
+- `WacomTouchToggle <https://github.com/CodeMouse92/WacomTouchToggle>`_
 
 .. _wacom_install:
 

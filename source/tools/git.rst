@@ -145,9 +145,9 @@ Alternatively, you can create an SSH keypair using PuTTYGen or
 Git Bash. We do not officially support either method, but you can find out
 more from the links below:
 
-* `OpenSSH for Windows 11 <https://learn.microsoft.com/en-us/windows-server/administration/openssh/openssh_overview>`_
-* `Using PuTTYGen on Windows <https://www.ssh.com/academy/ssh/putty/windows/puttygen>`_
-* `Generating a new SSH Key (Git for Windows) <https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent#platform-windows>`_
+- `OpenSSH for Windows 11 <https://learn.microsoft.com/en-us/windows-server/administration/openssh/openssh_overview>`_
+- `Using PuTTYGen on Windows <https://www.ssh.com/academy/ssh/putty/windows/puttygen>`_
+- `Generating a new SSH Key (Git for Windows) <https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent#platform-windows>`_
 
 Configuring Git
 ----------------------------
@@ -214,5 +214,5 @@ For example, to check out the IOSqueak repository with SSH, use...
 
 ------------------------
 
-**That's it!** Repeat the `Cloning the Repository`_ section as needed to
+-*That's it!** Repeat the `Cloning the Repository`_ section as needed to
 import each repository you need.

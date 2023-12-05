@@ -44,9 +44,9 @@ Passwords and Password Management
 
 A good password should:
 
-* Have a length of at least 16 characters; longer is always better.
-* Have uppercase and lowercase letters.
-* Have at least one number or symbol.
+- Have a length of at least 16 characters; longer is always better.
+- Have uppercase and lowercase letters.
+- Have at least one number or symbol.
 
 It is perfectly acceptable if you use real words, but you should avoid anything
 that can be associated with you. Names, biographical data, pets, and signficant
@@ -105,10 +105,10 @@ To set up MFA, you will need to install an authenticator app. Unless you
 are already using another trustworthy authenticator app, please install one
 of the following:
 
-* To use your iOS or Android smartphone as your MFA device, install the
+- To use your iOS or Android smartphone as your MFA device, install the
   Microsoft Authenticator app.
 
-* To use your Linux machine as your MFA device, install the
+- To use your Linux machine as your MFA device, install the
   `Authenticator app <https://flathub.org/apps/details/com.belmoussaoui.Authenticator>`_
   from Flatpak.
 
@@ -117,7 +117,7 @@ of the following:
 In the sections that follow, you will be installing MFA for GitLab, which
 handles authentication for most of the rest of our collaboration tools.
 
-**DO NOT** skip those sections!
+-*DO NOT** skip those sections!
 
 .. _gstaff_security_tips:
 
@@ -165,11 +165,11 @@ Staff Network
 
 The Staff Network consists of five major components:
 
-* SOGo [Email/Calendar] (mail.mousepawmedia.com)
-* GitLab (gitlab.mousepawmedia.com)
-* Discourse (discourse.mousepawmedia.com)
-* Nextcloud (cloud.mousepawmedia.com)
-* OrangeHRM (eco.mousepawmedia.com)
+- SOGo [Email/Calendar] (mail.mousepawmedia.com)
+- GitLab (gitlab.mousepawmedia.com)
+- Discourse (discourse.mousepawmedia.com)
+- Nextcloud (cloud.mousepawmedia.com)
+- OrangeHRM (eco.mousepawmedia.com)
 
 We also use `Jitsi Meet <https://meet.jit.si/>`_ for regular communication.
 
@@ -328,20 +328,20 @@ logging in with your full email address and password.
 
 Some things you can do from here include:
 
-* Viewing login history (from :guilabel:`Mailbox -> General`)
+- Viewing login history (from :guilabel:`Mailbox -> General`)
 
-* Adjust additional mailbox settings under :guilabel:`Mailbox -> Settings`.
+- Adjust additional mailbox settings under :guilabel:`Mailbox -> Settings`.
 
-* Setting up temporary email aliases, which are useful when you need to
+- Setting up temporary email aliases, which are useful when you need to
   provide an email address for something, but want to be able to delete it
   if it starts to receive spam.
 
-* Control spam settings, whitelist/blacklist email addresses.
+- Control spam settings, whitelist/blacklist email addresses.
 
-* Generate app passwords for IMAP/SMTP/CalDAV/CardDAV logins without exposing
+- Generate app passwords for IMAP/SMTP/CalDAV/CardDAV logins without exposing
   your company email address.
 
-* Check the intercepted spam in Quarantine, and take action on it (including
+- Check the intercepted spam in Quarantine, and take action on it (including
 delivering to mailbox) by clicking :guilabel:`Show item`,
 scrolling down, and clicking :guilabel:`Actions`.
 
@@ -429,9 +429,9 @@ time/date-only read access for the three types of events.
 Regular Email Tasks
 ---------------------------------------
 
-* Correspond with co-workers. Read and respond to messages in a timely fashion.
+- Correspond with co-workers. Read and respond to messages in a timely fashion.
 
-* Schedule and RSVP for meetings.
+- Schedule and RSVP for meetings.
 
 .. _gstaff_eco:
 
@@ -439,14 +439,14 @@ OrangeHRM
 ===========================================
 
 Our "human resources" department is called **ECO**, which stands for
-*Employee Care and Opportunity*.
+-Employee Care and Opportunity*.
 
 Most ECO-related tasks are handled through OrangeHRM, including:
 
-* Time Tracking
-* Leave (time off)
-* Performance Reviews
-* Employee records
+- Time Tracking
+- Leave (time off)
+- Performance Reviews
+- Employee records
 
 You are responsible for reporting your time **every day you work**, and you
 must submit your timesheets every week.
@@ -482,23 +482,23 @@ be accessed or used outside of ECO and administration.
 On the left, click :guilabel:`My Info`. Fill out the following fields.
 Be sure to click :guilabel:`Save` on each page.
 
-* Profile photo (click the gray silhouette): must be a head-and-shoulders photo of you.
-* Personal Details
-    * Employee Full Name
-    * Nationality: based on current permanent residency, *not* heritage.
-    * Marital Status
-    * Date of Birth
-    * Gender (you may omit if your gender is not present).
-* Contact Details
-    * Address
-    * Telephone
-        * Home/Mobile: shown only to ECO/admins
-        * Work: shown in staff directory, include if you want others to be able to call.
-    * Email
-        * Work Email: shown in staff directory; use your MousePaw Media email.
-        * Other Email: shown only to ECO/admin
-    * Emergency Contacts
-        * (Please add at least one emergency contact.)
+- Profile photo (click the gray silhouette): must be a head-and-shoulders photo of you.
+- Personal Details
+    - Employee Full Name
+    - Nationality: based on current permanent residency, *not* heritage.
+    - Marital Status
+    - Date of Birth
+    - Gender (you may omit if your gender is not present).
+- Contact Details
+    - Address
+    - Telephone
+        - Home/Mobile: shown only to ECO/admins
+        - Work: shown in staff directory, include if you want others to be able to call.
+    - Email
+        - Work Email: shown in staff directory; use your MousePaw Media email.
+        - Other Email: shown only to ECO/admin
+    - Emergency Contacts
+        - (Please add at least one emergency contact.)
 
 We do *NOT* request that you provide your driver's license, dependents, or
 immigration records.
@@ -513,8 +513,8 @@ Logging Your Time
 You **must** report all time worked at MousePaw Media by Monday the following
 week. This serves two functions:
 
-* Indicates your attendance, along with your journal (described later).
-* Creates accountability for your use of volunteer time.
+- Indicates your attendance, along with your journal (described later).
+- Creates accountability for your use of volunteer time.
 
 ..  warning:: Reporting your time is of utmost importance! Set reminders for
     yourself to remember to fill out and submit your timesheets. Repeated
@@ -533,23 +533,23 @@ Under :guilabel:`Project`, type and select the name of the project you're
 working on. Aside from our actual projects, such as :code:`Platform - IOSqueak`
 or :code:`Applications - Quarkboard`, we have several other entries:
 
-* General - Community: interacting with or moderating our community.
-* General - Meetings: syncronous meetings.
-* General - Mentorship: all activities relating to training interns.
-* General - Other: anything that doesn't fit in another category. USE SPARINGLY.
-* General - Setup: setting up workstation, tools, development environment, etc.
-* General - Training: using MousePaw Media curated training materials. Do NOT use for "research".
-* DevOps - DevOps: maintaining build, test, and deployment systems (regardless of project).
-* DevOps - Documentation: writing documentation that is NOT specific to a project.
-* DevOps - Standards: maintaining standards.
+- General - Community: interacting with or moderating our community.
+- General - Meetings: syncronous meetings.
+- General - Mentorship: all activities relating to training interns.
+- General - Other: anything that doesn't fit in another category. USE SPARINGLY.
+- General - Setup: setting up workstation, tools, development environment, etc.
+- General - Training: using MousePaw Media curated training materials. Do NOT use for "research".
+- DevOps - DevOps: maintaining build, test, and deployment systems (regardless of project).
+- DevOps - Documentation: writing documentation that is NOT specific to a project.
+- DevOps - Standards: maintaining standards.
 
 We also have administration-related "projects". Non-management staff should
 NOT use these without first confirming with their supervisor.
 
-* Administration - Administration: management activities.
-* Administration - ECO: ECO (HR) management activities.
-* Administration - Hiring: screening, interviewing, or reviewing candidates.
-* Administration - IT: maintaining our servers or collaborative platforms.
+- Administration - Administration: management activities.
+- Administration - ECO: ECO (HR) management activities.
+- Administration - Hiring: screening, interviewing, or reviewing candidates.
+- Administration - IT: maintaining our servers or collaborative platforms.
 
 In all cases, select :guilabel:`General` under the :guilabel:`Activity` section.
 
@@ -619,16 +619,16 @@ ECO Forms
 
 Some additional ECO activites are handled through Discourse (discussed later).
 
-* **Formal Grievance**: If you are unable to resolve a conflict with a co-worker
+- **Formal Grievance**: If you are unable to resolve a conflict with a co-worker
   via informal discussions, you may file this form within 15 days of the
   most recent incident.
 
-* **Promotion Request**: When you are ready to be graduate from the internship
+- **Promotion Request**: When you are ready to be graduate from the internship
   program, or otherwise be promoted to a higher seniority, you must fill out
   and submit this form. Interns will also need the appropriate
-  **Internship Checklist**.
+  -*Internship Checklist**.
 
-* **Resignation Request**: If you choose to leave MousePaw Media, you must
+- **Resignation Request**: If you choose to leave MousePaw Media, you must
   file a resignation request. If you're an intern, we may choose to terminate
   your staff role with us instead of accepting the resignation, as specified
   in your contract.
@@ -638,14 +638,14 @@ Management Forms
 
 There are a couple more ECO forms which are accessible only to management.
 
-* **Disciplinary Warning Notice**: For serious and/or recurring
+- **Disciplinary Warning Notice**: For serious and/or recurring
   problems, a supervisor may detail the incident and the expected remedy
   using this form. If you receive one, be sure to read it, sign it, and
   send it back via e-mail ASAP.
 
-* **Termination**: In the rare and unfortunate case where an staff member
+- **Termination**: In the rare and unfortunate case where an staff member
   must be fired, we use this form. There is also a separate
-  **Internship Termination** form.
+  -*Internship Termination** form.
 
 .. _gstaff_gitlab:
 
@@ -717,15 +717,15 @@ Go to your User Settings by clicking your picture in the sidebar, and clicking
 :guilabel:`Edit Profile`. Fill out the following fields at a minimum, as well
 as any others you wish:
 
-* Public avatar (a head-and-shoulders photo of you)
-* Time settings
-  * Time zone
-* Main settings
-  * Full name
-  * Pronouns
-  * Public email (set to your MousePaw Media email)
-  * Job title
-  * Organization (MousePaw Media)
+- Public avatar (a head-and-shoulders photo of you)
+- Time settings
+  - Time zone
+- Main settings
+  - Full name
+  - Pronouns
+  - Public email (set to your MousePaw Media email)
+  - Job title
+  - Organization (MousePaw Media)
 
 Click :guilabel:`Update profile settings`.
 
@@ -762,34 +762,34 @@ associated Group (department). Click on one to navigate to the repository.
 On the project page, you'll notice that the sidebar has a lot of entries.
 Here's a brief tour of the most important:
 
-* Plan
-  * Wiki: This is where we store *internal* documentation for the project,
+- Plan
+  - Wiki: This is where we store *internal* documentation for the project,
     which is written for the reference of developers working on the code.
     External documentation is in the repository itself, usually in the
     ``docs/`` directory.
-* Code
-  * Merge requests: Proposed changes to the code. All work you submit to
+- Code
+  - Merge requests: Proposed changes to the code. All work you submit to
     a repository must be in a merge request.
-  * Repository: the source code itself.
-  * Branches: a list of all branches in the repository.
-  * Commits: a history of changes to the code.
-  * Tags: named points in the repository history which are important.
-  * Snippets: small pieces of code and text associated with the project, but
+  - Repository: the source code itself.
+  - Branches: a list of all branches in the repository.
+  - Commits: a history of changes to the code.
+  - Tags: named points in the repository history which are important.
+  - Snippets: small pieces of code and text associated with the project, but
     which we don't want to include in the main repository at present. Think
     of this as a project-specific "paste bin".
-* Build
-  * Pipelines: chains of test and build jobs that are running, completed, or
+- Build
+  - Pipelines: chains of test and build jobs that are running, completed, or
     failed.
-  * Jobs: individual test or build jobs that are running, completed, or failed.
+  - Jobs: individual test or build jobs that are running, completed, or failed.
     These are run as part of pipelines, but can be browsed individually too.
-  * Artifacts: built versions of the project, produced by certain jobs.
-* Deploy
-  * Releases: sets of artifacts and changelogs that constitute a single
+  - Artifacts: built versions of the project, produced by certain jobs.
+- Deploy
+  - Releases: sets of artifacts and changelogs that constitute a single
     released version of the project. Associated with a specific tag.
-  * Package Registry: a registry of packaged artifacts associated with the
+  - Package Registry: a registry of packaged artifacts associated with the
     project. Users with access permissions can download/install packages
     directly from this registry.
-  * Container Registry: a registry of Docker images associated with the
+  - Container Registry: a registry of Docker images associated with the
     project. Users with access permissions can download Docker images directly
     from this registry.
 
@@ -836,12 +836,12 @@ Discourse
 
 Most of our collaboration takes place on Discourse. It is home to our:
 
-* Community
-* Curated training material
-* Q&A
-* Issue Tracker
-* Software Product Specifications
-* Forms and Surveys
+- Community
+- Curated training material
+- Q&A
+- Issue Tracker
+- Software Product Specifications
+- Forms and Surveys
 
 You can sign into Discourse at ``https://discourse.mousepawmedia.com``
 using your MousePaw Media GitLab account.
@@ -942,13 +942,13 @@ See `Download and install Nextcloud <https://nextcloud.com/install/>`_.
 Regular Nextcloud Tasks
 -------------------------------------------
 
-* Access shared files, including design assets.
+- Access shared files, including design assets.
 
-* Upload work. (Content Development, Design)
+- Upload work. (Content Development, Design)
 
-* Review and proofread files. (Content Development, Design)
+- Review and proofread files. (Content Development, Design)
 
-* Access your library loans.
+- Access your library loans.
 
 When you upload files meant to be shared, be sure to place them in the
 appropriate shared folder.
@@ -985,15 +985,15 @@ other sections of this documentation.
 
 Programmers should check out these sections next:
 
-* :ref:`genv`
-* :ref:`grevision`
-* :ref:`gbuild`
+- :ref:`genv`
+- :ref:`grevision`
+- :ref:`gbuild`
 
 Content Developers should check out this section next:
 
-* :ref:`genv_content`
+- :ref:`genv_content`
 
 Design+Production and Mass Communication staff should check out this
 section next:
 
-* :ref:`genv_designprod`
+- :ref:`genv_designprod`

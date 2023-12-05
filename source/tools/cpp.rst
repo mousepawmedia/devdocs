@@ -121,8 +121,8 @@ our instructions for Ubuntu Linux.
 There are two alternative approaches, although we do not provide technical
 support for them:
 
-* You may use `MinGW-w64 <https://www.mingw-w64.org/>`_ for C++ compiling.
-* You can have `Visual Studio use the Clang compiler <https://devblogs.microsoft.com/cppblog/use-any-c-compiler-with-visual-studio/>`_.
+- You may use `MinGW-w64 <https://www.mingw-w64.org/>`_ for C++ compiling.
+- You can have `Visual Studio use the Clang compiler <https://devblogs.microsoft.com/cppblog/use-any-c-compiler-with-visual-studio/>`_.
 
 ..  _cpp_install_devtools:
 
@@ -131,13 +131,13 @@ Install Development Tools
 
 We use a number of coding tools, both command-line and otherwise.
 
-**Required:**
-* CMake
+-*Required:**
+- CMake
 
-**Recommended:**
-* Valgrind
-* KCachegrind
-* Vim *or* Emacs
+-*Recommended:**
+- Valgrind
+- KCachegrind
+- Vim *or* Emacs
 
 Linux
 ----------------------------
@@ -187,11 +187,11 @@ Windows
 Most of the development tools can be downloaded and installed. Please note,
 Valgrind can only be run under certain circumstances.
 
-* **CMake**: Official download from `<https://cmake.org/download/>`_.
-* **Emacs**: Official download from `<https://www.gnu.org/software/emacs/download.html#windows>`_.
-* **QCachegrind**: Unofficial binary download from `<https://sourceforge.net/projects/qcachegrindwin/>`_.
-* **Valgrind**: Can only be installed via ``Windows Subsystem for Linux`` or ``MinGW``.
-* **Vim**: Official download from `<https://www.vim.org/download.php/>`_
+- **CMake**: Official download from `<https://cmake.org/download/>`_.
+- **Emacs**: Official download from `<https://www.gnu.org/software/emacs/download.html#windows>`_.
+- **QCachegrind**: Unofficial binary download from `<https://sourceforge.net/projects/qcachegrindwin/>`_.
+- **Valgrind**: Can only be installed via ``Windows Subsystem for Linux`` or ``MinGW``.
+- **Vim**: Official download from `<https://www.vim.org/download.php/>`_
 
 ..  _cpp_install_ide:
 

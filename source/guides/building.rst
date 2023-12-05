@@ -46,8 +46,8 @@ We use a few libraries which are presently easiest to install directly on the
 target system, instead of being packaged in our libdeps repository. (We hope to
 change that sooner than later.)
 
-* `Cairo <https://www.cairographics.org/download/>`_
-* `Simple DirectMedia Layer (SDL2) <https://www.libsdl.org/>`_
+- `Cairo <https://www.cairographics.org/download/>`_
+- `Simple DirectMedia Layer (SDL2) <https://www.libsdl.org/>`_
 
 On Ubuntu/Debian systems, or Windows Subsystem for Linux, these can be
 installed via:
@@ -166,18 +166,18 @@ Building Projects as Dependency
 
 We have developed a number of libraries that we use throughout our projects.
 
-* `Arctic Tern <https://gitlab.mousepawmedia.com/platform/arctic-tern/>`_
-* `Goldilocks <https://gitlab.mousepawmedia.com/platform/goldilocks/>`_
-* `IOSqueak <https://gitlab.mousepawmedia.com/platform/iosqueak/>`_
-* `Nimbly <https://gitlab.mousepawmedia.com/platform/nimbly/>`_
-* `Onestring <https://gitlab.mousepawmedia.com/platform/onestring/>`_
-* `SIMPLEXpress <https://gitlab.mousepawmedia.com/platform/simplexpress/>`_
+- `Arctic Tern <https://gitlab.mousepawmedia.com/platform/arctic-tern/>`_
+- `Goldilocks <https://gitlab.mousepawmedia.com/platform/goldilocks/>`_
+- `IOSqueak <https://gitlab.mousepawmedia.com/platform/iosqueak/>`_
+- `Nimbly <https://gitlab.mousepawmedia.com/platform/nimbly/>`_
+- `Onestring <https://gitlab.mousepawmedia.com/platform/onestring/>`_
+- `SIMPLEXpress <https://gitlab.mousepawmedia.com/platform/simplexpress/>`_
 
 We also have a few other projects:
 
-* `Anari <https://gitlab.mousepawmedia.com/platform/anari>`_
-* `Ratscript <https://gitlab.mousepawmedia.com/platform/ratscript/>`_
-* `Stormsound <https://gitlab.mousepawmedia.com/platform/stormsound/>`_
+- `Anari <https://gitlab.mousepawmedia.com/platform/anari>`_
+- `Ratscript <https://gitlab.mousepawmedia.com/platform/ratscript/>`_
+- `Stormsound <https://gitlab.mousepawmedia.com/platform/stormsound/>`_
 
 Clone the desired repository into your repositories folder. For best results,
 all MousePaw Media repositories you clone should be in the same directory.
@@ -370,15 +370,15 @@ Using Sanitizers
 If you're compiling with Clang/LLVM, you can use the sanitizers in any of our projects. Simply
 include the ``SAN=<sanitizer>`` argument, where ``<sanitizer>`` is one of the Clang sanitizers.
 
-* ``SAN=address`` compiles with AddressSanitizer.
+- ``SAN=address`` compiles with AddressSanitizer.
 
-* ``SAN=leak`` compiles with LeakSanitizer (which is also part of AddressSanitizer).
+- ``SAN=leak`` compiles with LeakSanitizer (which is also part of AddressSanitizer).
 
-* ``SAN=memory`` compiles with MemorySanitizer.
+- ``SAN=memory`` compiles with MemorySanitizer.
 
-* ``SAN=thread`` compiles with ThreadSanitizer.
+- ``SAN=thread`` compiles with ThreadSanitizer.
 
-* ``SAN=undefined`` compiles with UndefinedBehaviorSanitizer.
+- ``SAN=undefined`` compiles with UndefinedBehaviorSanitizer.
 
 If you're not using Clang, this argument will be ignored.
 

@@ -42,7 +42,7 @@ so choose). To do so, use your arrow keys to highlight an option, and press
 Audacity (v2.3 or later)
 =============================
 
-**Audacity** is a robust open source audio editor, on par with tools like
+-*Audacity** is a robust open source audio editor, on par with tools like
 Adobe Audition®.
 
 It can be installed in one of several ways (select ONE):
@@ -65,16 +65,16 @@ Or, install via Flatpak from Flathub:
 
     flatpak install flathub org.audacityteam.Audacity
 
-* Official Website: `<https://www.audacityteam.org/>`_
-* Documentation: `<https://manual.audacityteam.org/>`_
-* Tutorials: `<https://wiki.audacityteam.org/wiki/Category:Tutorial>`_
+- Official Website: `<https://www.audacityteam.org/>`_
+- Documentation: `<https://manual.audacityteam.org/>`_
+- Tutorials: `<https://wiki.audacityteam.org/wiki/Category:Tutorial>`_
 
 .. _avtools_handbrake:
 
 Handbrake (v1.3 or later)
 =============================
 
-**Handbrake** converts video between formats, as well as adjusting
+-*Handbrake** converts video between formats, as well as adjusting
 resolution, aspect ratio, and many more advanced options.
 
 It can be installed in one of several ways (select ONE):
@@ -97,15 +97,15 @@ Or, install via Flatpak from Flathub:
 
     flatpak install flathub fr.handbrake.ghb
 
-* Official Website: `<https://handbrake.fr/>`_
-* Documentation: `<https://handbrake.fr/docs/>`_
+- Official Website: `<https://handbrake.fr/>`_
+- Documentation: `<https://handbrake.fr/docs/>`_
 
 .. _avtools_kdenlive:
 
 Kdenlive (v19.12 or later)
 =============================
 
-**Kdenlive** is an open source, non-linear video editor. It has support for
+-*Kdenlive** is an open source, non-linear video editor. It has support for
 multiple codecs, and provides many useful effects and tools for professional
 video editing.
 
@@ -129,16 +129,16 @@ Or, install via Flatpak from Flathub:
 
     flatpak install flathub org.kde.kdenlive
 
-* Official Website: `<https://kdenlive.org/>`_
-* Documentation: `<https://userbase.kde.org/Kdenlive/Manual>`_
-* Tutorials: `<https://kdenlive.org/en/toolbox/>`_
+- Official Website: `<https://kdenlive.org/>`_
+- Documentation: `<https://userbase.kde.org/Kdenlive/Manual>`_
+- Tutorials: `<https://kdenlive.org/en/toolbox/>`_
 
 .. _avtools_musescore:
 
 MuseScore (v3.2 or later)
 =============================
 
-**MuseScore** is a free and open source sheet music authoring program, with
+-*MuseScore** is a free and open source sheet music authoring program, with
 support for MIDI input and playback. It is a near drop-in replacement for
 Finale® software, sporting full support of all notation for sheet music,
 including guitar tablatures, lyrics, linked parts, and multiple instruments.
@@ -180,7 +180,7 @@ something more powerful than Audacity, check out these applications.
 Ardour (v5) and JACK
 -----------------------------
 
-**Ardour** is a full-fledged Digital Audio Workstation (DAW), similar to
+-*Ardour** is a full-fledged Digital Audio Workstation (DAW), similar to
 programs like Avid Pro Tools® or Apple Logic Pro®. It is free on Ubuntu, and one
 of the most inexpensive options for Windows and Mac.
 
@@ -220,23 +220,23 @@ option, and then you can start JACK with ``Start``.
 ..  note:: Your normal system sound will stop while JACK is running, as it will
     take over sound playback from PulseAudio, the system default sound server.
 
-**Ardour**
-* Official Website: `<https://ardour.org/>`_
-* Documentation: `<http://manual.ardour.org/toc/>`_
-* Tutorials: `<http://write.flossmanuals.net/ardour/introduction/>`_
+-*Ardour**
+- Official Website: `<https://ardour.org/>`_
+- Documentation: `<http://manual.ardour.org/toc/>`_
+- Tutorials: `<http://write.flossmanuals.net/ardour/introduction/>`_
 
-**JACK**
-* Official Website: `<http://www.jackaudio.org/>`_
+-*JACK**
+- Official Website: `<http://www.jackaudio.org/>`_
 
-**QJackCtl**
-* Official Website: `<https://qjackctl.sourceforge.io/>`_
+-*QJackCtl**
+- Official Website: `<https://qjackctl.sourceforge.io/>`_
 
 .. _avtools_audiorecorder:
 
 Audio Recorder (v3.1 or later)
 ===================================
 
-**Audio Recorder** is a simple tool for quickly recording audio directly from
+-*Audio Recorder** is a simple tool for quickly recording audio directly from
 the audio output or microphone.
 
 We can install this from the official PPA.
@@ -246,14 +246,14 @@ We can install this from the official PPA.
     sudo add-apt-repository ppa:audio-recorder/ppa
     sudo apt install audio-recorder
 
-* Official Website: `<https://launchpad.net/~audio-recorder>`_
+- Official Website: `<https://launchpad.net/~audio-recorder>`_
 
 .. _avtools_op_dvdstyler:
 
 DVDStyler (3.1 or later)
 ------------------------------
 
-**DVDStyler** allows you to create production-quality DVDs with custom,
+-*DVDStyler** allows you to create production-quality DVDs with custom,
 hand-crafted menus.
 
 We will install DVDStyle fro the unofficial PPA.
@@ -263,16 +263,16 @@ We will install DVDStyle fro the unofficial PPA.
     sudo add-apt-repository ppa:ubuntuhandbook1/dvdstyler
     sudo apt install dvdstyler
 
-* Official Website: `<https://www.dvdstyler.org/en/>`_
-* Documentation: `<https://www.dvdstyler.org/en/70>`_
-* Tutorials: `<https://www.dvdstyler.org/en/documents>`_
+- Official Website: `<https://www.dvdstyler.org/en/>`_
+- Documentation: `<https://www.dvdstyler.org/en/70>`_
+- Tutorials: `<https://www.dvdstyler.org/en/documents>`_
 
 .. _avtools_op_hydrogen:
 
 Hydrogen (v1.0 or later)
 -----------------------------
 
-**Hydrogen** is a drum machine with some very high quality samples. When used
+-*Hydrogen** is a drum machine with some very high quality samples. When used
 properly, there is little to no discernable difference between a Hydrogen
 drumtrack and a live drumtrack.
 
@@ -299,15 +299,15 @@ and set it to ``PulseAudio`` for ordinary use.
 ..  note:: You can also select ``Jack`` if you want to route the output
     directly into Ardour, although this is rarely useful.
 
-* Official Website: `<http://hydrogen-music.org/>`_
-* Documentation: `<http://hydrogen.sourceforge.net/content/tutorial/manual_en.html>`_
+- Official Website: `<http://hydrogen-music.org/>`_
+- Documentation: `<http://hydrogen.sourceforge.net/content/tutorial/manual_en.html>`_
 
 .. _avtools_op_lmms:
 
 LMMS (v1.2 or later)
 -----------------------------
 
-**LMMS** is a synthesizer and digital audio workstation, similar in many ways
+-*LMMS** is a synthesizer and digital audio workstation, similar in many ways
 to Apple GarageBand®.
 
 It can be installed in one of two ways (select ONE):
@@ -326,15 +326,15 @@ Or, install via Flatpak from Flathub:
 
 In many cases, LMMS works best with JACK. (See :ref:`avtools_op_ardour`)
 
-* Official Website: `<https://lmms.io/>`_
-* Documentation & Tutorials: `<https://lmms.io/documentation/>`_
+- Official Website: `<https://lmms.io/>`_
+- Documentation & Tutorials: `<https://lmms.io/documentation/>`_
 
 .. _avtools_op_obs:
 
 Open Broadcaster Software (25.x or later)
 --------------------------------------------
 
-**Open Broadcaster Software [OBS]** is considered one of the best streaming
+-*Open Broadcaster Software [OBS]** is considered one of the best streaming
 and screen recording programs in existence. It has full support for webcams,
 microphones, screen capture, and media playback. You can use it to record
 to a file, or to stream live to most major streaming services.
@@ -359,5 +359,5 @@ Or, install via Flatpak from Flathub:
 
     flatpak install flathub com.obsproject.Studio
 
-* Official Website: `<https://obsproject.com/>`_
-* Documentation & Tutorials: `<https://obsproject.com/wiki/>`_
+- Official Website: `<https://obsproject.com/>`_
+- Documentation & Tutorials: `<https://obsproject.com/wiki/>`_

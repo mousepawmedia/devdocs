@@ -174,7 +174,7 @@ Alternative Package Sources
 In addition to the `apt` package manager default to Debian-based systems
 like Ubuntu, packages can be installed via Snapcraft, Flathub, or Appimage.
 
-**Snapcraft** runs applications in containers with partial or full isolation
+-*Snapcraft** runs applications in containers with partial or full isolation
 from the rest of the system. It's portable, working on nearly all Linux systems.
 Your system may already be configured to use Snapcraft, but you can make sure
 by running the following:
@@ -189,7 +189,7 @@ Snapcraft.
 You can search for packages with :code:`sudo snap search <package>`, and
 install with :code:`sudo snap install <package>`.
 
-**Flathub** is a portable packaging format that works on most Linux systems.
+-*Flathub** is a portable packaging format that works on most Linux systems.
 It installs the package onto the system itself, instead of running it in a
 container, so packages installed via Flatpak are likely to make better use of
 system resources than Snapcraft.
@@ -209,7 +209,7 @@ you can browse online. The installation and run commands are at the bottom of
 each package's page (although Flatpak packages will appear on your menu like
 any other program once installed.)
 
-**Appimage** is a packaging format that requires nothing else to be installed
+-*Appimage** is a packaging format that requires nothing else to be installed
 on your system. Just make it executable, double-click it, and go! It's a
 containerized format, much like snapcraft, but the system integration is more
 portable and lightweight.
@@ -253,7 +253,7 @@ Updating LibreOffice
 
 The version of LibreOffice that ships with Ubuntu is slightly older than the
 latest version. To get that "Fresh" version, you'll need to add the
-**PPA**, or "personal package archive," for LibreOffice "Fresh", so ``apt``
+-*PPA**, or "personal package archive," for LibreOffice "Fresh", so ``apt``
 can download the newer version. Just be aware that this version can have
 some bugs...but it also means you get the latest and greatest features.
 
@@ -299,7 +299,7 @@ Web Browser
 Installing Brave or Chrome
 --------------------------------
 
-**Firefox** is installed by default, and works quite well. However, there are a
+-*Firefox** is installed by default, and works quite well. However, there are a
 number of other browsers available. On Ubuntu MATE, these can all be installed
 using the ``Software Boutique``. On Ubuntu, most can be installed from
 ``Software``. (Vivaldi must be installed by downloading the official ``.DEB``
