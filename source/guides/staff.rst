@@ -171,11 +171,11 @@ The Staff Network consists of five major components:
 - Nextcloud (cloud.mousepawmedia.com)
 - OrangeHRM (eco.mousepawmedia.com)
 
-We also use `Jitsi Meet <https://meet.jit.si/>`_ for regular communication.
+We also use `Jitsi Meet <https://meet.jit.si/>`_ for video chat.
 
 .. _gstaff_email:
 
-Email and Calendar
+Email
 =======================================
 
 As with any job, email and calendar are essential. You were issued a company
@@ -184,138 +184,20 @@ email address, which comes with a calendar and a contact book.
 ..  warning:: Be sure to check your company email every single day, and
     respond in a timely fashion!
 
-You can check your email and calendar through the SOGo web client.
-This is useful if you don't want to configure an external client, or need
-to check your email without access to your usual device.
-
-.. _gstaff_email_sogosetup:
+.. _gstaff_email_sogo:
 
 SOGo Setup
 ---------------------------------------
 
-SOGo is a modern webmail and calendar client with many useful features.
+You can check your email and calendar through Nextcloud (recommended) or the
+SOGo web client. This is useful if you don't want to configure an
+external client, or need to check your email without access to your usual
+device.
 
-First, go to mail.mousepawmedia.com/sogo. Sign in using your full company email
-address and your password.
+First, go to https://mail.mousepawmedia.com/SOGo. Sign in using your full
+company email address and your password.
 
 ..  important:: Access your company email through the SOGo client.
-
-Tap the gear in the upper-left to open Preferences.
-
-You should set your time zone first. Under :guilabel:`General` ->
-:guilabel:`General`, set your :guilabel:`Time Zone` to the appropriate time
-zone for you. You may also want to select your preferred date and time formats.
-
-Also consider checking :guilabel:`Enable Desktop Notifications`, so you
-will get notified of new emails when SOGo is open in your browser.
-
-To set up your default signature, go to :guilabel:`Mail` and
-:guilabel:`IMAP Accounts`. Click the pencil next to your email address on
-that window, and click on your name under the :guilabel:`Identity`
-section.
-
-Under :guilabel:`Signature`, add your signature. We recommend this template
-for your signature:
-
-..  code-block:: text
-
-    Your Name Here
-    Position, MousePaw Media
-
-    Visit Us Online: MousePawMedia.com
-
-Press :guilabel:`OK` to save. Then, tap the green save icon in the upper-right
-corner to save your settings.
-
-..  warning:: If you get a warning message about
-    "Service temporarily unavailable", you may ignore it. Your settings ARE
-    saved. Furthermore, if you click anywhere to leave Preferences, and are
-    warned of Unsaved Changes, you can select "Don't Save"; pressing the save
-    icon that one time **did** save your changes.
-
-..  important:: Set up your settings and signature as documented above now.
-
-.. _gstaff_email_sogocalendar:
-
-SOGo Calendar
----------------------------------------
-
-To navigate around SOGo, in the upper-right, click the Mail, Calendar, and
-Contacts icons.
-
-The first time you click the Calendar, it will create a Personal Calendar
-for you. Any events you RSVP to will appear here. You can click the three
-dots to change the name and color of this calendar.
-
-One of the particular benefits of SOGo calendar is how easy it makes
-scheduling. When you create an event, add the Attendees you want to meet with.
-SOGo will show you a chart of their free/busy times. (However, please be
-mindful of time zone differences as well.)
-
-.. _gstaff_email_sogocalendar_external:
-
-Importing Web Calendars
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-To make scheduling easier for everyone, you should subscribe to any external
-calendars (Web Calendars) you routinely use for scheduling. This may include a
-personal calendar, a work calendar, or a school calendar. To do this:
-
-1.  Get the **public** CalDAV or WebDAV URL of the external calendar you want to
-    add. If you're concerned about privacy, at least enable a public link that
-    shows free/busy status without event details. (If you need help with this,
-    contact your mentor.)
-
-2.  In SOGo Calendar, tap the :guilabel:`+` next to :guilabel:`Web Calendars`,
-    enter the URL, and press :guilabel:`OK`. If you did everything right,
-    the events from this calendar will appear in SOGo within a few moments.
-
-3.  Tap the three dots next to the calendar, and select :guilabel:`Properties`.
-    Set the name and color, and ensure :guilabel:`Include in free-busy` and
-    :guilabel:`Reload on login` are checked. Press :guilabel:`OK`.
-
-4.  Press the toggle switch to the left of the calendar name to hide it from
-    your calendar view, if desired. Others will still see your free/busy status
-    when scheduling an event where you're listed as an Attendee.
-
-..  important:: Import your web calendars now.
-
-.. _gstaff_email_sogocalendar_busy:
-
-Setting Up Out of Office Hours
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-If there are times you are consistently unavailable, you may consider creating
-a separate Calendar on SOGo to block out these times.
-
-To create this calendar:
-
-1.  Click the :guilabel:`+` icon next to :guilabel:`Calendars`.
-
-2.  Name the calendar "Out of Office". Press :guilabel:`OK`.
-
-3.  Click the three dots next to "Out of Office", and click
-    :guilabel:`Properties`.
-
-4.  Select :guilabel:`Include in free-busy`. Unselect :guilabel:`Show alarms`
-    and :guilabel:`Show tasks`. Press :guilabel:`Save`.
-
-Now create events for your typical unavailabilities, such as days off and
-sleeping hours. On the event creation screen:
-
-1. Set :guilabel:`Calendar` to "Out of Office".
-
-2. Unselect :guilabel:`Send Appointment Notifications`
-
-3. Set the day, time, and repetition. For example, if you take Sundays off,
-  you may create an "All day Event" that repeats "Weekly" on Sundays.
-
-4. Unselect :guilabel:`Reminder`.
-
-5. Press :guilabel:`Save`.
-
-..  important:: Set up your Out of Office calendar now, with at least "Offline"
-    hours for sleep.
 
 .. _gstaff_email_settings:
 
@@ -392,46 +274,6 @@ In short, here are the recommended server settings:
 
 ..  important:: Connect your company email to an email client, such as
     Thunderbird, Evolution, or your smartphone.
-
-.. _gstaff_email_caldav:
-
-CalDAV Access
----------------------------------------
-
-If you use an external calendar application, you can work directly with your
-MousePaw Media calendar via CalDAV.
-
-The easiest way to get your CalDAV link is to go to
-`SOGo <https://mail.mousepawmedia.com/sogo>`, tap the Calendar icon in
-the upper-right corner, and click the three dots next to the calendar you want
-to access via CalDAV. Select :guilabel:`Links to this Calendar`.
-
-Depending on whether your client uses CalDAV or WebDAV, select the appropriate
-link under :guilabel:`Authenticated User Access`. Your calendar application
-must support providing a username and password for this to work.
-
-If you are using a calendar application that doesn't support authentication on
-CalDAV or WebDAV, you can also use the Public Access link. You can control
-public access permissions by clicking the three dots next to your calendar
-and selecting :guilabel:`Sharing...`. You can provide either full or
-time/date-only read access for the three types of events.
-
-..  note:: If you use Android, the easiest way to work with CalDAV is to use
-    the DAVx5 application. It's open source. You can download it for free from
-    FDroid, but please consider buying it from the Google Play store to help
-    support the creators.
-
-..  important:: Set up your favorite calendar app with access to your calendar
-    via CalDAV, so you can receive notifications of upcoming events.
-
-.. _gstaff_email_tasks:
-
-Regular Email Tasks
----------------------------------------
-
-- Correspond with co-workers. Read and respond to messages in a timely fashion.
-
-- Schedule and RSVP for meetings.
 
 .. _gstaff_eco:
 
@@ -933,6 +775,221 @@ what notifications you wish you receive. In particular, you will probably
 want to uncheck most of the :guilabel:`Email` notifications to keep your
 inbox from getting overwhelming.
 
+..  sidebar:: Authorizing Discourse and Nextcloud to communicate requires an
+    additional step, which can get tricky in some browsers.
+
+    On Chrome, click the tiny icon on the right of the address bar that, when
+    hovered over, says :guilabel:`page wants to install a service handler`.
+    Click this and click :guilabel:`Allow` and :guilabel:`Done`. If you click
+    the wrong button or this icon disappears (or is missing) before you can
+    allow, go to :code:`chrome://settings/handlers`, find the entry for
+    :code:`cloud.mousepawmedia.com`, and remove it. Ensure you set
+    :guilabel:`Sites can ask to handle protocols`, and then return to Nextcloud,
+    refresh, and try again.
+
+    On Firefox, at the top of your browser, you should see a prompt to
+    authorize Nextcloud to handle :code:`web+nextclouddiscourse` links.
+    Click the :guilabel:`Add application` button. If clicking "Authorize" on
+    Discourse does nothing or opens a different application, go to your browser
+    settings. If this happens, go to Firefox Settings. Under
+    :guilabel:`General`, scroll down to :guilabel:`Applications`, find the
+    entry for :code:`web+nextclouddiscourse`,
+    and set the action to :guilabel:`Use cloud.mousepawmedia.com`.
+
+Click :guilabel:`Connected Accounts` at left.
+
+Under :guilabel:`Discourse integration`, ensure the Discourse instance
+address is set to :code:`https://discourse.mousepawmedia.com`. Ensure you
+authorize Nextcloud to handle "web+nextclouddiscourse" links (see sidebar) and
+click :guilabel:`Connect to Discourse`. You will be redirected to Discourse,
+where you should click :guilabel:`Authorize`.
+
+Under :guilabel:`GitLab integration`, ensure the
+:guilabel:`GitLab instance address` field is set to
+:code:`https://gitlab.mousepawmedia.com`. Click :guilabel:`Connect to GitLab`
+
+.. _gstaff_nextcloud_mail:
+
+Mail
+------------------------------------------
+
+Nextcloud has an excellent Mail application which we strongly recommend using
+for webmail access, instead of SOGo. You **should** set this up!
+
+On the top bar of Nextcloud, click the icon for :guilabel:`Mail`. You will see
+the :guilabel:`Connect your mail account` page, which will be automatically
+filled in with your name and MousePaw Media email address. Enter your email
+password and click :guilabel:`Connect`.
+
+Once your inbox loads, click the three dots next to your email address at left
+and select :guilabel:`Account settings`. Scroll down to :guilabel:`Signature`,
+and fill in your signature. We recommend this emplate:
+
+..  code-block:: text
+
+    Your Name Here
+    Position
+    MousePaw Media
+
+    Visit Us Online: MousePawMedia.com
+
+Press :guilabel:`Save signature` to save.
+
+Under :guilabel:`Writing mode`, select :guilabel:`Rich text`.
+
+.. _gstaff_nextcloud_dashboard:
+
+Dashboard
+-------------------------------------------
+
+When you first visit Nextcloud, you will see the Dashboard, which provides
+notifications and links for the entire staff network.
+
+By default, you'll see the following boxes:
+
+- Welcome: an initial message providing a link to this documentation.
+- Announcements: important news from MousePaw Media administration.
+- Discourse notifications: notifications from our Discourse instance.
+- Unread mail: new messages from your email.
+- Upcoming cards: tasks with approaching deadlines from Nextcloud Deck.
+- GitLab To-Dos: pending code reviews and other tasks from GitLab.
+- Pending approvals: anything in Nextcloud awaiting your review.
+- Staff Portal: links to the rest of the staff network (also on the top bar).
+
+Scroll to the bottom and click :guilabel:`Customize` to edit this Dashboard
+if you desire.
+
+..  note:: If the weather is displaying in Celsius, and you want Fahrenheit,
+    click your picture and select :guilabel:`Personal settings`. Change
+    :guilabel:`Locale` to anything else, and then back to your locale, and
+    the weather will display in the temperature scale used by your locale.
+    (This is a bug in Nextcloud.)
+
+.. _gstaff_nextcloud_deck:
+
+Deck
+-------------------------------------------
+
+The Deck application on Nextcloud is a task tracker. You can use it for just
+yourself, or you can share it with any other staff members at MousePaw Media.
+
+Select a board under :guilabel:`All boards`, or create a new board with
+:guilabel:`Add board`. To share the board, click the three dots next to its
+name and click :guilabel:`Board details`; to rename, click
+:guilabel:`Edit board`.
+
+You can customize the columns, and add, edit, and remove cards. To display
+the card on the :guilabel:`Upcoming cards` or the Dashboard, be sure to set a
+due date on the card. To do this, click the three dots on the card and select
+:guilabel:`Card details`.
+
+.. _gstaff_nextcloud_calendar:
+
+Calendar
+-------------------------------------------
+
+The Nextcloud calendar enables easy scheduling with colleagues. To use this
+application, click the icon for :guilabel:`Calendar` on the top bar of
+Nextcloud.
+
+To schedule a new event, click the :guilabel:`+ Event` button at left. If you
+want to invite other people, click :guilabel:`More`. Fill out all the fields
+you want. Click :guilabel:`Attendees` and type and click the names of staff
+members you want to invite, or email addresses if they're not staff members.
+Click :guilabel:`Show busy times` to see everyone's availability, to aid with
+finding good times for scheduling.
+
+.. _gstaff_nextcloud_calendar_external:
+
+Importing External Calendars
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+To make scheduling easier, you should subscribe to any external calendars
+you routinely use for scheduling. This may include a personal calendar,
+a work calendar, or a school calendar.
+
+1.  Get the **public** CalDAV/WebDAV/ICS URL of the external calendar you
+    want to add. If you're concerned about privacy, at least enable a public
+    link that shows free/busy status without event details. (If you need
+    help with this, contact your mentor.)
+
+2.  In Nextcloud Calendar, click :guilabel:`New Calendar` and
+    :guilabel:`New subscription from link (read-only)`. Paste the link from
+    step one and click the arrow.
+
+3.  Hover over the calendar name in the list at left and click the pencil
+    icon to edit the name and color.
+
+4.  Click the color icon next to the calendar name to toggle its visibility.
+    Others will still see your free/busy status when scheduling with you.
+
+..  important:: Import your web calendars now.
+
+.. _gstaff_nextcloud_calendar_hours:
+
+Setting Office Hours
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+You may want to define office hours for yourself, which indicate when you
+are generally available for meetings. To do this, click your profile picture
+in the upper-right and click :guilabel:`Personal settings`. On the left,
+select :guilabel:`Availability`.
+
+On that page, set your time zone, and add your working hours. Remember that
+this is only a general availability. Your calendar can be used to indicate
+specific times when you're unavailable.
+
+Also, check the box that says
+:guilabel:`Automatically set user status to "Do not disturb"...`
+to make it easier for colleages to determine whether you're available or not.
+
+..  important:: Set up your general availability.
+
+.. _gstaff_nextcloud_calendar_caldav:
+
+Accessing via Calendar Client
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+If you use an external calendar application (and you should!), you can
+work directly with your MousePaw Media calendar via CalDAV or WebDAV.
+
+If your calendar application supports CalDAV with authentication, use
+your private CalDAV link. In the Calendar appl, next to the calendar you
+want to access externally, click the pencil icon to edit the calendar.
+Next, click the clipboard icon to the right of :guilabel:`Internal link`.
+You will add this to your calendar application as a CalDAV source. You'll
+next need to create an application password by clicking your profile photo,
+clicking :guilabel:`Personal settings`, and :guilabel:`Security`. At the bottom
+of that page, enter the name of your calendar application (for your personal
+reference) and click :guilabel:`Create new app password`. Use the username
+and password provided there to authenticate for your CalDAV calendar in your
+calendar application.
+
+If your calendar application does *not* support authentication, use WebDAV
+instead. In the Calendar appl, next to the calendar you want to access
+externally, click the pencil icon to edit the calendar. Click the :guilabel:`+`
+button next to :guilabel:`Share link`. Click the three dots to the right
+of that row and click :guilabel:`Copy subscription link`. Use that link to
+subscribe to your public WebDAV calendar.
+
+..  important:: Add your calendar to any external calendar apps you use.
+    You can also susbcribe to your calendar in services like Outlook or
+    Google Calendar.
+
+.. _gstaff_nextcloud_talk:
+
+Talk
+-------------------------------------------
+
+For convenience, we've enabled the Talk application in Nextcloud, which
+allows you to create text-based chatrooms. This will eventually be integrated
+into our Mattermost instance (coming soon), or else disabled.
+
+.. _gstaff_nextcloud_client:
+
+Nextcloud Client
+-------------------------------------------
+
 If you'll be using Nextcloud regularly, you may consider setting up the
 Nextcloud Client on your computer.
 See `Download and install Nextcloud <https://nextcloud.com/install/>`_.
@@ -941,6 +998,12 @@ See `Download and install Nextcloud <https://nextcloud.com/install/>`_.
 
 Regular Nextcloud Tasks
 -------------------------------------------
+
+- Read and response to emails in a timely fashion in Mail.
+
+- Schedule and RSVP for meetings in Calendar.
+
+- Manage your personal tasks in Deck.
 
 - Access shared files, including design assets.
 
