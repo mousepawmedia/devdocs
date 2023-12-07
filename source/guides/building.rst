@@ -346,7 +346,7 @@ Switching Dependency Locations
     For more information, see `StackOverflow: Nested Static Libraries and a Spooky Bug <https://stackoverflow.com/questions/42323262/nested-static-linked-libraries-and-a-spooky-bug>`_.
 
 Although our build systems are pre-configured to use
-:ref:`libdeps <gbuild_libdeps>`, you can override this behavior.
+:ref:`libdeps <gbuild_deps_libdeps>`, you can override this behavior.
 
 In the root of the repository you're building, open :file:`build.config.txt` in
 that directory, and save it with another name ending in ``.config``. Then,

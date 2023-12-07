@@ -8,8 +8,8 @@ the project's main branches.
 
 ..  note:: If you're looking for a more generic version of this guide, perhaps
     for application outside of MousePaw Media, check out the article
-    -`10 Principles of a Good Code Review <https://dev.to/codemouse92/10-principles-of-a-good-code-review-2eg>`_*
-    by Jason C. McDonald on dev.to().
+    `10 Principles of a Good Code Review <https://dev.to/codemouse92/10-principles-of-a-good-code-review-2eg>`_
+    by Jason C. McDonald on DEV.
 
 .. _greview_who:
 
@@ -256,40 +256,40 @@ you are, if you see a problem on a Merge Request, or even a Commit, speak up!
 
 Every Merge Request must...
 
-(1) Accomplish the goals(s) it was designed to accomplish.
+1.  Accomplish the goals(s) it was designed to accomplish.
 
-(2) Comply with Conventional Commits for all commit messages.
+2.  Comply with Conventional Commits for all commit messages.
 
-(3) Be rebased against the latest version of  ``devel`` (or whatever branch
-    is targeted), and all conflicts resolved (:code:`$ git pull origin devel `).
+3.  Be rebased against the latest version of :code:`devel` (or whatever branch
+    is targeted), and all conflicts resolved (:code:`$ git pull origin devel`).
     (We do NOT use the "squash" or "merge" Git strategies.)
 
-(4) Have binaries and unnecessary cruft untracked and removed. (Keep an eye on
+4.  Have binaries and unnecessary cruft untracked and removed. (Keep an eye on
     `.gitignore`!)
 
-(5) Compile and run properly. (Confirmed via the CI/CD Pipeline.)
+5.  Compile and run properly. (Confirmed via the CI/CD Pipeline.)
 
-(6) Be free of compiler errors and warnings; for C++, must compile with
+6.  Be free of compiler errors and warnings; for C++, must compile with
     `-Wall -Wextra -Werror`. (Confirmed via the CI/CD Pipeline.)
 
-(7) For C++, be Valgrind pure, meaning no memory leaks are detected.
+7.  For C++, be Valgrind pure, meaning no memory leaks are detected.
     (Confirmed via the CI/CD Pipeline.)
 
-(8) Comply with Coding and Technical standards.
+8.  Comply with Coding and Technical standards.
 
-(9) Include tests validating the accomplishment of goals in (1). These tests
+9.  Include tests validating the accomplishment of goals in (1). These tests
     must be written in the project's test framework, if relevant.
 
-(10) Be fully Commenting-Showing Intent commented.
+10. Be fully Commenting-Showing Intent commented.
 
-(11) Have an up-to-date build script (generally CMake) if relevant.
+11. Have an up-to-date build script (generally CMake) if relevant.
 
-(12) Be reviewed, built, tested, and approved by at least one trusted
-     reviewer.
+12. Be reviewed, built, tested, and approved by at least one trusted
+    reviewer.
 
-(13) Have up-to-date Sphinx documentation, which compiles with no warnings.
+13. Have up-to-date Sphinx documentation, which compiles with no warnings.
 
-(14) Have all reviewer comments processed and marked "Done".
+14. Have all reviewer comments processed and marked "Done".
 
 Don't worry! Although the list looks long, you can stay on top of most of these
 items as you code, while some others require minimal effort.

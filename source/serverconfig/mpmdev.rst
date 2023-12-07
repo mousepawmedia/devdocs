@@ -2508,6 +2508,9 @@ Finally, I'll tell Docker to use ``docker-credential-pass``:
 Set the contents of that file to the following, or if it already exists,
 modify the :code:`credsStore` property as shown:
 
+
+..  code-block:: text
+
     {
         "auths": {
             "registry.mousepawmedia.com": {}

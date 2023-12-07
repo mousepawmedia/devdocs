@@ -16,24 +16,24 @@ located at `gitlab.mousepawmedia.com <https://gitlab.mousepawmedia.com>`_.
 Your MousePaw Media GitLab account also serves as your login for other
 parts of our development network.
 
-1. Log in or create an account now.
+1.  Log in or create an account now.
 
-2. Read through and sign the **Community Rules**, **Terms of Development**, and
--*Terms of Use**.
+2.  Read through and sign the **Community Rules**, **Terms of Development**, and
+    **Terms of Use**.
 
-3. You should now see the home page of our GitLab. Click your profile
-   picture at the top of the sidebar, and click :guilabel:`Edit Profile`.
-   Fill out as much as you wish, but especially the following.
-   Make sure you click :guilabel:`Update profile settings` when you're done.
+3.  You should now see the home page of our GitLab. Click your profile
+    picture at the top of the sidebar, and click :guilabel:`Edit Profile`.
+    Fill out as much as you wish, but especially the following.
+    Make sure you click :guilabel:`Update profile settings` when you're done.
 
-   - Public avatar
-   - Time zone
-   - Full name
-   - Pronouns
-   - Public email
+    - Public avatar
+    - Time zone
+    - Full name
+    - Pronouns
+    - Public email
 
-4. Click :guilabel:`Preferences` on the left sidebar. Here, you may define
-  the appearance and behavior of GitLab to match your preferences.
+4.  Click :guilabel:`Preferences` on the left sidebar. Here, you may define
+    the appearance and behavior of GitLab to match your preferences.
 
 To learn more about how to use GitLab, check out their comprehensive
 documentation at `GitLab Docs <https://docs.gitlab.com/>`_. You can acces

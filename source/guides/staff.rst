@@ -224,8 +224,8 @@ Some things you can do from here include:
   your company email address.
 
 - Check the intercepted spam in Quarantine, and take action on it (including
-delivering to mailbox) by clicking :guilabel:`Show item`,
-scrolling down, and clicking :guilabel:`Actions`.
+  delivering to mailbox) by clicking :guilabel:`Show item`,
+  scrolling down, and clicking :guilabel:`Actions`.
 
 You can also jump right to SOGo from here via the :guilabel:`Login to webmail`
 button under :guilabel:`Mailbox`, or from the :guilabel:`Apps` menu at
@@ -550,7 +550,7 @@ Finally, if you haven't already added two-factor authentication, click
 ..  important:: If you have a pre-existing account, set it up now following the
     instructions above.
 
-.. _gstaff_gitlab_setup:
+.. _gstaff_gitlab_profile:
 
 Editing Your Profile and Settings
 -----------------------------------
@@ -605,11 +605,14 @@ On the project page, you'll notice that the sidebar has a lot of entries.
 Here's a brief tour of the most important:
 
 - Plan
+
   - Wiki: This is where we store *internal* documentation for the project,
     which is written for the reference of developers working on the code.
     External documentation is in the repository itself, usually in the
     ``docs/`` directory.
+
 - Code
+
   - Merge requests: Proposed changes to the code. All work you submit to
     a repository must be in a merge request.
   - Repository: the source code itself.
@@ -619,13 +622,17 @@ Here's a brief tour of the most important:
   - Snippets: small pieces of code and text associated with the project, but
     which we don't want to include in the main repository at present. Think
     of this as a project-specific "paste bin".
+
 - Build
+
   - Pipelines: chains of test and build jobs that are running, completed, or
     failed.
   - Jobs: individual test or build jobs that are running, completed, or failed.
     These are run as part of pipelines, but can be browsed individually too.
   - Artifacts: built versions of the project, produced by certain jobs.
+
 - Deploy
+
   - Releases: sets of artifacts and changelogs that constitute a single
     released version of the project. Associated with a specific tag.
   - Package Registry: a registry of packaged artifacts associated with the
@@ -1000,17 +1007,11 @@ Regular Nextcloud Tasks
 -------------------------------------------
 
 - Read and response to emails in a timely fashion in Mail.
-
 - Schedule and RSVP for meetings in Calendar.
-
 - Manage your personal tasks in Deck.
-
 - Access shared files, including design assets.
-
 - Upload work. (Content Development, Design)
-
 - Review and proofread files. (Content Development, Design)
-
 - Access your library loans.
 
 When you upload files meant to be shared, be sure to place them in the

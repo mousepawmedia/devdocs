@@ -501,6 +501,15 @@ helpful for permissions.
 
 Browse to the web server using the IP or whatever address is most convenient,
 and ensure the Apache2 default page is appearing.
+
+Now edit the following:
+
+..  code-block:: bash
+
+    sudo vim /etc/sysctl.conf
+
+Edit the file, uncommenting or adding the following lines:
+
     net.ipv4.conf.default.accept_source_route = 0
     net.ipv6.conf.default.accept_source_route = 0
 
@@ -527,7 +536,8 @@ and ensure the Apache2 default page is appearing.
     # Ignore Directed pings
     net.ipv4.icmp_echo_ignore_all = 1
 
-Finally, reload ``sysctl``. If there are any errors, fix the associated lines.
+Save and close. Finally, reload ``sysctl``. If there are any errors, fix
+the associated lines.
 
 ..  code-block:: bash
 
@@ -1059,7 +1069,7 @@ Connect to the PostgreSQL instance and install the required extensions, like thi
     sudo su - postgres
     psql
 
-..  code-block:: file:///home/jason/repos
+..  code-block:: psql
 
     CREATE EXTENSION IF NOT EXISTS pg_trgm;
     CREATE EXTENSION IF NOT EXISTS btree_gist;
@@ -1069,7 +1079,7 @@ Connect to the PostgreSQL instance and install the required extensions, like thi
 Running the last command should show all three extensions enabled. If so, set up
 the necessary users and databases.
 
-..  code-block:: sql
+..  code-block:: psql
 
     CREATE ROLE gitlab WITH LOGIN PASSWORD 'password';
     ALTER USER gitlab CREATEDB;
@@ -1288,7 +1298,7 @@ Connect to the PostgreSQL instance like this:
 
 Now set up the necessary users and databases.
 
-..  code-block:: sql
+..  code-block:: psql
 
     CREATE ROLE discourse WITH LOGIN PASSWORD 'password';
     CREATE DATABASE discourse_production OWNER discourse;
@@ -1316,6 +1326,7 @@ substiting values as needed. Lines not included below should be left unchanged
 in the file, unless you know what you're doing.
 
 ..  code-block:: yaml
+
     templates:
         - "templates/redis.template.yml"
         - "templates/web.template.yml"
@@ -1865,7 +1876,7 @@ Connect to the PostgreSQL instance like this:
 
 Now set up the necessary users and databases.
 
-..  code-block:: sql
+..  code-block:: psql
 
     CREATE ROLE nextcloud WITH LOGIN PASSWORD 'password';
     CREATE DATABASE nextcloud OWNER nextcloud;

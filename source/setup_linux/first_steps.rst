@@ -100,7 +100,7 @@ Pop!_OS
 
 There are several additional features of Pop!_OS you should be aware of if
 you're using that system. Take a look at the
-`official Pop!_OS documentation<https://support.system76.com/#pop>`_
+`official Pop!_OS documentation <https://support.system76.com/#pop>`_
 for more information.
 
 Updating System

@@ -75,7 +75,7 @@ systems is as follows:
 
 Test that this installed correctly by running the following:
 
-..  code-block:: bashread_registry, write_registry
+..  code-block:: bash
 
     gpg --list-keys
 
@@ -151,8 +151,10 @@ If all goes well, then the following command should work:
     docker-credential-pass list
 
 If ``pass`` is not configured, you'll receive a warning like "pass store is
-uninitialized.".read_registry, write_registrydia.com`. You'll first need to generate
-a Personal Access Token on your MousePaw Media GitLab account.
+uninitialized.".
+
+You'll first need to generate a Personal Access Token on your MousePaw Media
+GitLab account.
 
 In a browser, log into the MousePaw Media GitLab. Click your profile picture
 at the top of the left pane and select :guilabel:`Preferences`. On the left,
